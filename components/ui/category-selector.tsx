@@ -2,14 +2,14 @@
 
 import { Category } from "@/sanity.types";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@radix-ui/react-popover";
 import { Button } from "./button";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, Check } from "lucide-react";
 import {
   Command,
   CommandInput,
@@ -17,7 +17,8 @@ import {
   CommandItem,
   CommandEmpty,
   CommandGroup,
-} from "./command"; // Make sure these components are all properly exported from ./command
+} from "./command";
+import { cn } from "@/lib/utils"; // Ensure you import your cn utility
 
 interface CategorySelectorProps {
   categories: Category[];
@@ -29,6 +30,27 @@ export function CategorySelectorComponent({
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>("");
   const router = useRouter();
+
+  // Reset value when navigating back to home
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (window.location.pathname === "/") {
+        setValue("");
+      }
+    };
+
+    window.addEventListener("popstate", handleRouteChange);
+    return () => window.removeEventListener("popstate", handleRouteChange);
+  }, []);
+
+  const handleCategorySelect = (category: Category) => {
+    console.log("Selected category:", category);
+    setValue(category._id);
+    if (category.slug?.current) {
+      router.push(`/categories/${category.slug.current}`);
+      setOpen(false);
+    }
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -52,9 +74,10 @@ export function CategorySelectorComponent({
             className="h-9 px-2"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                const input = (e.target as HTMLInputElement).value.toLowerCase();
                 const selectedCategory = categories.find((c) =>
-                  c.title?.toLowerCase().includes(input)
+                  c.title
+                    ?.toLowerCase()
+                    .includes(e.currentTarget.value.toLowerCase())
                 );
                 if (selectedCategory?.slug?.current) {
                   setValue(selectedCategory._id);
@@ -72,14 +95,23 @@ export function CategorySelectorComponent({
                   key={category._id}
                   value={category.title}
                   onSelect={() => {
-                    setValue(category._id);
+                    const newValue =
+                      value === category._id ? "" : category._id;
+                    setValue(newValue);
                     if (category.slug?.current) {
                       router.push(`/categories/${category.slug.current}`);
-                      setOpen(false);
                     }
+                    setOpen(false);
                   }}
                 >
                   {category.title}
+                  <Check
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      value === category._id ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -8,7 +8,7 @@ export const OrderType = defineType({
   title: "Order",
   fields: [
     defineField({
-      name: "OrderNumber",
+      name: "orderNumber",
       title: "Order Number",
       type: "string",
       validation: (Rule) => Rule.required(),
@@ -86,7 +86,7 @@ export const OrderType = defineType({
     ],
     preview: {
         select: {
-            name: 'CustomerName',
+            name: 'customerName',
             amount: 'totalPrice',
             currency: 'currency',
             orderId: 'orderNumber',
@@ -104,5 +104,3 @@ export const OrderType = defineType({
             },
           },
         })
-
- 

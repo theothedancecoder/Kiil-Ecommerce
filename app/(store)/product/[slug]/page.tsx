@@ -1,7 +1,7 @@
 import AddToBasketButton from "@/components/AddToBasketButton"
 import { Button } from "@/components/ui/button"
 import { imageUrl } from "@/lib/ImageUrl"
-import { getProductBySlub } from "@/sanity/lib/products/getProductBySlug"
+import { getProductBySlug } from "@/sanity/lib/products/getProductBySlug"
 import { PortableText } from "next-sanity"
 import Image from "next/image"
 import { notFound } from "next/navigation"
@@ -12,7 +12,7 @@ import { notFound } from "next/navigation"
         slug: string}>}
  ) {
     const {slug} = await params
-    const product = await getProductBySlub(slug)
+    const product = await getProductBySlug(slug)
 
     if(!product){
         return notFound()
