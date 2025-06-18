@@ -96,7 +96,7 @@ export type Order = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  orderNumber?: string;
+  OrderNumber?: string;
   stripeCheckoutSessionId?: string;
   stripeCustomerId?: string;
   customerName?: string;
@@ -274,39 +274,35 @@ export type AllSanitySchemaTypes = Sales | Product | Order | Category | BlockCon
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/orders/getMyOrders.tsx
 // Variable: MY_ORDERS_QUERY
-// Query: *[_type == "order" && clerkUserId == $userId] | order(orderDate desc) {    ...,    products[] {      ...,      product->    }  }
+// Query: *[_type == "order" && clerkUserId == $userId] | order(orderDate desc) {    _id,    _type,    _createdAt,    _updatedAt,    _rev,    OrderNumber,    stripeCheckoutSessionId,    stripeCustomerId,    customerName,    customerEmail,    stripePaymentIntentId,    totalPrice,    currency,    amountDiscount,    status,    orderDate,    "products": products[]{      "quantity": quantity,      "product": product->{        _id,        name,        price,        image      }    }  }
 export type MY_ORDERS_QUERYResult = Array<{
   _id: string;
   _type: "order";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  OrderNumber?: string;
-  stripeCheckoutSessionId?: string;
-  stripeCustomerId?: string;
-  customerName?: string;
-  customerEmail?: string;
-  stripePaymentIntentId?: string;
-  totalPrice?: number;
-  currency?: string;
-  amountDiscount?: number;
-  status?: "cancelled" | "delivered" | "paid" | "pending" | "shipped";
-  orderDate?: string;
+  OrderNumber: string | null;
+  stripeCheckoutSessionId: string | null;
+  stripeCustomerId: string | null;
+  customerName: string | null;
+  customerEmail: string | null;
+  stripePaymentIntentId: string | null;
+  totalPrice: number | null;
+  currency: string | null;
+  amountDiscount: number | null;
+  status: "cancelled" | "delivered" | "paid" | "pending" | "shipped" | null;
+  orderDate: string | null;
   products: null;
 }>;
 
 // Source: ./sanity/lib/products/getAllCategories.ts
 // Variable: ALL_CATEGORIES_QUERY
-// Query: *[_type == "category"]  | order(name asc)
+// Query: *[_type == "category"] {      _id,      title,      slug,      description    } | order(title asc)
 export type ALL_CATEGORIES_QUERYResult = Array<{
   _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  description?: string;
+  title: string | null;
+  slug: Slug | null;
+  description: string | null;
 }>;
 
 // Source: ./sanity/lib/products/getAllProducts.ts
@@ -376,16 +372,12 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
 
 // Source: ./sanity/lib/products/getProductByCategory.ts
 // Variable: PRODUCT_BY_CATEGORY_QUERY
-// Query: *[_type == "product" && references(*[_type == "category" && slug.current == $categorySlug]._id)]     | order(name asc)
+// Query: *[_type == "product" && references(*[_type == "category" && slug.current == $categorySlug]._id)] {            _id,            name,            slug,            image,            description,            price,            categories[]->{                _id,                title,                slug            },            stock        } | order(name asc)
 export type PRODUCT_BY_CATEGORY_QUERYResult = Array<{
   _id: string;
-  _type: "product";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: string;
-  slug?: Slug;
-  image?: {
+  name: string | null;
+  slug: Slug | null;
+  image: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -396,8 +388,8 @@ export type PRODUCT_BY_CATEGORY_QUERYResult = Array<{
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
-  };
-  description?: Array<{
+  } | null;
+  description: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -427,22 +419,20 @@ export type PRODUCT_BY_CATEGORY_QUERYResult = Array<{
     alt?: string;
     _type: "image";
     _key: string;
-  }>;
-  price?: number;
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
-  }>;
-  stock?: number;
+  }> | null;
+  price: number | null;
+  categories: Array<{
+    _id: string;
+    title: string | null;
+    slug: Slug | null;
+  }> | null;
+  stock: number | null;
 }>;
 
 // Source: ./sanity/lib/products/getProductBySlug.ts
-// Variable: PRODUCT_BY_ID_QUERY
-// Query: *[_type =="product"        && slug.current == $slug]        |order(name asc)[0]
-export type PRODUCT_BY_ID_QUERYResult = {
+// Variable: PRODUCT_BY_SLUG_QUERY
+// Query: *[_type == "product" && slug.current == $slug][0]
+export type PRODUCT_BY_SLUG_QUERYResult = {
   _id: string;
   _type: "product";
   _createdAt: string;
@@ -506,7 +496,7 @@ export type PRODUCT_BY_ID_QUERYResult = {
 
 // Source: ./sanity/lib/products/searchProductsByName.ts
 // Variable: PRODUCT_SEARCH_QUERY
-// Query: *[_type =="product"        && name match $searchParam]        |order(name asc)
+// Query: *[_type == "product" && name match $searchParam]    | order(name asc)
 export type PRODUCT_SEARCH_QUERYResult = Array<{
   _id: string;
   _type: "product";
@@ -591,12 +581,12 @@ export type ACTIVE_SALE_BY_COUPON_QUERYResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"order\" && clerkUserId == $userId] | order(orderDate desc) {\n    ...,\n    products[] {\n      ...,\n      product->\n    }\n  }": MY_ORDERS_QUERYResult;
-    "*[_type == \"category\"]  | order(name asc)": ALL_CATEGORIES_QUERYResult;
+    "*[_type == \"order\" && clerkUserId == $userId] | order(orderDate desc) {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    OrderNumber,\n    stripeCheckoutSessionId,\n    stripeCustomerId,\n    customerName,\n    customerEmail,\n    stripePaymentIntentId,\n    totalPrice,\n    currency,\n    amountDiscount,\n    status,\n    orderDate,\n    \"products\": products[]{\n      \"quantity\": quantity,\n      \"product\": product->{\n        _id,\n        name,\n        price,\n        image\n      }\n    }\n  }": MY_ORDERS_QUERYResult;
+    "\n    *[_type == \"category\"] {\n      _id,\n      title,\n      slug,\n      description\n    } | order(title asc)\n  ": ALL_CATEGORIES_QUERYResult;
     "*[_type == \"product\"] \n      | order(name asc)": ALL_PRODUCTS_QUERYResult;
-    "\n        *[_type == \"product\" && references(*[_type == \"category\" && slug.current == $categorySlug]._id)] \n    | order(name asc)": PRODUCT_BY_CATEGORY_QUERYResult;
-    "\n        *[_type ==\"product\"\n        && slug.current == $slug]\n        |order(name asc)[0]": PRODUCT_BY_ID_QUERYResult;
-    "\n        *[_type ==\"product\"\n        && name match $searchParam]\n        |order(name asc)": PRODUCT_SEARCH_QUERYResult;
+    "\n        *[_type == \"product\" && references(*[_type == \"category\" && slug.current == $categorySlug]._id)] {\n            _id,\n            name,\n            slug,\n            image,\n            description,\n            price,\n            categories[]->{\n                _id,\n                title,\n                slug\n            },\n            stock\n        } | order(name asc)\n    ": PRODUCT_BY_CATEGORY_QUERYResult;
+    "\n  *[_type == \"product\" && slug.current == $slug][0]\n": PRODUCT_BY_SLUG_QUERYResult;
+    "\n    *[_type == \"product\" && name match $searchParam]\n    | order(name asc)\n  ": PRODUCT_SEARCH_QUERYResult;
     "\n        *[_type == \"sales\" && isActive == true\n        && couponCode ==$couponCode\n        ]|order(validFrom desc)[0]": ACTIVE_SALE_BY_COUPON_QUERYResult;
   }
 }

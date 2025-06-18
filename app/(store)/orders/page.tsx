@@ -1,9 +1,26 @@
+
 import { formatCurrency } from "@/lib/formatCurrency";
 import { imageUrl } from "@/lib/ImageUrl";
-import getMyOrders from "@/sanity/lib/orders/getMyOrders";
+import getMyOrders, { type OrderWithProducts } from "@/sanity/lib/orders/getMyOrders";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+
+type OrderProduct = {
+  quantity: number;
+  product: {
+    _id: string;
+    name?: string;
+    price?: number;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+      };
+      _type: "image";
+    };
+  };
+};
 
 async function Orders() {
   const { userId } = await auth();
@@ -27,9 +44,9 @@ async function Orders() {
           </div>
         ) : (
           <div className="space-y-6 sm:space-y-8">
-            {orders.map((order) => (
+            {orders.map((order: OrderWithProducts) => (
               <div
-                key={order.orderNumber}
+                key={order.OrderNumber || order._id}
                 className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden"
               >
                 <div className="p-4 sm:p-6 border-b border-gray-200">
@@ -39,7 +56,7 @@ async function Orders() {
                         Order Number
                       </p>
                       <p className="font-mono text-sm text-green-600 break-all">
-                        {order.orderNumber}
+                        {order.OrderNumber || 'N/A'}
                       </p>
                     </div>
                     <div className="sm:text-right">
@@ -63,14 +80,14 @@ async function Orders() {
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      {order.status}
+                      {order.status || 'pending'}
                     </span>
                   </div>
 
                   <div className="sm:text-right">
                     <p className="text-sm text-gray-600 mb-1">Total Amount</p>
                     <p className="font-bold text-lg">
-                      {formatCurrency(order.totalPrice ?? 0, order.currency)}
+                      {formatCurrency(order.totalPrice ?? 0, order.currency || 'USD')}
                     </p>
                   </div>
                 </div>
@@ -80,13 +97,13 @@ async function Orders() {
                     <div className="p-3 sm:p-4 bg-red-50 rounded-lg">
                       <p className="text-red-600 font-medium mb-1 text-sm sm:text-base">
                         Discount Applied:{" "}
-                        {formatCurrency(order.amountDiscount, order.currency)}
+                        {formatCurrency(order.amountDiscount, order.currency || 'USD')}
                       </p>
                       <p className="text-sm text-gray-600">
                         Original Subtotal:{" "}
                         {formatCurrency(
-                          (order.totalPrice ?? 0) + order.amountDiscount,
-                          order.currency
+                          (order.totalPrice ?? 0) + (order.amountDiscount ?? 0),
+                          order.currency || 'USD'
                         )}
                       </p>
                     </div>
@@ -98,7 +115,7 @@ async function Orders() {
                     Order Items
                   </p>
                   <div className="space-y-3 sm:space-y-4">
-                    {order.products?.map((product) => (
+                    {order.products && Array.isArray(order.products) && order.products.map((product: OrderProduct) => (
                       <div
                         key={product.product?._id}
                         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-2 border-b last:border-b-0"
@@ -108,7 +125,7 @@ async function Orders() {
                             <div className="relative h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 rounded-md overflow-hidden">
                               <Image
                                 src={imageUrl(product.product.image).url()}
-                                alt={product.product?.name ?? ""}
+                                alt={product.product?.name || "Product"}
                                 className="object-cover"
                                 fill
                               />
@@ -116,7 +133,7 @@ async function Orders() {
                           )}
                           <div>
                             <p className="font-medium text-sm sm:text-base">
-                              {product.product?.name}
+                              {product.product?.name || 'Unnamed Product'}
                             </p>
                             <p className="text-sm text-gray-600">
                               Quantity: {product.quantity ?? "N/A"}
@@ -127,7 +144,7 @@ async function Orders() {
                           {product.product?.price && product.quantity
                             ? formatCurrency(
                                 product.product.price * product.quantity,
-                                order.currency
+                                order.currency || 'USD'
                               )
                             : "N/A"}
                         </p>

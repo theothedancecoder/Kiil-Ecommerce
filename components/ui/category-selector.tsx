@@ -43,15 +43,6 @@ export function CategorySelectorComponent({
     return () => window.removeEventListener("popstate", handleRouteChange);
   }, []);
 
-  const handleCategorySelect = (category: Category) => {
-    console.log("Selected category:", category);
-    setValue(category._id);
-    if (category.slug?.current) {
-      router.push(`/categories/${category.slug.current}`);
-      setOpen(false);
-    }
-  };
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -67,7 +58,7 @@ export function CategorySelectorComponent({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0 bg-white rounded shadow-md">
+      <PopoverContent className="w-full p-0 bg-white rounded shadow-md border z-50" sideOffset={4}>
         <Command>
           <CommandInput
             placeholder="Search Category..."
@@ -95,19 +86,19 @@ export function CategorySelectorComponent({
                   key={category._id}
                   value={category.title}
                   onSelect={() => {
-                    const newValue =
-                      value === category._id ? "" : category._id;
+                    const newValue = value === category._id ? "" : category._id;
                     setValue(newValue);
                     if (category.slug?.current) {
                       router.push(`/categories/${category.slug.current}`);
                     }
                     setOpen(false);
                   }}
+                  className="flex items-center justify-between p-2 cursor-pointer hover:bg-gray-100"
                 >
-                  {category.title}
+                  <span className="flex-1">{category.title}</span>
                   <Check
                     className={cn(
-                      "ml-auto h-4 w-4",
+                      "ml-2 h-4 w-4",
                       value === category._id ? "opacity-100" : "opacity-0"
                     )}
                   />

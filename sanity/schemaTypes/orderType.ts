@@ -8,7 +8,7 @@ export const OrderType = defineType({
   title: "Order",
   fields: [
     defineField({
-      name: "orderNumber",
+      name: "OrderNumber",
       title: "Order Number",
       type: "string",
       validation: (Rule) => Rule.required(),
@@ -82,6 +82,30 @@ export const OrderType = defineType({
         type: "datetime",
         validation: (Rule) => Rule.required(),
         }),
+
+      defineField({
+        name: "products",
+        title: "Products",
+        type: "array",
+        of: [
+          defineArrayMember({
+            type: "object",
+            fields: [
+              defineField({
+                name: "product",
+                title: "Product",
+                type: "reference",
+                to: [{ type: "product" }],
+              }),
+              defineField({
+                name: "quantity",
+                title: "Quantity",
+                type: "number",
+              }),
+            ],
+          }),
+        ],
+      }),
       
     ],
     preview: {
@@ -89,7 +113,7 @@ export const OrderType = defineType({
             name: 'customerName',
             amount: 'totalPrice',
             currency: 'currency',
-            orderId: 'orderNumber',
+            orderId: 'OrderNumber',
             email: 'customerEmail',
         },
 

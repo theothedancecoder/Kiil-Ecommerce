@@ -7,6 +7,11 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 
 
+//caching next js 15 doesnt auto cache
+export const dynamic = "force-static"
+export const revalidate = 1800 //30 minutes
+
+
  async function ProductPage({params}:{
     params:Promise <{
         slug: string}>}
