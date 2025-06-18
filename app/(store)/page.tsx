@@ -2,7 +2,7 @@ import BlackFridayBanner from "@/components/BlackFridayBanner";
 import ProductsView from "@/components/ProductsView";
 import { getAllCategories } from "@/sanity/lib/products/getAllCategories";
 import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
-import { Product, Category } from "@/sanity.types";
+import { Product } from "@/sanity.types";
 
 
 //caching next js 15 doesnt auto cache
@@ -22,7 +22,7 @@ export default async function Home() {
 
         <ProductsView 
           products={products as unknown as Product[]}
-          categories={categories as unknown as Category[]}
+          categories={categories}
         />
       </div>
     </div>

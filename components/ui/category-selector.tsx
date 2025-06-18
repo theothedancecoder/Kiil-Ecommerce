@@ -1,6 +1,6 @@
 "use client";
 
-import { Category } from "@/sanity.types";
+import { ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
@@ -21,7 +21,7 @@ import {
 import { cn } from "@/lib/utils"; // Ensure you import your cn utility
 
 interface CategorySelectorProps {
-  categories: Category[];
+  categories: ALL_CATEGORIES_QUERYResult;
 }
 
 export function CategorySelectorComponent({
@@ -84,7 +84,7 @@ export function CategorySelectorComponent({
               {categories.map((category) => (
                 <CommandItem
                   key={category._id}
-                  value={category.title}
+                  value={category.title || ""}
                   onSelect={() => {
                     const newValue = value === category._id ? "" : category._id;
                     setValue(newValue);
