@@ -2,17 +2,15 @@
 //will keep it as a server component
 
 import ProductGrid from '@/components/ProductGrid';
-import ProductsView from '@/components/ProductsView';
 import { searchProductsByName } from '@/sanity/lib/products/searchProductsByName';
 import React from 'react'
-import { queryObjects } from 'v8';
 
  async function SearchPage({
     searchParams,
 }:{
-    searchParams: {
+    searchParams: Promise<{
         query: string;
-    }
+    }>
 }) {
     const {query} = await searchParams
     const products = await searchProductsByName(query)

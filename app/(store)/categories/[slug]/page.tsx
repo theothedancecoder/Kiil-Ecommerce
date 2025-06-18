@@ -1,38 +1,44 @@
 import ProductsView from "@/components/ProductsView"
 import { getAllCategories } from "@/sanity/lib/products/getAllCategories"
 import { getProductByCategory } from "@/sanity/lib/products/getProductByCategory"
-import { notFound } from "next/navigation"
+import { Product, Category } from "@/sanity.types"
 
 async function CategoryPage({params}:{
-    params: {
+    params: Promise<{
         slug: string
-    }
+    }>
 }) {
-    const { slug } = params
-    console.log("Category page - received slug:", slug)
-    
-    const [products, categories] = await Promise.all([
-        getProductByCategory(slug),
-        getAllCategories()
-    ])
+    let products: any[] = [];
+    let categories: any[] = [];
 
-    console.log("Category page - fetched products:", products?.length)
+    try {
+        const { slug } = await params
+        console.log("Category page - received slug:", slug)
+        
+        console.log("Category page - fetching data...")
+        const [fetchedProducts, fetchedCategories] = await Promise.all([
+            getProductByCategory(slug),
+            getAllCategories()
+        ])
 
-    if (!products || products.length === 0) {
-        console.log("No products found for category:", slug)
+        products = fetchedProducts;
+        categories = fetchedCategories;
+
+        console.log("Category page - fetched products:", products)
+        console.log("Category page - fetched categories:", categories)
+
+        if (!products || products.length === 0) {
+            console.log("No products found for category:", slug)
+        }
+    } catch (error) {
+        console.error("Error in category page:", error)
+        throw error
     }
 
     return (
         <div className="flex flex-col items-center justify-top min-h-screen bg-gray-100 p-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
-                <h1 className="text-3xl font-bold mb-6 text-center">
-                    {slug
-                        .split("_")
-                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(" ")}{" "}
-                    Collection
-                </h1>
-                <ProductsView products={products} categories={categories}/>
+                <ProductsView products={products as Product[]} categories={categories as Category[]}/>
             </div>
         </div>
     )

@@ -106,7 +106,7 @@ function BasketPage() {
 
         {/* Order Summary */}
         <div className="w-full lg:w-80 lg:sticky lg:top-4 h-fit bg-white p-6 border rounded
-        order-first lg:order-last fixed bottom-0 left-0 lg:left-auto">
+        ">
           <h3 className="text-xl font-semibold">Order Summary</h3>
           <div className="mt-4 space-y-2">
             <div className="flex justify-between">
@@ -141,10 +141,6 @@ function BasketPage() {
               </button>
             </SignInButton>
           )}
-
-          <div className="h-64 lg:h-0">
-            {/* spacer for fixed checkout on mobile */}
-          </div>
         </div>
       </div>
     </div>
