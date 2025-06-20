@@ -8,7 +8,8 @@ import AddToBasketButton from "@/components/AddToBasketButton";
 import Image from "next/image";
 import { imageUrl } from "@/lib/ImageUrl";
 import Loader from "@/components/Loader";
-import { createCheckoutSession, Metadata } from "@/actions/createCheckoutSession";
+import { createCheckoutSession } from "@/actions/createCheckoutSession";
+import { createVippsPayment } from "@/actions/createVippsPayment";
 import { formatCurrency } from "@/lib/formatCurrency";
 
 function BasketPage() {
@@ -19,6 +20,7 @@ function BasketPage() {
 
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "vipps">("stripe");
 
   // Wait for the client to be ready
   useEffect(() => {
@@ -41,17 +43,32 @@ function BasketPage() {
     setIsLoading(true);
 
     try {
-      const metadata: Metadata = {
-        orderNumber: crypto.randomUUID(),
-        customerName: user?.fullName ?? "unknown",
-        customerEmail: user?.emailAddresses[0].emailAddress ?? "unknown",
-        clerkUserId: user!.id,
-      };
-
-      const checkoutUrl = await createCheckoutSession(groupedItems, metadata);
-
-      if (checkoutUrl) {
-        window.location.href = checkoutUrl;
+      if (paymentMethod === "stripe") {
+        const metadata = {
+          orderNumber: crypto.randomUUID(),
+          customerName: user?.fullName ?? "unknown",
+          customerEmail: user?.emailAddresses[0].emailAddress ?? "unknown",
+          clerkUserId: user!.id,
+        };
+        const checkoutUrl = await createCheckoutSession(groupedItems, metadata);
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl;
+        }
+      } else if (paymentMethod === "vipps") {
+        // For Vipps, include customerMobileNumber in metadata
+        const metadata = {
+          orderNumber: crypto.randomUUID(),
+          customerName: user?.fullName ?? "unknown",
+          customerEmail: user?.emailAddresses[0].emailAddress ?? "unknown",
+          clerkUserId: user!.id,
+          customerMobileNumber: user?.phoneNumbers && user.phoneNumbers.length > 0
+            ? user.phoneNumbers[0].phoneNumber
+            : "", // fallback empty string if no phone number
+        };
+        const checkoutUrl = await createVippsPayment(groupedItems, metadata);
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl;
+        }
       }
     } catch (error) {
       console.error("Error creating checkout session:", error);
@@ -104,9 +121,8 @@ function BasketPage() {
           ))}
         </div>
 
-        {/* Order Summary */}
-        <div className="w-full lg:w-80 lg:sticky lg:top-4 h-fit bg-white p-6 border rounded
-        ">
+        {/* Order Summary and Payment Method */}
+        <div className="w-full lg:w-80 lg:sticky lg:top-4 h-fit bg-white p-6 border rounded">
           <h3 className="text-xl font-semibold">Order Summary</h3>
           <div className="mt-4 space-y-2">
             <div className="flex justify-between">
@@ -119,6 +135,32 @@ function BasketPage() {
                 {formatCurrency(UseBasketStore.getState().getTotalPrice(), "NOK")}
               </span>
             </div>
+          </div>
+
+          {/* Payment Method Selection */}
+          <div className="mt-4">
+            <label className="inline-flex items-center mr-4">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="stripe"
+                checked={paymentMethod === "stripe"}
+                onChange={() => setPaymentMethod("stripe")}
+                className="form-radio"
+              />
+              <span className="ml-2">Stripe</span>
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="vipps"
+                checked={paymentMethod === "vipps"}
+                onChange={() => setPaymentMethod("vipps")}
+                className="form-radio"
+              />
+              <span className="ml-2">Vipps</span>
+            </label>
           </div>
 
           {/* Checkout button */}
