@@ -22,7 +22,6 @@ export const OrderType = defineType({
       name: "stripeCustomerId",
       title: "Stripe Customer ID",
       type: "string",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "customerName",
@@ -37,10 +36,30 @@ export const OrderType = defineType({
       validation: (Rule) => Rule.required().email(),
     }),
     defineField({
+      name: "clerkUserId",
+      title: "Clerk User ID",
+      type: "string",
+    }),
+    defineField({
       name: "stripePaymentIntentId",
       title: "Stripe Payment Intent ID",
       type: "string",
-      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "vippsPaymentReference",
+      title: "Vipps Payment Reference",
+      type: "string",
+    }),
+    defineField({
+      name: "paymentProvider",
+      title: "Payment Provider",
+      type: "string",
+      options: {
+        list: [
+          { title: "Stripe", value: "stripe" },
+          { title: "Vipps", value: "vipps" },
+        ],
+      },
     }),
 
     // Optional total and currency fields (for preview purposes)

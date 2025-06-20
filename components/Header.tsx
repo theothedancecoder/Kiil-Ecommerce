@@ -1,4 +1,3 @@
-
 "use client"
 import { ClerkLoaded, SignInButton, UserButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link'
@@ -6,6 +5,7 @@ import React from 'react'
 import Form from 'next/form'
 import { PackageIcon, TrolleyIcon } from '@sanity/icons'
 import UseBasketStore from '@/app/(store)/store'
+import Navigation from './Navigation'
 
 function Header() {
     const{user} =useUser ()
@@ -18,93 +18,90 @@ function Header() {
             console.log(response)
         } catch(err){
             console.error("Error:", JSON.stringify(err,null,2))
-       
+        }
     }
-}
-   
 
-  return (
-    <header className='flex flex-wrap justify-between items-center px-4 py-2'>
-        {/*top row*/}
-        <div className='flex w-full flex-wrap justify-between items-center'>
-            <Link
-            href="/" 
-            className="
-            text-2xl
-            font-bold
-            text-blue-500
-            hover:opacity-50
-            cursor-pointer
-            mx-auto sm:mx-0">
-
-            Kiil
-            </Link>
-            <Form action ='/search'
-            className='w-full sm:w-auto sm:flex-1 sm:mx-4 mt-2 sm:mt-0'>
-                <input type='text'
-                name='query'
-                placeholder='Search for Products'
-                className='bg-gray-100 text-gray-800 px-4 py-2 rounded
-                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border
-                w-full max-w-4xl'/>
-            </Form>
-            <div
-            className='flex items-center space-x-4 mt-4 sm:mt-0 flex-1 sm:flex-none'>
-                <Link
-                href='/basket'
-                className='flex-1 relative flex justify-center
-                sm:justify-start sm:flex-none items-center space-x-2
-                 bg-blue-500 hover:bg-blue-700
-                text-white font-bold py-2 px-4 rounded'>
-                    <TrolleyIcon className='w-6 h-6'/>
-                   
-                    <span className='absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 
-                    flex items-center justify-center text-xs'>
-                        {itemCount}
-                    </span>
-                    <span>My Basket</span> 
+    return (
+        <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md">
+            <header className='flex flex-wrap justify-between items-center px-4 py-4 max-w-7xl mx-auto'>
+                {/*top row*/}
+                <div className='flex w-full flex-wrap justify-between items-center'>
+                    <Link
+                        href="/" 
+                        className="text-3xl font-serif font-bold text-primary hover:text-accent 
+                                transition-colors duration-300 tracking-tight mx-auto sm:mx-0">
+                        Kiil
                     </Link>
-                   { /*User area*/}
-                   <ClerkLoaded>
-                    {user && (
-                        <Link
-                        href="/orders"
-                        className='flex-1 relative flex justify-center
-                        sm:justify-start sm:flex-none
-                        items-center space-x-2 bg-blue-500
-                        hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-                            <PackageIcon className='w-6 h-6'/>
-                            <span> My Orders</span>
-                        </Link>
-                    )}
 
-                    {user ? (<div className='flex items-center space-x-2'>
-                        <UserButton/>
-                        <div className='hidden sm:block text-xs'>
-                            <p className='text-gray-400'>Welcome Back</p>
-                            <p className='font-bold'>{user.fullName}!</p>
+                    <Form action='/search'
+                        className='w-full sm:w-auto sm:flex-1 sm:mx-4 mt-2 sm:mt-0'>
+                        <div className="relative">
+                            <input 
+                                type='text'
+                                name='query'
+                                placeholder='Search for Products'
+                                className='luxury-input w-full'
+                            />
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <svg className="h-5 w-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
                         </div>
-                    </div>):(
-                        <SignInButton mode='modal'/>
-                    )}
-                        {user?.passkeys.length===0 && (
-                            <button
-                            onClick={createClerkPasskey}
-                            className="bg-white hover:bg-blue-700 hover:text-white
-                            animate-pulse text-blue-500 font-bold py-2 px-4 rounded 
-                            border-blue-300 border">
-                                Create passkey
-                            </button>
-                        )}
-                    
+                    </Form>
 
-                   </ClerkLoaded>
-            </div>
+                    <div className='flex items-center space-x-4 mt-4 sm:mt-0 flex-1 sm:flex-none'>
+                        <Link
+                            href='/basket'
+                            className='luxury-button flex items-center space-x-2 bg-accent text-accent-foreground'>
+                            <TrolleyIcon className='w-5 h-5'/>
+                            {itemCount > 0 && (
+                                <span className='absolute -top-2 -right-2 bg-primary text-primary-foreground
+                                            rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold'>
+                                    {itemCount}
+                                </span>
+                            )}
+                            <span className='hidden sm:inline'>Cart</span>
+                        </Link>
 
+                        <ClerkLoaded>
+                            {user && (
+                                <Link
+                                    href="/orders"
+                                    className='luxury-button flex items-center space-x-2'>
+                                    <PackageIcon className='w-5 h-5'/>
+                                    <span className='hidden sm:inline'>Orders</span>
+                                </Link>
+                            )}
+
+                            {user ? (
+                                <div className='flex items-center space-x-4'>
+                                    <UserButton/>
+                                    <div className='hidden lg:block'>
+                                        <p className='text-muted-foreground text-sm'>Welcome</p>
+                                        <p className='font-medium'>{user.fullName}</p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <SignInButton mode='modal'/>
+                            )}
+
+                            {user?.passkeys.length === 0 && (
+                                <button
+                                    onClick={createClerkPasskey}
+                                    className="luxury-button bg-secondary text-secondary-foreground">
+                                    Create passkey
+                                </button>
+                            )}
+                        </ClerkLoaded>
+                    </div>
+                </div>
+            </header>
+            
+            {/* Navigation */}
+            <Navigation />
         </div>
-     
-    </header>
-  )
+    )
 }
 
 export default Header
