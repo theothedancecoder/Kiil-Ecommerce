@@ -36,13 +36,13 @@ function ProductThumb ({product}:{product:Product}) {
             </div>
 
             {/* Content */}
-            <div className="p-6 space-y-4">
-                <div className="min-h-[6rem] flex flex-col justify-between">
-                    <h2 className="font-serif text-xl text-foreground group-hover:text-accent 
-                                 transition-colors duration-300">
+            <div className="p-3 sm:p-6 space-y-2 sm:space-y-4">
+                <div className="min-h-[4rem] sm:min-h-[6rem] flex flex-col justify-between">
+                    <h2 className="font-serif text-sm sm:text-xl text-foreground group-hover:text-accent 
+                                 transition-colors duration-300 line-clamp-2">
                         {product.name}
                     </h2>
-                    <p className="text-muted-foreground text-sm line-clamp-2 mt-2">
+                    <p className="text-muted-foreground text-xs sm:text-sm line-clamp-1 sm:line-clamp-2 mt-1 sm:mt-2 hidden sm:block">
                         {product.description?.map((block) => 
                             block._type === "block" 
                                 ? block.children?.map((child) => child.text).join("") 
@@ -54,12 +54,12 @@ function ProductThumb ({product}:{product:Product}) {
                 {/* Price Tag */}
                 <div className="flex justify-between items-end">
                     <div className="flex flex-col">
-                        <span className="text-sm text-muted-foreground">Price</span>
-                        <span className="text-xl font-serif text-accent">
+                        <span className="text-xs sm:text-sm text-muted-foreground">Price</span>
+                        <span className="text-sm sm:text-xl font-serif text-accent">
                             kr {product.price?.toFixed(2)}
                         </span>
                     </div>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:block">
                         <span className="luxury-button text-sm py-2">
                             View Details
                         </span>
