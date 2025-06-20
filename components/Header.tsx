@@ -53,7 +53,7 @@ function Header() {
                     <div className='flex items-center space-x-4 mt-4 sm:mt-0 flex-1 sm:flex-none'>
                         <Link
                             href='/basket'
-                            className='luxury-button flex items-center space-x-2 bg-accent text-accent-foreground'>
+                            className='flex items-center space-x-2 text-foreground hover:text-accent transition-colors duration-300 relative'>
                             <TrolleyIcon className='w-5 h-5'/>
                             {itemCount > 0 && (
                                 <span className='absolute -top-2 -right-2 bg-primary text-primary-foreground
@@ -68,7 +68,7 @@ function Header() {
                             {user && (
                                 <Link
                                     href="/orders"
-                                    className='luxury-button flex items-center space-x-2'>
+                                    className='flex items-center space-x-2 text-foreground hover:text-accent transition-colors duration-300'>
                                     <PackageIcon className='w-5 h-5'/>
                                     <span className='hidden sm:inline'>Orders</span>
                                 </Link>

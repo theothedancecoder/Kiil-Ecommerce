@@ -28,18 +28,12 @@ function AddToBasketButton({ product, disabled }: AddToBasketButtonProps) {
         onClick={() => removeItem(product._id)}
         className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 ${
           itemCount === 0
-            ? "bg-gray-100 cursor-not-allowed"
-            : "bg-orange-200 hover:bg-gray-300"
+            ? "text-gray-300 cursor-not-allowed"
+            : "text-orange-600 hover:text-accent"
         }`}
         disabled={itemCount === 0 || disabled}
       >
-        <span
-          className={`text-xl font-bold ${
-            itemCount === 0 ? "text-gray-400" : "text-orange-600"
-          }`}
-        >
-          –
-        </span>
+        <span className="text-xl font-bold">–</span>
       </button>
 
       {/* Count */}
@@ -48,10 +42,10 @@ function AddToBasketButton({ product, disabled }: AddToBasketButtonProps) {
       {/* Add Button */}
       <button
         onClick={() => addItem(product)}
-        className="w-8 h-8 rounded-full flex items-center justify-center bg-green-200 hover:bg-green-300 transition-colors duration-200"
+        className="w-8 h-8 rounded-full flex items-center justify-center text-green-600 hover:text-accent transition-colors duration-200"
         disabled={disabled}
       >
-        <span className="text-xl font-bold text-green-600">+</span>
+        <span className="text-xl font-bold">+</span>
       </button>
     </div>
   );

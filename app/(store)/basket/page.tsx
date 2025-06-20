@@ -11,6 +11,7 @@ import Loader from "@/components/Loader";
 import { createCheckoutSession } from "@/actions/createCheckoutSession";
 import { createVippsPayment } from "@/actions/createVippsPayment";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { ShoppingCartIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 
 function BasketPage() {
   const groupedItems = UseBasketStore((state) => state.getGroupedItems());
@@ -82,19 +83,19 @@ function BasketPage() {
       <h1 className="text-2xl font-bold mb-4">Your Basket</h1>
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Basket Items */}
-        <div className="flex-grow">
+        <div className="flex-grow grid grid-cols-1 sm:grid-cols-2 gap-4">
           {groupedItems.map((item) => (
             <div
               key={item.product._id}
-              className="mb-4 p-4 border rounded flex items-center justify-between"
+              className="p-4 border rounded flex flex-col sm:flex-row items-center sm:items-start"
             >
               <div
-                className="flex items-center cursor-pointer flex-1 min-w-0"
+                className="flex flex-col sm:flex-row items-center cursor-pointer flex-1 min-w-0 w-full"
                 onClick={() =>
                   router.push(`/product/${item.product.slug?.current}`)
                 }
               >
-                <div className="w-20 h-20 sm:w-24 flex-shrink-0 mr-4">
+                <div className="w-32 h-32 sm:w-24 sm:h-24 flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
                   {item.product.image && (
                     <Image
                       src={imageUrl(item.product.image).url()}
@@ -105,8 +106,8 @@ function BasketPage() {
                     />
                   )}
                 </div>
-                <div className="min-w-0">
-                  <h2 className="text-lg sm:text-xl font-semibold truncate">
+                <div className="min-w-0 text-center sm:text-left w-full">
+                  <h2 className="text-lg font-semibold truncate">
                     {item.product.name}
                   </h2>
                   <p className="text-sm sm:text-base">
@@ -114,7 +115,7 @@ function BasketPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center ml-4 flex-shrink-0">
+              <div className="flex items-center mt-4 sm:mt-0 sm:ml-4 flex-shrink-0">
                 <AddToBasketButton product={item.product} />
               </div>
             </div>
@@ -165,24 +166,26 @@ function BasketPage() {
 
           {/* Checkout button */}
           {isSignedIn ? (
-            <button
-              onClick={handleCheckout}
-              disabled={isLoading}
-              className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
-              aria-label="Proceed to checkout"
-            >
-              {isLoading ? "Processing..." : "Checkout"}
-            </button>
-          ) : (
-            <SignInButton mode="modal">
-              <button
-                className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                aria-label="Sign in to checkout"
-              >
-                Sign in to checkout
-              </button>
-            </SignInButton>
-          )}
+          <button
+            onClick={handleCheckout}
+            disabled={isLoading}
+            className="mt-4 w-full text-green-600 px-4 py-2 rounded hover:text-accent transition-colors duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
+            aria-label="Proceed to checkout"
+          >
+            <ShoppingBagIcon className="h-6 w-6" />
+            <span>{isLoading ? "Processing..." : "Order"}</span>
+          </button>
+      ) : (
+        <SignInButton mode="modal">
+          <button
+            className="mt-4 w-full text-green-600 px-4 py-2 rounded hover:text-accent transition-colors duration-300 flex items-center justify-center gap-2"
+            aria-label="Sign in to checkout"
+          >
+            <ShoppingCartIcon className="h-6 w-6" />
+            <span>Cart</span>
+          </button>
+        </SignInButton>
+      )}
         </div>
       </div>
     </div>

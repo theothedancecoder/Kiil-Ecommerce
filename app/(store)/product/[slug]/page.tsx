@@ -1,5 +1,4 @@
 import AddToBasketButton from "@/components/AddToBasketButton"
-import { Button } from "@/components/ui/button"
 import { imageUrl } from "@/lib/ImageUrl"
 import { getProductBySlug } from "@/sanity/lib/products/getProductBySlug"
 import { PortableText } from "next-sanity"
@@ -12,11 +11,12 @@ export const dynamic = "force-static"
 export const revalidate = 1800 //30 minutes
 
 
- async function ProductPage({params}:{
-    params:Promise <{
-        slug: string}>}
- ) {
-    const {slug} = await params
+async function ProductPage({
+    params
+}: {
+    params: Promise<{ slug: string }>
+}) {
+    const { slug } = await params
     const product = await getProductBySlug(slug)
 
     if(!product){
@@ -60,14 +60,13 @@ export const revalidate = 1800 //30 minutes
 
                 </div>
                 <div className="mt-6">
-                    <AddToBasketButton product={product} disabled ={isOutOfStock}/>
-                    <Button>
-                    Add to Basket
-                    </Button></div>
+                    <AddToBasketButton product={product} disabled={isOutOfStock} />
+                </div>
             </div>
         </div>
      
     </div>
   )
 }
+
 export default ProductPage
