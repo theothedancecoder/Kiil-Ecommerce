@@ -4,8 +4,10 @@ import { imageUrl } from "@/lib/ImageUrl";
 import { Product } from "@/sanity.types";
 import Image from "next/image";
 import { useState } from "react";
+import { useLanguage } from "@/lib/languageContext";
 
-function ProductThumb({product}: {product: Product}) {
+function ProductThumb({product, showPrice = true}: {product: Product, showPrice?: boolean}) {
+    const { t } = useLanguage();
     const isOutOfStock = product.stock != null && product.stock <= 0;
     const [showDescription, setShowDescription] = useState(false);
     
@@ -33,7 +35,7 @@ function ProductThumb({product}: {product: Product}) {
                 {isOutOfStock && (
                     <div className="absolute inset-0 flex items-center justify-center 
                                   bg-background/80 backdrop-blur-sm">
-                        <span className="text-foreground font-serif text-xl">Out of Stock</span>
+                        <span className="text-foreground font-serif text-xl">{t('product.outOfStock')}</span>
                     </div>
                 )}
             </div>
@@ -65,22 +67,24 @@ function ProductThumb({product}: {product: Product}) {
                                 block._type === "block" 
                                     ? block.children?.map((child) => child.text).join("") 
                                     : ""
-                            ).join("") || "No description available"}
+                        ).join("") || t('product.noDescription')}
                         </p>
                     </div>
                 )}
 
                 {/* Price - Always at bottom with consistent positioning */}
-                <div className="pt-2 mt-auto text-center w-full">
-                    <span className="block"
-                          style={{
-                              fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
-                              fontSize: "14px",
-                              color: "#333333"
-                          }}>
-                        kr {product.price?.toFixed(2)}
-                    </span>
-                </div>
+                {showPrice && (
+                    <div className="pt-2 mt-auto text-center w-full">
+                        <span className="block"
+                              style={{
+                                  fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
+                                  fontSize: "14px",
+                                  color: "#333333"
+                              }}>
+                            kr {product.price?.toFixed(2)}
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     );

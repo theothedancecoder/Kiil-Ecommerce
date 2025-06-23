@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/languageContext";
 
 const images = [
     "/Kartell_Cassinella19537.webp",
@@ -10,6 +11,7 @@ const images = [
 ];
 
 function BlackFridayBanner() {
+    const { t } = useLanguage();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [windowWidth, setWindowWidth] = useState(0);
 
@@ -40,17 +42,17 @@ function BlackFridayBanner() {
 
     const TitleText = () => (
         <div className="flex flex-col items-center text-center w-full justify-center">
-            <span className="block uppercase font-[montserrat,verdana,helvetica] not-italic text-[20.8px] font-normal text-[#212529] leading-none mb-0">Made For</span>
-            <span className="block lowercase font-[cormorant,times,times-newroman] italic text-[50.8px] text-[#212529] leading-none -mt-4">summer</span>
+            <span className="block uppercase font-[montserrat,verdana,helvetica] not-italic text-[20.8px] font-normal text-[#212529] leading-none mb-0">{t('banner.madeFor')}</span>
+            <span className="block lowercase font-[cormorant,times,times-newroman] italic text-[50.8px] text-[#212529] leading-none -mt-4">{t('banner.summer')}</span>
         </div>
     );
 
 
     return (
-        <div className="relative mx-4 mt-8 mb-6">
+        <div className="relative mx-auto mt-8 mb-6 flex justify-center">
             {/* Hero Image Slider */}
             <div
-              className="relative overflow-hidden"
+              className="relative overflow-hidden mx-auto"
               style={{ width: "100%", maxWidth: "1543px", height: "514.13px", overflow: "hidden" }}
             >
                 {images.map((src, index) => (
@@ -113,18 +115,18 @@ function BlackFridayBanner() {
                                 </div>
                                 {/* Product List */}
                                 <div className="space-y-4 mb-3 text-center">
-                                    <p className="text-lg font-montserrat text-[#212529] leading-relaxed"> Our Scandia collection are made to be enjoyed this summer</p>
+                                    <p className="text-lg font-montserrat text-[#212529] leading-relaxed">{t('banner.collection')}</p>
                                 </div>
                                 {/* Discount Badge */}
                                 <div className="inline-flex items-center justify-center px-6 py-2 bg-[#eff9ff] text-primary rounded-lg mb-2">
-                                    <span className="text-xl font-bold">15% OFF</span>
+                                    <span className="text-xl font-bold">15% {t('banner.off')}</span>
                                 </div>
                                 {/* Shop Now Button */}
                                 <Link 
                                     href="/mobler" 
                                     className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
                                 >
-                                    Shop Now
+                                    {t('product.shopNow')}
                                 </Link>
                             </div>
                         )}
@@ -142,18 +144,18 @@ function BlackFridayBanner() {
                             </div>
                             {/* Product List */}
                             <div className="space-y-4 mb-3 text-center w-full">
-                                <p className="text-lg font-montserrat text-[#212529] leading-relaxed">Our Scandia series : Net, Senior and Ottoman collection</p>
+                                <p className="text-lg font-montserrat text-[#212529] leading-relaxed">{t('banner.collection')}</p>
                             </div>
                             {/* Discount Badge */}
                             <div className="inline-flex items-center justify-center px-6 py-2 bg-[#eff9ff] text-primary rounded-lg mb-2">
-                                <span className="text-xl font-bold">15% OFF</span>
+                                <span className="text-xl font-bold">15% {t('banner.off')}</span>
                             </div>
                             {/* Shop Now Button */}
                             <Link 
                                 href="/mobler" 
                                 className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
                             >
-                                Shop Now
+                                {t('product.shopNow')}
                             </Link>
                         </>
                     )}
