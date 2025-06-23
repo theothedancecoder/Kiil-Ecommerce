@@ -25,7 +25,7 @@ function ProductGrid({ products }: { products: Product[] }) {
                             }}
                             className="w-full transform hover:-translate-y-1 transition-transform duration-300"
                         >
-                            <ProductThumb product={product} />
+                            <ProductThumb product={product} showPrice={false} />
                         </motion.div>
                     ))}
                 </AnimatePresence>

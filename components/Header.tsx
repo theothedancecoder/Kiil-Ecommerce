@@ -7,11 +7,15 @@ import { PackageIcon, TrolleyIcon, UserIcon } from '@sanity/icons'
 import UseBasketStore from '@/app/(store)/store'
 import Navigation from './Navigation'
 import { Loader } from 'lucide-react'
+import LanguageToggle from './LanguageToggle'
+import { useLanguage } from '@/lib/languageContext'
 
 function Header() {
-    const{user} =useUser ()
-    const itemCount = UseBasketStore ((state)=>
-    state.items.reduce((total,item)=>total +item.quantity, 0))
+    const { user } = useUser();
+    const { t } = useLanguage();
+    const itemCount = UseBasketStore((state) =>
+        state.items.reduce((total, item) => total + item.quantity, 0)
+    );
 
     const createClerkPasskey = async () =>{
         try{
@@ -40,7 +44,7 @@ function Header() {
                             <input 
                                 type='text'
                                 name='query'
-                                placeholder='Search'
+                                placeholder={t('common.search')}
                                 className='luxury-input w-full text-sm'
                             />
                             <div className="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -52,6 +56,7 @@ function Header() {
                     </Form>
 
                     <div className='flex items-center space-x-2 sm:space-x-4'>
+                        <LanguageToggle />
                         <div className='flex items-center space-x-2'>
                     <Link
                         href='/basket'
@@ -63,7 +68,7 @@ function Header() {
                                 {itemCount}
                             </span>
                         )}
-                        <span className='hidden sm:inline'>Cart</span>
+                        <span className='hidden sm:inline'>{t('common.cart')}</span>
                     </Link>
 
                     <Link
@@ -73,7 +78,7 @@ function Header() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4.5l9 5.25v9a2.25 2.25 0 01-2.25 2.25h-13.5A2.25 2.25 0 013 18.75v-9z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 22.5v-6h6v6" />
                         </svg>
-                        <span className='hidden sm:inline'>Stores</span>
+                        <span className='hidden sm:inline'>{t('common.stores')}</span>
                     </Link>
 
                             <ClerkLoaded>
@@ -82,7 +87,7 @@ function Header() {
                                         href="/orders"
                                         className='flex items-center space-x-1 text-foreground hover:text-accent transition-colors duration-300'>
                                         <PackageIcon className='w-5 h-5'/>
-                                        <span className='hidden sm:inline'>Orders</span>
+                        <span className='hidden sm:inline'>{t('common.orders')}</span>
                                     </Link>
                                 )}
                             </ClerkLoaded>
@@ -93,7 +98,7 @@ function Header() {
                                 <div className='flex items-center space-x-2'>
                                     <UserButton/>
                                     <div className='hidden lg:block'>
-                                        <p className='text-muted-foreground text-sm'>Welcome</p>
+                                        <p className='text-muted-foreground text-sm'>{t('common.welcome')}</p>
                                         <p className='font-medium'>{user.fullName}</p>
                                     </div>
                                 </div>
@@ -101,7 +106,7 @@ function Header() {
                                 <SignInButton mode='modal'>
                                     <button className='flex items-center space-x-1 text-foreground hover:text-accent transition-colors duration-300'>
                                         <UserIcon className='w-5 h-5'/>
-                                        <span className='hidden sm:inline'>Sign In</span>
+                                        <span className='hidden sm:inline'>{t('common.signIn')}</span>
                                     </button>
                                 </SignInButton>
                             )}

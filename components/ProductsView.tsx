@@ -5,6 +5,8 @@ import ProductGrid from "./ProductGrid";
 import { CategorySelectorComponent } from "./ui/category-selector";
 import { Menu } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/lib/languageContext";
+import Image from "next/image";
 
 interface ProductsViewProps {
   products: Product[];
@@ -12,6 +14,7 @@ interface ProductsViewProps {
 }
 
 const ProductsView = ({ products, categories }: ProductsViewProps) => {
+  const { t } = useLanguage();
   const [showMobileCategories, setShowMobileCategories] = useState(false);
 
   return (
@@ -41,6 +44,62 @@ const ProductsView = ({ products, categories }: ProductsViewProps) => {
       <div className="w-full">
         <ProductGrid products={products} />
       </div>
+
+      {/* Partners Section */}
+      <section className="mt-12">
+        <h2 className="text-3xl font-serif text-center mb-8">{t('partners.title') || 'Our Partners'}</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Partner Box 1 - Kartell */}
+          <div 
+            className="luxury-card bg-[#f8f8f8] overflow-hidden relative"
+            style={{ height: '409.63px' }}
+          >
+            <div className="absolute inset-0">
+              <Image
+                src="/Kartell_Cassinella19537.webp"
+                alt="Kartell Cassinella"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40" />
+            </div>
+            <div className="relative h-full flex flex-col justify-center items-center p-8 text-white">
+              <h3 className="text-2xl font-serif mb-4">{t('partners.box1.title') || 'Kartell'}</h3>
+              <p className="text-center mb-6">
+                {t('partners.box1.description') || 'Luxurious beauty in the Home.'}
+              </p>
+              <button className="bg-white text-black px-6 py-2 rounded-lg hover:bg-white/90 transition-colors">
+                {t('product.shopNow')}
+              </button>
+            </div>
+          </div>
+
+          {/* Partner Box 2 - Montana */}
+          <div 
+            className="luxury-card bg-[#f8f8f8] overflow-hidden relative"
+            style={{ height: '409.63px' }}
+          >
+            <div className="absolute inset-0">
+              <Image
+                src="/montana_pantonwire_d35_blackred_rosehiptop_h.webp"
+                alt="Montana Furniture"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40" />
+            </div>
+            <div className="relative h-full flex flex-col justify-center items-center p-8 text-white">
+              <h3 className="text-2xl font-serif mb-4">{t('partners.box2.title') || 'Montana'}</h3>
+              <p className="text-center mb-6">
+                {t('partners.box2.description') || 'Storage that elevates your home.'}
+              </p>
+              <button className="bg-white text-black px-6 py-2 rounded-lg hover:bg-white/90 transition-colors">
+                {t('product.shopNow')}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

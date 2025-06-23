@@ -32,7 +32,7 @@ export default async function Home() {
         }}
       >
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
-          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>50% off Online and in shop.</div>
+          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>50% rabatt på nett og i butikk.</div>
           <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>Outdoor Helios fyrfat</div>
         </div>
         <div
@@ -45,7 +45,7 @@ export default async function Home() {
           }}
         />
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
-          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>24% off all</div>
+          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>24% rabatt på alle</div>
           <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>juul sofar/903.</div>
         </div>
         <div
@@ -58,8 +58,8 @@ export default async function Home() {
           }}
         />
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
-          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>40% off all</div>
-          <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>Kill plank spisebord</div>
+          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>40% rabatt på alle</div>
+          <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>Kiil plank spisebord</div>
         </div>
       </div>
 

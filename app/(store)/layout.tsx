@@ -6,6 +6,7 @@ import { SanityLive } from "@/sanity/lib/live";
 import { VisualEditing } from "next-sanity";
 import { draftMode   } from "next/headers";
 import { DisableDraftMode } from "@/components/DisableDraftMode";
+import { LanguageProvider } from "@/lib/languageContext";
 
 
 
@@ -23,18 +24,19 @@ export default async function RootLayout({
     <ClerkProvider dynamic>
     <html lang="en">
       <body>
-        {((await draftMode()).isEnabled &&(
-          <>
-          <DisableDraftMode/>
-          <VisualEditing/>
-          </>
-        ))}
+        <LanguageProvider>
+          {((await draftMode()).isEnabled &&(
+            <>
+            <DisableDraftMode/>
+            <VisualEditing/>
+            </>
+          ))}
 
-        <main>  
-          <Header/>
-          {children}</main>
-          <SanityLive/> {/*it is a sanity live component//dont forget this else  live update wont work*/}
-      
+          <main>  
+            <Header/>
+            {children}</main>
+            <SanityLive/> {/*it is a sanity live component//dont forget this else  live update wont work*/}
+        </LanguageProvider>
       </body>
     </html>
     </ClerkProvider>
