@@ -13,6 +13,56 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-background">
+      {/* Promotional Banner */}
+      <div
+        style={{
+          maxWidth: "1024px",
+          height: "69.69px",
+          backgroundColor: "#eff9ff",
+          margin: "0 auto",
+          width: "100%",
+          display: "flex",
+          fontWeight: "bold",
+          fontSize: "14px",
+          fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
+          color: "#333",
+          textAlign: "center",
+          lineHeight: "69.69px",
+          userSelect: "none",
+        }}
+      >
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
+          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>50% off Online and in shop.</div>
+          <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>Outdoor Helios fyrfat</div>
+        </div>
+        <div
+          style={{
+            width: "1px",
+            backgroundColor: "#ccc",
+            margin: "8px 12px",
+            alignSelf: "center",
+            height: "calc(69.69px - 16px)",
+          }}
+        />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
+          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>24% off all</div>
+          <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>juul sofar/903.</div>
+        </div>
+        <div
+          style={{
+            width: "1px",
+            backgroundColor: "#ccc",
+            margin: "8px 12px",
+            alignSelf: "center",
+            height: "calc(69.69px - 16px)",
+          }}
+        />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
+          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>40% off all</div>
+          <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>Kill plank spisebord</div>
+        </div>
+      </div>
+
       {/* Hero Section with Banner */}
       <div className="relative">
         {/* Decorative background */}
@@ -25,15 +75,6 @@ export default async function Home() {
       {/* Main Content */}
       <section className="py-12">
         <div className="max-w-8xl mx-auto">
-          {/* Welcome Text */}
-          <div className="text-center mb-16 px-4">
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-primary mb-6">
-              Discover Exceptional Quality
-            </h1>
-            <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto">
-              Explore our curated collection of premium products, crafted for those who appreciate the finest things in life.
-            </p>
-          </div>
 
           {/* Products Section */}
           <ProductsView 

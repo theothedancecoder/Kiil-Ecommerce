@@ -130,11 +130,9 @@ function BasketPage() {
               <span>Items:</span>
               <span>{groupedItems.reduce((total, item) => total + item.quantity, 0)}</span>
             </div>
-            <div className="flex justify-between text-2xl font-bold border-t pt-2">
-              <span>Total</span>
-              <span>
-                {formatCurrency(UseBasketStore.getState().getTotalPrice(), "NOK")}
-              </span>
+            <div className="flex justify-between">
+              <span>Total:</span>
+              <span>{formatCurrency(UseBasketStore.getState().getTotalPrice(), "NOK")}</span>
             </div>
           </div>
 

@@ -60,24 +60,33 @@ export function CategorySelectorComponent({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-white rounded shadow-md border z-50" sideOffset={4}>
         <Command>
-          <CommandInput
-            placeholder="Search Category..."
-            className="h-9 px-2"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                const selectedCategory = categories.find((c) =>
-                  c.title
-                    ?.toLowerCase()
-                    .includes(e.currentTarget.value.toLowerCase())
-                );
-                if (selectedCategory?.slug?.current) {
-                  setValue(selectedCategory._id);
-                  router.push(`/categories/${selectedCategory.slug.current}`);
-                  setOpen(false);
+          <div className="flex items-center space-x-2 px-2 py-1">
+            <CommandInput
+              placeholder="Search..."
+              className="h-7 text-sm px-2 flex-grow"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const selectedCategory = categories.find((c) =>
+                    c.title
+                      ?.toLowerCase()
+                      .includes(e.currentTarget.value.toLowerCase())
+                  );
+                  if (selectedCategory?.slug?.current) {
+                    setValue(selectedCategory._id);
+                    router.push(`/categories/${selectedCategory.slug.current}`);
+                    setOpen(false);
+                  }
                 }
-              }
-            }}
-          />
+              }}
+            />
+            <div className="flex flex-col items-center text-xs text-muted-foreground cursor-pointer select-none ml-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h18v18H3V3z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18" />
+              </svg>
+              <span>Stores</span>
+            </div>
+          </div>
           <CommandList>
             <CommandEmpty>No category found.</CommandEmpty>
             <CommandGroup>
