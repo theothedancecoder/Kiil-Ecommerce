@@ -10,7 +10,7 @@ function ProductGrid({ products }: { products: Product[] }) {
             {/* Decorative background */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10" />
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 p-4 sm:p-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 p-4 sm:p-6 lg:p-8">
                 <AnimatePresence>
                     {products?.map((product) => (
                         <motion.div
@@ -23,7 +23,7 @@ function ProductGrid({ products }: { products: Product[] }) {
                                 duration: 0.4,
                                 ease: [0.4, 0, 0.2, 1]
                             }}
-                            className="flex justify-center transform hover:-translate-y-1 transition-transform duration-300"
+                            className="w-full transform hover:-translate-y-1 transition-transform duration-300"
                         >
                             <ProductThumb product={product} />
                         </motion.div>

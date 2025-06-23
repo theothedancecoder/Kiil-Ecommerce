@@ -32,16 +32,16 @@ function Navigation() {
           ))}
         </div>
 
-        {/* Mobile Navigation - Horizontal Scrollable */}
+        {/* Tablet/Mobile Navigation - Horizontal Scrollable */}
         <div className="lg:hidden relative">
-          <div className="overflow-x-auto scrollbar-hide py-4">
-            <div className="flex space-x-4 min-w-max px-2">
+          <div className="overflow-x-auto scrollbar-hide py-3 md:py-4">
+            <div className="flex space-x-3 md:space-x-4 min-w-max px-2">
               {navigationItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
                   className="bg-[#eff9ff] text-primary hover:text-accent border border-[#eff9ff] hover:border-accent
-                           whitespace-nowrap py-2 px-4 text-sm font-medium transition-all duration-300
+                           whitespace-nowrap py-2 px-3 md:px-4 text-sm md:text-base font-medium transition-all duration-300
                            rounded-lg shadow-sm hover:shadow-md transform hover:scale-105"
                 >
                   {item.name}

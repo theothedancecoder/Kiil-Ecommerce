@@ -1,18 +1,21 @@
+"use client";
+
 import { imageUrl } from "@/lib/ImageUrl";
 import { Product } from "@/sanity.types";
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
 
-function ProductThumb ({product}:{product:Product}) {
+function ProductThumb({product}: {product: Product}) {
     const isOutOfStock = product.stock != null && product.stock <= 0;
+    const [showDescription, setShowDescription] = useState(false);
     
     return (
-        <Link 
-            href={`/product/${product.slug?.current}`}
-            className={`luxury-card group relative ${isOutOfStock ? "opacity-80" : ""}`}
-        >
-            {/* Image Container */}
-            <div className="relative aspect-square w-full overflow-hidden rounded-t-lg">
+        <div className={`w-full h-[380px] sm:h-[420px] lg:h-[460px] luxury-card group relative flex flex-col ${isOutOfStock ? "opacity-80" : ""}`}>
+            {/* Image Container - Fixed aspect ratio */}
+            <div 
+                className="relative w-full aspect-square overflow-hidden rounded-t-lg cursor-pointer"
+                onClick={() => setShowDescription(!showDescription)}
+            >
                 {product.image && (
                     <div className="absolute inset-0 bg-background/5">
                         <Image
@@ -35,38 +38,51 @@ function ProductThumb ({product}:{product:Product}) {
                 )}
             </div>
 
-            {/* Content */}
-            <div className="p-3 sm:p-6 space-y-2 sm:space-y-4">
-                <div className="min-h-[4rem] sm:min-h-[6rem] flex flex-col justify-between">
-                    <h2 className="font-serif text-sm sm:text-xl text-foreground group-hover:text-accent 
-                                 transition-colors duration-300 line-clamp-2">
+            {/* Content Container - Consistent height */}
+            <div className="flex-1 flex flex-col justify-between p-3 sm:p-4">
+                {/* Product Name - Fixed height with overflow handling */}
+                <div className="h-[3rem] flex items-start justify-center w-full text-center">
+                    <h2 className="line-clamp-2 leading-tight transition-colors duration-300 group-hover:text-accent w-full"
+                        style={{
+                            fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
+                            fontSize: "14px",
+                            color: "#333333"
+                        }}>
                         {product.name}
                     </h2>
-                    <p className="text-muted-foreground text-xs sm:text-sm line-clamp-1 sm:line-clamp-2 mt-1 sm:mt-2 hidden sm:block">
-                        {product.description?.map((block) => 
-                            block._type === "block" 
-                                ? block.children?.map((child) => child.text).join("") 
-                                : ""
-                        ).join("") || "No description available"}
-                    </p>
                 </div>
+                
+                {/* Description - Only shown when clicked, positioned above price */}
+                {showDescription && (
+                    <div className="flex-1 py-2 max-h-[4rem] overflow-y-auto text-center">
+                        <p className="leading-tight"
+                           style={{
+                               fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
+                               fontSize: "14px",
+                               color: "#333333"
+                           }}>
+                            {product.description?.map((block) => 
+                                block._type === "block" 
+                                    ? block.children?.map((child) => child.text).join("") 
+                                    : ""
+                            ).join("") || "No description available"}
+                        </p>
+                    </div>
+                )}
 
-                {/* Price Tag */}
-                <div className="flex justify-between items-end">
-                    <div className="flex flex-col">
-                        <span className="text-xs sm:text-sm text-muted-foreground">Price</span>
-                        <span className="text-sm sm:text-xl font-serif text-accent">
-                            kr {product.price?.toFixed(2)}
-                        </span>
-                    </div>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:block">
-                        <span className="luxury-button text-sm py-2">
-                            View Details
-                        </span>
-                    </div>
+                {/* Price - Always at bottom with consistent positioning */}
+                <div className="pt-2 mt-auto text-center w-full">
+                    <span className="block"
+                          style={{
+                              fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
+                              fontSize: "14px",
+                              color: "#333333"
+                          }}>
+                        kr {product.price?.toFixed(2)}
+                    </span>
                 </div>
             </div>
-        </Link>
+        </div>
     );
 }
 

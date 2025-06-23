@@ -53,18 +53,28 @@ function Header() {
 
                     <div className='flex items-center space-x-2 sm:space-x-4'>
                         <div className='flex items-center space-x-2'>
-                            <Link
-                                href='/basket'
-                                className='flex items-center space-x-1 text-foreground hover:text-accent transition-colors duration-300 relative'>
-                                <TrolleyIcon className='w-5 h-5'/>
-                                {itemCount > 0 && (
-                                    <span className='absolute -top-2 -right-2 bg-primary text-primary-foreground
-                                                rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold'>
-                                        {itemCount}
-                                    </span>
-                                )}
-                                <span className='hidden sm:inline'>Cart</span>
-                            </Link>
+                    <Link
+                        href='/basket'
+                        className='flex items-center space-x-1 text-foreground hover:text-accent transition-colors duration-300 relative'>
+                        <TrolleyIcon className='w-5 h-5'/>
+                        {itemCount > 0 && (
+                            <span className='absolute -top-2 -right-2 bg-primary text-primary-foreground
+                                        rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold'>
+                                {itemCount}
+                            </span>
+                        )}
+                        <span className='hidden sm:inline'>Cart</span>
+                    </Link>
+
+                    <Link
+                        href='/stores'
+                        className='flex items-center space-x-1 text-foreground hover:text-accent transition-colors duration-300 relative ml-4'>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4.5l9 5.25v9a2.25 2.25 0 01-2.25 2.25h-13.5A2.25 2.25 0 013 18.75v-9z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 22.5v-6h6v6" />
+                        </svg>
+                        <span className='hidden sm:inline'>Stores</span>
+                    </Link>
 
                             <ClerkLoaded>
                                 {user && (
