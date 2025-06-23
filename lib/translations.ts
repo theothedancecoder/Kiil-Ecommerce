@@ -119,7 +119,12 @@ export const productTranslations: Record<string, string> = {
   "sustainable": "bærekraftig",
   "eco-friendly": "miljøvennlig",
   "natural": "naturlig",
-  "organic": "organisk"
+  "organic": "organisk",
+  
+  // Outdoor specific terms
+  "outdoor": "utendørs",
+  "our outdoor collection": "vår utendørs kolleksjon",
+  "shop now": "handle nå"
 };
 
 export function translateToNorwegian(text: string): string {

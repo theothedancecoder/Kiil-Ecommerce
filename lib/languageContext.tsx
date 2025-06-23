@@ -52,6 +52,27 @@ const translations = {
     'partners.box1.description': 'Luxurious beauty in the Home.',
     'partners.box2.title': 'Montana',
     'partners.box2.description': 'Storage that elevates your home.',
+
+    // Outdoor Categories
+    'outdoor.categories.shop-all-outdoor': 'SHOP ALL OUTDOOR',
+    'outdoor.categories.outdoor-furniture': 'OUTDOOR FURNITURE',
+    'outdoor.categories.all-outdoor-furniture': 'All Outdoor Furniture',
+    'outdoor.categories.outdoor-seating-sets': 'Outdoor Seating Sets',
+    'outdoor.categories.outdoor-furniture-collections': 'Outdoor Furniture Collections',
+    'outdoor.categories.dining-sets': 'Dining Sets',
+    'outdoor.categories.chaise-lounges': 'Chaise Lounges',
+    'outdoor.categories.sofas-&-seating': 'Sofas & Seating',
+    'outdoor.categories.outdoor-furniture-cover': 'Outdoor Furniture Cover',
+    'outdoor.categories.dining-tables': 'Dining Tables',
+    'outdoor.categories.stools': 'Stools',
+    'outdoor.categories.outdoor-cushions-&-pillows': 'OUTDOOR CUSHIONS & PILLOWS',
+    'outdoor.categories.cushions': 'Cushions',
+    'outdoor.categories.pillows': 'Pillows',
+    'outdoor.categories.outdoor-umbrellas-and-stands': 'OUTDOOR UMBRELLAS AND STANDS',
+    
+    // Outdoor Banner
+    'outdoor.banner.title': 'Our Outdoor Collection',
+    'outdoor.banner.shopNow': 'Shop Now',
   },
   no: {
     // Navigation
@@ -94,6 +115,27 @@ const translations = {
     'partners.box1.description': 'Luksuriøs skjønnhet i hjemmet.',
     'partners.box2.title': 'Montana',
     'partners.box2.description': 'Oppbevaring som løfter hjemmet ditt.',
+
+    // Outdoor Categories
+    'outdoor.categories.shop-all-outdoor': 'HANDLE ALLE UTENDØRS',
+    'outdoor.categories.outdoor-furniture': 'UTENDØRSMØBLER',
+    'outdoor.categories.all-outdoor-furniture': 'Alle Utendørsmøbler',
+    'outdoor.categories.outdoor-seating-sets': 'Utendørs Sittegrupper',
+    'outdoor.categories.outdoor-furniture-collections': 'Utendørsmøbler Kolleksjoner',
+    'outdoor.categories.dining-sets': 'Spisesett',
+    'outdoor.categories.chaise-lounges': 'Solsenger',
+    'outdoor.categories.sofas-&-seating': 'Sofaer & Sitteplasser',
+    'outdoor.categories.outdoor-furniture-cover': 'Utendørsmøbel Trekk',
+    'outdoor.categories.dining-tables': 'Spisebord',
+    'outdoor.categories.stools': 'Krakker',
+    'outdoor.categories.outdoor-cushions-&-pillows': 'UTENDØRS PUTER & PUTER',
+    'outdoor.categories.cushions': 'Puter',
+    'outdoor.categories.pillows': 'Puter',
+    'outdoor.categories.outdoor-umbrellas-and-stands': 'UTENDØRS PARASOLLER OG STATIV',
+    
+    // Outdoor Banner
+    'outdoor.banner.title': 'Vår Utendørs Kolleksjon',
+    'outdoor.banner.shopNow': 'Handle Nå',
   }
 };
 
