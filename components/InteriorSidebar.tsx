@@ -4,76 +4,122 @@ import { useLanguage } from "@/lib/languageContext";
 import Link from "next/link";
 import { useState } from "react";
 
-const OutdoorSidebar = () => {
+const InteriorSidebar = () => {
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
   const categories = [
     {
-      title: "SHOP ALL OUTDOOR",
-      href: "/utendors",
+      title: "SHOP ALL INTERIOR",
+      href: "/interior",
       main: true
     },
     {
-      title: "OUTDOOR FURNITURE",
-      href: "/utendors/furniture",
+      title: "LIVING ROOM",
+      href: "/interior/living-room",
       main: true
     },
     {
-      title: "All Outdoor Furniture",
-      href: "/utendors/furniture/all"
+      title: "Furniture",
+      href: "/interior/living-room/furniture"
     },
     {
-      title: "Outdoor Seating Sets",
-      href: "/utendors/furniture/seating-sets"
+      title: "Chairs",
+      href: "/interior/living-room/chairs"
     },
     {
-      title: "Outdoor Furniture Collections",
-      href: "/utendors/furniture/collections"
+      title: "Sofa",
+      href: "/interior/living-room/sofa"
     },
     {
-      title: "Dining Sets",
-      href: "/utendors/furniture/dining-sets"
+      title: "Lamp & Illumination",
+      href: "/interior/living-room/lighting"
     },
     {
-      title: "Chaise Lounges",
-      href: "/utendors/furniture/chaise-lounges"
-    },
-    {
-      title: "Sofas & Seating",
-      href: "/utendors/furniture/sofas-seating"
-    },
-    {
-      title: "Outdoor Furniture Cover",
-      href: "/utendors/furniture/covers"
+      title: "DINING & KITCHEN",
+      href: "/interior/dining-kitchen",
+      main: true,
+      addLineAbove: true
     },
     {
       title: "Dining Tables",
-      href: "/utendors/furniture/dining-tables"
+      href: "/interior/dining-kitchen/tables"
     },
     {
-      title: "Stools",
-      href: "/utendors/furniture/stools"
+      title: "Dining Chairs",
+      href: "/interior/dining-kitchen/chairs"
     },
     {
-      title: "OUTDOOR CUSHIONS & PILLOWS",
-      href: "/utendors/cushions-pillows",
+      title: "BATHROOM",
+      href: "/interior/bathroom",
       main: true,
       addLineAbove: true
     },
     {
-      title: "Cushions",
-      href: "/utendors/cushions-pillows/cushions"
+      title: "Mirrors",
+      href: "/interior/bathroom/mirrors"
     },
     {
-      title: "Pillows",
-      href: "/utendors/cushions-pillows/pillows"
+      title: "Towels",
+      href: "/interior/bathroom/towels"
     },
     {
-      title: "OUTDOOR UMBRELLAS AND STANDS",
-      href: "/utendors/umbrellas-stands",
+      title: "Bathrobe & Accessories",
+      href: "/interior/bathroom/accessories"
+    },
+    {
+      title: "Cabinets",
+      href: "/interior/bathroom/cabinets"
+    },
+    {
+      title: "Toilet Essentials",
+      href: "/interior/bathroom/essentials"
+    },
+    {
+      title: "BEDROOM",
+      href: "/interior/bedroom",
       main: true,
       addLineAbove: true
+    },
+    {
+      title: "Beds",
+      href: "/interior/bedroom/beds"
+    },
+    {
+      title: "Dressers",
+      href: "/interior/bedroom/dressers"
+    },
+    {
+      title: "Nightstand",
+      href: "/interior/bedroom/nightstand"
+    },
+    {
+      title: "Cabinets",
+      href: "/interior/bedroom/cabinets"
+    },
+    {
+      title: "HOME OFFICE",
+      href: "/interior/home-office",
+      main: true,
+      addLineAbove: true
+    },
+    {
+      title: "Desk & Cabinets",
+      href: "/interior/home-office/desk-cabinets"
+    },
+    {
+      title: "Chairs",
+      href: "/interior/home-office/chairs"
+    },
+    {
+      title: "HOME ORGANISATION",
+      href: "/interior/organisation",
+      main: true,
+      addLineAbove: true
+    },
+    {
+      title: "Storage",
+      href: "/interior/organisation/storage"
     }
   ];
 
@@ -108,7 +154,6 @@ const OutdoorSidebar = () => {
         <nav className="space-y-2 mt-16 lg:mt-0">
         {categories.map((category, index) => (
           <div key={index}>
-            {/* Add horizontal line before "OUTDOOR CUSHIONS & PILLOWS" */}
             {category.addLineAbove && (
               <hr className="my-3 border-gray-300" />
             )}
@@ -121,14 +166,9 @@ const OutdoorSidebar = () => {
               }`}
               onClick={() => setIsOpen(false)}
             >
-              {t(`outdoor.categories.${category.title.toLowerCase().replace(/\s+/g, "-")}`) || category.title}
+              {t(`interior.categories.${category.title.toLowerCase().replace(/\s+/g, "-")}`) || category.title}
             </Link>
-            {/* Add horizontal lines after "SHOP ALL OUTDOOR" and "OUTDOOR FURNITURE" */}
             {(index === 0 || index === 1) && (
-              <hr className="my-3 border-gray-300" />
-            )}
-            {/* Add horizontal line after "OUTDOOR CUSHIONS & PILLOWS" */}
-            {category.title === "OUTDOOR CUSHIONS & PILLOWS" && (
               <hr className="my-3 border-gray-300" />
             )}
           </div>
@@ -147,4 +187,4 @@ const OutdoorSidebar = () => {
   );
 };
 
-export default OutdoorSidebar;
+export default InteriorSidebar;

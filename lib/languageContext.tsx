@@ -15,7 +15,7 @@ const translations = {
     // Navigation
     'nav.news': 'News',
     'nav.sale': 'Sale',
-    'nav.indoor': 'Indoor',
+    'nav.interior': 'Interior',
     'nav.outdoor': 'Outdoor',
     'nav.furniture': 'Furniture',
     'nav.services': 'Services',
@@ -73,12 +73,83 @@ const translations = {
     // Outdoor Banner
     'outdoor.banner.title': 'Our Outdoor Collection',
     'outdoor.banner.shopNow': 'Shop Now',
+    
+    // Interior Categories
+    'interior.categories.shop-all-interior': 'SHOP ALL INTERIOR',
+    'interior.categories.living-room': 'LIVING ROOM',
+    'interior.categories.all-living-room': 'All Living Room',
+    'interior.categories.sofas-&-seating': 'Sofas & Seating',
+    'interior.categories.coffee-tables': 'Coffee Tables',
+    'interior.categories.side-tables': 'Side Tables',
+    'interior.categories.tv-units': 'TV Units',
+    'interior.categories.dining-room': 'DINING ROOM',
+    'interior.categories.all-dining-room': 'All Dining Room',
+    'interior.categories.dining-tables': 'Dining Tables',
+    'interior.categories.dining-chairs': 'Dining Chairs',
+    'interior.categories.sideboards': 'Sideboards',
+    'interior.categories.bedroom': 'BEDROOM',
+    'interior.categories.all-bedroom': 'All Bedroom',
+    'interior.categories.beds': 'Beds',
+    'interior.categories.wardrobes': 'Wardrobes',
+    'interior.categories.dressers': 'Dressers',
+    'interior.categories.nightstands': 'Nightstands',
+    'interior.categories.office': 'OFFICE',
+    'interior.categories.all-office': 'All Office',
+    'interior.categories.desks': 'Desks',
+    'interior.categories.office-chairs': 'Office Chairs',
+    'interior.categories.storage-solutions': 'Storage Solutions',
+    
+    // Interior Banner
+    'interior.banner.title': 'Our Interior Collection',
+    'interior.banner.shopNow': 'Shop Now',
+
+    // Contact Page
+    'contact.title': 'Contact Us',
+    'contact.subtitle': 'We are here to help you with all your questions and inquiries.',
+    'contact.form.title': 'Send us a message',
+    'contact.form.name': 'Name',
+    'contact.form.name.placeholder': 'Your name',
+    'contact.form.email': 'Email',
+    'contact.form.email.placeholder': 'your.email@example.com',
+    'contact.form.subject': 'Subject',
+    'contact.form.subject.placeholder': 'What is your inquiry about?',
+    'contact.form.message': 'Message',
+    'contact.form.message.placeholder': 'Write your message here...',
+    'contact.form.submit': 'Send Message',
+    'contact.store.title': 'Visit our store',
+    'contact.store.address': 'Address',
+    'contact.store.hours': 'Opening Hours',
+    'contact.store.weekdays': 'Monday - Friday: 10:00 - 18:00',
+    'contact.store.saturday': 'Saturday: 10:00 - 16:00',
+    'contact.store.sunday': 'Sunday: Closed',
+    'contact.info.title': 'Contact Information',
+    'contact.info.phone': 'Phone',
+    'contact.info.email': 'Email',
+    'contact.info.support': 'Customer Service',
+    'contact.info.support.hours': 'Monday - Friday: 09:00 - 17:00',
+    'contact.emergency.title': 'Urgent Inquiries',
+    'contact.emergency.message': 'For urgent inquiries outside our opening hours, please send an email to urgent@kiil.no',
+
+    // Service Banner
+    'service.banner.title': 'DESIGN CONSULTATION',
+    'service.banner.learnMore': 'LEARN MORE',
+    'service.design.tagline': 'Design your dream space with our expert consultation services',
+    'service.intro.text': 'Our experienced design consultants are here to help you create the perfect living space that reflects your personal style and meets your functional needs.',
+    'service.connect.text': 'Connect with us today to start your design journey.',
+    'service.store.title': 'IN-STORE CONSULTATION',
+    'service.store.description': 'Visit our showroom for personalized design consultation with our experts.',
+    'service.home.title': 'IN-HOME CONSULTATION',
+    'service.home.description': 'Our design experts will visit your home to provide tailored advice.',
+    'service.phone.title': 'ON PHONE CONSULTATION',
+    'service.phone.description': 'Book a phone consultation with your personal design expert to explore your vision and goals for your space. Together we will create something remarkable.',
+    'service.online.description': 'Connect with us online for a virtual consultation. Share your ideas and get expert guidance from anywhere.',
+    'service.button.choose': 'CHOOSE THIS',
   },
   no: {
     // Navigation
     'nav.news': 'Nyheter',
     'nav.sale': 'Salg',
-    'nav.indoor': 'Innendørs',
+    'nav.interior': 'Interiør',
     'nav.outdoor': 'Utendørs',
     'nav.furniture': 'Møbler',
     'nav.services': 'Tjenester',
@@ -136,6 +207,77 @@ const translations = {
     // Outdoor Banner
     'outdoor.banner.title': 'Vår Utendørs Kolleksjon',
     'outdoor.banner.shopNow': 'Handle Nå',
+    
+    // Interior Categories
+    'interior.categories.shop-all-interior': 'HANDLE ALLE INTERIØR',
+    'interior.categories.living-room': 'STUE',
+    'interior.categories.furniture': 'Møbler',
+    'interior.categories.chairs': 'Stoler',
+    'interior.categories.sofa': 'Sofa',
+    'interior.categories.lamp-&-illumination': 'Lampe & Belysning',
+    'interior.categories.dining-&-kitchen': 'SPISESTUE & KJØKKEN',
+    'interior.categories.dining-tables': 'Spisebord',
+    'interior.categories.dining-chairs': 'Spisestoler',
+    'interior.categories.bathroom': 'BAD',
+    'interior.categories.mirrors': 'Speil',
+    'interior.categories.towels': 'Håndklær',
+    'interior.categories.bathrobe-&-accessories': 'Badekåpe & Tilbehør',
+    'interior.categories.cabinets': 'Skap',
+    'interior.categories.toilet-essentials': 'Toalett Essensielle',
+    'interior.categories.bedroom': 'SOVEROM',
+    'interior.categories.beds': 'Senger',
+    'interior.categories.dressers': 'Kommoder',
+    'interior.categories.nightstand': 'Nattbord',
+    'interior.categories.home-office': 'HJEMMEKONTOR',
+    'interior.categories.desk-&-cabinets': 'Skrivebord & Skap',
+    'interior.categories.home-organisation': 'HJEMMEORGANISERING',
+    'interior.categories.storage': 'Oppbevaring',
+    
+    // Interior Banner
+    'interior.banner.title': 'Vår Interiør Kolleksjon',
+    'interior.banner.shopNow': 'Handle Nå',
+
+    // Contact Page
+    'contact.title': 'Kontakt Oss',
+    'contact.subtitle': 'Vi er her for å hjelpe deg med alle dine spørsmål og henvendelser.',
+    'contact.form.title': 'Send oss en melding',
+    'contact.form.name': 'Navn',
+    'contact.form.name.placeholder': 'Ditt navn',
+    'contact.form.email': 'E-post',
+    'contact.form.email.placeholder': 'din.epost@example.com',
+    'contact.form.subject': 'Emne',
+    'contact.form.subject.placeholder': 'Hva gjelder henvendelsen?',
+    'contact.form.message': 'Melding',
+    'contact.form.message.placeholder': 'Skriv din melding her...',
+    'contact.form.submit': 'Send Melding',
+    'contact.store.title': 'Besøk vår butikk',
+    'contact.store.address': 'Adresse',
+    'contact.store.hours': 'Åpningstider',
+    'contact.store.weekdays': 'Mandag - Fredag: 10:00 - 18:00',
+    'contact.store.saturday': 'Lørdag: 10:00 - 16:00',
+    'contact.store.sunday': 'Søndag: Stengt',
+    'contact.info.title': 'Kontaktinformasjon',
+    'contact.info.phone': 'Telefon',
+    'contact.info.email': 'E-post',
+    'contact.info.support': 'Kundeservice',
+    'contact.info.support.hours': 'Mandag - Fredag: 09:00 - 17:00',
+    'contact.emergency.title': 'Hastehenvendelser',
+    'contact.emergency.message': 'For hastehenvendelser utenfor våre åpningstider, vennligst send en e-post til haster@kiil.no',
+
+    // Service Banner
+    'service.banner.title': 'DESIGNKONSULTASJON',
+    'service.banner.learnMore': 'LES MER',
+    'service.design.tagline': 'Design ditt drømmerom med våre ekspertkonsultasjonstjenester',
+    'service.intro.text': 'Våre erfarne designkonsulenter er her for å hjelpe deg med å skape det perfekte rommet som gjenspeiler din personlige stil og møter dine funksjonelle behov.',
+    'service.connect.text': 'Ta kontakt med oss i dag for å starte din designreise.',
+    'service.store.title': 'BUTIKKONSULTASJON',
+    'service.store.description': 'Besøk vårt showroom for personlig designkonsultasjon med våre eksperter.',
+    'service.home.title': 'HJEMMEKONSULTASJON',
+    'service.home.description': 'Våre designeksperter vil besøke hjemmet ditt for å gi skreddersydde råd.',
+    'service.phone.title': 'TELEFONKONSULTASJON',
+    'service.phone.description': 'Bestill en telefonkonsultasjon med din personlige designekspert for å utforske din visjon og mål for ditt rom. Sammen vil vi skape noe bemerkelsesverdig.',
+    'service.online.description': 'Koble til oss online for en virtuell konsultasjon. Del dine ideer og få ekspertveiledning hvor som helst.',
+    'service.button.choose': 'VELG DENNE',
   }
 };
 
@@ -145,7 +287,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('no'); // Default to Norwegian
 
   const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations['en']] || key;
+    const translation = translations[language][key as keyof typeof translations[typeof language]];
+    return translation !== undefined ? translation : key;
   };
 
   return (

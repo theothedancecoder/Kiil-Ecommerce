@@ -5,7 +5,7 @@ import { useLanguage } from '@/lib/languageContext'
 const navigationItems = [
   { key: 'nav.news', href: '/nyheter' },
   { key: 'nav.sale', href: '/salg' },
-  { key: 'nav.indoor', href: '/innendors' },
+  { key: 'nav.interior', href: '/interior' },
   { key: 'nav.outdoor', href: '/utendors' },
   { key: 'nav.furniture', href: '/mobler' },
   { key: 'nav.services', href: '/tjenester' },
