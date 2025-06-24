@@ -1,10 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useLanguage } from "@/lib/languageContext";
 
 const ServiceBanner = () => {
-  const { t } = useLanguage();
 
   return (
     <div className="flex flex-col md:flex-row mx-auto px-6 md:px-8 lg:px-0 max-w-[95%] lg:max-w-[1072px]">
