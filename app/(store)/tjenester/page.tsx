@@ -1,107 +1,132 @@
-export default function TjenesterPage() {
+"use client";
+
+import ServiceBanner from "@/components/ServiceBanner";
+import Image from "next/image";
+import { useLanguage } from "@/lib/languageContext";
+
+export default function ServicesPage() {
+  const { t } = useLanguage();
+  
   return (
     <main className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <h1 className="font-serif text-4xl md:text-5xl text-primary mb-6">
-            Tjenester
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-            Opplev våre eksklusive tjenester designet for å gi deg den beste handleopplevelsen.
+      <ServiceBanner />
+      <div className="mx-auto px-6 md:px-8 lg:px-0 max-w-[95%] lg:max-w-[1072px] mt-4 flex flex-col items-center">
+        <div 
+          className="bg-[#f0f8ff] rounded-xl flex items-center justify-center w-full max-w-[792px]"
+          style={{
+            minHeight: "64px"
+          }}
+        >
+          <p className="text-[20px] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] px-4 text-center">
+            {t("service.design.tagline")}
           </p>
         </div>
-
-        {/* Services Grid */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Interior Design */}
-          <div className="luxury-card p-8">
-            <h2 className="font-serif text-2xl text-primary mb-4 text-center">Interiørdesign</h2>
-            <p className="text-muted-foreground mb-6">
-              La våre erfarne interiørdesignere hjelpe deg med å skape det perfekte rom. Vi tilbyr:
-            </p>
-            <ul className="space-y-3 text-foreground">
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Personlig konsultasjon
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                3D-visualisering
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Fargepalett og materialvalg
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Møbleringsplan
-              </li>
-            </ul>
-          </div>
-
-          {/* Installation */}
-          <div className="luxury-card p-8">
-            <h2 className="font-serif text-2xl text-primary mb-4 text-center">Montering</h2>
-            <p className="text-muted-foreground mb-6">
-              Profesjonell montering og installasjon av alle våre produkter:
-            </p>
-            <ul className="space-y-3 text-foreground">
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Møbelmontering
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Belysningsinstallasjon
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Garderobe oppsett
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Kvalitetskontroll
-              </li>
-            </ul>
-          </div>
-
-          {/* Custom Solutions */}
-          <div className="luxury-card p-8">
-            <h2 className="font-serif text-2xl text-primary mb-4 text-center">Spesialtilpasning</h2>
-            <p className="text-muted-foreground mb-6">
-              Skreddersydde løsninger tilpasset dine behov:
-            </p>
-            <ul className="space-y-3 text-foreground">
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Måltilpassede møbler
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Materialtilpasning
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Fargetilpasning
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">•</span>
-                Spesialdesign
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Contact Section */}
-        <div className="mt-16 text-center">
-          <p className="text-lg text-muted-foreground">
-            Ønsker du mer informasjon om våre tjenester?
+        <div 
+          className="bg-[#f0f8ff] rounded-xl flex items-center justify-center mt-4 w-full max-w-[777px]"
+          style={{
+            minHeight: "96px"
+          }}
+        >
+          <p className="text-[16px] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] px-4 md:px-8 text-center py-4">
+            {t("service.intro.text")}
+            <br /><br />
+            {t("service.connect.text")}
           </p>
-          <button className="luxury-button mt-4">
-            Kontakt oss
-          </button>
+        </div>
+        <div className="flex flex-col md:flex-row gap-4 mt-8 items-start w-full">
+          <div 
+            className="bg-[#f0f8ff] rounded-xl flex flex-col items-center justify-between p-4 w-full md:w-1/3 md:max-w-[356px] border-2 border-[#add8e6]"
+            style={{
+              minHeight: "465px"
+            }}
+          >
+            <div className="flex flex-col items-center justify-center flex-1">
+              <div className="flex flex-col items-center" style={{ height: "160px" }}>
+                <div className="relative" style={{ width: "100px", height: "100px" }}>
+                  <Image
+                    src="/store.svg"
+                    alt="Store Visit"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <h3 className="text-[20px] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] font-bold text-[#212529] mt-4 mb-3">
+                  {t("service.store.title")}
+                </h3>
+              </div>
+              <p className="text-[14px] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-3 text-center">
+                {t("service.store.description")}
+              </p>
+            </div>
+            <div className="text-center">
+              <button className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] font-medium transition-colors text-sm">
+                Select
+              </button>
+            </div>
+          </div>
+          <div 
+            className="bg-[#f0f8ff] rounded-xl flex flex-col items-center justify-between p-4 w-full md:w-1/3 md:max-w-[356px] border-2 border-[#add8e6]"
+            style={{
+              minHeight: "465px"
+            }}
+          >
+            <div className="flex flex-col items-center justify-center flex-1">
+              <div className="flex flex-col items-center" style={{ height: "160px" }}>
+                <div className="relative" style={{ width: "100px", height: "100px" }}>
+                  <Image
+                    src="/home.svg"
+                    alt="Home Visit"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <h3 className="text-[20px] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] font-bold text-[#212529] mt-4 mb-3">
+                  {t("service.home.title")}
+                </h3>
+              </div>
+              <p className="text-[14px] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-3 text-center">
+                {t("service.home.description")}
+              </p>
+            </div>
+            <div className="text-center">
+              <button className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] font-medium transition-colors text-sm">
+                Select
+              </button>
+            </div>
+          </div>
+          <div 
+            className="bg-[#f0f8ff] rounded-xl flex flex-col items-center justify-between p-4 w-full md:w-1/3 md:max-w-[356px] border-2 border-[#add8e6]"
+            style={{
+              minHeight: "465px"
+            }}
+          >
+            <div className="flex flex-col items-center justify-center flex-1">
+              <div className="flex flex-col items-center" style={{ height: "160px" }}>
+                <div className="relative" style={{ width: "100px", height: "100px" }}>
+                  <Image
+                    src="/phone.svg"
+                    alt="Phone Consultation"
+                    width={80}
+                    height={80}
+                    className="absolute top-[70%] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  />
+                </div>
+                <h3 className="text-[20px] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] font-bold text-[#212529] mt-4 mb-3">
+                  {t("service.phone.title")}
+                </h3>
+              </div>
+              <p className="text-[14px] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-3 text-center">
+                {t("service.phone.description")}
+              </p>
+            </div>
+            <div className="text-center">
+              <button className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] font-medium transition-colors text-sm">
+                Select
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </main>
-  )
+  );
 }

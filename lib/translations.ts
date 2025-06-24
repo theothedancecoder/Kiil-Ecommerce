@@ -124,7 +124,46 @@ export const productTranslations: Record<string, string> = {
   // Outdoor specific terms
   "outdoor": "utendørs",
   "our outdoor collection": "vår utendørs kolleksjon",
-  "shop now": "handle nå"
+  "shop now": "handle nå",
+
+  // Service page translations
+  "service.banner.title": "DESIGN CONSULTATION",
+  "service.banner.learnMore": "LEARN MORE",
+  "service.design.tagline": "Design your dream space with our expert consultation services",
+  "service.intro.text": "Our experienced design consultants are here to help you create the perfect living space that reflects your personal style and meets your functional needs.",
+  "service.connect.text": "Connect with us today to start your design journey.",
+  "service.store.title": "IN-STORE CONSULTATION",
+  "service.store.description": "Visit our showroom for personalized design consultation with our experts.",
+  "service.home.title": "IN-HOME CONSULTATION", 
+  "service.home.description": "Our design experts will visit your home to provide tailored advice.",
+  "service.phone.title": "ON PHONE CONSULTATION",
+  "service.phone.description": "Book a phone consultation with your personal design expert to explore your vision and goals for your space. Together we will create something remarkable.",
+  "service.button.choose": "CHOOSE THIS",
+
+  // Interior category translations
+  "interior.categories.shop all interior": "SE ALLE INTERIØR",
+  "interior.categories.living room": "STUE",
+  "interior.categories.furniture": "Møbler",
+  "interior.categories.chairs": "Stoler",
+  "interior.categories.sofa": "Sofa",
+  "interior.categories.lamp & illumination": "Lampe & Belysning",
+  "interior.categories.dining & kitchen": "SPISESTUE & KJØKKEN",
+  "interior.categories.dining tables": "Spisebord",
+  "interior.categories.dining chairs": "Spisestoler",
+  "interior.categories.bathroom": "BAD",
+  "interior.categories.mirrors": "Speil",
+  "interior.categories.towels": "Håndklær",
+  "interior.categories.bathrobe & accessories": "Badekåpe & Tilbehør",
+  "interior.categories.cabinets": "Skap",
+  "interior.categories.toilet essentials": "Toalett Essensielle",
+  "interior.categories.bedroom": "SOVEROM",
+  "interior.categories.beds": "Senger",
+  "interior.categories.dressers": "Kommoder",
+  "interior.categories.nightstand": "Nattbord",
+  "interior.categories.home office": "HJEMMEKONTOR",
+  "interior.categories.desk & cabinets": "Skrivebord & Skap",
+  "interior.categories.home organisation": "HJEMMEORGANISERING",
+  "interior.categories.storage": "Oppbevaring"
 };
 
 export function translateToNorwegian(text: string): string {

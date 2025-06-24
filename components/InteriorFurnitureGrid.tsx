@@ -5,48 +5,48 @@ import Image from "next/image";
 const furnitureItems = [
   {
     id: 1,
-    image: "/outdoor-collection/10419378r_1-700x700.jpg.avif",
-    alt: "Outdoor Furniture 1"
+    image: "/Kartell_Cassinella19537.webp",
+    alt: "Interior Furniture 1"
   },
   {
     id: 2,
-    image: "/outdoor-collection/10419533_1.jpg",
-    alt: "Outdoor Furniture 2"
+    image: "/montana_pantonwire_d35_blackred_rosehiptop_h.webp",
+    alt: "Interior Furniture 2"
   },
   {
     id: 3,
-    image: "/outdoor-collection/BALCHA-TEAK-r0-700x700.png (1).avif",
-    alt: "Outdoor Furniture 3"
+    image: "/Kartell_Cassinella19537.webp",
+    alt: "Interior Furniture 3"
   },
   {
     id: 4,
-    image: "/outdoor-collection/Capture-2025-06-23-133937.png",
-    alt: "Outdoor Furniture 4"
+    image: "/montana_pantonwire_d35_blackred_rosehiptop_h.webp",
+    alt: "Interior Furniture 4"
   },
   {
     id: 5,
-    image: "/outdoor-collection/FEDC0959DC1B4186A13739B9F80BE8A2-e1714744526959.png",
-    alt: "Outdoor Furniture 5"
+    image: "/Kartell_Cassinella19537.webp",
+    alt: "Interior Furniture 5"
   },
   {
     id: 6,
-    image: "/outdoor-collection/KAR09710MA.webp",
-    alt: "Outdoor Furniture 6"
+    image: "/montana_pantonwire_d35_blackred_rosehiptop_h.webp",
+    alt: "Interior Furniture 6"
   },
   {
     id: 7,
-    image: "/outdoor-collection/KAR0586515-700x891.webp",
-    alt: "Outdoor Furniture 7"
+    image: "/Kartell_Cassinella19537.webp",
+    alt: "Interior Furniture 7"
   }
 ];
 
-const OutdoorFurnitureGrid = () => {
+const InteriorFurnitureGrid = () => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-[1072px] mx-auto px-6 md:px-8 lg:px-0">
       {furnitureItems.map((item) => (
         <div 
           key={item.id}
-          className="relative bg-[#eff9ff] rounded-xl overflow-hidden"
+          className="relative bg-[#fff5f5] rounded-xl overflow-hidden"
           style={{
             width: "242.66px",
             height: "242.66px"
@@ -65,4 +65,4 @@ const OutdoorFurnitureGrid = () => {
   );
 };
 
-export default OutdoorFurnitureGrid;
+export default InteriorFurnitureGrid;
