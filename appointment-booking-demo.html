@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Appointment Booking - Multiple Consultation Types</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Helvetica', 'Verdana', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Enhanced Appointment Booking System</h1>
+        <p class="text-center mb-8 text-gray-600">Now supporting multiple consultation types with tailored booking flows</p>
+        
+        <div id="appointmentBooking" class="bg-blue-50 rounded-xl p-6 w-full max-w-4xl mx-auto">
+            <!-- Consultation Type Selection -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Select Consultation Type</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="consultationTypes">
+                    <!-- Types will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Store Location Selection -->
+            <div class="mb-8 hidden" id="storeSection">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Select Store Location</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="storeGrid">
+                    <!-- Stores will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Date Selection -->
+            <div class="mb-8 hidden" id="dateSection">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Select Date</h3>
+                <div class="grid grid-cols-3 md:grid-cols-5 gap-4" id="dateGrid">
+                    <!-- Dates will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Time Selection -->
+            <div class="mb-8 hidden" id="timeSection">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Select Time</h3>
+                <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3" id="timeGrid">
+                    <!-- Times will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Contact Details Form -->
+            <div class="mb-8 hidden" id="detailsSection">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Contact Details</h3>
+                <div class="space-y-4">
+                    <div id="addressField" class="hidden">
+                        <label class="block text-sm font-medium mb-2">Address *</label>
+                        <textarea id="address" class="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-black outline-none" rows="3" required></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Phone Number *</label>
+                        <input type="tel" id="phone" class="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-black outline-none" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email *</label>
+                        <input type="email" id="email" class="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-black outline-none" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Additional Notes</label>
+                        <textarea id="notes" class="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-black outline-none" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirm Button -->
+            <div class="hidden" id="confirmSection">
+                <button id="confirmBtn" class="w-full bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-lg font-medium transition-colors">
+                    Confirm Appointment
+                </button>
+            </div>
+
+            <!-- Success Message -->
+            <div class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" id="successMessage">
+                <strong>Success!</strong> Your consultation has been booked successfully.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store locations configuration
+        const storeLocations = [
+            {
+                id: 'oslo',
+                name: 'Kiil Store Oslo',
+                address: 'Grensen 8, 0159 Oslo',
+                timeZone: 'Oslo (GMT+02:00)',
+            },
+            {
+                id: 'gjovik',
+                name: 'Kiil Store Gjøvik',
+                address: 'Huntonstranda 5, 2815 Gjøvik',
+                timeZone: 'Gjøvik (GMT+02:00)',
+            }
+        ];
+
+        // Consultation type configuration
+        const consultationTypes = [
+            {
+                id: 'in-store',
+                title: 'In-Store Consultation',
+                description: 'Meet with our expert at your selected Kiil Store location',
+                duration: '1 hour',
+                timeSlots: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
+                icon: '🏬',
+                requiresAddress: false,
+                requiresStoreSelection: true,
+            },
+            {
+                id: 'in-home',
+                title: 'In-Home Consultation',
+                description: 'Our expert will visit your space for personalized advice',
+                duration: '2 hours',
+                timeSlots: ["10:00", "13:00", "15:00"], // Fewer slots due to travel time
+                icon: '🏠',
+                requiresAddress: true,
+            },
+            {
+                id: 'phone',
+                title: 'Phone Consultation',
+                description: 'Discuss your design needs over the phone',
+                duration: '30 minutes',
+                timeSlots: ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"],
+                icon: '📞',
+                requiresAddress: false,
+            },
+            {
+                id: 'online',
+                title: 'Online Consultation',
+                description: 'Video consultation from the comfort of your home',
+                duration: '45 minutes',
+                timeSlots: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
+                icon: '💻',
+                requiresAddress: false,
+            }
+        ];
+
+        let selectedType = null;
+        let selectedStore = null;
+        let selectedDate = null;
+        let selectedTime = null;
+
+        // Initialize the booking system
+        function init() {
+            renderConsultationTypes();
+        }
+
+        // Render consultation type selection
+        function renderConsultationTypes() {
+            const container = document.getElementById('consultationTypes');
+            container.innerHTML = '';
+
+            consultationTypes.forEach(type => {
+                const button = document.createElement('button');
+                button.className = `p-6 rounded-lg border-2 text-left transition-colors ${
+                    selectedType === type.id
+                        ? 'border-black bg-black text-white'
+                        : 'border-blue-200 hover:border-black'
+                }`;
+                button.innerHTML = `
+                    <div class="text-2xl mb-2">${type.icon}</div>
+                    <div class="text-lg font-bold mb-2">${type.title}</div>
+                    <div class="text-sm">${type.description}</div>
+                    <div class="text-sm mt-2">Duration: ${type.duration}</div>
+                `;
+                button.onclick = () => selectConsultationType(type.id);
+                container.appendChild(button);
+            });
+        }
+
+        // Select consultation type
+        function selectConsultationType(typeId) {
+            selectedType = typeId;
+            selectedStore = null;
+            selectedDate = null;
+            selectedTime = null;
+            
+            renderConsultationTypes();
+            
+            const type = consultationTypes.find(t => t.id === typeId);
+            if (type.requiresStoreSelection) {
+                renderStores();
+                document.getElementById('storeSection').classList.remove('hidden');
+                document.getElementById('dateSection').classList.add('hidden');
+            } else {
+                renderDates();
+                document.getElementById('storeSection').classList.add('hidden');
+                document.getElementById('dateSection').classList.remove('hidden');
+            }
+            
+            document.getElementById('timeSection').classList.add('hidden');
+            document.getElementById('detailsSection').classList.add('hidden');
+            document.getElementById('confirmSection').classList.add('hidden');
+        }
+
+        // Render store selection
+        function renderStores() {
+            const container = document.getElementById('storeGrid');
+            container.innerHTML = '';
+
+            storeLocations.forEach(store => {
+                const isSelected = selectedStore === store.id;
+                
+                const button = document.createElement('button');
+                button.className = `p-4 rounded-lg border-2 text-left transition-colors ${
+                    isSelected 
+                        ? 'border-black bg-black text-white' 
+                        : 'border-blue-200 hover:border-black'
+                }`;
+                button.innerHTML = `
+                    <div class="text-lg font-bold mb-2">${store.name}</div>
+                    <div class="text-sm">${store.address}</div>
+                    <div class="text-xs mt-1 opacity-75">Time Zone: ${store.timeZone}</div>
+                `;
+                button.onclick = () => selectStore(store.id);
+                container.appendChild(button);
+            });
+        }
+
+        // Select store
+        function selectStore(storeId) {
+            selectedStore = storeId;
+            selectedDate = null;
+            selectedTime = null;
+            
+            renderStores();
+            renderDates();
+            
+            document.getElementById('dateSection').classList.remove('hidden');
+            document.getElementById('timeSection').classList.add('hidden');
+            document.getElementById('detailsSection').classList.add('hidden');
+            document.getElementById('confirmSection').classList.add('hidden');
+        }
+
+        // Get available dates (next 7 business days)
+        function getDates() {
+            const dates = [];
+            const today = new Date();
+            let currentDate = new Date(today);
+            
+            while (dates.length < 7) {
+                const dayOfWeek = currentDate.getDay();
+                // Include Monday (1) to Saturday (6), exclude Sunday (0)
+                if (dayOfWeek !== 0) {
+                    dates.push(new Date(currentDate));
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            return dates;
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return {
+                day: days[date.getDay()],
+                date: date.getDate(),
+                month: months[date.getMonth()]
+            };
+        }
+
+        // Render date selection
+        function renderDates() {
+            const container = document.getElementById('dateGrid');
+            container.innerHTML = '';
+
+            getDates().forEach(date => {
+                const formattedDate = formatDate(date);
+                const isSelected = selectedDate === date.toISOString();
+                
+                const button = document.createElement('button');
+                button.className = `p-4 rounded-lg border-2 transition-colors ${
+                    isSelected 
+                        ? 'border-black bg-black text-white' 
+                        : 'border-blue-200 hover:border-black'
+                }`;
+                button.innerHTML = `
+                    <div class="text-sm font-medium">${formattedDate.day}</div>
+                    <div class="text-lg font-bold">${formattedDate.date}</div>
+                    <div class="text-sm">${formattedDate.month}</div>
+                `;
+                button.onclick = () => selectDate(date.toISOString());
+                container.appendChild(button);
+            });
+        }
+
+        // Select date
+        function selectDate(dateString) {
+            selectedDate = dateString;
+            selectedTime = null;
+            
+            renderDates();
+            renderTimes();
+            
+            document.getElementById('timeSection').classList.remove('hidden');
+            document.getElementById('detailsSection').classList.add('hidden');
+            document.getElementById('confirmSection').classList.add('hidden');
+        }
+
+        // Render time selection
+        function renderTimes() {
+            const container = document.getElementById('timeGrid');
+            container.innerHTML = '';
+
+            const type = consultationTypes.find(t => t.id === selectedType);
+            if (!type) return;
+
+            type.timeSlots.forEach(time => {
+                const isSelected = selectedTime === time;
+                
+                const button = document.createElement('button');
+                button.className = `py-2 px-4 rounded-lg border-2 transition-colors ${
+                    isSelected 
+                        ? 'border-black bg-black text-white' 
+                        : 'border-blue-200 hover:border-black'
+                }`;
+                button.innerHTML = `<span class="text-sm">${time}</span>`;
+                button.onclick = () => selectTime(time);
+                container.appendChild(button);
+            });
+        }
+
+        // Select time
+        function selectTime(time) {
+            selectedTime = time;
+            
+            renderTimes();
+            renderDetailsForm();
+            
+            document.getElementById('detailsSection').classList.remove('hidden');
+            document.getElementById('confirmSection').classList.remove('hidden');
+        }
+
+        // Render details form
+        function renderDetailsForm() {
+            const type = consultationTypes.find(t => t.id === selectedType);
+            const store = storeLocations.find(s => s.id === selectedStore);
+            const addressField = document.getElementById('addressField');
+            const confirmBtn = document.getElementById('confirmBtn');
+            
+            if (type.requiresAddress) {
+                addressField.classList.remove('hidden');
+            } else {
+                addressField.classList.add('hidden');
+            }
+            
+            let buttonText = `Confirm ${type.title}`;
+            if (store) {
+                buttonText += ` at ${store.name}`;
+            }
+            confirmBtn.textContent = buttonText;
+        }
+
+        // Handle form submission
+        function confirmAppointment() {
+            const type = consultationTypes.find(t => t.id === selectedType);
+            const store = storeLocations.find(s => s.id === selectedStore);
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const notes = document.getElementById('notes').value;
+
+            // Basic validation
+            if (!phone || !email || (type.requiresAddress && !address)) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (type.requiresStoreSelection && !store) {
+                alert('Please select a store location.');
+                return;
+            }
+
+            // Show success message
+            document.getElementById('successMessage').classList.remove('hidden');
+            
+            // Log appointment details (in real app, this would be sent to backend)
+            console.log('Appointment booked:', {
+                type: selectedType,
+                storeLocation: selectedStore,
+                date: selectedDate,
+                time: selectedTime,
+                phone,
+                email,
+                address,
+                notes
+            });
+
+            // Reset form after 3 seconds
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        }
+
+        // Event listeners
+        document.getElementById('confirmBtn').onclick = confirmAppointment;
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
