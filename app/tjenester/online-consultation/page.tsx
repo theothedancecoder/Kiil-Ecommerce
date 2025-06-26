@@ -36,7 +36,7 @@ const OnlineConsultationPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
         <div>
           <h2 className="text-2xl font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-6">
-            What You'll Get:
+            What You&apos;ll Get:
           </h2>
           <ul className="space-y-3">
             {benefits.map((item, index) => (

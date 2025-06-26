@@ -1,4 +1,4 @@
-Simport AppointmentBooking from '@/components/AppointmentBooking';
+import AppointmentBooking from '@/components/AppointmentBooking';
 
 const PhoneConsultationPage = () => {
   const benefits = [
@@ -13,7 +13,7 @@ const PhoneConsultationPage = () => {
   const steps = [
     'Book your preferred 30-minute time slot',
     'Provide your contact details',
-    'We\'ll call you at the scheduled time',
+    'We&apos;ll call you at the scheduled time',
     'Discuss your design needs and questions',
     'Receive expert advice and recommendations',
     'Get follow-up information via email'
@@ -37,14 +37,14 @@ const PhoneConsultationPage = () => {
           Quick and convenient design advice over the phone
         </p>
         <p className="text-[#212529] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] leading-relaxed">
-          Our phone consultation service offers you immediate access to our design experts. Perfect for quick questions, initial planning, or when you need expert advice but can't visit our store or schedule an in-home visit.
+          Our phone consultation service offers you immediate access to our design experts. Perfect for quick questions, initial planning, or when you need expert advice but can&apos;t visit our store or schedule an in-home visit.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
         <div>
           <h2 className="text-2xl font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-6">
-            What You'll Get:
+            What You&apos;ll Get:
           </h2>
           <ul className="space-y-3">
             {benefits.map((item, index) => (
