@@ -1,5 +1,6 @@
 import OutdoorBanner from "@/components/outdoorBanner";
 import OutdoorSidebar from "@/components/OutdoorSidebar";
+import OutdoorFurnitureGrid from "@/components/OutdoorFurnitureGrid";
 
 export default async function UtendorsPage() {
   return (
@@ -17,8 +18,8 @@ export default async function UtendorsPage() {
                 Skape den perfekte utendørs oasen med våre eksklusive hagemøbler og utendørsløsninger.
               </p>
             </div>
-            <div className="text-center text-muted-foreground">
-              <p>Select a category from the sidebar to view products.</p>
+            <div className="max-w-8xl mx-auto">
+              <OutdoorFurnitureGrid />
             </div>
           </div>
         </div>

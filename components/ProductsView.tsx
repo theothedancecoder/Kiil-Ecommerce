@@ -7,6 +7,7 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/lib/languageContext";
 import Image from "next/image";
+import Link from "next/link";
 
 interface ProductsViewProps {
   products: Product[];
@@ -56,7 +57,7 @@ const ProductsView = ({ products, categories }: ProductsViewProps) => {
           >
             <div className="absolute inset-0">
               <Image
-                src="/Kartell_Cassinella19537.webp"
+                src="/interior-collection/kartell/Kartell_Cassinella19537.webp"
                 alt="Kartell Cassinella"
                 fill
                 className="object-cover"
@@ -93,9 +94,12 @@ const ProductsView = ({ products, categories }: ProductsViewProps) => {
               <p className="text-center mb-6">
                 {t('partners.box2.description') || 'Storage that elevates your home.'}
               </p>
-              <button className="bg-white text-black px-6 py-2 rounded-lg hover:bg-white/90 transition-colors">
+              <Link 
+                href="/montana"
+                className="bg-white text-black px-6 py-2 rounded-lg hover:bg-white/90 transition-colors inline-block text-center"
+              >
                 {t('product.shopNow')}
-              </button>
+              </Link>
             </div>
           </div>
         </div>

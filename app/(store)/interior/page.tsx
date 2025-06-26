@@ -1,5 +1,6 @@
 import InteriorBanner from "@/components/InteriorBanner";
 import InteriorSidebar from "@/components/InteriorSidebar";
+import InteriorFurnitureGrid from "@/components/InteriorFurnitureGrid";
 
 export default async function InteriorPage() {
   return (
@@ -17,8 +18,8 @@ export default async function InteriorPage() {
                 Skape det perfekte interiøret med våre eksklusive møbler og interiørløsninger.
               </p>
             </div>
-            <div className="text-center text-muted-foreground">
-              <p>Select a category from the sidebar to view products.</p>
+            <div className="max-w-8xl mx-auto">
+              <InteriorFurnitureGrid />
             </div>
           </div>
         </div>
