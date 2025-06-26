@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/languageContext";
 
 const images = [
-    "/Kartell_Cassinella19537.webp",
-    "/Fjordfiesta_ScandiaSeniorVipp_HansBrattrud_.jpg"
+    "/interior-collection/kartell/Kartell_Cassinella19537.webp",
+    "/interior-collection/fjordfiesta/Fjordfiesta_ScandiaSeniorVipp_HansBrattrud_.jpg"
 ];
 
 function BlackFridayBanner() {

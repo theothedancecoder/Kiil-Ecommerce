@@ -1,0 +1,124 @@
+{
+  "interior": {
+    "montana": {
+      "name": "Montana Furniture",
+      "description": "Danish modular storage systems and furniture",
+      "products": [
+        {
+          "name": "Montana Storage System",
+          "category": "Storage",
+          "variants": ["New White", "Nordic"],
+          "images": ["Montana_1112_Newwhite.jpg", "Montana_1112_Nordic.jpg"]
+        },
+        {
+          "name": "Montana Collection 2017",
+          "category": "Complete Collection",
+          "variants": ["Keep", "Dream", "Line", "Play", "Rest", "Coat"],
+          "images": ["Montana_Collection2017_Keep_3000x3000.jpg", "Montana_Collection2017_Dream_3000x3000.jpg", "Montana_Collection2017_Line_3000x3000.jpg", "Montana_Collection2017_Play_3000x3000.jpg", "Montana_Collection2017_Rest_3000x3000.jpg", "Montana_Collection2017_Coat_3000x3000.jpg"]
+        },
+        {
+          "name": "Montana Panton Wire Extended",
+          "category": "Wire Furniture",
+          "variants": ["Black", "Chrome", "Monarch", "Snow"],
+          "images": ["Montana_PantonWire_Extended_D34.8_Black_perspective-scaled.jpg", "Montana_PantonWire_Extended_D34.8_Chrome_perspective-scaled.jpg", "Montana_PantonWire_Extended_D34.8_Monarch_perspective-scaled.jpg", "Montana_PantonWire_Extended_D34.8_Snow_perspective-scaled.jpg"]
+        },
+        {
+          "name": "Montana Monterey",
+          "category": "Storage",
+          "variants": ["Black", "New White", "Parsley", "Anthracite"],
+          "images": ["Montana_Monterey_H72_Black_Perspective.png", "Montana_Monterey_H72_NewWhite_Perspective.png", "Montana_Monterey_H72_Parsley_Perspective.png", "Montana_Monterey_H72_Anthracite_Perspective.png"]
+        },
+        {
+          "name": "Montana Office Solutions",
+          "category": "Office Furniture",
+          "variants": ["Black Workstation"],
+          "images": ["Montana_Office_SHL_Black_Workstation_2016_W.jpg"]
+        },
+        {
+          "name": "Montana Mini Collection",
+          "category": "Compact Storage",
+          "variants": ["Hall Multi-Color", "TV Bench Nordic"],
+          "images": ["Montana_Mini_Hall_Mist_Rhubarb_Amber_H-2-scaled.jpg", "Montana_Mini_TVBench_Nordic_Mushroom_W.jpg"]
+        },
+        {
+          "name": "Montana Bureau",
+          "category": "Desk Solutions",
+          "variants": ["Flint", "Flint Detail"],
+          "images": ["Montana_Home21_22_BUREAU_Flint_01_H-scaled.jpg", "Montana_Home21_22_BUREAU_Flint_Detail_H-scaled.jpg"]
+        },
+        {
+          "name": "Montana Home Collection",
+          "category": "Residential Furniture",
+          "variants": ["Flutter Multi-Color", "Octave II Flint", "Save Hokkaido"],
+          "images": ["Montana_Home20_21_FLUTTER_Rosehip_WhiteOak_Vanilla_Shadow_Truffle_Hokkaido_PantonOne_H-scaled.jpg", "Montana_Home20_21_OCTAVE_II_Flint_Cumin_H-scaled.jpg", "Montana_Home20_21_SAVE_Hokkaido_H-scaled.jpg"]
+        },
+        {
+          "name": "Montana Campaign Collection",
+          "category": "Featured Collection",
+          "variants": ["Monarch", "Monarch Open", "Fjord", "Milk"],
+          "images": ["Montana_Campaign_01_H_1112_Monarch_Cropped.jpg", "Montana_Campaign_01_H_1118_Monarch_Open_Cropped.jpg", "Montana_Campaign_1118_Fjord-768x1024-1.jpg", "Montana_Campaign_1118_Milk-768x1024-1.jpg"]
+        }
+      ]
+    },
+    "kartell": {
+      "name": "Kartell",
+      "description": "Italian design furniture and accessories",
+      "products": [
+        {
+          "name": "Kartell Cassinella",
+          "category": "Seating",
+          "images": ["Kartell_Cassinella19537.webp"]
+        }
+      ]
+    },
+    "fjordfiesta": {
+      "name": "Fjordfiesta",
+      "description": "Scandinavian design furniture",
+      "products": [
+        {
+          "name": "Scandia Senior Vipp",
+          "category": "Seating",
+          "designer": "Hans Brattrud",
+          "images": ["Fjordfiesta_ScandiaSeniorVipp_HansBrattrud_.jpg", "Fjordfiesta_ScandiaSeniorVipp_HansBrattrud_Photo_SirenLauvdal_Styling_kraakevik_D´Orazio_-1.jpg"]
+        }
+      ]
+    },
+    "louis-poulsen": {
+      "name": "Louis Poulsen",
+      "description": "Danish lighting design",
+      "products": [
+        {
+          "name": "Panthella V3 160 Portable",
+          "category": "Lighting",
+          "variants": ["Opaque Moss Green", "Opaque Burgundy"],
+          "images": ["63330_63330_Panthella-V3-160-Portable-Opaque-Moss-Green-400x400.webp", "63332_63332_Panthella-V3-160-Portable-Opaque-Burgundy-400x400.webp"]
+        }
+      ]
+    },
+    "salon": {
+      "name": "Salon",
+      "description": "Contemporary furniture collection",
+      "products": [
+        {
+          "name": "Salon Extension Table",
+          "category": "Tables",
+          "variants": ["Round"],
+          "images": ["Salon_extension_table_round_1920x1920_re_800x800_crop_center@2x-400x400.webp"]
+        }
+      ]
+    }
+  },
+  "outdoor": {
+    "miscellaneous": {
+      "name": "Outdoor Collection",
+      "description": "Various outdoor furniture and accessories",
+      "products": [
+        {
+          "name": "Helios Fire Bowl",
+          "category": "Outdoor Accessories",
+          "images": ["helios-firebowl-400x400.webp"]
+        }
+      ]
+    }
+  }
+}
