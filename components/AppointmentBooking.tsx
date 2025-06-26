@@ -88,7 +88,7 @@ const AppointmentBooking = ({ defaultType }: AppointmentBookingProps) => {
   const getDates = () => {
     const dates = [];
     const today = new Date();
-    let currentDate = new Date(today);
+    const currentDate = new Date(today);
     
     while (dates.length < 7) {
       const dayOfWeek = currentDate.getDay();
