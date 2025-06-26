@@ -2,49 +2,51 @@
 
 import AppointmentBooking from '@/components/AppointmentBooking';
 import dynamic from 'next/dynamic';
-import { LanguageProvider } from '@/lib/languageContext';
+import { LanguageProvider, useLanguage } from '@/lib/languageContext';
 
 const Header = dynamic(() => import('@/components/Header'), { ssr: false });
 
-const InHomeConsultationPage = () => {
+const InHomeConsultationContent = () => {
+  const { t } = useLanguage();
+
   const benefits = [
-    'Personalized consultation in your own space',
-    'Expert measurements and space planning',
-    'Hands-on material and color selection',
-    'Immediate visualization of design ideas',
-    'Detailed project planning',
-    'Custom solutions for your specific needs'
+    t('service.home.benefit1'),
+    t('service.home.benefit2'),
+    t('service.home.benefit3'),
+    t('service.home.benefit4'),
+    t('service.home.benefit5'),
+    t('service.home.benefit6')
   ];
 
   const steps = [
-    'Book your preferred 2-hour time slot',
-    'Provide your address and contact details',
-    'Our expert arrives at scheduled time',
-    'Walk through your space together',
-    'Discuss design options and solutions',
-    'Receive detailed recommendations and next steps'
+    t('service.home.step1'),
+    t('service.home.step2'),
+    t('service.home.step3'),
+    t('service.home.step4'),
+    t('service.home.step5'),
+    t('service.home.step6')
   ];
 
   return (
-    <LanguageProvider>
+    <>
       <Header />
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="mb-12">
           <h1 className="text-4xl font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-4">
-            In-Home Consultation
+            {t('service.home.titleHeader')}
           </h1>
           <p className="text-xl font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-6">
-            Expert design consultation in the comfort of your home
+            {t('service.home.subtitle')}
           </p>
           <p className="text-[#212529] font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] leading-relaxed">
-            Our in-home consultation service brings our design expertise directly to you. Perfect for comprehensive space planning, detailed measurements, and seeing how different options will work in your actual space.
+            {t('service.home.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           <div>
             <h2 className="text-2xl font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-6">
-              What You&apos;ll Get:
+              {t('service.home.whatYouGet')}
             </h2>
             <ul className="space-y-3">
               {benefits.map((item, index) => (
@@ -60,7 +62,7 @@ const InHomeConsultationPage = () => {
 
           <div>
             <h2 className="text-2xl font-['Montserrat', 'Helvetica', 'Verdana', 'sans-serif'] text-[#212529] mb-6">
-              How It Works:
+              {t('service.home.howItWorks')}
             </h2>
             <ol className="space-y-3">
               {steps.map((step, index) => (
@@ -81,6 +83,14 @@ const InHomeConsultationPage = () => {
           <AppointmentBooking defaultType="in-home" />
         </div>
       </div>
+    </>
+  );
+};
+
+const InHomeConsultationPage = () => {
+  return (
+    <LanguageProvider>
+      <InHomeConsultationContent />
     </LanguageProvider>
   );
 };
