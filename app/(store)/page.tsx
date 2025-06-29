@@ -15,51 +15,26 @@ export default async function Home() {
     <main className="min-h-screen bg-background">
       {/* Promotional Banner */}
       <div
+        className="max-w-4xl mx-auto w-full flex flex-col sm:flex-row bg-[#eff9ff] font-bold text-[#333] text-center select-none"
         style={{
-          maxWidth: "1024px",
-          height: "69.69px",
-          backgroundColor: "#eff9ff",
-          margin: "0 auto",
-          width: "100%",
-          display: "flex",
-          fontWeight: "bold",
+          minHeight: "69.69px",
           fontSize: "14px",
           fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
-          color: "#333",
-          textAlign: "center",
-          lineHeight: "69.69px",
-          userSelect: "none",
         }}
       >
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
-          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>50% rabatt på nett og i butikk.</div>
-          <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>Outdoor Helios fyrfat</div>
+        <div className="flex-1 flex flex-col justify-center py-3 sm:py-0 px-2 sm:px-4" style={{ lineHeight: "14px" }}>
+          <div className="text-xs sm:text-[12.25px] mb-1">50% rabatt på nett og i butikk.</div>
+          <div className="text-xs sm:text-[12px]">Outdoor Helios fyrfat</div>
         </div>
-        <div
-          style={{
-            width: "1px",
-            backgroundColor: "#ccc",
-            margin: "8px 12px",
-            alignSelf: "center",
-            height: "calc(69.69px - 16px)",
-          }}
-        />
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
-          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>24% rabatt på alle</div>
-          <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>juul sofar/903.</div>
+        <div className="hidden sm:block w-px bg-[#ccc] mx-3 self-center" style={{ height: "calc(69.69px - 16px)" }} />
+        <div className="flex-1 flex flex-col justify-center py-3 sm:py-0 px-2 sm:px-4 border-t border-b sm:border-0 border-[#ccc]" style={{ lineHeight: "14px" }}>
+          <div className="text-xs sm:text-[12.25px] mb-1">24% rabatt på alle</div>
+          <div className="text-xs sm:text-[12px]">juul sofar/903.</div>
         </div>
-        <div
-          style={{
-            width: "1px",
-            backgroundColor: "#ccc",
-            margin: "8px 12px",
-            alignSelf: "center",
-            height: "calc(69.69px - 16px)",
-          }}
-        />
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: "14px" }}>
-          <div style={{ margin: 0, padding: 0, marginBottom: "4px", fontSize: "12.25px" }}>40% rabatt på alle</div>
-          <div style={{ margin: 0, padding: 0, fontSize: "12px" }}>Kiil plank spisebord</div>
+        <div className="hidden sm:block w-px bg-[#ccc] mx-3 self-center" style={{ height: "calc(69.69px - 16px)" }} />
+        <div className="flex-1 flex flex-col justify-center py-3 sm:py-0 px-2 sm:px-4" style={{ lineHeight: "14px" }}>
+          <div className="text-xs sm:text-[12.25px] mb-1">40% rabatt på alle</div>
+          <div className="text-xs sm:text-[12px]">Kiil plank spisebord</div>
         </div>
       </div>
 

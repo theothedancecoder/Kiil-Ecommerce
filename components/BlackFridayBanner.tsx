@@ -53,7 +53,12 @@ function BlackFridayBanner() {
             {/* Hero Image Slider */}
             <div
               className="relative overflow-hidden mx-auto"
-              style={{ width: "100%", maxWidth: "1543px", height: "514.13px", overflow: "hidden" }}
+              style={{ 
+                width: "100%", 
+                maxWidth: "1543px", 
+                height: windowWidth < 640 ? "300px" : windowWidth < 768 ? "350px" : windowWidth < 1024 ? "400px" : "514.13px", 
+                overflow: "hidden" 
+              }}
             >
                 {images.map((src, index) => (
                     <Image

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const furnitureItems = [
   // Montana Collection
@@ -98,44 +99,241 @@ const furnitureItems = [
     image: "/interior-collection/fjordfiesta-products/pur_norsk_fjordfiesta_scandia_treverk_3_1-400x400.jpg",
     alt: "Fjordfiesta Scandia Treverk"
   },
-  // Miscellaneous Products
+  // Fredericia Collection
+  {
+    id: 43,
+    image: "/Fredericia /4511_delphi-sofa--240x85-cm_50841_leather-cera-905-russet-brown_v1.avif",
+    alt: "Fredericia Delphi Sofa - Leather Russet Brown",
+    category: "sofas"
+  },
+  {
+    id: 44,
+    image: "/Fredericia /Delphi Sofa - Steelcut Trio, 213.avif",
+    alt: "Fredericia Delphi Sofa - Steelcut Trio",
+    category: "sofas"
+  },
+  {
+    id: 45,
+    image: "/Fredericia /Delphi Sofa -Leather Max 98, Black.avif",
+    alt: "Fredericia Delphi Sofa - Leather Black",
+    category: "sofas"
+  },
+  // Fredericia Delphi Elements Collection
+  {
+    id: 46,
+    image: "/Fredericia /Delphi Elements Corner Module.avif",
+    alt: "Fredericia Delphi Elements - Corner Module",
+    category: "sofas"
+  },
+  {
+    id: 47,
+    image: "/Fredericia /Delphi Elements Center Module.avif",
+    alt: "Fredericia Delphi Elements - Center Module",
+    category: "sofas"
+  },
+  {
+    id: 48,
+    image: "/Fredericia /Delphi Elements End Module.avif",
+    alt: "Fredericia Delphi Elements - End Module",
+    category: "sofas"
+  },
+  // Fredericia EJ220 Collection
+  {
+    id: 49,
+    image: "/Fredericia /EJ220 2 Seater.avif",
+    alt: "Fredericia EJ220 - 2 Seater",
+    category: "sofas"
+  },
+  {
+    id: 50,
+    image: "/Fredericia /EJ220 3 Seater.avif",
+    alt: "Fredericia EJ220 - 3 Seater",
+    category: "sofas"
+  },
+  {
+    id: 51,
+    image: "/Fredericia /EJ220 Corner.avif",
+    alt: "Fredericia EJ220 - Corner",
+    category: "sofas"
+  },
+  // Francois Ghost Mat Mirrors Collection
+  {
+    id: 31,
+    image: "/FRANCOIS GHOST MAT/FRANCOIS GHOST MAT BLACK.webp",
+    alt: "Francois Ghost Mat Mirror - Black",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/francois-ghost-mat"
+  },
+  {
+    id: 32,
+    image: "/FRANCOIS GHOST MAT/FRANCOIS GHOST MAT -WHITE.webp",
+    alt: "Francois Ghost Mat Mirror - White",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/francois-ghost-mat"
+  },
+  // Montana Selfie Mirrors Collection
+  {
+    id: 33,
+    image: "/SELFIE MIRROR-MONTANA/Montana_Selection_SHELFIE_Mirror_01-White.png",
+    alt: "Montana Selfie Mirror - White",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/montana-selfie"
+  },
+  {
+    id: 34,
+    image: "/SELFIE MIRROR-MONTANA/Montana_Selection_SHELFIE_Mirror_01-Fjord.png",
+    alt: "Montana Selfie Mirror - Fjord",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/montana-selfie"
+  },
+  // Montana Look Mirrors Collection
+  {
+    id: 35,
+    image: "/MONTANA LOOK MIRROR/Montana_Selection_LOOK_White_Perspective.png",
+    alt: "Montana Look Mirror - White",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/montana-look"
+  },
+  {
+    id: 36,
+    image: "/MONTANA LOOK MIRROR/Montana_Selection_LOOK_Fjord_Perspective.png",
+    alt: "Montana Look Mirror - Fjord",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/montana-look"
+  },
+  // Montana Like Mirrors Collection
+  {
+    id: 37,
+    image: "/MONTANA LIKE MIRROR/Montana_Selection_LIKE_White_Perspective.png",
+    alt: "Montana Like Mirror - White",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/montana-like"
+  },
+  {
+    id: 38,
+    image: "/MONTANA LIKE MIRROR/Montana_Selection_LIKE_Black_Perspective.png",
+    alt: "Montana Like Mirror - Black",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/montana-like"
+  },
+  // Montana Around Mirrors Collection
+  {
+    id: 39,
+    image: "/MONTANA AROUND MIRROR/Montana_Selection_AROUND_Mirror_01_White_Perspective.png",
+    alt: "Montana Around Mirror - White",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/montana-around"
+  },
+  {
+    id: 40,
+    image: "/MONTANA AROUND MIRROR/Montana_Selection_AROUND_Mirror_02-Fjord_Perspective.png",
+    alt: "Montana Around Mirror - Fjord",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/montana-around"
+  },
+  // All Saints Mirrors with Lights Collection
+  {
+    id: 41,
+    image: "/ALL SAINTS MIRROR WITH LIGHT/ALL SAINTS MIRROR WITH LIGHTS - Amber.webp",
+    alt: "All Saints Mirror with Lights - Amber",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/all-saints-with-lights"
+  },
+  {
+    id: 42,
+    image: "/ALL SAINTS MIRROR WITH LIGHT/ALL SAINTS MIRROR WITH LYS CRYSTAL.webp",
+    alt: "All Saints Mirror with Lights - Crystal",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors/all-saints-with-lights"
+  },
+  // All Saints Mirrors Collection
   {
     id: 19,
+    image: "/ALL SAINTS/AMBER.webp",
+    alt: "All Saints Mirror - Amber",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors"
+  },
+  {
+    id: 20,
+    image: "/ALL SAINTS/AQUAMARINE GREEN.webp",
+    alt: "All Saints Mirror - Aquamarine Green",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors"
+  },
+  {
+    id: 21,
+    image: "/ALL SAINTS/BLACK.webp",
+    alt: "All Saints Mirror - Black",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors"
+  },
+  {
+    id: 22,
+    image: "/ALL SAINTS/CRYSTAL.webp",
+    alt: "All Saints Mirror - Crystal",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors"
+  },
+  {
+    id: 23,
+    image: "/ALL SAINTS/DUSTY PINK.webp",
+    alt: "All Saints Mirror - Dusty Pink",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors"
+  },
+  {
+    id: 24,
+    image: "/ALL SAINTS/WHITE.webp",
+    alt: "All Saints Mirror - White",
+    category: "mirrors",
+    link: "/interior/bathroom/mirrors"
+  },
+  // Miscellaneous Products
+  {
+    id: 25,
     image: "/interior-collection/miscellaneous/13290_0_5761-400x400.webp",
     alt: "Interior Accessory"
   },
   {
-    id: 20,
+    id: 26,
     image: "/interior-collection/miscellaneous/144333-400x400.jpg",
     alt: "Interior Furniture"
   },
   {
-    id: 21,
+    id: 27,
     image: "/interior-collection/miscellaneous/149004-400x400.jpg",
     alt: "Interior Design Piece"
   },
   {
-    id: 22,
+    id: 28,
     image: "/interior-collection/miscellaneous/157071-400x400.webp",
     alt: "Interior Accessory"
   },
   {
-    id: 23,
+    id: 29,
     image: "/interior-collection/miscellaneous/162770-400x400.webp",
     alt: "Interior Furniture"
   },
   {
-    id: 24,
+    id: 30,
     image: "/interior-collection/miscellaneous/171450-400x400.webp",
     alt: "Interior Design"
   }
 ];
 
 const InteriorFurnitureGrid = () => {
+  const router = useRouter();
   const [selectedImage, setSelectedImage] = useState<{ image: string; alt: string } | null>(null);
 
-  const openModal = (image: string, alt: string) => {
-    setSelectedImage({ image, alt });
+  const handleItemClick = (item: typeof furnitureItems[0]) => {
+    if (item.category === 'mirrors' && item.link) {
+      router.push(item.link);
+    } else if (item.category === 'sofas') {
+      router.push('/interior/living-room/sofa');
+    } else {
+      setSelectedImage({ image: item.image, alt: item.alt });
+    }
   };
 
   const closeModal = () => {
@@ -148,19 +346,38 @@ const InteriorFurnitureGrid = () => {
         {furnitureItems.map((item) => (
           <div 
             key={item.id}
-            className="relative bg-[#fff5f5] rounded-xl overflow-hidden mb-6 sm:mb-8 w-full max-w-[320px] mx-auto cursor-pointer"
-            style={{
-              aspectRatio: "1/1"
-            }}
-            onClick={() => openModal(item.image, item.alt)}
+            className="w-full max-w-[320px] mx-auto cursor-pointer"
+            onClick={() => handleItemClick(item)}
           >
-            <Image
-              src={item.image}
-              alt={item.alt}
-              fill
-              className="object-cover hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 320px"
-            />
+            <div 
+              className="relative bg-[#fff5f5] rounded-xl overflow-hidden mb-3"
+              style={{
+                aspectRatio: "1/1"
+              }}
+            >
+              <Image
+                src={item.image}
+                alt={item.alt}
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 320px"
+              />
+            </div>
+            <div className="text-center px-2">
+              {item.category === 'sofas' && (
+                <p className="text-sm text-gray-600 mb-1">
+                  Maker: Fredericia
+                </p>
+              )}
+              <p 
+                style={{ 
+                  fontFamily: 'Montserrat, Verdana, Helvetica', 
+                  fontSize: '14px' 
+                }}
+              >
+                {item.alt}
+              </p>
+            </div>
           </div>
         ))}
       </div>
