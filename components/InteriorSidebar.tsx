@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 const InteriorSidebar = () => {
-  const { t } = useLanguage();
+  const { } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
   const categories = [
@@ -120,6 +120,36 @@ const InteriorSidebar = () => {
     {
       title: "Storage",
       href: "/interior/organisation/storage"
+    },
+    {
+      title: "HOME ACCESSORIES",
+      href: "/interior/home-accessories",
+      main: true,
+      addLineAbove: true
+    },
+    {
+      title: "Decor",
+      href: "/interior/home-accessories/decor"
+    },
+    {
+      title: "Vases",
+      href: "/interior/home-accessories/vases"
+    },
+    {
+      title: "Wall Art",
+      href: "/interior/home-accessories/wall-art"
+    },
+    {
+      title: "Cushions",
+      href: "/interior/home-accessories/cushions"
+    },
+    {
+      title: "Throws",
+      href: "/interior/home-accessories/throws"
+    },
+    {
+      title: "Lighting",
+      href: "/interior/home-accessories/lighting"
     }
   ];
 
@@ -166,7 +196,7 @@ const InteriorSidebar = () => {
               }`}
               onClick={() => setIsOpen(false)}
             >
-              {t(`interior.categories.${category.title.toLowerCase().replace(/\s+/g, "-")}`) || category.title}
+              {category.title}
             </Link>
             {(index === 0 || index === 1) && (
               <hr className="my-3 border-gray-300" />

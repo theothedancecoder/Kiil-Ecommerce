@@ -5,320 +5,398 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const furnitureItems = [
-  // Montana Collection
+  // Furniture - New
   {
-    id: 1,
-    image: "/interior-collection/montana/Montana_Collection2017_Keep_3000x3000.jpg",
-    alt: "Montana Keep Collection"
+    id: 76,
+    image: "/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Flint_Suspended_Perspective.png",
+    alt: "Montana BUREAU Desk - Flint",
+    category: "desk",
+    link: "/interior/home-office/desk-cabinets"
   },
   {
-    id: 2,
-    image: "/interior-collection/montana/Montana_Collection2017_Rest_3000x3000.jpg",
-    alt: "Montana Rest Collection"
+    id: 82,
+    image: "/Montana/BUREAU/Montana_Selection_BUREAU_Desk_NewWhite_Suspended_Perspective.png",
+    alt: "Montana BUREAU Desk - New White",
+    category: "desk",
+    link: "/interior/home-office/desk-cabinets"
   },
   {
-    id: 3,
-    image: "/interior-collection/montana/Montana_Collection2017_Dream_3000x3000.jpg",
-    alt: "Montana Dream Collection"
+    id: 83,
+    image: "/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Black_Suspended_Perspective.png",
+    alt: "Montana BUREAU Desk - Black",
+    category: "desk",
+    link: "/interior/home-office/desk-cabinets"
   },
   {
-    id: 4,
-    image: "/interior-collection/montana/Montana_Collection2017_Play_3000x3000.jpg",
-    alt: "Montana Play Collection"
+    id: 84,
+    image: "/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Nordic_Suspended_Perspective.png",
+    alt: "Montana BUREAU Desk - Nordic",
+    category: "desk",
+    link: "/interior/home-office/desk-cabinets"
   },
   {
-    id: 5,
-    image: "/interior-collection/montana/Montana_Collection2017_Line_3000x3000.jpg",
-    alt: "Montana Line Collection"
+    id: 85,
+    image: "/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Amber_Suspended_Perspective.png",
+    alt: "Montana BUREAU Desk - Amber",
+    category: "desk",
+    link: "/interior/home-office/desk-cabinets"
+  },
+  // Montana BUREAU items also showing under cabinets category
+  {
+    id: 86,
+    image: "/Montana/BUREAU/Montana_Selection_BUREAU_Acacia_Perspective.png",
+    alt: "Montana BUREAU Cabinet - Acacia",
+    category: "cabinets",
+    link: "/interior/home-office/desk-cabinets"
   },
   {
-    id: 6,
-    image: "/interior-collection/montana/Montana_Collection2017_Coat_3000x3000.jpg",
-    alt: "Montana Coat Collection"
+    id: 87,
+    image: "/Montana/BUREAU/Montana_Selection_BUREAU_Clay_Perspective.png",
+    alt: "Montana BUREAU Cabinet - Clay",
+    category: "cabinets",
+    link: "/interior/home-office/desk-cabinets"
   },
   {
-    id: 7,
-    image: "/interior-collection/montana/Montana_Campaign_1118_Fjord_Open-768x1024-1.jpg",
-    alt: "Montana Campaign Fjord"
+    id: 88,
+    image: "/Montana/BUREAU/Montana_Selection_BUREAU_Ruby_Perspective.png",
+    alt: "Montana BUREAU Cabinet - Ruby",
+    category: "cabinets",
+    link: "/interior/home-office/desk-cabinets"
+  },
+  // Dining Tables - New
+  {
+    id: 89,
+    image: "/Fredericia - BM71 Library Spisebord/main.jpg",
+    alt: "Fredericia BM71 Library Dining Table",
+    category: "dining-tables",
+    link: "/interior/dining-kitchen/tables"
   },
   {
-    id: 8,
-    image: "/interior-collection/montana/Montana_Campaign_1118_Milk_Open-2.jpg",
-    alt: "Montana Campaign Milk"
-  },
-  // Kartell Collection
-  {
-    id: 9,
-    image: "/interior-collection/kartell/Kartell_Cassinella19537.webp",
-    alt: "Kartell Cassinella Chair"
+    id: 90,
+    image: "/Salon_extension_table_round_1920x1920_re_800x800_crop_center@2x-400x400.webp",
+    alt: "Salon Extension Table - Round",
+    category: "dining-tables",
+    link: "/interior/dining-kitchen/tables"
   },
   {
-    id: 10,
-    image: "/interior-collection/kartell-products/KAR01550CF-314x400.webp",
-    alt: "Kartell Chair CF"
+    id: 77,
+    image: "/Fritz Hansen Grand Prix 4130/Clear Lacquered Veneer : Oak.png",
+    alt: "Fritz Hansen Grand Prix 4130 Chair - Oak",
+    category: "chairs",
+    link: "/interior/living-room/chairs"
   },
   {
-    id: 11,
-    image: "/interior-collection/kartell-products/KAR08300B4-314x400.webp",
-    alt: "Kartell Table B4"
+    id: 78,
+    image: "/Kartell -Componibili classic 2/white.webp",
+    alt: "Kartell Componibili Classic 2 - White",
+    category: "storage",
+    link: "/interior/storage"
   },
   {
-    id: 12,
-    image: "/interior-collection/kartell-products/KAR09950AM-314x400.webp",
-    alt: "Kartell Chair AM"
+    id: 79,
+    image: "/Montana/Montana_Collection2017_Dream_3000x3000.jpg",
+    alt: "Montana DREAM Collection",
+    category: "bedroom",
+    link: "/interior/bedroom"
   },
   {
-    id: 13,
-    image: "/interior-collection/kartell-products/KAR09950VE-314x400.webp",
-    alt: "Kartell Chair VE"
+    id: 80,
+    image: "/Kartell -Componibili classic 2/black.webp",
+    alt: "Kartell Componibili Classic 2 - Black",
+    category: "storage",
+    link: "/interior/storage"
   },
   {
-    id: 14,
-    image: "/interior-collection/kartell-products/KAR08305GG-314x400.webp",
-    alt: "Kartell Stool GG"
+    id: 81,
+    image: "/Fritz Hansen Grand Prix 4130/Coloured Veneer : Ash - Black (195).png",
+    alt: "Fritz Hansen Grand Prix 4130 Chair - Black Ash",
+    category: "chairs",
+    link: "/interior/living-room/chairs"
   },
-  // Louis Poulsen Lighting
+  // Bathroom Accessories - New
   {
-    id: 15,
-    image: "/interior-collection/louis-poulsen/63330_63330_Panthella-V3-160-Portable-Opaque-Moss-Green-400x400.webp",
-    alt: "Panthella Portable Moss Green"
-  },
-  {
-    id: 16,
-    image: "/interior-collection/louis-poulsen/63332_63332_Panthella-V3-160-Portable-Opaque-Burgundy-400x400.webp",
-    alt: "Panthella Portable Burgundy"
-  },
-  // Fjordfiesta Collection
-  {
-    id: 17,
-    image: "/interior-collection/fjordfiesta-products/fjordfiesta_scandiaottoman_hansbrattrud-400x400.webp",
-    alt: "Fjordfiesta Scandia Ottoman"
+    id: 65,
+    image: "/VIPP/VIPP906 baderomsarmatur kr 8 995.00  VIPP906 baderomsarmatur.jpeg",
+    alt: "VIPP906 Bathroom Faucet",
+    category: "bathroom",
+    link: "/interior/bathroom"
   },
   {
-    id: 18,
-    image: "/interior-collection/fjordfiesta-products/pur_norsk_fjordfiesta_scandia_treverk_3_1-400x400.jpg",
-    alt: "Fjordfiesta Scandia Treverk"
-  },
-  // Fredericia Collection
-  {
-    id: 43,
-    image: "/Fredericia /4511_delphi-sofa--240x85-cm_50841_leather-cera-905-russet-brown_v1.avif",
-    alt: "Fredericia Delphi Sofa - Leather Russet Brown",
-    category: "sofas"
+    id: 66,
+    image: "/Missoni Home - Amone Badematte/amone-bath-mat-col160.avif",
+    alt: "Missoni Home Amone Bath Mat - Col.160",
+    category: "bathroom",
+    link: "/interior/bathroom"
   },
   {
-    id: 44,
-    image: "/Fredericia /Delphi Sofa - Steelcut Trio, 213.avif",
-    alt: "Fredericia Delphi Sofa - Steelcut Trio",
-    category: "sofas"
+    id: 67,
+    image: "/missoni-curt-bath-mat/col160.jpg",
+    alt: "Missoni Home Curt Bath Mat - Col.160",
+    category: "bathroom",
+    link: "/interior/bathroom"
   },
   {
-    id: 45,
-    image: "/Fredericia /Delphi Sofa -Leather Max 98, Black.avif",
-    alt: "Fredericia Delphi Sofa - Leather Black",
-    category: "sofas"
-  },
-  // Fredericia Delphi Elements Collection
-  {
-    id: 46,
-    image: "/Fredericia /Delphi Elements Corner Module.avif",
-    alt: "Fredericia Delphi Elements - Corner Module",
-    category: "sofas"
+    id: 68,
+    image: "/missoni-bernard-towels/100x150.jpg",
+    alt: "Missoni Home Bernard Towels - 100x150",
+    category: "bathroom",
+    link: "/interior/bathroom"
   },
   {
-    id: 47,
-    image: "/Fredericia /Delphi Elements Center Module.avif",
-    alt: "Fredericia Delphi Elements - Center Module",
-    category: "sofas"
+    id: 69,
+    image: "/missoni-bernard-towels/40x70.jpg",
+    alt: "Missoni Home Bernard Towels - 40x70",
+    category: "bathroom",
+    link: "/interior/bathroom"
   },
   {
-    id: 48,
-    image: "/Fredericia /Delphi Elements End Module.avif",
-    alt: "Fredericia Delphi Elements - End Module",
-    category: "sofas"
-  },
-  // Fredericia EJ220 Collection
-  {
-    id: 49,
-    image: "/Fredericia /EJ220 2 Seater.avif",
-    alt: "Fredericia EJ220 - 2 Seater",
-    category: "sofas"
+    id: 70,
+    image: "/missoni-bernard-towels/70x115.jpg",
+    alt: "Missoni Home Bernard Towels - 70x115",
+    category: "bathroom",
+    link: "/interior/bathroom"
   },
   {
-    id: 50,
-    image: "/Fredericia /EJ220 3 Seater.avif",
-    alt: "Fredericia EJ220 - 3 Seater",
-    category: "sofas"
+    id: 71,
+    image: "/missoni-bernard-towels/6pack.jpg",
+    alt: "Missoni Home Bernard Towels - 6 Pack",
+    category: "bathroom",
+    link: "/interior/bathroom"
   },
   {
-    id: 51,
-    image: "/Fredericia /EJ220 Corner.avif",
-    alt: "Fredericia EJ220 - Corner",
-    category: "sofas"
+    id: 72,
+    image: "/missoni-curt-beauty-bag/col160.png",
+    alt: "Missoni Home Curt Beauty Bag - Col.160",
+    category: "bathroom",
+    link: "/interior/bathroom"
   },
-  // Francois Ghost Mat Mirrors Collection
+  {
+    id: 73,
+    image: "/missoni-curt-home-bag/col160.jpg",
+    alt: "Missoni Home Curt Home Bag - Col.160",
+    category: "bathroom",
+    link: "/interior/bathroom"
+  },
+  {
+    id: 74,
+    image: "/missoni-giacomo-towel/col160.webp",
+    alt: "Missoni Home Giacomo Towel - Col.160",
+    category: "bathroom",
+    link: "/interior/bathroom"
+  },
+  {
+    id: 75,
+    image: "/nordan-magnetic-towel-holder/main.jpg",
+    alt: "Nordan Home Magnetic Towel Holder",
+    category: "bathroom",
+    link: "/interior/bathroom"
+  },
+  // Bathroom Mirrors - Implemented
   {
     id: 31,
-    image: "/FRANCOIS GHOST MAT/FRANCOIS GHOST MAT BLACK.webp",
+    image: "/francois-ghost/black.webp",
     alt: "Francois Ghost Mat Mirror - Black",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/francois-ghost-mat"
+    link: "/interior/bathroom/mirrors"
   },
   {
     id: 32,
-    image: "/FRANCOIS GHOST MAT/FRANCOIS GHOST MAT -WHITE.webp",
+    image: "/francois-ghost/white.webp",
     alt: "Francois Ghost Mat Mirror - White",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/francois-ghost-mat"
+    link: "/interior/bathroom/mirrors"
   },
-  // Montana Selfie Mirrors Collection
   {
     id: 33,
-    image: "/SELFIE MIRROR-MONTANA/Montana_Selection_SHELFIE_Mirror_01-White.png",
+    image: "/montana-mirrors/selfie-white.png",
     alt: "Montana Selfie Mirror - White",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/montana-selfie"
+    link: "/interior/bathroom/mirrors"
   },
   {
     id: 34,
-    image: "/SELFIE MIRROR-MONTANA/Montana_Selection_SHELFIE_Mirror_01-Fjord.png",
+    image: "/montana-mirrors/selfie-fjord.png",
     alt: "Montana Selfie Mirror - Fjord",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/montana-selfie"
+    link: "/interior/bathroom/mirrors"
   },
-  // Montana Look Mirrors Collection
   {
     id: 35,
-    image: "/MONTANA LOOK MIRROR/Montana_Selection_LOOK_White_Perspective.png",
+    image: "/montana-mirrors/look-white.png",
     alt: "Montana Look Mirror - White",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/montana-look"
+    link: "/interior/bathroom/mirrors"
   },
   {
     id: 36,
-    image: "/MONTANA LOOK MIRROR/Montana_Selection_LOOK_Fjord_Perspective.png",
+    image: "/montana-mirrors/look-fjord.png",
     alt: "Montana Look Mirror - Fjord",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/montana-look"
+    link: "/interior/bathroom/mirrors"
   },
-  // Montana Like Mirrors Collection
   {
     id: 37,
-    image: "/MONTANA LIKE MIRROR/Montana_Selection_LIKE_White_Perspective.png",
+    image: "/montana-mirrors/like-white.png",
     alt: "Montana Like Mirror - White",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/montana-like"
+    link: "/interior/bathroom/mirrors"
   },
   {
     id: 38,
-    image: "/MONTANA LIKE MIRROR/Montana_Selection_LIKE_Black_Perspective.png",
+    image: "/montana-mirrors/like-black.png",
     alt: "Montana Like Mirror - Black",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/montana-like"
+    link: "/interior/bathroom/mirrors"
   },
-  // Montana Around Mirrors Collection
   {
     id: 39,
-    image: "/MONTANA AROUND MIRROR/Montana_Selection_AROUND_Mirror_01_White_Perspective.png",
+    image: "/montana-mirrors/around-white.png",
     alt: "Montana Around Mirror - White",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/montana-around"
+    link: "/interior/bathroom/mirrors"
   },
   {
     id: 40,
-    image: "/MONTANA AROUND MIRROR/Montana_Selection_AROUND_Mirror_02-Fjord_Perspective.png",
+    image: "/montana-mirrors/around-fjord.png",
     alt: "Montana Around Mirror - Fjord",
     category: "mirrors",
-    link: "/interior/bathroom/mirrors/montana-around"
+    link: "/interior/bathroom/mirrors"
   },
-  // All Saints Mirrors with Lights Collection
-  {
-    id: 41,
-    image: "/ALL SAINTS MIRROR WITH LIGHT/ALL SAINTS MIRROR WITH LIGHTS - Amber.webp",
-    alt: "All Saints Mirror with Lights - Amber",
-    category: "mirrors",
-    link: "/interior/bathroom/mirrors/all-saints-with-lights"
-  },
-  {
-    id: 42,
-    image: "/ALL SAINTS MIRROR WITH LIGHT/ALL SAINTS MIRROR WITH LYS CRYSTAL.webp",
-    alt: "All Saints Mirror with Lights - Crystal",
-    category: "mirrors",
-    link: "/interior/bathroom/mirrors/all-saints-with-lights"
-  },
-  // All Saints Mirrors Collection
   {
     id: 19,
-    image: "/ALL SAINTS/AMBER.webp",
+    image: "/all-saints/amber.webp",
     alt: "All Saints Mirror - Amber",
     category: "mirrors",
     link: "/interior/bathroom/mirrors"
   },
   {
     id: 20,
-    image: "/ALL SAINTS/AQUAMARINE GREEN.webp",
+    image: "/all-saints/aquamarine-green.webp",
     alt: "All Saints Mirror - Aquamarine Green",
     category: "mirrors",
     link: "/interior/bathroom/mirrors"
   },
   {
     id: 21,
-    image: "/ALL SAINTS/BLACK.webp",
+    image: "/all-saints/black.webp",
     alt: "All Saints Mirror - Black",
     category: "mirrors",
     link: "/interior/bathroom/mirrors"
   },
   {
     id: 22,
-    image: "/ALL SAINTS/CRYSTAL.webp",
+    image: "/all-saints/crystal.webp",
     alt: "All Saints Mirror - Crystal",
     category: "mirrors",
     link: "/interior/bathroom/mirrors"
   },
   {
     id: 23,
-    image: "/ALL SAINTS/DUSTY PINK.webp",
+    image: "/all-saints/dusty-pink.webp",
     alt: "All Saints Mirror - Dusty Pink",
     category: "mirrors",
     link: "/interior/bathroom/mirrors"
   },
   {
     id: 24,
-    image: "/ALL SAINTS/WHITE.webp",
+    image: "/all-saints/white.webp",
     alt: "All Saints Mirror - White",
     category: "mirrors",
     link: "/interior/bathroom/mirrors"
   },
-  // Miscellaneous Products
+  // Bathroom Cabinets - Implemented
   {
-    id: 25,
-    image: "/interior-collection/miscellaneous/13290_0_5761-400x400.webp",
-    alt: "Interior Accessory"
+    id: 52,
+    image: "/Naver/Naver Hvitoljet eik kr 12 990.00.webp",
+    alt: "Naver Cabinet - Hvitoljet Eik",
+    category: "cabinets",
+    link: "/interior/bathroom/cabinets/naver"
   },
   {
-    id: 26,
-    image: "/interior-collection/miscellaneous/144333-400x400.jpg",
-    alt: "Interior Furniture"
+    id: 53,
+    image: "/Naver/Naver Oljet eik kr 12 990.00.webp",
+    alt: "Naver Cabinet - Oljet Eik",
+    category: "cabinets",
+    link: "/interior/bathroom/cabinets/naver"
   },
   {
-    id: 27,
-    image: "/interior-collection/miscellaneous/149004-400x400.jpg",
-    alt: "Interior Design Piece"
+    id: 54,
+    image: "/Naver/Naver Oljet valnøtt kr 12 990.00.webp",
+    alt: "Naver Cabinet - Oljet Valnøtt",
+    category: "cabinets",
+    link: "/interior/bathroom/cabinets/naver"
   },
   {
-    id: 28,
-    image: "/interior-collection/miscellaneous/157071-400x400.webp",
-    alt: "Interior Accessory"
+    id: 55,
+    image: "/Naver/Naver Såpet eik kr 12 990.00.webp",
+    alt: "Naver Cabinet - Såpet Eik",
+    category: "cabinets",
+    link: "/interior/bathroom/cabinets/naver"
+  },
+  // Living Room Chairs - Implemented
+  {
+    id: 56,
+    image: "/furniture-brands/dux-jetson.webp",
+    alt: "Dux Jetson Chair - Match Flax",
+    category: "chairs",
+    link: "/interior/living-room/chairs/dux"
   },
   {
-    id: 29,
-    image: "/interior-collection/miscellaneous/162770-400x400.webp",
-    alt: "Interior Furniture"
+    id: 57,
+    image: "/furniture-brands/moooi-heracleum.webp",
+    alt: "Moooi Heracleum III Light",
+    category: "chairs",
+    link: "/interior/living-room/chairs/moooi"
   },
   {
-    id: 30,
-    image: "/interior-collection/miscellaneous/171450-400x400.webp",
-    alt: "Interior Design"
+    id: 58,
+    image: "/furniture-brands/tradition-lille-petra.webp",
+    alt: "&Tradition Lille Petra Chair",
+    category: "chairs",
+    link: "/interior/living-room/chairs/traditions"
+  },
+  // Home Accessories - Implemented
+  {
+    id: 59,
+    image: "/eldvarm-emma-lantern/natural.jpg",
+    alt: "Eldvarm Emma Lantern",
+    category: "home-accessories",
+    link: "/interior/home-accessories"
+  },
+  {
+    id: 60,
+    image: "/cartel-products/battery-crystal.webp",
+    alt: "Cartel Battery Rechargeable Lamp",
+    category: "home-accessories",
+    link: "/interior/home-accessories"
+  },
+  {
+    id: 61,
+    image: "/cartel-products/abbracciaio-chrome.webp",
+    alt: "Cartel Abbracciaio Candlestick",
+    category: "home-accessories",
+    link: "/interior/home-accessories"
+  },
+  {
+    id: 62,
+    image: "/vitra-products/ball-clock-multicolor.jpg",
+    alt: "Vitra Ball Clock",
+    category: "home-accessories",
+    link: "/interior/home-accessories/wall-art"
+  },
+  {
+    id: 63,
+    image: "/serax-products/broquaine-vase.webp",
+    alt: "Serax Broquaine Vase",
+    category: "home-accessories",
+    link: "/interior/home-accessories"
+  },
+  {
+    id: 64,
+    image: "/fritz-hansen-candlestick/main.png",
+    alt: "Fritz Hansen Single Candlestick",
+    category: "home-accessories",
+    link: "/interior/home-accessories"
   }
 ];
 

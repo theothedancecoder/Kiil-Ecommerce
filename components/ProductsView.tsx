@@ -1,111 +1,114 @@
 "use client";
 
-import { Product, ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
-import ProductGrid from "./ProductGrid";
-import { CategorySelectorComponent } from "./ui/category-selector";
-import { Menu } from "lucide-react";
+import { Product } from "@/sanity.types";
 import { useState } from "react";
-import { useLanguage } from "@/lib/languageContext";
-import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import ProductGrid from "./ProductGrid";
+
+interface Category {
+  _id: string;
+  title: string;
+  slug: {
+    current: string;
+  };
+}
 
 interface ProductsViewProps {
   products: Product[];
-  categories: ALL_CATEGORIES_QUERYResult;
+  categories: Category[];
 }
 
-const ProductsView = ({ products, categories }: ProductsViewProps) => {
-  const { t } = useLanguage();
-  const [showMobileCategories, setShowMobileCategories] = useState(false);
+function ProductsView({ products, categories }: ProductsViewProps) {
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const router = useRouter();
+
+  const handleCategoryClick = (category: Category) => {
+    // If the category is "CARTEL" (misspelled Kartell), redirect to our Kartell page
+    if (category.title.toUpperCase() === "CARTEL") {
+      router.push("/kartell");
+      return;
+    }
+    
+    // If the category is "FRITZ HANSEN", redirect to our Fritz Hansen page
+    if (category.title.toUpperCase() === "FRITZ HANSEN") {
+      router.push("/fritz-hansen");
+      return;
+    }
+    
+    // Otherwise, filter products normally
+    setSelectedCategory(category._id);
+  };
+
+  const filteredProducts = selectedCategory === "all" 
+    ? products 
+    : products.filter(product => 
+        product.categories?.some(cat => cat._ref === selectedCategory)
+      );
 
   return (
-    <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Mobile Category Button - Only visible on mobile phones */}
-      <div className="sm:hidden mb-4">
-        <button
-          onClick={() => setShowMobileCategories(!showMobileCategories)}
-          className="flex items-center space-x-2 luxury-button w-full justify-center"
-        >
-          <Menu className="w-5 h-5" />
-          <span>Categories</span>
-        </button>
-      </div>
-
-      {/* Mobile Categories Sidebar - Only shown when toggled on mobile */}
-      {showMobileCategories && (
-        <div className="sm:hidden mb-4">
-          <div className="luxury-card p-4">
-            <h3 className="font-serif text-xl text-primary mb-4">Categories</h3>
-            <CategorySelectorComponent categories={categories} />
+    <div className="bg-white">
+      {/* Category Filter */}
+      {categories && categories.length > 0 && (
+        <div className="bg-gray-50 border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex flex-wrap gap-3 justify-center">
+              <button
+                onClick={() => setSelectedCategory("all")}
+                className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                  selectedCategory === "all"
+                    ? "bg-gray-900 text-white shadow-sm"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                }`}
+                style={{
+                  borderRadius: '2px',
+                  letterSpacing: '0.025em'
+                }}
+              >
+                ALL PRODUCTS
+              </button>
+              {categories
+                .sort((a, b) => {
+                  // Move CABINET to the end
+                  if (a.title.toUpperCase() === "CABINET") return 1;
+                  if (b.title.toUpperCase() === "CABINET") return -1;
+                  return 0;
+                })
+                .map((category) => (
+                <button
+                  key={category._id}
+                  onClick={() => handleCategoryClick(category)}
+                  className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                    selectedCategory === category._id
+                      ? "bg-gray-900 text-white shadow-sm"
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  }`}
+                  style={{
+                    borderRadius: '2px',
+                    letterSpacing: '0.025em'
+                  }}
+                >
+                  {/* Display custom names for better UX */}
+                  {category.title.toUpperCase() === "CARTEL" ? "KARTELL" : 
+                   category.title.toUpperCase() === "SPEIL" ? "UMAGA" : 
+                   category.title.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
 
-      {/* Products Grid - Full width on iPad and Desktop */}
-      <div className="w-full">
-        <ProductGrid products={products} />
-      </div>
+      {/* Products Grid */}
+      <ProductGrid products={filteredProducts} />
 
-      {/* Partners Section */}
-      <section className="mt-12">
-        <h2 className="text-3xl font-serif text-center mb-8">{t('partners.title') || 'Our Partners'}</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Partner Box 1 - Kartell */}
-          <div 
-            className="luxury-card bg-[#f8f8f8] overflow-hidden relative"
-            style={{ height: '409.63px' }}
-          >
-            <div className="absolute inset-0">
-              <Image
-                src="/interior-collection/kartell/Kartell_Cassinella19537.webp"
-                alt="Kartell Cassinella"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-black/40" />
-            </div>
-            <div className="relative h-full flex flex-col justify-center items-center p-8 text-white">
-              <h3 className="text-2xl font-serif mb-4">{t('partners.box1.title') || 'Kartell'}</h3>
-              <p className="text-center mb-6">
-                {t('partners.box1.description') || 'Luxurious beauty in the Home.'}
-              </p>
-              <button className="bg-white text-black px-6 py-2 rounded-lg hover:bg-white/90 transition-colors">
-                {t('product.shopNow')}
-              </button>
-            </div>
-          </div>
-
-          {/* Partner Box 2 - Montana */}
-          <div 
-            className="luxury-card bg-[#f8f8f8] overflow-hidden relative"
-            style={{ height: '409.63px' }}
-          >
-            <div className="absolute inset-0">
-              <Image
-                src="/montana_pantonwire_d35_blackred_rosehiptop_h.webp"
-                alt="Montana Furniture"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-black/40" />
-            </div>
-            <div className="relative h-full flex flex-col justify-center items-center p-8 text-white">
-              <h3 className="text-2xl font-serif mb-4">{t('partners.box2.title') || 'Montana'}</h3>
-              <p className="text-center mb-6">
-                {t('partners.box2.description') || 'Storage that elevates your home.'}
-              </p>
-              <Link 
-                href="/montana"
-                className="bg-white text-black px-6 py-2 rounded-lg hover:bg-white/90 transition-colors inline-block text-center"
-              >
-                {t('product.shopNow')}
-              </Link>
-            </div>
-          </div>
+      {/* No Products Message */}
+      {filteredProducts.length === 0 && (
+        <div className="text-center py-16 bg-white">
+          <p className="text-gray-500 text-lg">No products found in this category.</p>
         </div>
-      </section>
+      )}
     </div>
   );
-};
+}
 
 export default ProductsView;

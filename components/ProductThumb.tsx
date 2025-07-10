@@ -9,81 +9,69 @@ import { useLanguage } from "@/lib/languageContext";
 function ProductThumb({product, showPrice = true}: {product: Product, showPrice?: boolean}) {
     const { t } = useLanguage();
     const isOutOfStock = product.stock != null && product.stock <= 0;
-    const [showDescription, setShowDescription] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     
     return (
-        <div className={`w-full h-[380px] sm:h-[420px] lg:h-[460px] luxury-card group relative flex flex-col ${isOutOfStock ? "opacity-80" : ""}`}>
-            {/* Image Container - Fixed aspect ratio */}
+        <div 
+            className={`group bg-white transition-all duration-300 ease-out ${isOutOfStock ? "opacity-70" : ""}`}
+            style={{ width: '194.55px' }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            {/* Image Container */}
             <div 
-                className="relative w-full aspect-square overflow-hidden rounded-t-lg cursor-pointer"
-                onClick={() => setShowDescription(!showDescription)}
+                className="relative overflow-hidden cursor-pointer bg-gray-50"
+                style={{
+                    width: '194.55px',
+                    height: '194.55px',
+                    border: '1px solid #f0f0f0',
+                    borderRadius: '4px'
+                }}
             >
+                {/* Subtle hover shadow */}
+                <div 
+                    className={`absolute inset-0 rounded transition-all duration-300 ${isHovered ? 'shadow-lg' : ''}`}
+                    style={{
+                        boxShadow: isHovered ? '0 8px 25px rgba(0,0,0,0.1)' : 'none'
+                    }}
+                />
+                
                 {product.image && (
-                    <div className="absolute inset-0 bg-background/5">
+                    <div className="absolute inset-0">
                         <Image
-                            className="object-cover object-center transition-transform duration-700 
-                                     group-hover:scale-110"
+                            className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
                             src={imageUrl(product.image).url()}
                             alt={product.name || "Product image"}
                             fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            sizes="194px"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent 
-                                      opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        
+                        {/* Subtle overlay on hover */}
+                        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                 )}
+                
                 {isOutOfStock && (
-                    <div className="absolute inset-0 flex items-center justify-center 
-                                  bg-background/80 backdrop-blur-sm">
-                        <span className="text-foreground font-serif text-xl">{t('product.outOfStock')}</span>
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/95 backdrop-blur-sm">
+                        <span className="text-gray-600 font-medium text-sm">{t('product.outOfStock')}</span>
                     </div>
                 )}
             </div>
-
-            {/* Content Container - Consistent height */}
-            <div className="flex-1 flex flex-col justify-between p-3 sm:p-4">
-                {/* Product Name - Fixed height with overflow handling */}
-                <div className="h-[3rem] flex items-start justify-center w-full text-center">
-                    <h2 className="line-clamp-2 leading-tight transition-colors duration-300 group-hover:text-accent w-full"
-                        style={{
-                            fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
-                            fontSize: "14px",
-                            color: "#333333"
-                        }}>
-                        {product.name}
-                    </h2>
-                </div>
-                
-                {/* Description - Only shown when clicked, positioned above price */}
-                {showDescription && (
-                    <div className="flex-1 py-2 max-h-[4rem] overflow-y-auto text-center">
-                        <p className="leading-tight"
-                           style={{
-                               fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
-                               fontSize: "14px",
-                               color: "#333333"
-                           }}>
-                            {product.description?.map((block) => 
-                                block._type === "block" 
-                                    ? block.children?.map((child) => child.text).join("") 
-                                    : ""
-                        ).join("") || t('product.noDescription')}
-                        </p>
-                    </div>
-                )}
-
-                {/* Price - Always at bottom with consistent positioning */}
+            
+            {/* Product Info Below Image - Ballard Designs Style */}
+            <div className="pt-3 text-center">
+                <h3 className="text-gray-900 font-medium text-sm leading-tight mb-1"
+                    style={{
+                        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                        letterSpacing: "0.01em",
+                        lineHeight: "1.3"
+                    }}>
+                    {product.name}
+                </h3>
                 {showPrice && (
-                    <div className="pt-2 mt-auto text-center w-full">
-                        <span className="block"
-                              style={{
-                                  fontFamily: "'Montserrat', Verdana, Helvetica, sans-serif",
-                                  fontSize: "14px",
-                                  color: "#333333"
-                              }}>
-                            kr {product.price?.toFixed(2)}
-                        </span>
-                    </div>
+                    <p className="text-gray-700 text-sm font-medium">
+                        {product.price?.toLocaleString('no-NO')} kr
+                    </p>
                 )}
             </div>
         </div>
