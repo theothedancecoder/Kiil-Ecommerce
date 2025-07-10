@@ -69,7 +69,7 @@ function BlackFridayBanner() {
                         className={`object-cover transition-all duration-500 absolute inset-0
                             ${index === currentIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
                         style={{ 
-                            objectPosition: index === 0 ? (windowWidth >= 768 && windowWidth <= 1024 ? 'calc(95% + 600%) center' : 'calc(95% + 1200%) center') : '0% 80%',
+                            objectPosition: index === 0 ? (windowWidth >= 768 && windowWidth <= 1024 ? 'calc(95% + 600%) 60%' : 'calc(95% + 1200%) 60%') : '0% 80%',
                             maxWidth: "100%",
                             maxHeight: "100%"
                         }}
@@ -112,43 +112,13 @@ function BlackFridayBanner() {
                 {/* Box on desktop */}
                 <div className="relative h-full hidden sm:block">
                     <div className="container mx-auto px-4 sm:px-6 md:px-8 h-full flex items-end pb-16">
-                        {currentIndex !== 0 && (
-                            <div className="w-[200px] sm:w-[220px] md:w-[240px] h-[240px] sm:h-[260px] md:h-[280px] bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-4 sm:p-6 flex flex-col items-center justify-between ml-0 sm:ml-0 md:ml-0">
-                                {/* Made For Summer Box */}
-                                <div className="w-[160px] md:w-[180px] h-[28px] md:h-[34.55px] flex items-center justify-center mb-4 mx-auto">
-                                    <TitleText />
-                                </div>
-                                {/* Product List */}
-                                <div className="space-y-4 mb-3 text-center">
-                                    <p className="text-lg font-montserrat text-[#212529] leading-relaxed">{t('banner.collection')}</p>
-                                </div>
-                                {/* Discount Badge */}
-                                <div className="inline-flex items-center justify-center px-6 py-2 bg-[#eff9ff] text-primary rounded-lg mb-2">
-                                    <span className="text-xl font-bold">15% {t('banner.off')}</span>
-                                </div>
-                                {/* Shop Now Button */}
-                                <Link 
-                                    href="/mobler" 
-                                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
-                                >
-                                    {t('product.shopNow')}
-                                </Link>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-
-                {/* Box below image on mobile */}
-                <div className="sm:hidden w-full bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 mt-4 flex flex-col items-center justify-between">
-                    {currentIndex !== 0 && (
-                        <>
+                        <div className="w-[200px] sm:w-[220px] md:w-[240px] h-[240px] sm:h-[260px] md:h-[280px] bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-4 sm:p-6 flex flex-col items-center justify-between ml-0 sm:ml-0 md:ml-0">
                             {/* Made For Summer Box */}
-                            <div className="w-full flex items-center justify-center mb-4">
+                            <div className="w-[160px] md:w-[180px] h-[28px] md:h-[34.55px] flex items-center justify-center mb-4 mx-auto">
                                 <TitleText />
                             </div>
                             {/* Product List */}
-                            <div className="space-y-4 mb-3 text-center w-full">
+                            <div className="space-y-4 mb-3 text-center">
                                 <p className="text-lg font-montserrat text-[#212529] leading-relaxed">{t('banner.collection')}</p>
                             </div>
                             {/* Discount Badge */}
@@ -162,8 +132,32 @@ function BlackFridayBanner() {
                             >
                                 {t('product.shopNow')}
                             </Link>
-                        </>
-                    )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                {/* Box below image on mobile */}
+                <div className="sm:hidden w-full bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 mt-4 flex flex-col items-center justify-between">
+                    {/* Made For Summer Box */}
+                    <div className="w-full flex items-center justify-center mb-4">
+                        <TitleText />
+                    </div>
+                    {/* Product List */}
+                    <div className="space-y-4 mb-3 text-center w-full">
+                        <p className="text-lg font-montserrat text-[#212529] leading-relaxed">{t('banner.collection')}</p>
+                    </div>
+                    {/* Discount Badge */}
+                    <div className="inline-flex items-center justify-center px-6 py-2 bg-[#eff9ff] text-primary rounded-lg mb-2">
+                        <span className="text-xl font-bold">15% {t('banner.off')}</span>
+                    </div>
+                    {/* Shop Now Button */}
+                    <Link 
+                        href="/mobler" 
+                        className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
+                    >
+                        {t('product.shopNow')}
+                    </Link>
                 </div>
         </div>
     );

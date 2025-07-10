@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ".././globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
+import BlackFridayBanner from "@/components/BlackFridayBanner";
 import { SanityLive } from "@/sanity/lib/live";
 import { VisualEditing } from "next-sanity";
 import { draftMode   } from "next/headers";
@@ -34,6 +35,7 @@ export default async function RootLayout({
 
           <main>  
             <Header/>
+            <BlackFridayBanner/>
             {children}</main>
             <SanityLive/> {/*it is a sanity live component//dont forget this else  live update wont work*/}
         </LanguageProvider>

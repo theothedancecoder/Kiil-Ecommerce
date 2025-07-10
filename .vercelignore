@@ -1,60 +1,19 @@
-# Dependencies
+# Ignore large files and development-only directories
+temp_large_files
+*.mp4
+*.mov
+*.avi
+*.wmv
+*.flv
+*.mkv
+
+# Ignore development files
+.git
+.env*.local
+.next
 node_modules
 
-# Build output
-.next
-out
-
-# Cache directories
-.cache
-.npm
-
-# Large media files
-**/*.mp4
-**/*.mov
-**/*.avi
-**/*.png
-**/*.jpg
-**/*.jpeg
-**/*.gif
-**/*.webp
-**/*.svg
-
-# Development files
-README.md
-.git
-.gitignore
-.env.local
-.env.*.local
-
-# Debug logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Editor directories
-.idea
-.vscode
-
-# Test files
-__tests__
-*.test.js
-*.spec.js
-
-# Documentation
-docs/
-
-# Demo and example files
-appointment-booking-demo.html
-*.demo.*
-*.example.*
-
-# Large JSON files (if any)
-**/*-large.json
-**/*-backup.json
-
-# Temporary files
-*.tmp
-*.temp
-.DS_Store
-Thumbs.db
+# Ignore documentation and non-essential files
+docs
+*.md
+*.log

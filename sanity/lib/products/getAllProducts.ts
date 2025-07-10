@@ -2,8 +2,23 @@ import { defineQuery } from "next-sanity";
 import { sanityFetch } from "../live";
 
 export const getAllProducts = async () => {
-  const ALL_PRODUCTS_QUERY = defineQuery(`*[_type == "product"] 
-      | order(name asc)`);
+  const ALL_PRODUCTS_QUERY = defineQuery(`*[_type == "product"] {
+    _id,
+    name,
+    slug,
+    image {
+      ...,
+      asset->
+    },
+    description,
+    price,
+    categories[]->{
+      _id,
+      title,
+      slug
+    },
+    stock
+  } | order(name asc)`);
 
   try {
     // Use sanityFetch to send the query to the Sanity server
