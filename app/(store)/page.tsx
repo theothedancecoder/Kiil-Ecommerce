@@ -173,43 +173,70 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <Link href="/fritz-hansen" className="group text-center">
-              <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                  Fritz Hansen
-                </h3>
-                <p className="text-sm text-stone-500 mt-2">Danish Design</p>
-              </div>
-            </Link>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-8">
+              <Link href="/fritz-hansen" className="group text-center">
+                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                    Fritz Hansen
+                  </h3>
+                  <p className="text-sm text-stone-500 mt-2">Danish Design</p>
+                </div>
+              </Link>
 
-            <Link href="/kartell" className="group text-center">
-              <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                  Kartell
-                </h3>
-                <p className="text-sm text-stone-500 mt-2">Italian Innovation</p>
-              </div>
-            </Link>
+              <Link href="/kartell" className="group text-center">
+                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                    Kartell
+                  </h3>
+                  <p className="text-sm text-stone-500 mt-2">Italian Innovation</p>
+                </div>
+              </Link>
 
-            <Link href="/montana" className="group text-center">
-              <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                  Montana
-                </h3>
-                <p className="text-sm text-stone-500 mt-2">Modular Systems</p>
-              </div>
-            </Link>
+              <Link href="/montana" className="group text-center">
+                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                    Montana
+                  </h3>
+                  <p className="text-sm text-stone-500 mt-2">Modular Systems</p>
+                </div>
+              </Link>
 
-            <Link href="/interior" className="group text-center">
-              <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                  & More
-                </h3>
-                <p className="text-sm text-stone-500 mt-2">Explore All</p>
-              </div>
-            </Link>
-          </div>
+              <Link href="/vitra" className="group text-center">
+                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                    Vitra
+                  </h3>
+                  <p className="text-sm text-stone-500 mt-2">Swiss Design</p>
+                </div>
+              </Link>
+
+              <Link href="/louis-poulsen" className="group text-center">
+                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                    Louis Poulsen
+                  </h3>
+                  <p className="text-sm text-stone-500 mt-2">Scandinavian Lighting</p>
+                </div>
+              </Link>
+
+              <Link href="/dux" className="group text-center">
+                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                    DUX
+                  </h3>
+                  <p className="text-sm text-stone-500 mt-2">Swedish Furniture</p>
+                </div>
+              </Link>
+
+              <Link href="/umage" className="group text-center">
+                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                    Umage
+                  </h3>
+                  <p className="text-sm text-stone-500 mt-2">Furniture Collection</p>
+                </div>
+              </Link>
+            </div>
         </div>
       </section>
 

@@ -1,4 +1,4 @@
-"use client";
+y "use client";
 
 import { useLanguage } from "@/lib/languageContext";
 import Link from "next/link";
@@ -68,7 +68,7 @@ const InteriorSidebar = () => {
       href: "/interior/bathroom/accessories"
     },
     {
-      title: "Cabinets",
+      title: "Montana",
       href: "/interior/bathroom/cabinets"
     },
     {
@@ -94,7 +94,7 @@ const InteriorSidebar = () => {
       href: "/interior/bedroom/nightstand"
     },
     {
-      title: "Cabinets",
+      title: "Montana",
       href: "/interior/bedroom/cabinets"
     },
     {

@@ -29,6 +29,8 @@ interface ProductPageProps {
 }
 
 export default function KartellProductPage({ params }: ProductPageProps) {
+  const { productId } = params;
+  
   // Define all Kartell products (same as in the main page)
   const kartellProducts: KartellProduct[] = [
     {
@@ -251,7 +253,7 @@ export default function KartellProductPage({ params }: ProductPageProps) {
     }
   ];
 
-  const product = kartellProducts.find(p => p.id === params.productId);
+  const product = kartellProducts.find(p => p.id === productId);
 
   if (!product) {
     notFound();

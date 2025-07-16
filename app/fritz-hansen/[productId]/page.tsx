@@ -28,6 +28,8 @@ interface FritzHansenProduct {
 }
 
 export default function FritzHansenProductPage({ params }: { params: { productId: string } }) {
+  const { productId } = params;
+  
   const products: FritzHansenProduct[] = [
     {
       id: 'grand-prix-4130',
@@ -739,7 +741,7 @@ export default function FritzHansenProductPage({ params }: { params: { productId
     }
   ];
 
-  const product = products.find(p => p.id === params.productId);
+  const product = products.find(p => p.id === productId);
 
   if (!product) {
     notFound();

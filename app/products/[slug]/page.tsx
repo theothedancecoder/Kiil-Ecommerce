@@ -9,14 +9,15 @@ export const dynamic = "force-static";
 export const revalidate = 1800; // 30 minutes
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
   const allProducts = await getAllProducts();
-  const product = allProducts.find((p: Product) => p.slug?.current === params.slug);
+  const product = allProducts.find((p: Product) => p.slug?.current === slug);
 
   if (!product) {
     notFound();
