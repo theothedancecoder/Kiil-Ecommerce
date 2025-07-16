@@ -1,4 +1,4 @@
-   "use client";
+"use client";
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -75,7 +75,7 @@ export default function FritzHansenPage() {
       description: 'Contemporary outdoor lounge chair with weather-resistant materials and modern design.',
       price: 12900,
       image: '/Fritz Hansen/Regatta-Chair/S1508500-Regatta-Lounge-Chair.jpg',
-      category: 'Seating',
+      category: 'Outdoor',
       variants: [
         { name: 'Standard', image: '/Fritz Hansen/Regatta-Chair/S1508500-Regatta-Lounge-Chair.jpg', material: 'Weather-resistant' }
       ]
@@ -86,7 +86,7 @@ export default function FritzHansenPage() {
       description: 'Matching stool for the Regatta collection, perfect for outdoor relaxation.',
       price: 8900,
       image: '/Fritz Hansen/Regatta-stool/S1508700-Regatta-Lounge-Stool.jpg',
-      category: 'Seating',
+      category: 'Outdoor',
       variants: [
         { name: 'Standard', image: '/Fritz Hansen/Regatta-stool/S1508700-Regatta-Lounge-Stool.jpg', material: 'Weather-resistant' }
       ]
@@ -97,7 +97,7 @@ export default function FritzHansenPage() {
       description: 'Round outdoor table designed to complement the Regatta seating collection.',
       price: 9900,
       image: '/Fritz Hansen/Regatta-table-Ø-60/S1508600-Regatta-Lounge-Table.jpg',
-      category: 'Tables',
+      category: 'Outdoor',
       variants: [
         { name: 'Standard', image: '/Fritz Hansen/Regatta-table-Ø-60/S1508600-Regatta-Lounge-Table.jpg', material: 'Weather-resistant' }
       ]
@@ -108,7 +108,7 @@ export default function FritzHansenPage() {
       description: 'Elegant outdoor bench that completes the Regatta collection with comfortable seating for two.',
       price: 29999,
       image: '/Fritz Hansen/Regatta-Bench/S1508650-Regatta-Lounge-Bench.jpg',
-      category: 'Seating',
+      category: 'Outdoor',
       variants: [
         { name: 'FSC Teak', image: '/Fritz Hansen/Regatta-Bench/S1508650-Regatta-Lounge-Bench.jpg', material: 'FSC-certified teak' }
       ]
@@ -174,7 +174,7 @@ export default function FritzHansenPage() {
       description: 'Classic outdoor dining chair with clean lines and durable construction. Perfect for outdoor dining and relaxation.',
       price: 9699,
       image: '/Fritz Hansen/Drachmann chair /Drachmann chair NOK  9,699.webp',
-      category: 'Seating',
+      category: 'Outdoor',
       variants: [
         { name: 'Natural Teak', image: '/Fritz Hansen/Drachmann chair /Drachmann chair NOK  9,699.webp', material: 'FSC-certified teak' }
       ]
@@ -185,7 +185,7 @@ export default function FritzHansenPage() {
       description: 'Premium outdoor seat cushion designed specifically for the Drachmann chair. Weather-resistant fabric in multiple colors.',
       price: 2599,
       image: '/Fritz Hansen/Seat-cushion-for-Drachmann-chair /Seat cushion for Drachmann chair NOK  2,599  Color -  Ash.webp',
-      category: 'Accessories',
+      category: 'Outdoor',
       variants: [
         { name: 'Ash', image: '/Fritz Hansen/Seat-cushion-for-Drachmann-chair /Seat cushion for Drachmann chair NOK  2,599  Color -  Ash.webp', material: 'Weather-resistant fabric' },
         { name: 'Charcoal', image: '/Fritz Hansen/Seat-cushion-for-Drachmann-chair /Seat cushion for Drachmann chair NOK  2,599  Color -  Charcoal.webp', material: 'Weather-resistant fabric' },
@@ -404,6 +404,122 @@ export default function FritzHansenPage() {
         { name: '86x86 cm', image: '/Fritz Hansen/Drachmann-dining-table/Drachmann spisebord kr 13 499  Størrelse - 86x86.webp', material: 'Certified solid teak wood' },
         { name: '156x86 cm', image: '/Fritz Hansen/Drachmann-dining-table/Drachmann dining table NOK  20,499  Size -  156x86.webp', material: 'Certified solid teak wood' },
         { name: '190x86 cm', image: '/Fritz Hansen/Drachmann-dining-table/Drachmann dining table NOK  28,499  Size -  190x86.webp', material: 'Certified solid teak wood' }
+      ]
+    },
+    {
+      id: 'skagerak-cutter-wardrobe',
+      name: 'Skagerak Cutter Wardrobe',
+      description: 'The Cutter Wardrobe combines Scandinavian minimalism with functional design. Featuring clean lines and premium wood construction, this wardrobe offers ample storage while maintaining an elegant aesthetic. Made to order with approximately 6 weeks delivery time.',
+      price: 8999,
+      image: '/Fritz Hansen/Skagerak-Cutter-Wardrobe/Skagerak Cutter Wardrobe kr 8 999  Base - Teak.webp',
+      category: 'Accessories',
+      variants: [
+        { name: 'Teak', image: '/Fritz Hansen/Skagerak-Cutter-Wardrobe/Skagerak Cutter Wardrobe kr 8 999  Base - Teak.webp', material: 'Solid teak' },
+        { name: 'Oak', image: '/Fritz Hansen/Skagerak-Cutter-Wardrobe/Skagerak Cutter Wardrobe NOK  8,999  Base -  Oak.webp', material: 'Solid oak' },
+        { name: 'Black', image: '/Fritz Hansen/Skagerak-Cutter-Wardrobe/Skagerak Cutter Wardrobe NOK  9,399  Base -  Black.webp', material: 'Painted wood' }
+      ]
+    },
+    {
+      id: 'orient-p2-pendant',
+      name: 'Orient™ P2 Pendant',
+      description: 'Orient pendant was designed by Jo Hammerborg in 1963 and relaunched in new materials in 2013. A beautiful pendant that provides a soft light in the room. This is a made to order item with approximately 6 weeks delivery time.',
+      price: 6699,
+      image: '/Fritz Hansen/Orient™-P2-pendant/Orient™ P2 pendant NOK  6,699  Color -  Matte black aluminum.png',
+      category: 'Lighting',
+      variants: [
+        { name: 'Matte Black Aluminum', image: '/Fritz Hansen/Orient™-P2-pendant/Orient™ P2 pendant NOK  6,699  Color -  Matte black aluminum.png', material: 'Matte black aluminum' },
+        { name: 'Aluminum', image: '/Fritz Hansen/Orient™-P2-pendant/Orient™ P2 pendant kr  7 299  Color -  Aluminum.png', material: 'Aluminum' },
+        { name: 'Copper', image: '/Fritz Hansen/Orient™-P2-pendant/Orient™ P2 pendant NOK  9,999  Color -  Copper.png', material: 'Copper' }
+      ]
+    },
+    {
+      id: 'norr-wall-shelf',
+      name: 'Norr Wall Shelf',
+      description: 'Practical and decorative shelf designed by Ditte Buus Nielsen for Skagerak/Fritz Hansen. Solid untreated oak with leather strap and hanger. This is a made to order item with approximately 4 weeks delivery time.',
+      price: 4099,
+      image: '/Fritz Hansen/Norr-wall-shelf/Norr wall shelf NOK  4,099.jpg',
+      category: 'Accessories',
+      variants: [
+        { name: 'Untreated Oak with Leather', image: '/Fritz Hansen/Norr-wall-shelf/Norr wall shelf NOK  4,099.jpg', material: 'Untreated solid oak with leather strap' }
+      ]
+    },
+    {
+      id: 'georg-console-table',
+      name: 'Georg Console Table',
+      description: 'Georg console table is designed by Christina Liljenberg Halstrøm for Fritz Hansen. Part of the award-winning Georg series that combines Scandinavian sensuality and Japanese minimalism. Perfect for furnishing the hall and other parts of the home in a functional and stylish way.',
+      price: 10499,
+      image: '/Fritz Hansen/Georg-console-table-Skagerak/Georg console table Skagerak NOK  10,499  Variants -  Untreated oak.jpg',
+      category: 'Tables',
+      variants: [
+        { name: 'Untreated Oak', image: '/Fritz Hansen/Georg-console-table-Skagerak/Georg console table Skagerak NOK  10,499  Variants -  Untreated oak.jpg', material: 'Untreated oak' },
+        { name: 'Black', image: '/Fritz Hansen/Georg-console-table-Skagerak/Georg console table Skagerak NOK  10,499  Variants -  black.jpg', material: 'Black lacquered oak' }
+      ]
+    },
+    {
+      id: 'hven-bar-stool',
+      name: 'Hven Bar Stool',
+      description: 'The Hven bar stool is designed by Anton Björsing and manufactured by Skagerak/Fritz Hansen. The bar stool is both robust and elegant and has good seating comfort. This is a made to order item with approximately 8 weeks delivery time.',
+      price: 8599,
+      image: '/Fritz Hansen/Hven-bar-stool/Hven bar stool from Skagerak NOK  8,599  Color -  Untreated oak.jpg',
+      category: 'Seating',
+      variants: [
+        { name: 'Untreated Oak', image: '/Fritz Hansen/Hven-bar-stool/Hven bar stool from Skagerak NOK  8,599  Color -  Untreated oak.jpg', material: 'Untreated oak' },
+        { name: 'Oiled Oak', image: '/Fritz Hansen/Hven-bar-stool/Hven bar stool from Skagerak NOK  10,499  Color -  Oiled oak.jpg', material: 'Oiled oak' },
+        { name: 'Soaped Oak', image: '/Fritz Hansen/Hven-bar-stool/Hven bar stool from Skagerak NOK  10,499  Color -  Soaped oak.jpg', material: 'Soaped oak' },
+        { name: 'White Pigmented Oak', image: '/Fritz Hansen/Hven-bar-stool/Hven bar stool from Skagerak NOK  10,499  Color -  White pigmented oak.jpg', material: 'White pigmented oak' }
+      ]
+    },
+    {
+      id: 'series-7-3107-chair',
+      name: 'Series 7™ 3107 Chair Front Upholstered',
+      description: 'The Series 7 chair was designed by Arne Jacobsen in 1955. The chair has become iconic and is Fritz Hansen\'s best-selling chair of all time. The chair can be customized with different colors, materials and frames. This is a made to order item with approximately 8 weeks delivery time.',
+      price: 10999,
+      image: '/Fritz Hansen/Series-7™-3107-chair/Series 7™ 3107 chair front upholstered with chrome legs NOK  10,999  Color -  Oak veneer:Hallingdal 65 Light Grey 103.png',
+      category: 'Seating',
+      variants: [
+        { name: 'Oak veneer/Hallingdal Light Grey', image: '/Fritz Hansen/Series-7™-3107-chair/Series 7™ 3107 chair front upholstered with chrome legs NOK  10,999  Color -  Oak veneer:Hallingdal 65 Light Grey 103.png', material: 'Oak veneer with Hallingdal 65 Light Grey 103' },
+        { name: 'Oak veneer/Sunniva Light Beige', image: '/Fritz Hansen/Series-7™-3107-chair/Series 7™ 3107 chair front upholstered with chrome legs NOK  10,999  Color -  Oak veneer:Sunniva Light Beige 233.png', material: 'Oak veneer with Sunniva Light Beige 233' },
+        { name: 'Ash veneer/Grace Leather Walnut', image: '/Fritz Hansen/Series-7™-3107-chair/Series 7™ 3107 chair front upholstered with chrome legs NOK  19,999  Color -  Ash veneer:Grace leather Walnut.png', material: 'Ash veneer with Grace leather Walnut' },
+        { name: 'Black Ash/Grace Leather', image: '/Fritz Hansen/Series-7™-3107-chair/3107FRU-CA195-ELBLA-CST-r0.png', material: 'Black ash veneer with Grace leather Black' }
+      ]
+    },
+    {
+      id: 'skagerak-cutter-bench',
+      name: 'Skagerak Cutter Bench',
+      description: 'The stylish Cutter series began as a counterbalance to the nostalgic and romantic design that has been the norm for wooden garden benches for many years. Designer Niels Hvass focused on a clean, simple and sculptural expression, creating a bench that is distinctive in its design language. This is a made to order item with approximately 4 weeks delivery time.',
+      price: 12499,
+      image: '/Fritz Hansen/Skagerak-Cutter-Bench/Skagerak Cutter Bench NOK  12,499  Variants -  Oak.jpg',
+      category: 'Seating',
+      variants: [
+        { name: 'Oak', image: '/Fritz Hansen/Skagerak-Cutter-Bench/Skagerak Cutter Bench NOK  12,499  Variants -  Oak.jpg', material: 'Solid oak' },
+        { name: 'Teak', image: '/Fritz Hansen/Skagerak-Cutter-Bench/Skagerak Cutter Bench NOK  12,499  Variants -  Teak.jpg', material: 'Solid teak' },
+        { name: 'Black', image: '/Fritz Hansen/Skagerak-Cutter-Bench/Skagerak Cutter Bench NOK  12,499  Variants -  black.jpg', material: 'Black oak' }
+      ]
+    },
+    {
+      id: 'skagerak-cutter-box',
+      name: 'Skagerak Cutter Box',
+      description: 'Cutter High Drawer. Starting from a simple bench, the Cutter design has been continuously developed so that the series today consists of a number of beautifully designed utility products for the entire home. Teak, oak and stainless steel are the consistent materials, and the exclusive design testifies to uncompromising and rich craftsmanship. This is a made to order item with approximately 4 weeks delivery time.',
+      price: 2799,
+      image: '/Fritz Hansen/Skagerak-Cutter-Box/Skagerak Cutter Box NOK  2,799  Base -  Oak.png',
+      category: 'Accessories',
+      variants: [
+        { name: 'Oak', image: '/Fritz Hansen/Skagerak-Cutter-Box/Skagerak Cutter Box NOK  2,799  Base -  Oak.png', material: 'Solid oak' },
+        { name: 'Teak', image: '/Fritz Hansen/Skagerak-Cutter-Box/Skagerak Cutter Box NOK  2,799  Base -  Teak.jpg', material: 'Solid teak' },
+        { name: 'Black', image: '/Fritz Hansen/Skagerak-Cutter-Box/Skagerak Cutter Box NOK  2,999  Base -  Black.png', material: 'Black oak' }
+      ]
+    },
+    {
+      id: 'skagerak-cutter-box-low',
+      name: 'Skagerak Cutter Box Low',
+      description: 'Cutter Low Drawer. Starting from a simple bench, the Cutter design has been continuously developed so that the series today consists of a number of beautifully designed utility products for the entire home. Teak, oak and stainless steel are the consistent materials, and the exclusive design testifies to uncompromising and rich craftsmanship. This is a made to order item with approximately 4 weeks delivery time.',
+      price: 1549,
+      image: '/Fritz Hansen/Skagerak-Cutter-Box-Low/Skagerak Cutter Box Low kr  1 549  Base -  Oak.webp',
+      category: 'Accessories',
+      variants: [
+        { name: 'Oak', image: '/Fritz Hansen/Skagerak-Cutter-Box-Low/Skagerak Cutter Box Low kr  1 549  Base -  Oak.webp', material: 'Solid oak' },
+        { name: 'Teak', image: '/Fritz Hansen/Skagerak-Cutter-Box-Low/Skagerak Cutter Box Low kr  1 549  Base -  Teak.webp', material: 'Solid teak' },
+        { name: 'Black', image: '/Fritz Hansen/Skagerak-Cutter-Box-Low/Skagerak Cutter Box Low kr  1 599  Base -  Black.webp', material: 'Black oak' }
       ]
     }
   ];

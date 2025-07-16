@@ -12,6 +12,7 @@ const navigationItems = [
   { key: 'nav.brands', href: '/merker' },
   { key: 'nav.company', href: '/selskap' },
   { key: 'nav.contact', href: '/kontakt' },
+  { key: 'nav.louisPoulsen', href: '/louis-poulsen' },
 ]
 
 function Navigation() {

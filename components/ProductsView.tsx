@@ -22,7 +22,7 @@ function ProductsView({ products, categories }: ProductsViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const router = useRouter();
 
-  const handleCategoryClick = (category: Category) => {
+    const handleCategoryClick = (category: Category) => {
     // If the category is "CARTEL" (misspelled Kartell), redirect to our Kartell page
     if (category.title.toUpperCase() === "CARTEL") {
       router.push("/kartell");
@@ -32,6 +32,36 @@ function ProductsView({ products, categories }: ProductsViewProps) {
     // If the category is "FRITZ HANSEN", redirect to our Fritz Hansen page
     if (category.title.toUpperCase() === "FRITZ HANSEN") {
       router.push("/fritz-hansen");
+      return;
+    }
+    
+    // If the category is "CABINET", redirect to our Montana page
+    if (category.title.toUpperCase() === "CABINET") {
+      router.push("/montana");
+      return;
+    }
+    
+    // If the category is "VITRA", redirect to our Vitra page
+    if (category.title.toUpperCase() === "VITRA") {
+      router.push("/vitra");
+      return;
+    }
+    
+    // If the category is "LOUIS POULSEN", redirect to our Louis Poulsen page
+    if (category.title.toUpperCase() === "LOUIS POULSEN") {
+      router.push("/louis-poulsen");
+      return;
+    }
+
+    // If the category is "HAY", redirect to our DUX page
+    if (category.title.toUpperCase() === "HAY") {
+      router.push("/dux");
+      return;
+    }
+    
+    // If the category is "SPEIL" (mirrors), redirect to our Umage page
+    if (category.title.toUpperCase() === "SPEIL") {
+      router.push("/umage");
       return;
     }
     
@@ -89,7 +119,9 @@ function ProductsView({ products, categories }: ProductsViewProps) {
                 >
                   {/* Display custom names for better UX */}
                   {category.title.toUpperCase() === "CARTEL" ? "KARTELL" : 
-                   category.title.toUpperCase() === "SPEIL" ? "UMAGA" : 
+                   category.title.toUpperCase() === "SPEIL" ? "UMAGE" : 
+                   category.title.toUpperCase() === "CABINET" ? "MONTANA" :
+                   category.title.toUpperCase() === "HAY" ? "DUX" :
                    category.title.toUpperCase()}
                 </button>
               ))}
@@ -103,7 +135,7 @@ function ProductsView({ products, categories }: ProductsViewProps) {
 
       {/* No Products Message */}
       {filteredProducts.length === 0 && (
-        <div className="text-center py-16 bg-white">
+        <div className="text-center py-16 bg-white">ti
           <p className="text-gray-500 text-lg">No products found in this category.</p>
         </div>
       )}
