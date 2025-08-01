@@ -11,16 +11,18 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@clerk/nextjs', '@sanity/icons', 'lucide-react'],
   },
 
-  // Image optimization
+  // Image optimization - Critical for Vercel production
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cdn.sanity.io"
+        hostname: "cdn.sanity.io",
+        pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "images.unsplash.com"
+        hostname: "images.unsplash.com",
+        pathname: "/**",
       }
     ],
     formats: ['image/webp', 'image/avif'],
@@ -28,11 +30,11 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     dangerouslyAllowSVG: true,
-    // Allow local images for static products - this is crucial for Vercel
-    unoptimized: false,
+    // Critical: Enable unoptimized for static images in production
+    unoptimized: process.env.NODE_ENV === 'production',
     loader: 'default',
-    // Add domains for any external image sources
-    domains: [],
+    // Legacy domains support for backward compatibility
+    domains: ['cdn.sanity.io'],
   },
 
   // Compiler optimizations

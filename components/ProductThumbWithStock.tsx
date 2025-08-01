@@ -5,7 +5,7 @@ import { StaticProduct } from "@/lib/allProducts";
 import { StockManager } from "@/lib/stockManager";
 import { getImageUrl } from "@/lib/ImageUrl";
 import { debugImageUrl, isValidImagePath } from "@/lib/imageDebug";
-import Image from "next/image";
+import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -69,25 +69,13 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden bg-gray-50">
           {imageSrc && isValidImage ? (
-            <Image
+            <ProductionImage
               src={imageSrc}
               alt={productName || 'Product image'}
               fill
               className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              onError={(e) => {
-                console.error('Image failed to load:', imageSrc, 'for product:', productName);
-                // Hide the image on error and show fallback
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                const parent = target.parentElement;
-                if (parent) {
-                  parent.innerHTML = '<div class="w-full h-full bg-gray-200 flex items-center justify-center"><span class="text-gray-400 text-sm">Image unavailable</span></div>';
-                }
-              }}
               priority={false}
-              placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
             />
           ) : (
             <div className="w-full h-full bg-gray-200 flex items-center justify-center">
