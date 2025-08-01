@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
 
 export const dynamic = "force-static";
@@ -49,15 +49,13 @@ export default async function Home() {
             {/* Right Content - Hero Image */}
             <div className="relative">
               <div className="relative h-[500px] lg:h-[600px] overflow-hidden">
-                <Image
+                <ProductionImage
                   src={heroImage}
                   alt="Elegant living room with sophisticated furniture"
                   fill
                   className="object-cover"
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
@@ -82,15 +80,12 @@ export default async function Home() {
             {/* Living Room */}
             <Link href="/interior/living-room" className="group">
               <div className="relative h-80 overflow-hidden bg-stone-100">
-                <Image
+                <ProductionImage
                   src="/living-room.jpg"
                   alt="Living Room Collection"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading="lazy"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white">
@@ -103,15 +98,12 @@ export default async function Home() {
             {/* Dining */}
             <Link href="/interior" className="group">
               <div className="relative h-80 overflow-hidden bg-stone-100">
-                <Image
+                <ProductionImage
                   src={diningImage}
                   alt="Dining Collection"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading="lazy"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white">
@@ -124,15 +116,12 @@ export default async function Home() {
             {/* Outdoor */}
             <Link href="/utendors" className="group">
               <div className="relative h-80 overflow-hidden bg-stone-100">
-                <Image
+                <ProductionImage
                   src={outdoorImage}
                   alt="Outdoor Collection"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading="lazy"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white">
@@ -179,13 +168,12 @@ export default async function Home() {
             <Link href="/montana" className="group text-center">
               <div className="bg-white p-8 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300">
                 <div className="flex items-center justify-center">
-                  <Image
+                  <ProductionImage
                     src="/our-collection/Montana Logo Svart.png"
                     alt="Montana"
                     width={140}
                     height={50}
                     className="h-10 w-auto group-hover:opacity-80 transition-opacity"
-                    loading="lazy"
                   />
                 </div>
               </div>
@@ -212,13 +200,12 @@ export default async function Home() {
             <Link href="/umage" className="group text-center">
               <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
                 <div className="flex items-center justify-center">
-                  <Image
+                  <ProductionImage
                     src="/our-collection/UMAGE_logo_black.png"
                     alt="Umage"
                     width={120}
                     height={40}
                     className="h-8 w-auto group-hover:opacity-80 transition-opacity"
-                    loading="lazy"
                   />
                 </div>
               </div>
