@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import ProductionImage from "@/components/ProductionImage";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -244,7 +244,7 @@ const FilteredInteriorGrid = ({ filters }: FilteredInteriorGridProps) => {
               <div className="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100">
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden bg-gray-50">
-                  <Image
+                  <ProductionImage
                     src={product.image}
                     alt={product.name}
                     fill

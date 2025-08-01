@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
 import { useState } from "react";
 import { SaleProduct, calculateSavings } from "@/lib/salesData";
@@ -21,13 +21,12 @@ export default function SalesProductCard({ product }: SalesProductCardProps) {
       {/* Image Container */}
       <div className="relative overflow-hidden bg-gray-50 aspect-[4/3] mb-6">
         {!imageError ? (
-          <Image
+          <ProductionImage
             className="object-contain object-center transition-transform duration-500 ease-out group-hover:scale-105"
             src={product.image}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            onError={() => setImageError(true)}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200">
