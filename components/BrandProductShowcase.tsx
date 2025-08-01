@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
 import { imageUrl } from "@/lib/ImageUrl";
 
@@ -123,7 +123,7 @@ function BrandProductShowcase({ products }: BrandProductShowcaseProps) {
                     {/* Product Image */}
                     <div className="relative h-80 bg-stone-50">
                       {product.image ? (
-                        <Image
+                        <ProductionImage
                           src={imageUrl(product.image).url()}
                           alt={product.name || 'Product'}
                           fill
