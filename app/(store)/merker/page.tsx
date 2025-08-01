@@ -35,6 +35,18 @@ export default function MerkerPage() {
                   Håndverkskunst i verdensklasse.
                 </p>
               </div>
+              <div className="p-4 bg-background/50 rounded-lg">
+                <h3 className="font-medium text-lg mb-2">Fredericia</h3>
+                <p className="text-muted-foreground text-sm">
+                  Dansk møbeldesign med tidløs eleganse.
+                </p>
+              </div>
+              <div className="p-4 bg-background/50 rounded-lg">
+                <h3 className="font-medium text-lg mb-2">Soren Lund</h3>
+                <p className="text-muted-foreground text-sm">
+                  Eksklusivt skandinavisk design og håndverk.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -71,12 +83,6 @@ export default function MerkerPage() {
                 <h3 className="font-medium text-lg mb-2">Kvadrat</h3>
                 <p className="text-muted-foreground text-sm">
                   Premium tekstiler og design.
-                </p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg">
-                <h3 className="font-medium text-lg mb-2">Designers Guild</h3>
-                <p className="text-muted-foreground text-sm">
-                  Luksuriøse stoffer og tapeter.
                 </p>
               </div>
               <div className="p-4 bg-background/50 rounded-lg">

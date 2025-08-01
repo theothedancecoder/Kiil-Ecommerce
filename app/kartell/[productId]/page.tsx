@@ -23,13 +23,13 @@ interface KartellProduct {
 }
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     productId: string;
-  };
+  }>;
 }
 
-export default function KartellProductPage({ params }: ProductPageProps) {
-  const { productId } = params;
+export default async function KartellProductPage({ params }: ProductPageProps) {
+  const { productId } = await params;
   
   // Define all Kartell products (same as in the main page)
   const kartellProducts: KartellProduct[] = [

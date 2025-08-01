@@ -13,6 +13,7 @@ interface LanguageContextType {
 const translations = {
   en: {
     // Navigation
+    'nav.allProducts': 'All Products',
     'nav.news': 'News',
     'nav.sale': 'Sale',
     'nav.interior': 'Interior',
@@ -102,6 +103,10 @@ const translations = {
     // Interior Banner
     'interior.banner.title': 'Our Interior Collection',
     'interior.banner.shopNow': 'Shop Now',
+    
+    // Cushions Banner
+    'cushions.banner.title': 'Designer Cushions Collection',
+    'cushions.banner.subtitle': 'Transform your living space with our exquisite collection of designer cushions and pillows. From luxurious velvet to contemporary patterns, find the perfect accent pieces to elevate your home decor.',
 
     // Contact Page
     'contact.title': 'Contact Us',
@@ -222,6 +227,7 @@ const translations = {
   },
   no: {
     // Navigation
+    'nav.allProducts': 'Alle Produkter',
     'nav.news': 'Nyheter',
     'nav.sale': 'Salg',
     'nav.interior': 'Interiør',
@@ -311,6 +317,10 @@ const translations = {
     // Interior Banner
     'interior.banner.title': 'Vår Interiør Kolleksjon',
     'interior.banner.shopNow': 'Handle Nå',
+    
+    // Cushions Banner
+    'cushions.banner.title': 'Designer Puter Kolleksjon',
+    'cushions.banner.subtitle': 'Transformer ditt hjem med vårt utsøkte utvalg av designer puter og putetrekk. Fra luksuriøs fløyel til moderne mønstre, finn de perfekte aksentene som løfter din hjemmeinnredning.',
 
     // Contact Page
     'contact.title': 'Kontakt Oss',
@@ -437,7 +447,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('no'); // Default to Norwegian
 
   const t = (key: string): string => {
-    const translation = translations[language][key as keyof typeof translations[typeof language]];
+    const translation = translations[language]?.[key as keyof typeof translations[typeof language]];
     return translation !== undefined ? translation : key;
   };
 

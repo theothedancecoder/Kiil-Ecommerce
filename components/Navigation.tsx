@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useLanguage } from '@/lib/languageContext'
 
 const navigationItems = [
+  { key: 'nav.allProducts', href: '/products' },
   { key: 'nav.news', href: '/nyheter' },
   { key: 'nav.sale', href: '/salg' },
   { key: 'nav.interior', href: '/interior' },
@@ -12,7 +13,6 @@ const navigationItems = [
   { key: 'nav.brands', href: '/merker' },
   { key: 'nav.company', href: '/selskap' },
   { key: 'nav.contact', href: '/kontakt' },
-  { key: 'nav.louisPoulsen', href: '/louis-poulsen' },
 ]
 
 function Navigation() {

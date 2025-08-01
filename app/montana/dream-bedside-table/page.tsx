@@ -9,6 +9,7 @@ interface ColorVariant {
   name: string;
   colorCode: string;
   image: string;
+  price: number;
 }
 
 interface BaseOption {
@@ -19,261 +20,57 @@ interface BaseOption {
 }
 
 export default function DreamBedsideTablePage() {
-  const [selectedVariant, setSelectedVariant] = useState('new-white');
-  const [selectedBase, setSelectedBase] = useState('legs-brass');
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [selectedBaseIndex, setSelectedBaseIndex] = useState(2); // Default to Brass legs
+  const [featuresExpanded, setFeaturesExpanded] = useState(false);
+  const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
   const variants: ColorVariant[] = [
     // Selection Colors (most popular)
-    {
-      id: 'new-white',
-      name: 'New White',
-      colorCode: '#FAFAFA',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_NewWhite_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'nordic',
-      name: 'Nordic',
-      colorCode: '#E8E8E8',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'vanilla',
-      name: 'Vanilla',
-      colorCode: '#F5F5DC',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'monarch',
-      name: 'Monarch',
-      colorCode: '#4A5D8A',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Monarch_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'anthracite',
-      name: 'Anthracite',
-      colorCode: '#3A3A3A',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'mushroom',
-      name: 'Mushroom',
-      colorCode: '#B8A082',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    // Additional Colors - using fallback to available Montana Selection images
-    {
-      id: 'white',
-      name: 'White',
-      colorCode: '#FFFFFF',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_NewWhite_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'black',
-      name: 'Black',
-      colorCode: '#000000',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'fjord',
-      name: 'Fjord',
-      colorCode: '#4A6B8A',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'graphic',
-      name: 'Graphic',
-      colorCode: '#2C2C2C',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'pine',
-      name: 'Pine',
-      colorCode: '#4A5D23',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'juniper',
-      name: 'Juniper',
-      colorCode: '#3A4A2A',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'oregano',
-      name: 'Oregano',
-      colorCode: '#5D6B3A',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'pomelo',
-      name: 'Pomelo',
-      colorCode: '#F5E6A3',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'truffle',
-      name: 'Truffle',
-      colorCode: '#8B7355',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'amber',
-      name: 'Amber',
-      colorCode: '#D4A574',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'fennel',
-      name: 'Fennel',
-      colorCode: '#A8B48C',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'rosehip',
-      name: 'Rosehip',
-      colorCode: '#C4626B',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'hazelnut',
-      name: 'Hazelnut',
-      colorCode: '#A67C52',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'shadow',
-      name: 'Shadow',
-      colorCode: '#6B6B6B',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'flint',
-      name: 'Flint',
-      colorCode: '#A8A8A8',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'rhubarb',
-      name: 'Rhubarb',
-      colorCode: '#B85450',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'parsley',
-      name: 'Parsley',
-      colorCode: '#4A5D23',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'azure',
-      name: 'Azure',
-      colorCode: '#5B8DB8',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'masala',
-      name: 'Masala',
-      colorCode: '#8B4513',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'oyster',
-      name: 'Oyster',
-      colorCode: '#E8E0D6',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'cumin',
-      name: 'Cumin',
-      colorCode: '#B8860B',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'oat',
-      name: 'Oat',
-      colorCode: '#DEB887',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'camomile',
-      name: 'Camomile',
-      colorCode: '#F0E68C',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'balsamic',
-      name: 'Balsamic',
-      colorCode: '#654321',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'mist',
-      name: 'Mist',
-      colorCode: '#D3D3D3',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'hokkaido',
-      name: 'Hokkaido',
-      colorCode: '#FF8C00',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'black-jade',
-      name: 'Black Jade',
-      colorCode: '#2F4F2F',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'iris',
-      name: 'Iris',
-      colorCode: '#9370DB',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'beetroot',
-      name: 'Beetroot',
-      colorCode: '#8B0000',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'acacia',
-      name: 'Acacia',
-      colorCode: '#DAA520',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'ruby',
-      name: 'Ruby',
-      colorCode: '#CC0000',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'clay',
-      name: 'Clay',
-      colorCode: '#B8860B',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png'
-    },
-    {
-      id: 'coffee',
-      name: 'Coffee',
-      colorCode: '#6F4E37',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png'
-    },
-    {
-      id: 'coal',
-      name: 'Coal',
-      colorCode: '#2C2C2C',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png'
-    },
-    {
-      id: 'snow',
-      name: 'Snow',
-      colorCode: '#FFFAFA',
-      image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_NewWhite_Legs_Brass_Perspective.png'
-    }
+    { id: 'new-white', name: 'New White', colorCode: '#FAFAFA', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_NewWhite_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'nordic', name: 'Nordic', colorCode: '#E8E8E8', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'vanilla', name: 'Vanilla', colorCode: '#F5F5DC', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'monarch', name: 'Monarch', colorCode: '#4A5D8A', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Monarch_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'anthracite', name: 'Anthracite', colorCode: '#3A3A3A', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'mushroom', name: 'Mushroom', colorCode: '#B8A082', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'white', name: 'White', colorCode: '#FFFFFF', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_NewWhite_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'black', name: 'Black', colorCode: '#000000', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'fjord', name: 'Fjord', colorCode: '#4A6B8A', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'graphic', name: 'Graphic', colorCode: '#2C2C2C', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'pine', name: 'Pine', colorCode: '#4A5D23', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'juniper', name: 'Juniper', colorCode: '#3A4A2A', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'oregano', name: 'Oregano', colorCode: '#5D6B3A', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'pomelo', name: 'Pomelo', colorCode: '#F5E6A3', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'truffle', name: 'Truffle', colorCode: '#8B7355', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'amber', name: 'Amber', colorCode: '#D4A574', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'fennel', name: 'Fennel', colorCode: '#A8B48C', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'rosehip', name: 'Rosehip', colorCode: '#C4626B', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'hazelnut', name: 'Hazelnut', colorCode: '#A67C52', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'shadow', name: 'Shadow', colorCode: '#6B6B6B', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'flint', name: 'Flint', colorCode: '#A8A8A8', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'rhubarb', name: 'Rhubarb', colorCode: '#B85450', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'parsley', name: 'Parsley', colorCode: '#4A5D23', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'azure', name: 'Azure', colorCode: '#5B8DB8', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'masala', name: 'Masala', colorCode: '#8B4513', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'oyster', name: 'Oyster', colorCode: '#E8E0D6', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'cumin', name: 'Cumin', colorCode: '#B8860B', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'oat', name: 'Oat', colorCode: '#DEB887', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'camomile', name: 'Camomile', colorCode: '#F0E68C', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'balsamic', name: 'Balsamic', colorCode: '#654321', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'mist', name: 'Mist', colorCode: '#D3D3D3', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'hokkaido', name: 'Hokkaido', colorCode: '#FF8C00', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'black-jade', name: 'Black Jade', colorCode: '#2F4F2F', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'iris', name: 'Iris', colorCode: '#9370DB', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Nordic_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'beetroot', name: 'Beetroot', colorCode: '#8B0000', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'acacia', name: 'Acacia', colorCode: '#DAA520', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'ruby', name: 'Ruby', colorCode: '#CC0000', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'clay', name: 'Clay', colorCode: '#B8860B', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Vanilla_Legs_Brass_Perspective.png', price: 5458 },
+    { id: 'coffee', name: 'Coffee', colorCode: '#6F4E37', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Mushroom_Legs_Snow_Perspective.png', price: 5458 },
+    { id: 'coal', name: 'Coal', colorCode: '#2C2C2C', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_Anthracite_Legs_MattChrome_Perspective.png', price: 5458 },
+    { id: 'snow', name: 'Snow', colorCode: '#FFFAFA', image: '/Montana/Dream-Bedside-Table/Montana_Selection_DREAM_NewWhite_Legs_Brass_Perspective.png', price: 5458 }
   ];
 
-  const currentVariant = variants.find(v => v.id === selectedVariant) || variants[0];
+  const selectedVariant = variants[selectedVariantIndex];
 
   // Generate current image based on selected variant and base
   const getCurrentImage = () => {

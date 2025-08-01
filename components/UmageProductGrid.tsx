@@ -1,0 +1,273 @@
+"use client";
+
+import { Product } from "@/sanity.types";
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useMemo } from "react";
+import { imageUrl } from "@/lib/ImageUrl";
+import { allProducts, StaticProduct } from "@/lib/allProducts";
+
+interface UmageProductGridProps {
+  products: Product[];
+}
+
+// Extended Product type to include static product fields
+type ExtendedProduct = Product & {
+  staticProduct?: boolean;
+  staticHref?: string;
+  staticImage?: string;
+  staticBrand?: string;
+  staticCategory?: string;
+  staticVariants?: any[];
+};
+
+// Convert static products to match Sanity product format for display
+const convertStaticProductToSanityFormat = (staticProduct: StaticProduct): ExtendedProduct => {
+  return {
+    _id: staticProduct.id,
+    _type: 'product',
+    _createdAt: new Date().toISOString(),
+    _updatedAt: new Date().toISOString(),
+    _rev: '',
+    name: staticProduct.name,
+    description: [
+      {
+        _type: 'block',
+        _key: 'description',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            _key: 'span',
+            text: staticProduct.description,
+            marks: []
+          }
+        ]
+      }
+    ],
+    price: staticProduct.price,
+    image: {
+      _type: 'image',
+      asset: {
+        _ref: staticProduct.image,
+        _type: 'reference'
+      }
+    },
+    slug: {
+      _type: 'slug',
+      current: staticProduct.href.replace('/', '')
+    },
+    categories: [{
+      _ref: staticProduct.brand.toLowerCase().replace(/\s+/g, '-'),
+      _type: 'reference',
+      _key: staticProduct.brand.toLowerCase().replace(/\s+/g, '-')
+    }],
+    // Add custom fields for static products
+    staticProduct: true,
+    staticHref: staticProduct.href,
+    staticImage: staticProduct.image,
+    staticBrand: staticProduct.brand,
+    staticCategory: staticProduct.category,
+    staticVariants: staticProduct.variants
+  };
+};
+
+export default function UmageProductGrid({ products }: UmageProductGridProps) {
+  const [sortBy, setSortBy] = useState("name");
+  const [showFilters, setShowFilters] = useState(false);
+  const [displayCount, setDisplayCount] = useState(12); // Show 12 products initially
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Combine Sanity products with static products
+  const combinedProducts = useMemo(() => {
+    const staticProductsConverted = allProducts.map(convertStaticProductToSanityFormat);
+    return [...products, ...staticProductsConverted] as ExtendedProduct[];
+  }, [products]);
+
+  // Sort products
+  const sortedProducts = [...combinedProducts].sort((a, b) => {
+    if (sortBy === "price") {
+      return (a.price || 0) - (b.price || 0);
+    }
+    if (sortBy === "name") {
+      return (a.name || "").localeCompare(b.name || "");
+    }
+    return 0;
+  });
+
+  // Get products to display (limited by displayCount)
+  const displayedProducts = sortedProducts.slice(0, displayCount);
+  const hasMoreProducts = displayCount < sortedProducts.length;
+
+  // Load more products function
+  const loadMoreProducts = () => {
+    setIsLoading(true);
+    // Simulate loading delay
+    setTimeout(() => {
+      setDisplayCount(prev => Math.min(prev + 12, sortedProducts.length));
+      setIsLoading(false);
+    }, 500);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Filter and Sort Controls */}
+      <div className="flex justify-between items-center mb-8">
+        <div className="flex items-center space-x-4">
+          {/* Filter button */}
+          <button 
+            onClick={() => setShowFilters(!showFilters)}
+            className="text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            Filtrer
+          </button>
+        </div>
+        <div className="flex items-center space-x-4">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="text-gray-600 hover:text-gray-900 transition-colors bg-transparent border-none focus:outline-none cursor-pointer"
+          >
+            <option value="name">Sorter etter navn</option>
+            <option value="price">Sorter etter pris</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Products Grid - 4 columns like Umage */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {displayedProducts.map((product, index) => (
+          <div key={product._id} className="group relative">
+            {/* Product Card */}
+            <div className="bg-white rounded-lg overflow-hidden">
+              {/* Product Image */}
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                {(product as any).staticProduct ? (
+                  <Image
+                    src={(product as any).staticImage}
+                    alt={product.name || "Product"}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : product.image?.asset ? (
+                  <Image
+                    src={imageUrl(product.image).width(400).height(400).url()}
+                    alt={product.name || "Product"}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : null}
+                
+                {/* NEW Badge - show on some products */}
+                {index < 4 && (
+                  <div className="absolute top-3 left-3 bg-white px-2 py-1 text-xs font-medium text-gray-900 rounded">
+                    NEW
+                  </div>
+                )}
+
+                {/* Quick Add Button */}
+                <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100">
+                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Product Info */}
+              <div className="p-4">
+                <Link href={(product as any).staticProduct ? `/umage/${product._id}` : `/products/${product.slug?.current || product._id}`}>
+                  <h3 className="text-lg font-light text-gray-900 mb-1 hover:text-gray-600 transition-colors">
+                    {product.name}
+                  </h3>
+                </Link>
+                
+                {/* Brand Badge for Static Products */}
+                {(product as any).staticProduct && (
+                  <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                    {(product as any).staticBrand}
+                  </div>
+                )}
+                
+                {/* Product Description */}
+                {product.description && Array.isArray(product.description) && (
+                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                    {product.description
+                      .filter(block => block._type === 'block' && 'children' in block)
+                      .map(block => 
+                        'children' in block && block.children
+                          ?.filter(child => child._type === 'span')
+                          ?.map(child => child.text)
+                          ?.join(' ')
+                      )
+                      .join(' ')
+                      .slice(0, 100)}...
+                  </p>
+                )}
+
+                {/* Price */}
+                <div className="text-lg font-light text-gray-900 mb-3">
+                  {product.price ? `${product.price.toLocaleString()} kr` : 'Pris på forespørsel'}
+                </div>
+
+                {/* Color Variants */}
+                <div className="flex space-x-2">
+                  {(product as any).staticProduct && (product as any).staticVariants ? (
+                    // Show actual variants for static products
+                    (product as any).staticVariants.slice(0, 3).map((variant: any, idx: number) => (
+                      <div
+                        key={idx}
+                        className="w-4 h-4 rounded-full border border-gray-200"
+                        style={{ backgroundColor: variant.color || '#D1D5DB' }}
+                        title={variant.name}
+                      />
+                    ))
+                  ) : (
+                    // Mock variants for Sanity products
+                    <>
+                      <div className="w-4 h-4 rounded-full bg-amber-100 border border-gray-200"></div>
+                      <div className="w-4 h-4 rounded-full bg-gray-800 border border-gray-200"></div>
+                      <div className="w-4 h-4 rounded-full bg-green-700 border border-gray-200"></div>
+                    </>
+                  )}
+                  <button className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+                    <svg className="w-2 h-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Load More Button */}
+      {hasMoreProducts && (
+        <div className="text-center mt-12">
+          <button 
+            onClick={loadMoreProducts}
+            disabled={isLoading}
+            className="px-8 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Laster...
+              </span>
+            ) : (
+              'Last inn flere produkter'
+            )}
+          </button>
+        </div>
+      )}
+
+      {/* Show total count */}
+      <div className="text-center mt-6 text-sm text-gray-500">
+        Viser {displayedProducts.length} av {sortedProducts.length} produkter
+      </div>
+    </div>
+  );
+}

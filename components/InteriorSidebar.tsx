@@ -1,4 +1,4 @@
-y "use client";
+"use client";
 
 import { useLanguage } from "@/lib/languageContext";
 import Link from "next/link";
@@ -7,6 +7,7 @@ import { useState } from "react";
 const InteriorSidebar = () => {
   const { } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'categories' | 'filters'>('categories');
 
   const categories = [
     {
@@ -20,20 +21,16 @@ const InteriorSidebar = () => {
       main: true
     },
     {
-      title: "Furniture",
+      title: "All Living Room Furniture",
       href: "/interior/living-room/furniture"
     },
     {
-      title: "Chairs",
+      title: "Chairs & Armchairs",
       href: "/interior/living-room/chairs"
     },
     {
-      title: "Sofa",
+      title: "Sofas & Seating",
       href: "/interior/living-room/sofa"
-    },
-    {
-      title: "Lamp & Illumination",
-      href: "/interior/living-room/lighting"
     },
     {
       title: "DINING & KITCHEN",
@@ -68,10 +65,6 @@ const InteriorSidebar = () => {
       href: "/interior/bathroom/accessories"
     },
     {
-      title: "Montana",
-      href: "/interior/bathroom/cabinets"
-    },
-    {
       title: "Toilet Essentials",
       href: "/interior/bathroom/essentials"
     },
@@ -92,10 +85,6 @@ const InteriorSidebar = () => {
     {
       title: "Nightstand",
       href: "/interior/bedroom/nightstand"
-    },
-    {
-      title: "Montana",
-      href: "/interior/bedroom/cabinets"
     },
     {
       title: "HOME OFFICE",
@@ -132,10 +121,6 @@ const InteriorSidebar = () => {
       href: "/interior/home-accessories/decor"
     },
     {
-      title: "Vases",
-      href: "/interior/home-accessories/vases"
-    },
-    {
       title: "Wall Art",
       href: "/interior/home-accessories/wall-art"
     },
@@ -152,6 +137,19 @@ const InteriorSidebar = () => {
       href: "/interior/home-accessories/lighting"
     }
   ];
+
+  const priceRanges = [
+    { label: "Under 1,000 kr", value: [0, 1000] },
+    { label: "1,000 - 5,000 kr", value: [1000, 5000] },
+    { label: "5,000 - 10,000 kr", value: [5000, 10000] },
+    { label: "10,000 - 25,000 kr", value: [10000, 25000] },
+    { label: "25,000+ kr", value: [25000, 100000] },
+  ];
+
+  const colors = ["White", "Black", "Gray", "Brown", "Beige", "Blue", "Green", "Red", "Yellow"];
+  const materials = ["Wood", "Metal", "Fabric", "Leather", "Glass", "Ceramic", "Plastic"];
+  const brands = ["Fritz Hansen", "Montana", "Kartell", "Fredericia", "Vitra", "&Tradition", "Flos", "Louis Poulsen"];
+  const sizes = ["Small", "Medium", "Large", "Extra Large"];
 
   return (
     <>
@@ -179,31 +177,151 @@ const InteriorSidebar = () => {
       <aside className={`
         fixed lg:relative top-0 left-0 h-full bg-white z-40 transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        w-64 pr-8 p-6 lg:p-0 shadow-lg lg:shadow-none overflow-y-auto
+        w-80 pr-8 p-6 lg:p-0 shadow-lg lg:shadow-none overflow-y-auto
       `}>
-        <nav className="space-y-2 mt-16 lg:mt-0">
-        {categories.map((category, index) => (
-          <div key={index}>
-            {category.addLineAbove && (
-              <hr className="my-3 border-gray-300" />
-            )}
-            <Link
-              href={category.href}
-              className={`block py-2 hover:text-accent transition-colors ${
-                category.main 
-                  ? "text-[14px] font-semibold font-['Montserrat',Verdana,Helvetica,sans-serif]" 
-                  : "text-sm text-muted-foreground pl-4"
+        <div className="mt-16 lg:mt-0">
+          {/* Tab Navigation */}
+          <div className="flex border-b mb-4">
+            <button
+              onClick={() => setActiveTab('categories')}
+              className={`flex-1 py-2 text-sm font-medium ${
+                activeTab === 'categories' 
+                  ? 'border-b-2 border-stone-800 text-stone-800' 
+                  : 'text-stone-600 hover:text-stone-800'
               }`}
-              onClick={() => setIsOpen(false)}
             >
-              {category.title}
-            </Link>
-            {(index === 0 || index === 1) && (
-              <hr className="my-3 border-gray-300" />
-            )}
+              Categories
+            </button>
+            <button
+              onClick={() => setActiveTab('filters')}
+              className={`flex-1 py-2 text-sm font-medium ${
+                activeTab === 'filters' 
+                  ? 'border-b-2 border-stone-800 text-stone-800' 
+                  : 'text-stone-600 hover:text-stone-800'
+              }`}
+            >
+              Filters
+            </button>
           </div>
-        ))}
-        </nav>
+
+          {activeTab === 'categories' && (
+            <nav className="space-y-2">
+              {categories.map((category, index) => (
+                <div key={index}>
+                  {category.addLineAbove && (
+                    <hr className="my-3 border-gray-300" />
+                  )}
+                  <Link
+                    href={category.href}
+                    className={`block py-2 hover:text-accent transition-colors ${
+                      category.main 
+                        ? "text-[14px] font-semibold font-['Montserrat',Verdana,Helvetica,sans-serif]" 
+                        : "text-sm text-muted-foreground pl-4"
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {category.title}
+                  </Link>
+                  {(index === 0 || index === 1) && (
+                    <hr className="my-3 border-gray-300" />
+                  )}
+                </div>
+              ))}
+            </nav>
+          )}
+
+          {activeTab === 'filters' && (
+            <div className="space-y-6">
+              {/* Price Range */}
+              <div>
+                <h3 className="font-semibold text-sm mb-3">Price Range</h3>
+                <div className="space-y-2">
+                  {priceRanges.map((range) => (
+                    <label key={range.label} className="flex items-center">
+                      <input
+                        type="radio"
+                        name="price"
+                        className="mr-2"
+                      />
+                      <span className="text-sm">{range.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Colors */}
+              <div>
+                <h3 className="font-semibold text-sm mb-3">Colors</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {colors.map((color) => (
+                    <label key={color} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="mr-2"
+                      />
+                      <span className="text-sm">{color}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Materials */}
+              <div>
+                <h3 className="font-semibold text-sm mb-3">Materials</h3>
+                <div className="space-y-2">
+                  {materials.map((material) => (
+                    <label key={material} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="mr-2"
+                      />
+                      <span className="text-sm">{material}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Brands */}
+              <div>
+                <h3 className="font-semibold text-sm mb-3">Brands</h3>
+                <div className="space-y-2">
+                  {brands.map((brand) => (
+                    <label key={brand} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="mr-2"
+                      />
+                      <span className="text-sm">{brand}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sizes */}
+              <div>
+                <h3 className="font-semibold text-sm mb-3">Sizes</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {sizes.map((size) => (
+                    <label key={size} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="mr-2"
+                      />
+                      <span className="text-sm">{size}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Clear Filters */}
+              <button
+                className="w-full py-2 text-sm text-stone-600 hover:text-stone-800 border border-stone-300 rounded-md hover:border-stone-400 transition-colors"
+              >
+                Clear All Filters
+              </button>
+            </div>
+          )}
+        </div>
       </aside>
 
       {/* Overlay */}

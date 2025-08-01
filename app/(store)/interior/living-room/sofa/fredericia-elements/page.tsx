@@ -7,7 +7,7 @@ const fredericiaDelphiElementsSofas = [
   {
     id: 1,
     name: "Delphi Elements Sofa - Leather Cera 905",
-    image: "/Fredericia /Delphi Elements Sofa/Leather Cera 905 Russet brown.avif",
+    image: "/fredericia/delphi-elements-sofa/main.jpg",
     price: "94,999 kr",
     material: "Leather Cera 905",
     color: "Russet Brown",
@@ -17,7 +17,7 @@ const fredericiaDelphiElementsSofas = [
   {
     id: 2,
     name: "Delphi Elements Sofa - Leather Max 98",
-    image: "/Fredericia /Delphi Elements Sofa/Leather Max 98 Black.avif",
+    image: "/fredericia/delphi-elements-sofa/lifestyle1.jpg",
     price: "99,999 kr",
     material: "Leather Max 98",
     color: "Black",
@@ -27,11 +27,21 @@ const fredericiaDelphiElementsSofas = [
   {
     id: 3,
     name: "Delphi Elements Sofa - Steelcut Trio 213",
-    image: "/Fredericia /Delphi Elements Sofa/Steelcut Trio 213.avif",
+    image: "/Fredericia%20/Delphi%20Elements%20Sofa/Steelcut%20Trio%20213.jpg",
     price: "84,999 kr",
     material: "Steelcut Trio 213",
     color: "Blue",
     colorCode: "#4682B4",
+    dimensions: "120 x 120 cm"
+  },
+  {
+    id: 4,
+    name: "Delphi Elements Sofa - Elegance Walnut",
+    image: "/Fredericia%20/Delphi%20Elements%20Sofa/Elegance%20Walnut%2020195.jpg",
+    price: "89,999 kr",
+    material: "Elegance Walnut",
+    color: "Walnut",
+    colorCode: "#8B4513",
     dimensions: "120 x 120 cm"
   }
 ];
@@ -68,10 +78,13 @@ export default function FredericiaElementsPage() {
             {/* Product Title */}
             <div>
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-2">
-                Delphi Elements
+                Delphi Elements Sofa
               </h1>
-              <p className="text-lg text-gray-600">
-                Modular sofa system
+              <p className="text-lg text-gray-600 mb-4">
+                Modular sofa system with endless configuration possibilities
+              </p>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                The Delphi Elements collection represents the perfect balance between modern aesthetics and functional flexibility. Each element can be combined to create your ideal seating arrangement.
               </p>
             </div>
 
@@ -157,6 +170,35 @@ export default function FredericiaElementsPage() {
                 <div className="flex justify-between">
                   <span>Assembly:</span>
                   <span>Professional included</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Designer:</span>
+                  <span>Fredericia Design Team</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="space-y-4 pt-6 border-t border-gray-200">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                Key Features
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-sm text-gray-600">Modular design allows endless configuration possibilities</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-sm text-gray-600">Premium upholstery options including leather and fabric</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-sm text-gray-600">Contemporary design meets exceptional comfort</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-sm text-gray-600">Sustainable Danish craftsmanship</span>
                 </div>
               </div>
             </div>

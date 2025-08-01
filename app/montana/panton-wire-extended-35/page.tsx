@@ -9,157 +9,230 @@ interface ColorVariant {
   name: string;
   colorCode: string;
   image: string;
+  price: number;
 }
 
 export default function PantonWireExtended35Page() {
-  const [selectedVariant, setSelectedVariant] = useState('black');
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [featuresExpanded, setFeaturesExpanded] = useState(false);
+  const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
   const variants: ColorVariant[] = [
     {
       id: 'black',
       name: 'Black',
       colorCode: '#000000',
-      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Black_perspective-scaled.jpg'
+      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Black_perspective-scaled.jpg',
+      price: 3299
     },
     {
       id: 'chrome',
       name: 'Chrome',
       colorCode: '#C0C0C0',
-      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Chrome_perspective-scaled.jpg'
+      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Chrome_perspective-scaled.jpg',
+      price: 3299
     },
     {
       id: 'monarch',
       name: 'Monarch',
       colorCode: '#4A5D8A',
-      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Monarch_perspective-scaled.jpg'
+      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Monarch_perspective-scaled.jpg',
+      price: 3299
     },
     {
       id: 'pine',
       name: 'Pine',
       colorCode: '#4A5D4A',
-      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Black_perspective-scaled.jpg'
+      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Black_perspective-scaled.jpg',
+      price: 3299
     },
     {
       id: 'snow',
       name: 'Snow',
       colorCode: '#FFFAFA',
-      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Snow_perspective-scaled.jpg'
+      image: '/Montana/Panton-wire-system/Montana_PantonWire_Extended_D34.8_Snow_perspective-scaled.jpg',
+      price: 3299
     }
   ];
 
-  const currentVariant = variants.find(v => v.id === selectedVariant) || variants[0];
-  const price = 3299;
+  const selectedVariant = variants[selectedVariantIndex];
+
+  const features = [
+    "Iconic Verner Panton design from 1971",
+    "Largest extended multi-level wire system",
+    "Creates bold sculptural statement",
+    "Maximum display space for collections",
+    "Perfect for larger books, plants, or art objects",
+    "Wall-mounted design saves floor space",
+    "Durable powder-coated finish",
+    "Easy installation with included mounting hardware",
+    "Available in 5 sophisticated finishes",
+    "Made in Denmark with premium materials"
+  ];
+
+  const specifications = [
+    { label: "Designer", value: "Verner Panton" },
+    { label: "Manufacturer", value: "Montana" },
+    { label: "Material", value: "Steel with powder coating" },
+    { label: "Dimensions", value: "W 70 x H 34.8 x D 34.8 cm" },
+    { label: "Material Group", value: "Metal" },
+    { label: "Year Designed", value: "1971" },
+    { label: "Finish Options", value: "Black, Chrome, Monarch, Pine, Snow" },
+    { label: "Installation", value: "Wall-mounted or floor standing" },
+    { label: "Delivery Time", value: "8 weeks (made to order)" },
+    { label: "Care", value: "Clean with soft damp cloth" },
+    { label: "Warranty", value: "5 years structural warranty" },
+    { label: "Origin", value: "Made in Denmark" }
+  ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
+      {/* Navigation */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="text-sm text-stone-600">
-            <Link href="/" className="hover:text-stone-800">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/montana" className="hover:text-stone-800">Montana</Link>
-            <span className="mx-2">/</span>
-            <span className="text-stone-800">Panton Wire Extended Ø34.8</span>
-          </nav>
+          <div className="flex items-center justify-between">
+            <Link 
+              href="/montana" 
+              className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Montana Collection
+            </Link>
+            
+            <nav className="flex items-center space-x-2 text-sm">
+              <Link href="/" className="text-stone-600 hover:text-stone-800">
+                Home
+              </Link>
+              <span className="text-stone-400">/</span>
+              <Link href="/montana" className="text-stone-600 hover:text-stone-800">
+                Montana
+              </Link>
+              <span className="text-stone-400">/</span>
+              <span className="text-stone-800 font-medium">Panton Wire Extended Ø34.8</span>
+            </nav>
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Image and Lifestyle Images */}
+          {/* Product Images */}
           <div className="space-y-6">
-            {/* Main Product Image */}
+            {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
               <Image
-                src={currentVariant.image}
-                alt={`Panton Wire Extended Ø34.8 in ${currentVariant.name}`}
+                src={selectedVariant.image}
+                alt={`Panton Wire Extended Ø34.8 - ${selectedVariant.name}`}
                 fill
-                className="object-contain object-center p-8"
+                className="object-contain object-center p-4"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
-            
+
+            {/* Variant Thumbnails */}
+            <div className="grid grid-cols-4 gap-3">
+              {variants.map((variant, index) => (
+                <button
+                  key={variant.id}
+                  onClick={() => setSelectedVariantIndex(index)}
+                  className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
+                    selectedVariantIndex === index
+                      ? "border-blue-600"
+                      : "border-gray-200 hover:border-gray-400"
+                  }`}
+                >
+                  <Image
+                    src={variant.image}
+                    alt={`${variant.name} variant`}
+                    fill
+                    className="object-contain object-center p-2"
+                    sizes="(max-width: 768px) 25vw, 12.5vw"
+                  />
+                  <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
+                    {variant.name}
+                  </div>
+                </button>
+              ))}
+            </div>
+
             {/* Lifestyle Images */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-stone-800">Panton Wire in Living Spaces</h3>
-              <div className="grid grid-cols-1 gap-4">
-                <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                  <Image
-                    src="/Montana/Panton-wire-system/lifestyle/Montana_Home21_22_PantonWire_Extended_Black_Snow_Detail_H.jpg"
-                    alt="Panton Wire Extended in modern interior setting"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute bottom-3 left-3 right-3 bg-white bg-opacity-90 rounded p-2">
-                    <p className="text-sm text-stone-600">Extended Wire System</p>
-                  </div>
-                </div>
-                <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                  <Image
-                    src="/Montana/Panton-wire-system/lifestyle/Montana_Store_Bredgade24_02_H.jpg"
-                    alt="Panton Wire display in Montana store"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute bottom-3 left-3 right-3 bg-white bg-opacity-90 rounded p-2">
-                    <p className="text-sm text-stone-600">Statement Display</p>
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 gap-4">
+              <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                <Image
+                  src="/Montana/Panton-wire-system/lifestyle/Montana_Home21_22_PantonWire_Extended_Black_Snow_Detail_H.jpg"
+                  alt="Panton Wire Extended lifestyle image 1"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+              <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                <Image
+                  src="/Montana/Panton-wire-system/lifestyle/Montana_Store_Bredgade24_02_H.jpg"
+                  alt="Panton Wire Extended lifestyle image 2"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
               </div>
             </div>
           </div>
 
-          {/* Product Details */}
+          {/* Product Information */}
           <div className="space-y-8">
             <div>
-              <p className="text-sm text-stone-500 uppercase tracking-wider mb-2">
-                PANTON WIRE SYSTEM
-              </p>
-              <h1 className="text-4xl font-serif text-stone-800 mb-4">
+              <div className="text-sm text-blue-600 uppercase tracking-wider mb-2">
+                MONTANA COLLECTION
+              </div>
+              <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 Panton Wire Extended Ø34.8
               </h1>
-              <p className="text-lg text-stone-600 leading-relaxed mb-6">
+              <p className="text-lg text-gray-600 leading-relaxed">
                 The largest and most dramatic version of Verner Panton's iconic wire shelf system from 1971. 
                 This extended modular wire shelf with Ø34.8 cm diameter creates a bold sculptural statement 
                 while providing maximum display space for larger collections, books, and decorative objects.
               </p>
-              <p className="text-stone-600 mb-4">
+              <div className="mt-4 text-sm text-gray-500">
                 Designed by Verner Panton, 1971
-              </p>
+              </div>
             </div>
 
-            <div className="text-3xl font-light text-stone-800">
-              kr {price.toLocaleString()}
+            <div className="text-2xl font-light text-gray-900">
+              kr {selectedVariant.price.toLocaleString()}
             </div>
 
-            {/* Color Selection */}
-            <div>
-              <h3 className="text-sm font-medium text-stone-800 mb-4 uppercase tracking-wider">
-                FINISH: {currentVariant.name.toUpperCase()}
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                Finish: {selectedVariant.name}
               </h3>
-              <div className="grid grid-cols-4 gap-2">
-                {variants.map((variant) => (
+              <div className="grid grid-cols-2 gap-3">
+                {variants.map((variant, index) => (
                   <button
                     key={variant.id}
-                    onClick={() => setSelectedVariant(variant.id)}
-                    className={`w-12 h-12 rounded-full border-2 transition-all ${
-                      selectedVariant === variant.id
-                        ? 'border-stone-800 scale-110'
-                        : 'border-stone-300 hover:border-stone-500'
+                    onClick={() => setSelectedVariantIndex(index)}
+                    className={`p-3 text-sm border rounded transition-all ${
+                      selectedVariantIndex === index
+                        ? "border-blue-600 bg-blue-50"
+                        : "border-gray-300 hover:border-gray-500"
                     }`}
-                    style={{ backgroundColor: variant.colorCode }}
-                    title={variant.name}
-                  />
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div 
+                        className="w-4 h-4 rounded-full border border-gray-300"
+                        style={{ backgroundColor: variant.colorCode }}
+                      />
+                      <div className="font-medium">{variant.name}</div>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">kr {variant.price.toLocaleString()}</div>
+                  </button>
                 ))}
               </div>
-              <p className="text-xs text-stone-500 mt-2">
-                Available in {variants.length} finishes
-              </p>
             </div>
 
-            {/* Add to Cart */}
-            <button className="w-full bg-stone-800 text-white py-4 px-8 rounded-lg font-medium hover:bg-stone-700 transition-colors text-lg">
-              ADD TO CART - KR {price.toLocaleString()}
+            <button className="w-full bg-blue-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-blue-700 transition-colors">
+              Add to Cart - kr {selectedVariant.price.toLocaleString()}
             </button>
 
             {/* Made to Order Notice */}
@@ -179,101 +252,195 @@ export default function PantonWireExtended35Page() {
               </div>
             </div>
 
-            {/* Product Details Expandable */}
+            {/* Collapsible Features */}
             <div className="border-t border-gray-200 pt-8">
-              <details className="group">
-                <summary className="flex justify-between items-center cursor-pointer text-stone-800 font-medium py-2">
-                  PRODUCT DETAILS
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <div className="mt-4 space-y-4 text-stone-600">
-                  <div>
-                    <h4 className="font-medium text-stone-800 mb-2">Specifications</h4>
-                    <ul className="space-y-1 text-sm">
-                      <li><strong>Width:</strong> 70 cm</li>
-                      <li><strong>Height:</strong> 34.8 cm</li>
-                      <li><strong>Depth:</strong> 34.8 cm</li>
-                      <li><strong>Material:</strong> Steel</li>
-                      <li><strong>Material group:</strong> Metal</li>
-                      <li><strong>Designer:</strong> Verner Panton</li>
-                      <li><strong>Year:</strong> 1971</li>
-                      <li><strong>Trademark:</strong> Montana</li>
-                      <li><strong>Mounting:</strong> Wall-mounted or floor standing</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-stone-800 mb-2">Features</h4>
-                    <ul className="space-y-1 text-sm">
-                      <li>• Iconic Verner Panton design from 1971</li>
-                      <li>• Largest extended multi-level wire system</li>
-                      <li>• Creates bold sculptural statement</li>
-                      <li>• Maximum display space for collections</li>
-                      <li>• Perfect for larger books, plants, or art objects</li>
-                      <li>• Wall-mounted design saves floor space</li>
-                      <li>• Durable powder-coated finish</li>
-                      <li>• Easy installation with included mounting hardware</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-stone-800 mb-2">Available Finishes</h4>
-                    <p className="text-sm">
-                      Black, Chrome, Monarch, and Snow finishes. Each finish is carefully selected 
-                      to complement the wire design and coordinate with Montana furniture pieces.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-stone-800 mb-2">Care Instructions</h4>
-                    <p className="text-sm">
-                      Clean with a soft, damp cloth. For chrome finish, use appropriate metal cleaner. 
-                      Avoid abrasive cleaners that may damage the powder-coated finish.
-                    </p>
-                  </div>
+              <button
+                onClick={() => setFeaturesExpanded(!featuresExpanded)}
+                className="flex justify-between items-center w-full text-left"
+              >
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                  Features
+                </h3>
+                <span className="text-gray-500">
+                  {featuresExpanded ? "−" : "+"}
+                </span>
+              </button>
+              {featuresExpanded && (
+                <ul className="mt-4 space-y-2 text-gray-600">
+                  {features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Collapsible Specifications */}
+            <div className="border-t border-gray-200 pt-8">
+              <button
+                onClick={() => setSpecificationsExpanded(!specificationsExpanded)}
+                className="flex justify-between items-center w-full text-left"
+              >
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                  Specifications
+                </h3>
+                <span className="text-gray-500">
+                  {specificationsExpanded ? "−" : "+"}
+                </span>
+              </button>
+              {specificationsExpanded && (
+                <div className="mt-4 space-y-3 text-gray-600">
+                  {specifications.map((spec, idx) => (
+                    <div key={idx} className="flex justify-between border-b border-gray-100 pb-2">
+                      <span className="font-medium">{spec.label}</span>
+                      <span className="text-right">{spec.value}</span>
+                    </div>
+                  ))}
                 </div>
-              </details>
+              )}
+            </div>
+
+            {/* Back to Collection */}
+            <div className="border-t border-gray-200 pt-8">
+              <Link
+                href="/montana"
+                className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
+              >
+                View All Montana Products
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Related Products Section */}
-        <section className="mt-20">
-          <h2 className="text-2xl font-serif text-stone-800 mb-8 text-center">
-            Complete Your Panton Wire System
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="relative aspect-video bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src="/Montana/Panton-wire-system/Montana_PantonWire_Single_D34.8_Monarch_perspective-scaled.jpg"
-                alt="Panton Wire Single Ø34.8"
-                fill
-                className="object-contain object-center p-4"
-              />
-              <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 rounded p-3">
-                <h3 className="font-medium text-stone-800">Panton Wire Single Ø34.8</h3>
-                <p className="text-sm text-stone-600">Single large wire shelf</p>
-              </div>
-            </div>
-            <div className="relative aspect-video bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src="/Montana/Panton-wire-system/Montana_PantonWire_Extended_D18.8_Black_perspective-scaled.jpg"
-                alt="Panton Wire Extended Ø18.8"
-                fill
-                className="object-contain object-center p-4"
-              />
-              <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 rounded p-3">
-                <h3 className="font-medium text-stone-800">Panton Wire Extended Ø18.8</h3>
-                <p className="text-sm text-stone-600">Smaller extended system</p>
-              </div>
-            </div>
+        <div className="mt-20 border-t border-gray-200 pt-16">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl lg:text-3xl font-light text-gray-900 mb-4">
+              Complete Your Panton Wire System
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover more pieces from Verner Panton's iconic wire shelf system
+            </p>
           </div>
-          <div className="text-center mt-8">
-            <Link 
-              href="/montana"
-              className="inline-block bg-stone-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-stone-700 transition-colors"
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Link
+              href="/montana/panton-wire-single-35"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
             >
-              VIEW ALL MONTANA PRODUCTS
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Montana/Panton-wire-system/Montana_PantonWire_Single_D34.8_Monarch_perspective-scaled.jpg"
+                  alt="Panton Wire Single Ø34.8"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Wire System
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Panton Wire Single Ø34.8
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 2,199
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/montana/panton-wire-extended-18"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Montana/Panton-wire-system/Montana_PantonWire_Extended_D18.8_Black_perspective-scaled.jpg"
+                  alt="Panton Wire Extended Ø18.8"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Wire System
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Panton Wire Extended Ø18.8
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 2,799
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/montana/panton-wire-single-18"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Montana/Panton-wire-system/Montana_PantonWire_Single_D18.8_Chrome_perspective-scaled.jpg"
+                  alt="Panton Wire Single Ø18.8"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Wire System
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Panton Wire Single Ø18.8
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 1,899
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/montana/bureau-desk"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Montana/BUREAU/Montana_Selection_BUREAU_Desk_NewWhite_Suspended_Perspective.png"
+                  alt="Bureau Desk"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Desk
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Bureau Desk
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 15,817
+                </div>
+              </div>
             </Link>
           </div>
-        </section>
+
+          {/* View All Products Link */}
+          <div className="text-center mt-12">
+            <Link
+              href="/montana"
+              className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
+            >
+              View All Montana Products
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -52,14 +52,18 @@ function Header() {
                                 type='text'
                                 name='query'
                                 placeholder="What can we help you find?"
-                                className='w-full px-4 py-3 border border-stone-300 bg-white text-stone-800 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-400 focus:border-transparent text-sm'
+                                className='w-full px-4 py-3 pr-12 border border-stone-300 bg-white text-stone-800 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-400 focus:border-transparent text-sm'
                                 style={{ borderRadius: '0' }}
                             />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <svg className="h-5 w-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <button 
+                                type="submit"
+                                className="absolute inset-y-0 right-0 flex items-center pr-3 hover:bg-stone-50 transition-colors duration-200"
+                                aria-label="Search"
+                            >
+                                <svg className="h-5 w-5 text-stone-400 hover:text-stone-600 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
-                            </div>
+                            </button>
                         </div>
                     </Form>
 

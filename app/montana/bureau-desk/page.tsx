@@ -9,187 +9,238 @@ interface ColorVariant {
   name: string;
   colorCode: string;
   image: string;
+  price: number;
 }
 
 export default function BureauDeskPage() {
-  const [selectedVariant, setSelectedVariant] = useState('monarch');
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(3); // Start with Monarch
+  const [featuresExpanded, setFeaturesExpanded] = useState(false);
+  const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
   const variants: ColorVariant[] = [
     {
       id: 'new-white',
       name: 'New White',
       colorCode: '#FAFAFA',
-      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_NewWhite_Suspended_Perspective.png'
+      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_NewWhite_Suspended_Perspective.png',
+      price: 15817
     },
     {
       id: 'nordic',
       name: 'Nordic',
       colorCode: '#E8E8E8',
-      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Nordic_Suspended_Perspective.png'
+      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Nordic_Suspended_Perspective.png',
+      price: 15817
     },
     {
       id: 'vanilla',
       name: 'Vanilla',
       colorCode: '#F5F5DC',
-      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Vanilla_Suspended_Perspective.png'
+      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Vanilla_Suspended_Perspective.png',
+      price: 15817
     },
     {
       id: 'monarch',
       name: 'Monarch',
       colorCode: '#4A5D8A',
-      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Monarch_Suspended_Perspective.png'
+      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Monarch_Suspended_Perspective.png',
+      price: 15817
     },
     {
       id: 'anthracite',
       name: 'Anthracite',
       colorCode: '#3A3A3A',
-      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Anthracite_Suspended_Perspective.png'
+      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Anthracite_Suspended_Perspective.png',
+      price: 15817
     },
     {
       id: 'mushroom',
       name: 'Mushroom',
       colorCode: '#B8A082',
-      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Mushroom_Suspended_Perspective.png'
+      image: '/Montana/BUREAU/Montana_Selection_BUREAU_Desk_Mushroom_Suspended_Perspective.png',
+      price: 15817
     }
   ];
 
-  const currentVariant = variants.find(v => v.id === selectedVariant) || variants[3];
+  const selectedVariant = variants[selectedVariantIndex];
+
+  const features = [
+    "Two large removable shelves for easy organization",
+    "Additional shelf and cabinet under countertop",
+    "Wall-mounted design saves floor space",
+    "Integrates elegantly into any room",
+    "Available in Selection colors (4-week delivery)",
+    "Custom colors available upon request",
+    "Includes desk mat for premium finish",
+    "Premium lacquered finish for durability",
+    "Designed by Petter J. Lassen",
+    "Made in Denmark with sustainable materials"
+  ];
+
+  const specifications = [
+    { label: "Designer", value: "Petter J. Lassen" },
+    { label: "Manufacturer", value: "Montana" },
+    { label: "Material", value: "Lacquered MDF" },
+    { label: "Dimensions", value: "W 93.7 x H 36.6 x D 38 cm" },
+    { label: "Weight", value: "25 kg" },
+    { label: "Installation", value: "Wall-mounted" },
+    { label: "Finish Options", value: "New White, Nordic, Vanilla, Monarch, Anthracite, Mushroom" },
+    { label: "Includes", value: "Desk mat" },
+    { label: "Delivery Time", value: "8 weeks (made to order)" },
+    { label: "Care", value: "Clean with damp cloth" },
+    { label: "Warranty", value: "5 years structural warranty" },
+    { label: "Origin", value: "Made in Denmark" }
+  ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
+      {/* Navigation */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="text-sm text-stone-600">
-            <Link href="/" className="hover:text-stone-800">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/montana" className="hover:text-stone-800">Montana</Link>
-            <span className="mx-2">/</span>
-            <span className="text-stone-800">Bureau Desk</span>
-          </nav>
+          <div className="flex items-center justify-between">
+            <Link 
+              href="/montana" 
+              className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Montana Collection
+            </Link>
+            
+            <nav className="flex items-center space-x-2 text-sm">
+              <Link href="/" className="text-stone-600 hover:text-stone-800">
+                Home
+              </Link>
+              <span className="text-stone-400">/</span>
+              <Link href="/montana" className="text-stone-600 hover:text-stone-800">
+                Montana
+              </Link>
+              <span className="text-stone-400">/</span>
+              <span className="text-stone-800 font-medium">Bureau Desk</span>
+            </nav>
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Image and Lifestyle Images */}
+          {/* Product Images */}
           <div className="space-y-6">
-            {/* Main Product Image */}
+            {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
               <Image
-                src={currentVariant.image}
-                alt={`Bureau Desk in ${currentVariant.name}`}
+                src={selectedVariant.image}
+                alt={`Bureau Desk - ${selectedVariant.name}`}
                 fill
-                className="object-contain object-center p-8"
+                className="object-contain object-center p-4"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
-            </div>
-            
-            {/* Lifestyle Images */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-stone-800">Bureau in Living Spaces</h3>
-              <div className="grid grid-cols-1 gap-4">
-                <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                  <Image
-                    src="/Montana/Selection/Montana_Home21_22_BUREAU_Flint_01_H-scaled.jpg"
-                    alt="Bureau desk in modern living room setting"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute bottom-3 left-3 right-3 bg-white bg-opacity-90 rounded p-2">
-                    <p className="text-sm text-stone-600">Living Room Integration</p>
-                  </div>
-                </div>
-                <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                  <Image
-                    src="/Montana/Selection/Montana_Home21_22_BUREAU_Flint_Detail_H-scaled.jpg"
-                    alt="Bureau desk detail showing storage compartments"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute bottom-3 left-3 right-3 bg-white bg-opacity-90 rounded p-2">
-                    <p className="text-sm text-stone-600">Smart Storage Design</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Product Details */}
-          <div className="space-y-8">
-            <div>
-              <p className="text-sm text-stone-500 uppercase tracking-wider mb-2">
-                MONTANA SELECTION
-              </p>
-              <h1 className="text-4xl font-serif text-stone-800 mb-4">
-                Bureau Desk
-              </h1>
-              <p className="text-lg text-stone-600 leading-relaxed mb-6">
-                BUREAU is a small desk that integrates elegantly into the home office, living room and bedroom. 
-                BUREAU has two large shelves that can be completely removed from the module, giving a good overview 
-                of the contents. In addition to the shelves, BUREAU has a shelf and a cabinet under the countertop. 
-                BUREAU is only available as a wall-mounted module. The module comes with a desk mat.
-              </p>
-              <p className="text-stone-600 mb-4">
-                Designed by Petter J. Lassen
-              </p>
-            </div>
-
-            <div className="text-3xl font-light text-stone-800">
-              kr 15,817
-            </div>
-
-            {/* Color Selection */}
-            <div>
-              <h3 className="text-sm font-medium text-stone-800 mb-4 uppercase tracking-wider">
-                COLOR: {currentVariant.name.toUpperCase()}
-              </h3>
-              <div className="flex space-x-3">
-                {variants.map((variant) => (
-                  <button
-                    key={variant.id}
-                    onClick={() => setSelectedVariant(variant.id)}
-                    className={`w-12 h-12 rounded-full border-2 transition-all ${
-                      selectedVariant === variant.id
-                        ? 'border-stone-800 scale-110'
-                        : 'border-stone-300 hover:border-stone-500'
-                    }`}
-                    style={{ backgroundColor: variant.colorCode }}
-                    title={variant.name}
-                  />
-                ))}
-              </div>
             </div>
 
             {/* Variant Thumbnails */}
-            <div className="grid grid-cols-3 gap-4">
-              {variants.slice(0, 6).map((variant) => (
+            <div className="grid grid-cols-4 gap-3">
+              {variants.map((variant, index) => (
                 <button
                   key={variant.id}
-                  onClick={() => setSelectedVariant(variant.id)}
+                  onClick={() => setSelectedVariantIndex(index)}
                   className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
-                    selectedVariant === variant.id
-                      ? 'border-stone-800'
-                      : 'border-transparent hover:border-stone-300'
+                    selectedVariantIndex === index
+                      ? "border-blue-600"
+                      : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
                   <Image
                     src={variant.image}
-                    alt={variant.name}
+                    alt={`${variant.name} variant`}
                     fill
                     className="object-contain object-center p-2"
+                    sizes="(max-width: 768px) 25vw, 12.5vw"
                   />
-                  <div className="absolute bottom-2 left-2 right-2">
-                    <p className="text-xs text-stone-600 text-center bg-white bg-opacity-90 rounded px-1 py-0.5">
-                      {variant.name}
-                    </p>
+                  <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
+                    {variant.name}
                   </div>
                 </button>
               ))}
             </div>
 
-            {/* Add to Cart */}
-            <button className="w-full bg-stone-800 text-white py-4 px-8 rounded-lg font-medium hover:bg-stone-700 transition-colors text-lg">
-              ADD TO CART - KR 15,817
+            {/* Lifestyle Images */}
+            <div className="grid grid-cols-1 gap-4">
+              <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                <Image
+                  src="/Montana/Selection/Montana_Home21_22_BUREAU_Flint_01_H-scaled.jpg"
+                  alt="Bureau desk lifestyle image 1"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+              <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                <Image
+                  src="/Montana/Selection/Montana_Home21_22_BUREAU_Flint_Detail_H-scaled.jpg"
+                  alt="Bureau desk lifestyle image 2"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Product Information */}
+          <div className="space-y-8">
+            <div>
+              <div className="text-sm text-blue-600 uppercase tracking-wider mb-2">
+                MONTANA COLLECTION
+              </div>
+              <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
+                Bureau Desk
+              </h1>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                BUREAU is a small desk that integrates elegantly into the home office, living room and bedroom. 
+                BUREAU has two large shelves that can be completely removed from the module, giving a good overview 
+                of the contents. In addition to the shelves, BUREAU has a shelf and a cabinet under the countertop. 
+                BUREAU is only available as a wall-mounted module. The module comes with a desk mat.
+              </p>
+              <div className="mt-4 text-sm text-gray-500">
+                Designed by Petter J. Lassen
+              </div>
+            </div>
+
+            <div className="text-2xl font-light text-gray-900">
+              kr {selectedVariant.price.toLocaleString()}
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                Color: {selectedVariant.name}
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
+                {variants.map((variant, index) => (
+                  <button
+                    key={variant.id}
+                    onClick={() => setSelectedVariantIndex(index)}
+                    className={`p-3 text-sm border rounded transition-all ${
+                      selectedVariantIndex === index
+                        ? "border-blue-600 bg-blue-50"
+                        : "border-gray-300 hover:border-gray-500"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div 
+                        className="w-4 h-4 rounded-full border border-gray-300"
+                        style={{ backgroundColor: variant.colorCode }}
+                      />
+                      <div className="font-medium">{variant.name}</div>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">kr {variant.price.toLocaleString()}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button className="w-full bg-blue-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-blue-700 transition-colors">
+              Add to Cart - kr {selectedVariant.price.toLocaleString()}
             </button>
 
             {/* Made to Order Notice */}
@@ -209,90 +260,195 @@ export default function BureauDeskPage() {
               </div>
             </div>
 
-            {/* Product Details Expandable */}
+            {/* Collapsible Features */}
             <div className="border-t border-gray-200 pt-8">
-              <details className="group">
-                <summary className="flex justify-between items-center cursor-pointer text-stone-800 font-medium py-2">
-                  PRODUCT DETAILS
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <div className="mt-4 space-y-4 text-stone-600">
-                  <div>
-                    <h4 className="font-medium text-stone-800 mb-2">Specifications</h4>
-                    <ul className="space-y-1 text-sm">
-                      <li><strong>Dimensions:</strong> W 93.7 x H 36.6 x D 38 cm</li>
-                      <li><strong>Weight:</strong> 25 kg</li>
-                      <li><strong>Base:</strong> Wall-mounted</li>
-                      <li><strong>Designer:</strong> Petter J. Lassen</li>
-                      <li><strong>Producer:</strong> Montana</li>
-                      <li><strong>Includes:</strong> Desk mat</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-stone-800 mb-2">Features</h4>
-                    <ul className="space-y-1 text-sm">
-                      <li>• Two large removable shelves for easy organization</li>
-                      <li>• Additional shelf and cabinet under countertop</li>
-                      <li>• Wall-mounted design saves floor space</li>
-                      <li>• Integrates elegantly into any room</li>
-                      <li>• Available in Selection colors (4-week delivery)</li>
-                      <li>• Custom colors available upon request</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-stone-800 mb-2">Available Colors</h4>
-                    <p className="text-sm">
-                      Selection colors: New White, Nordic, Vanilla, Monarch, Anthracite, Mushroom.
-                      <br />
-                      For other Montana colors or color combinations, please contact us for a quote.
-                    </p>
-                  </div>
+              <button
+                onClick={() => setFeaturesExpanded(!featuresExpanded)}
+                className="flex justify-between items-center w-full text-left"
+              >
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                  Features
+                </h3>
+                <span className="text-gray-500">
+                  {featuresExpanded ? "−" : "+"}
+                </span>
+              </button>
+              {featuresExpanded && (
+                <ul className="mt-4 space-y-2 text-gray-600">
+                  {features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Collapsible Specifications */}
+            <div className="border-t border-gray-200 pt-8">
+              <button
+                onClick={() => setSpecificationsExpanded(!specificationsExpanded)}
+                className="flex justify-between items-center w-full text-left"
+              >
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                  Specifications
+                </h3>
+                <span className="text-gray-500">
+                  {specificationsExpanded ? "−" : "+"}
+                </span>
+              </button>
+              {specificationsExpanded && (
+                <div className="mt-4 space-y-3 text-gray-600">
+                  {specifications.map((spec, idx) => (
+                    <div key={idx} className="flex justify-between border-b border-gray-100 pb-2">
+                      <span className="font-medium">{spec.label}</span>
+                      <span className="text-right">{spec.value}</span>
+                    </div>
+                  ))}
                 </div>
-              </details>
+              )}
+            </div>
+
+            {/* Back to Collection */}
+            <div className="border-t border-gray-200 pt-8">
+              <Link
+                href="/montana"
+                className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
+              >
+                View All Montana Products
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Related Products Section */}
-        <section className="mt-20">
-          <h2 className="text-2xl font-serif text-stone-800 mb-8 text-center">
-            Complete Your Home Office
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="relative aspect-video bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src="/Montana-DASH-Nightstand/Montana_Selection_DASH_NewWhite_Suspended_Perspective.jpg"
-                alt="Dash Nightstand"
-                fill
-                className="object-contain object-center p-4"
-              />
-              <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 rounded p-3">
-                <h3 className="font-medium text-stone-800">Dash Nightstand</h3>
-                <p className="text-sm text-stone-600">Wall-mounted storage solution</p>
-              </div>
-            </div>
-            <div className="relative aspect-video bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src="/Montana/MB126-LEGS/montana_mb126_position_legs_rosehip.webp"
-                alt="MB126 Legs"
-                fill
-                className="object-contain object-center p-4"
-              />
-              <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 rounded p-3">
-                <h3 className="font-medium text-stone-800">MB126 Legs</h3>
-                <p className="text-sm text-stone-600">Classic Montana legs for shelving</p>
-              </div>
-            </div>
+        <div className="mt-20 border-t border-gray-200 pt-16">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl lg:text-3xl font-light text-gray-900 mb-4">
+              Complete Your Home Office
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover more Montana furniture to create the perfect workspace
+            </p>
           </div>
-          <div className="text-center mt-8">
-            <Link 
-              href="/montana"
-              className="inline-block bg-stone-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-stone-700 transition-colors"
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Link
+              href="/montana/dash-nightstand"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
             >
-              VIEW ALL MONTANA PRODUCTS
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Montana-DASH-Nightstand/Montana_Selection_DASH_NewWhite_Suspended_Perspective.jpg"
+                  alt="Dash Nightstand"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Storage
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Dash Nightstand
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 8,500
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/montana/mb126-legs"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Montana/MB126-LEGS/montana_mb126_position_legs_rosehip.webp"
+                  alt="MB126 Legs"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Accessories
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  MB126 Legs
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 2,200
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/montana/compile-module"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Montana/COMPILE/Montana_Selection_COMPILE_NewWhite_Suspended_Perspective.png"
+                  alt="Compile Module"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Storage
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Compile Module
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 12,500
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/montana/show-module"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Montana/SHOW/Montana_Selection_SHOW_NewWhite_Suspended_Perspective.png"
+                  alt="Show Module"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Display
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Show Module
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 9,800
+                </div>
+              </div>
             </Link>
           </div>
-        </section>
+
+          {/* View All Products Link */}
+          <div className="text-center mt-12">
+            <Link
+              href="/montana"
+              className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
+            >
+              View All Montana Products
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

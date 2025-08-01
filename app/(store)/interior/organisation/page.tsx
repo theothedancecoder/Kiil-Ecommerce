@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import InteriorBanner from "@/components/InteriorBanner";
+import InteriorSubBanner from "@/components/InteriorSubBanner";
 import InteriorSidebar from "@/components/InteriorSidebar";
 
 const organisationCategories = [
@@ -24,7 +24,10 @@ export default function OrganisationPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <InteriorBanner />
+      <InteriorSubBanner 
+        title="Home Organisation"
+        subtitle="Discover elegant storage solutions and organisation systems that bring both functionality and style to your living spaces."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex gap-8">
           <InteriorSidebar />

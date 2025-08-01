@@ -10,12 +10,16 @@ export const getProductByCategory = async (categorySlug: string) => {
             image,
             description,
             price,
+            brand,
             categories[]->{
                 _id,
                 title,
                 slug
             },
-            stock
+            variants,
+            stock,
+            inStock,
+            href
         } | order(name asc)
     `);
 

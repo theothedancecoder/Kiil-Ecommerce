@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { use } from 'react';
 
 interface FritzHansenProduct {
   id: string;
@@ -27,8 +28,8 @@ interface FritzHansenProduct {
   }[];
 }
 
-export default function FritzHansenProductPage({ params }: { params: { productId: string } }) {
-  const { productId } = params;
+function FritzHansenProductPage({ params }: { params: Promise<{ productId: string }> }) {
+  const { productId } = use(params);
   
   const products: FritzHansenProduct[] = [
     {
@@ -747,6 +748,12 @@ export default function FritzHansenProductPage({ params }: { params: { productId
     notFound();
   }
 
+  // Add null checks and ensure variants exist
+  if (!product.variants || product.variants.length === 0) {
+    console.error('Product has no variants:', product);
+    notFound();
+  }
+
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
   const [quantity, setQuantity] = useState(1);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
@@ -777,6 +784,11 @@ export default function FritzHansenProductPage({ params }: { params: { productId
                 fill
                 className="object-contain object-center p-8"
                 loading="eager"
+                onError={(e) => {
+                  console.error('Image failed to load:', selectedVariant.image);
+                  // Fallback to a placeholder or hide the image
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </div>
             
@@ -798,6 +810,10 @@ export default function FritzHansenProductPage({ params }: { params: { productId
                       alt={variant.name}
                       fill
                       className="object-contain p-2"
+                      onError={(e) => {
+                        console.error('Thumbnail image failed to load:', variant.image);
+                        e.currentTarget.style.display = 'none';
+                      }}
                     />
                   </button>
                 ))}
@@ -929,6 +945,10 @@ export default function FritzHansenProductPage({ params }: { params: { productId
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    onError={(e) => {
+                      console.error('Lifestyle image failed to load:', image.src);
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
                 </div>
               ))}
@@ -939,3 +959,5 @@ export default function FritzHansenProductPage({ params }: { params: { productId
     </div>
   );
 }
+
+export default FritzHansenProductPage;

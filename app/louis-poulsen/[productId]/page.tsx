@@ -108,12 +108,12 @@ const products: Product[] = [
   // Add other products similarly...
 ];
 
-export default function LouisPoulsenProductPage({
+export default async function LouisPoulsenProductPage({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }) {
-  const productId = params.productId;
+  const { productId } = await params;
   console.log("Received productId param:", productId);
   const product = products.find((p) => p.id === productId);
 

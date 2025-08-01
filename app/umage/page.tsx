@@ -989,19 +989,69 @@ export default function UmagePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl lg:text-6xl font-light text-gray-900 mb-6">
-              UMAGE
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Scandinavian furniture design that brings people together.
-            </p>
-          </div>
+      {/* Back to Homepage */}
+      <div className="bg-gray-50 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link 
+            href="/"
+            className="inline-flex items-center text-stone-600 hover:text-stone-800 transition-colors"
+          >
+            <svg 
+              className="w-5 h-5 mr-2" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+              />
+            </svg>
+            Back to Homepage
+          </Link>
         </div>
       </div>
+
+      {/* Hero Section */}
+      <section className="relative h-[500px] overflow-hidden">
+        {/* Background Image */}
+        <Image
+          src="/umage/Treasures Dresser/lifestyle/UMAGE_lifestyle_Treasures_dresser_oak_sugar_brown__2_1_1000x.webp"
+          alt="Umage Collection"
+          fill
+          className="object-cover"
+        />
+        
+        {/* Warm Scandinavian Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-100/30 via-orange-50/20 to-rose-100/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+        
+        {/* Content */}
+        <div className="relative h-full flex items-center justify-center text-center">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="inline-block bg-white/90 backdrop-blur-sm px-12 py-8 rounded-2xl shadow-lg">
+              <h1 className="text-4xl md:text-6xl font-light text-gray-900 mb-4">
+                UMAGE
+              </h1>
+              <p className="text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed">
+                Scandinavian furniture design that brings people together
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Floating Design Elements - Warm Scandinavian Colors */}
+        <div className="absolute top-16 left-12 w-6 h-6 bg-amber-300 rounded-full opacity-60 animate-pulse"></div>
+        <div className="absolute top-28 right-20 w-4 h-4 bg-orange-200 rounded-full opacity-70 animate-pulse delay-300"></div>
+        <div className="absolute bottom-20 left-16 w-5 h-5 bg-rose-200 rounded-full opacity-65 animate-pulse delay-700"></div>
+        <div className="absolute bottom-32 right-16 w-3 h-3 bg-amber-200 rounded-full opacity-80 animate-pulse delay-500"></div>
+        <div className="absolute top-36 left-1/4 w-4 h-4 bg-orange-300 rounded-full opacity-60 animate-pulse delay-1000"></div>
+        <div className="absolute bottom-28 right-1/4 w-6 h-6 bg-rose-300 rounded-full opacity-70 animate-pulse delay-200"></div>
+        <div className="absolute top-20 right-1/3 w-3 h-3 bg-amber-400 rounded-full opacity-75 animate-pulse delay-800"></div>
+        <div className="absolute bottom-40 left-1/3 w-5 h-5 bg-orange-100 rounded-full opacity-65 animate-pulse delay-400"></div>
+      </section>
 
       {/* Filters */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
