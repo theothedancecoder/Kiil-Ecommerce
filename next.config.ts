@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Disable ESLint during builds to prevent deployment failures
@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@clerk/nextjs', '@sanity/icons', 'lucide-react'],
   },
 
-  // Image optimization - Critical for Vercel production
+  // Image optimization - Disable for production to fix static image issues
   images: {
     remotePatterns: [
       {
@@ -25,15 +25,9 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       }
     ],
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    dangerouslyAllowSVG: true,
-    // Critical: Enable unoptimized for static images in production
-    unoptimized: process.env.NODE_ENV === 'production',
-    loader: 'default',
-    // Legacy domains support for backward compatibility
+    // Completely disable optimization in production
+    unoptimized: true,
+    // Legacy domains support
     domains: ['cdn.sanity.io'],
   },
 
