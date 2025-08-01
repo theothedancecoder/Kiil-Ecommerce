@@ -4,7 +4,7 @@ import { Product } from "@/sanity.types";
 import { StaticProduct } from "@/lib/allProducts";
 import { StockManager } from "@/lib/stockManager";
 import { getImageUrl } from "@/lib/ImageUrl";
-import { debugImageUrl, isValidImagePath } from "@/lib/imageDebug";
+import { debugImageUrl, isValidImagePath, fixImagePathForProduction, validateSanityConfig } from "@/lib/imageDebug";
 import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -47,14 +47,13 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
     imageSrc = getImageUrl(product.image, '');
   }
 
-  // Ensure imageSrc starts with / for local images or is a full URL
-  if (imageSrc && !imageSrc.startsWith('http') && !imageSrc.startsWith('/')) {
-    imageSrc = '/' + imageSrc;
-  }
+  // Fix image path for production
+  imageSrc = fixImagePathForProduction(imageSrc);
 
-  // Debug image URL in development
+  // Debug image URL and validate Sanity config
   if (imageSrc) {
     debugImageUrl(imageSrc, productName);
+    validateSanityConfig();
   }
 
   // Validate image path

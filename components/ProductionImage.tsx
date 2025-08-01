@@ -25,11 +25,14 @@ export default function ProductionImage({
   height,
 }: ProductionImageProps) {
   const [imageError, setImageError] = useState(false);
-  const [imageSrc, setImageSrc] = useState(src);
+  
+  // Properly encode the image source for production
+  const encodedSrc = src ? encodeURI(src) : '';
+  const [imageSrc, setImageSrc] = useState(encodedSrc);
 
   // Handle image loading errors
   const handleError = () => {
-    console.error(`Failed to load image: ${imageSrc}`);
+    console.error(`Failed to load image: ${imageSrc} (original: ${src})`);
     setImageError(true);
   };
 
@@ -46,7 +49,7 @@ export default function ProductionImage({
   const isProduction = process.env.NODE_ENV === 'production';
   const isStaticImage = imageSrc.startsWith('/') && !imageSrc.startsWith('http');
   
-  // In production, for static images, use unoptimized approach
+  // In production, for static images, use unoptimized approach with proper encoding
   if (isProduction && isStaticImage) {
     return (
       <img

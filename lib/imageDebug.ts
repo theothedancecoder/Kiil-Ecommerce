@@ -12,7 +12,7 @@ export function debugImageUrl(imageSrc: string, productName: string) {
 export function validateSanityConfig() {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
-  const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION;
+  const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2025-06-13';
 
   if (!projectId) {
     console.error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID environment variable');
@@ -24,13 +24,13 @@ export function validateSanityConfig() {
     return false;
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[Sanity Config]', {
-      projectId: projectId?.substring(0, 8) + '...',
-      dataset,
-      apiVersion: apiVersion || 'default',
-    });
-  }
+  // Log configuration in both development and production for debugging
+  console.log('[Sanity Config]', {
+    projectId: projectId?.substring(0, 8) + '...',
+    dataset,
+    apiVersion,
+    environment: process.env.NODE_ENV
+  });
 
   return true;
 }
@@ -49,4 +49,29 @@ export function isValidImagePath(src: string): boolean {
   if (src.startsWith('/')) return true;
   
   return false;
+}
+
+// Production-specific image path fixer
+export function fixImagePathForProduction(src: string): string {
+  if (!src) return '';
+  
+  // If it's already a full URL, return as-is
+  if (src.startsWith('http')) return src;
+  
+  // Ensure local paths start with /
+  if (!src.startsWith('/')) {
+    src = '/' + src;
+  }
+  
+  // For production, encode the URI to handle spaces and special characters
+  if (process.env.NODE_ENV === 'production') {
+    try {
+      return encodeURI(src);
+    } catch (error) {
+      console.warn('Failed to encode URI:', src, error);
+      return src;
+    }
+  }
+  
+  return src;
 }
