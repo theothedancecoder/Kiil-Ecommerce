@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
-import { getImageUrl, isImageAvailable } from "@/lib/imageConfig";
+import { getProductionImageSrc } from "@/lib/globalImageFix";
 
 interface ProductionImageProps {
   src: string;
@@ -27,40 +26,23 @@ export default function ProductionImage({
 }: ProductionImageProps) {
   const [imageError, setImageError] = useState(false);
   
-  // Get the appropriate image URL based on environment
-  const imageSrc = getImageUrl(src);
-  const imageAvailable = isImageAvailable(src);
-
+  // Get the production-safe image URL
+  const imageSrc = getProductionImageSrc(src, alt);
+  
+  // In production, always show placeholder since images aren't deployed
+  const isProduction = process.env.NODE_ENV === 'production';
+  
   // Handle image loading errors
   const handleError = () => {
     console.error(`Failed to load image: ${imageSrc} (original: ${src})`);
     setImageError(true);
   };
 
-  // If image failed to load or not available, show fallback
-  if (imageError || !imageAvailable) {
+  // In production or if error, show styled placeholder
+  if (isProduction || imageError) {
     return (
-      <div className={`bg-gray-100 flex flex-col items-center justify-center ${className} border-2 border-dashed border-gray-300`}>
-        <div className="text-gray-400 text-xs text-center p-2">
-          <div className="mb-1">📷</div>
-          <div>Image Loading</div>
-          <div className="text-xs opacity-75">Setting up CDN...</div>
-        </div>
-      </div>
-    );
-  }
-
-  // Check if it's a static image (starts with /) vs external URL
-  const isStaticImage = imageSrc.startsWith('/') && !imageSrc.startsWith('http');
-  
-  // For static images, use regular img tag
-  if (isStaticImage) {
-    return (
-      <img
-        src={imageSrc}
-        alt={alt}
-        className={className}
-        onError={handleError}
+      <div 
+        className={`bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col items-center justify-center ${className} border border-gray-200`}
         style={fill ? { 
           position: 'absolute',
           height: '100%',
@@ -69,14 +51,18 @@ export default function ProductionImage({
           top: 0,
           right: 0,
           bottom: 0,
-          objectFit: 'contain',
-          color: 'transparent'
         } : { width, height }}
-      />
+      >
+        <div className="text-gray-400 text-center p-4">
+          <div className="text-2xl mb-2">🖼️</div>
+          <div className="text-sm font-medium">Product Image</div>
+          <div className="text-xs opacity-75 mt-1">Setting up CDN...</div>
+        </div>
+      </div>
     );
   }
 
-  // For external URLs (like CDN or placeholders), use regular img tag
+  // For development, use regular img tag
   return (
     <img
       src={imageSrc}
