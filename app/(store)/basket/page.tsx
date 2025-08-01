@@ -13,6 +13,32 @@ import { createVippsPayment } from "@/actions/createVippsPayment";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { ShoppingCartIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 
+// Helper function to get image source from various product types
+function getImageSrc(product: any): string {
+  // Check if this is a product with local image path (cushions, outdoor products, etc.)
+  if (product.localImagePath) {
+    return product.localImagePath;
+  }
+  if (product.staticImage) {
+    return product.staticImage;
+  }
+  
+  // Handle the image property
+  const imageValue = product.image;
+  
+  // Try to handle Sanity asset first, but catch errors for local paths
+  try {
+    return imageUrl(imageValue).url();
+  } catch (error) {
+    // If Sanity processing fails, check if it's a local path
+    if (typeof imageValue === 'string') {
+      return imageValue;
+    }
+    console.error('Error processing image:', error);
+    return '/placeholder-image.jpg';
+  }
+}
+
 function BasketPage() {
   const groupedItems = UseBasketStore((state) => state.getGroupedItems());
   const { isSignedIn } = useAuth();
@@ -98,12 +124,7 @@ function BasketPage() {
                 <div className="w-32 h-32 sm:w-24 sm:h-24 flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
                   {item.product.image && (
                     <Image
-                      src={
-                        // Check if this is a cushion product with local image path
-                        (item.product as any).localImagePath 
-                          ? (item.product as any).localImagePath 
-                          : imageUrl(item.product.image).url()
-                      }
+                      src={getImageSrc(item.product)}
                       alt={item.product.name ?? "Product image"}
                       className="w-full h-full object-cover rounded"
                       width={96}

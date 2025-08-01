@@ -1,14 +1,14 @@
 import ProductsView from "@/components/ProductsView"
 import { getAllCategories } from "@/sanity/lib/products/getAllCategories"
 import { getProductByCategory } from "@/sanity/lib/products/getProductByCategory"
-import { Product, ALL_CATEGORIES_QUERYResult } from "@/sanity.types"
+import { Product, ALL_CATEGORIES_QUERYResult, PRODUCT_BY_CATEGORY_QUERYResult } from "@/sanity.types"
 
 async function CategoryPage({params}:{
     params: Promise<{
         slug: string
     }>
 }) {
-    let products: Product[] = [];
+    let products: PRODUCT_BY_CATEGORY_QUERYResult = [];
     let categories: ALL_CATEGORIES_QUERYResult = [];
 
     try {
@@ -38,7 +38,7 @@ async function CategoryPage({params}:{
     return (
         <div className="flex flex-col items-center justify-top min-h-screen bg-gray-100 p-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
-                <ProductsView products={products as Product[]} categories={categories.filter(cat => cat.title !== null).map(cat => ({
+                <ProductsView products={products as unknown as Product[]} categories={categories.filter(cat => cat.title !== null).map(cat => ({
                     _id: cat._id,
                     title: cat.title!,
                     slug: {

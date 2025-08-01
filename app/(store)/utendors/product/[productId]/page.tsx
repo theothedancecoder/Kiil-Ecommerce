@@ -223,9 +223,14 @@ export default function OutdoorProductPage({ params }: { params: Promise<{ produ
 
             {/* Add to Cart */}
             <div className="pt-4">
-              <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-lg">
-                Add {quantity} to Cart - {formatCurrency(currentPrice * quantity, "NOK")}
-              </button>
+              <AddToBasketButton 
+                product={{
+                  ...product,
+                  // Add the static image path as a custom property for the cart to use
+                  staticImage: selectedVariant ? selectedVariant.image : product.image,
+                  localImagePath: selectedVariant ? selectedVariant.image : product.image
+                }} 
+              />
             </div>
 
             {/* Collapsible Features */}

@@ -313,7 +313,7 @@ const InteriorFilterSidebar = ({ filters, onFiltersChange }: InteriorFilterSideb
                         type="radio"
                         name="price"
                         checked={filters.priceRange[0] === range.value[0] && filters.priceRange[1] === range.value[1]}
-                        onChange={() => handlePriceChange(range.value)}
+                        onChange={() => handlePriceChange(range.value as [number, number])}
                         className="mr-2"
                       />
                       <span className="text-sm">{range.label}</span>

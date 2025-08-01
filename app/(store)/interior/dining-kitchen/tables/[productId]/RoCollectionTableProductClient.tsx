@@ -45,23 +45,25 @@ export default function RoCollectionTableProductClient({ product }: RoCollection
       _rev: product._rev || 'rev-1',
       name: product.name || '',
       price: currentPrice,
-      image: product.image || {
+      image: product.image ? {
         _type: 'image' as const,
-        asset: {
-          _ref: `image-${product._id}`,
+        asset: product.image.asset ? {
+          _ref: product.image.asset._id || `image-${product._id}`,
           _type: 'reference' as const
-        }
-      },
+        } : undefined
+      } : undefined,
       slug: product.slug || {
         _type: 'slug' as const,
         current: ''
       },
       stock: product.stock || 0,
+      // Add the local image path as a custom property for the cart to use
+      localImagePath: selectedVariant?.image?.asset?.url || product.image?.asset?.url
     };
 
     // Add the selected quantity to cart
     for (let i = 0; i < selectedQuantity; i++) {
-      addItem(productForCart);
+      addItem(productForCart as any);
     }
     
     // Reset selected quantity to 1 after adding to cart

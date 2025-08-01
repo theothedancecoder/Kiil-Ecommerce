@@ -134,8 +134,8 @@ export default function DreamBedsideTablePage() {
       'legs-rosehip': 'Legs_Snow' // Fallback to Snow legs
     };
 
-    const colorName = colorMap[selectedVariant] || 'NewWhite';
-    const baseName = baseMap[selectedBase] || 'Legs_Brass';
+    const colorName = colorMap[selectedVariant.id] || 'NewWhite';
+    const baseName = baseMap[baseOptions[selectedBaseIndex].id] || 'Legs_Brass';
     
     // Create a function to find the best available image
     const getAvailableImage = (color: string, base: string) => {
@@ -273,7 +273,7 @@ export default function DreamBedsideTablePage() {
       'legs-rosehip': 'Legs_Snow'
     };
 
-    const colorName = colorMap[selectedVariant] || 'NewWhite';
+    const colorName = colorMap[selectedVariant.id] || 'NewWhite';
     const baseName = baseMap[baseId] || 'Legs_Brass';
     
     // Use the same availability logic as getCurrentImage
@@ -392,7 +392,8 @@ export default function DreamBedsideTablePage() {
     }
   ];
 
-  const currentBase = baseOptions.find(b => b.id === selectedBase) || baseOptions[2];
+  const selectedBase = baseOptions[selectedBaseIndex];
+  const currentVariant = variants[selectedVariantIndex];
 
   return (
     <div className="min-h-screen bg-white">
@@ -417,7 +418,7 @@ export default function DreamBedsideTablePage() {
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
               <Image
                 src={getCurrentImage()}
-                alt={`Dream Bedside Table in ${currentVariant.name} with ${currentBase.name}`}
+                alt={`Dream Bedside Table in ${currentVariant.name} with ${selectedBase.name}`}
                 fill
                 className="object-contain object-center p-8"
               />
@@ -474,7 +475,7 @@ export default function DreamBedsideTablePage() {
             </div>
 
             <div className="text-3xl font-light text-stone-800">
-              kr {currentBase.price.toLocaleString()}
+              kr {selectedBase.price.toLocaleString()}
             </div>
 
             {/* Color Selection */}
@@ -483,12 +484,12 @@ export default function DreamBedsideTablePage() {
                 COLOR: {currentVariant.name.toUpperCase()}
               </h3>
               <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto">
-                {variants.map((variant) => (
+                {variants.map((variant, index) => (
                   <button
                     key={variant.id}
-                    onClick={() => setSelectedVariant(variant.id)}
+                    onClick={() => setSelectedVariantIndex(index)}
                     className={`w-8 h-8 rounded-full border-2 transition-all ${
-                      selectedVariant === variant.id
+                      selectedVariantIndex === index
                         ? 'border-stone-800 scale-110'
                         : 'border-stone-300 hover:border-stone-500'
                     }`}
@@ -505,15 +506,15 @@ export default function DreamBedsideTablePage() {
             {/* Base Selection */}
             <div>
               <h3 className="text-sm font-medium text-stone-800 mb-4 uppercase tracking-wider">
-                BASE: {currentBase.name.toUpperCase()}
+                BASE: {selectedBase.name.toUpperCase()}
               </h3>
               <div className="grid grid-cols-2 gap-3">
-                {baseOptions.map((base) => (
+                {baseOptions.map((base, index) => (
                   <button
                     key={base.id}
-                    onClick={() => setSelectedBase(base.id)}
+                    onClick={() => setSelectedBaseIndex(index)}
                     className={`p-3 text-left border rounded-lg transition-all ${
-                      selectedBase === base.id
+                      selectedBaseIndex === index
                         ? 'border-stone-800 bg-stone-50'
                         : 'border-stone-300 hover:border-stone-500'
                     }`}
@@ -527,7 +528,7 @@ export default function DreamBedsideTablePage() {
 
             {/* Add to Cart */}
             <button className="w-full bg-stone-800 text-white py-4 px-8 rounded-lg font-medium hover:bg-stone-700 transition-colors text-lg">
-              ADD TO CART - KR {currentBase.price.toLocaleString()}
+              ADD TO CART - KR {selectedBase.price.toLocaleString()}
             </button>
 
             {/* Made to Order Notice */}
