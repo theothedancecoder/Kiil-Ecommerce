@@ -3,7 +3,8 @@
 import { Product } from "@/sanity.types";
 import { StaticProduct } from "@/lib/allProducts";
 import { StockManager } from "@/lib/stockManager";
-import { imageUrl } from "@/lib/ImageUrl";
+import { getImageUrl } from "@/lib/ImageUrl";
+import { debugImageUrl, isValidImagePath } from "@/lib/imageDebug";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -36,28 +37,30 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
       : `/product/${(product as any).slug?.current || 'unknown'}`;
   
   // Get image URL - handle both static products and Sanity products
-  let imageSrc = null;
+  let imageSrc = '';
   
   if (isStaticProduct) {
     // For static products, use the image path directly
-    imageSrc = (product as any).staticImage || (product as StaticProduct).image || (product as any).image;
+    imageSrc = (product as any).staticImage || (product as StaticProduct).image || (product as any).image || '';
   } else if (product.image) {
-    // For Sanity products, check if it has asset.url first, otherwise use imageUrl utility
-    if (typeof product.image === 'string') {
-      // If image is a string path, use it directly
-      imageSrc = product.image;
-    } else if ((product.image as any).asset?.url) {
-      // If it's a Sanity image with asset.url, use that
-      imageSrc = (product.image as any).asset.url;
-    } else {
-      // Otherwise try to use imageUrl utility for Sanity images
-      try {
-        imageSrc = imageUrl(product.image).url();
-      } catch (error) {
-        console.warn('Failed to process image with imageUrl utility:', error);
-        imageSrc = null;
-      }
-    }
+    // For Sanity products, use the improved getImageUrl helper
+    imageSrc = getImageUrl(product.image, '');
+  }
+
+  // Ensure imageSrc starts with / for local images or is a full URL
+  if (imageSrc && !imageSrc.startsWith('http') && !imageSrc.startsWith('/')) {
+    imageSrc = '/' + imageSrc;
+  }
+
+  // Debug image URL in development
+  if (imageSrc) {
+    debugImageUrl(imageSrc, productName);
+  }
+
+  // Validate image path
+  const isValidImage = isValidImagePath(imageSrc);
+  if (imageSrc && !isValidImage) {
+    console.warn(`Invalid image path for product ${productName}:`, imageSrc);
   }
 
   return (
@@ -65,17 +68,32 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
       <div className="relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-lg">
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden bg-gray-50">
-          {imageSrc ? (
+          {imageSrc && isValidImage ? (
             <Image
               src={imageSrc}
-              alt={productName}
+              alt={productName || 'Product image'}
               fill
               className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              onError={(e) => {
+                console.error('Image failed to load:', imageSrc, 'for product:', productName);
+                // Hide the image on error and show fallback
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = '<div class="w-full h-full bg-gray-200 flex items-center justify-center"><span class="text-gray-400 text-sm">Image unavailable</span></div>';
+                }
+              }}
+              priority={false}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
             />
           ) : (
             <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-400 text-sm">No image</span>
+              <span className="text-gray-400 text-sm">
+                {imageSrc ? 'Invalid image' : 'No image'}
+              </span>
             </div>
           )}
           

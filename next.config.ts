@@ -28,8 +28,11 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     dangerouslyAllowSVG: true,
+    // Allow local images for static products - this is crucial for Vercel
     unoptimized: false,
-    loader: 'default'
+    loader: 'default',
+    // Add domains for any external image sources
+    domains: [],
   },
 
   // Compiler optimizations
