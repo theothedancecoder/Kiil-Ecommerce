@@ -45,12 +45,11 @@ export default function ProductionImage({
     );
   }
 
-  // For production, handle static images differently
-  const isProduction = process.env.NODE_ENV === 'production';
+  // Check if it's a static image (starts with /) vs external URL
   const isStaticImage = imageSrc.startsWith('/') && !imageSrc.startsWith('http');
   
-  // In production, for static images, use unoptimized approach with proper encoding
-  if (isProduction && isStaticImage) {
+  // For static images, always use regular img tag to avoid Next.js optimization issues
+  if (isStaticImage) {
     return (
       <img
         src={imageSrc}
@@ -72,7 +71,7 @@ export default function ProductionImage({
     );
   }
 
-  // For Sanity images and development, use Next.js Image component
+  // For external URLs (like Sanity CDN), use Next.js Image component
   return (
     <Image
       src={imageSrc}
@@ -84,8 +83,7 @@ export default function ProductionImage({
       sizes={sizes}
       priority={priority}
       onError={handleError}
-      placeholder="blur"
-      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+      unoptimized={true}
     />
   );
 }
