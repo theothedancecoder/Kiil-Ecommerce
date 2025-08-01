@@ -1,5 +1,5 @@
 import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
-import { Product } from "@/sanity.types";
+import { Product, ALL_PRODUCTS_QUERYResult } from "@/sanity.types";
 import Image from 'next/image';
 import { imageUrl } from "@/lib/ImageUrl";
 import { notFound } from 'next/navigation';
@@ -17,7 +17,7 @@ interface ProductPageProps {
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
   const allProducts = await getAllProducts();
-  const product = allProducts.find((p: Product) => p.slug?.current === slug);
+  const product = allProducts.find((p) => p.slug?.current === slug);
 
   if (!product) {
     notFound();
@@ -151,7 +151,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </button>
 
               {/* Stock Status */}
-              {product.stock !== undefined && (
+              {product.stock !== undefined && product.stock !== null && (
                 <div className="text-sm text-gray-600">
                   {product.stock > 0 ? (
                     <span className="text-green-600">✓ In Stock ({product.stock} available)</span>
@@ -213,8 +213,8 @@ export async function generateStaticParams() {
   const products = await getAllProducts();
   
   return products
-    .filter((product: Product) => product.slug?.current)
-    .map((product: Product) => ({
+    .filter((product) => product.slug?.current)
+    .map((product) => ({
       slug: product.slug!.current,
     }));
 }
