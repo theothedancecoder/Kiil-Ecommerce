@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
 import { outdoorProducts } from "@/lib/outdoorProducts";
 import { formatCurrency } from "@/lib/formatCurrency";
@@ -17,7 +17,7 @@ const OutdoorFurnitureGrid = () => {
           <div className="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100">
             {/* Product Image */}
             <div className="relative aspect-square overflow-hidden bg-gray-50">
-              <Image
+              <ProductionImage
                 src={product.image}
                 alt={product.name}
                 fill
