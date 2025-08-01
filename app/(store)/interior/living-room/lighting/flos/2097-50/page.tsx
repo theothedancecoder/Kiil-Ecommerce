@@ -14,32 +14,32 @@ const flos209750Chandelier = {
       id: 1,
       color: "Brass",
       colorCode: "#B87333",
-      mainImage: "/FLOS/2097-50/Brass.jpg",
-      thumbnailImage: "/FLOS/2097-50/Brass.jpg",
+      mainImage: "/FLOS/2097-30/2097:30 chandelier from Flos NOK  28,050  Color -  Brass.jpg",
+      thumbnailImage: "/FLOS/2097-30/2097:30 chandelier from Flos NOK  28,050  Color -  Brass.jpg",
       material: "Brass finish"
     },
     {
       id: 2,
       color: "Chrome",
       colorCode: "#C0C0C0",
-      mainImage: "/FLOS/2097-50/Chrome.jpg",
-      thumbnailImage: "/FLOS/2097-50/Chrome.jpg",
+      mainImage: "/FLOS/2097-30/2097:30 chandelier from Flos NOK  28,050  Color -  Chrome.webp",
+      thumbnailImage: "/FLOS/2097-30/2097:30 chandelier from Flos NOK  28,050  Color -  Chrome.webp",
       material: "Chrome finish"
     },
     {
       id: 3,
       color: "Matt Black",
       colorCode: "#1A1A1A",
-      mainImage: "/FLOS/2097-50/Matt Black.jpg",
-      thumbnailImage: "/FLOS/2097-50/Matt Black.jpg",
+      mainImage: "/FLOS/2097-30/2097:30 chandelier from Flos NOK  28,050  Color -  Matte Black.jpg",
+      thumbnailImage: "/FLOS/2097-30/2097:30 chandelier from Flos NOK  28,050  Color -  Matte Black.jpg",
       material: "Matt black finish"
     },
     {
       id: 4,
       color: "Matt White",
       colorCode: "#F5F5F5",
-      mainImage: "/FLOS/2097-50/matte_white.jpg",
-      thumbnailImage: "/FLOS/2097-50/matte_white.jpg",
+      mainImage: "/FLOS/2097-30/2097:30 chandelier from Flos NOK  28,050  Color -  Matt white.jpg",
+      thumbnailImage: "/FLOS/2097-30/2097:30 chandelier from Flos NOK  28,050  Color -  Matt white.jpg",
       material: "Matt white finish"
     }
   ]

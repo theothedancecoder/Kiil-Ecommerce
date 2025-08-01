@@ -20,9 +20,9 @@ export default function Panthella400TableLampPage() {
     {
       id: 'white',
       name: 'White',
-      image: '/Louis-Poulsen/Panthella-400-Table-Lamp/Panthella 400 Table Lamp.webp',
+      image: '/Louis-Poulsen/Panthella-400-Table-Lamp/Panthella 400 Table Lamp NOK  9,170.jpg',
       color: 'White',
-      price: 8995,
+      price: 9170,
     },
   ];
 

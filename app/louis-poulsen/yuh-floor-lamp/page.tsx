@@ -20,9 +20,9 @@ export default function YuhFloorLampPage() {
     {
       id: 'black',
       name: 'Black',
-      image: '/Louis-Poulsen/Yuh-floor-lamp/Yuh Floor Lamp.webp',
+      image: '/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  8,855  Color -  Black.webp',
       color: '#000000',
-      price: 12995,
+      price: 8855,
     },
   ];
 
@@ -270,7 +270,7 @@ export default function YuhFloorLampPage() {
               <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                 <div className="relative aspect-square bg-gray-50">
                   <Image
-                    src="/Louis-Poulsen/Panthella-Floor-Lamp/Panthella Floor Lamp.webp"
+                    src="/Louis-Poulsen/Panthella-Floor-Lamp/Panthella Floor Lamp NOK  11,775.jpg"
                     alt="Panthella Floor Lamp"
                     fill
                     className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
@@ -279,7 +279,7 @@ export default function YuhFloorLampPage() {
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-light text-gray-900 mb-2">Panthella Floor Lamp</h3>
-                  <p className="text-gray-900 font-medium">kr 12,995</p>
+                  <p className="text-gray-900 font-medium">kr 11,775</p>
                 </div>
               </div>
             </Link>

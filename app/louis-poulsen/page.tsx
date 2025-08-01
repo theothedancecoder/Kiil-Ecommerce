@@ -81,47 +81,47 @@ export default function LouisPoulsenPage() {
       name: "AJ Wall Lamp with Cord",
       description: "Wall-mounted lamp with cord designed by Arne Jacobsen.",
       price: 8995,
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Pale petroleum.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Pale petroleum.webp",
       category: "Lighting",
       variants: [
         {
           name: "Pale Petroleum",
-          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Pale petroleum.webp",
+          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Pale petroleum.webp",
           color: "Pale Petroleum",
         },
         {
           name: "Electric Orange",
-          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Electric Orange.webp",
+          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Electric Orange.webp",
           color: "Electric Orange",
         },
         {
           name: "Dusty Blue",
-          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ vegglampe med ledning kr 8 995  Farge - Dusty Blue.webp",
+          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ vegglampe med ledning kr 8 995  Farge - Dusty Blue.webp",
           color: "Dusty Blue",
         },
         {
           name: "Soft Lemon",
-          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Soft lemon.webp",
+          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Soft lemon.webp",
           color: "Soft Lemon",
         },
         {
           name: "Black",
-          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Black.webp",
+          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Black.webp",
           color: "Black",
         },
         {
           name: "White",
-          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  White.webp",
+          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  White.webp",
           color: "White",
         },
         {
           name: "Warm Grey",
-          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Warm Grey.webp",
+          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Warm Grey.webp",
           color: "Warm Grey",
         },
         {
           name: "Warm Sand",
-          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Warm Sand.webp",
+          image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Warm Sand.webp",
           color: "Warm Sand",
         },
       ],
@@ -756,27 +756,27 @@ export default function LouisPoulsenPage() {
       name: "Yuh Floor Lamp",
       description: "Modern floor lamp with adjustable shade and elegant design.",
       price: 8855,
-      image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  8855  Color -  Black.webp",
+      image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  8,855  Color -  Black.webp",
       category: "Lighting",
       variants: [
         {
           name: "Black",
-          image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  8855  Color -  Black.webp",
+          image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  8,855  Color -  Black.webp",
           color: "Black",
         },
         {
           name: "White",
-          image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  8855  Color -  White.webp",
+          image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  8,855  Color -  White.webp",
           color: "White",
         },
         {
           name: "Brass Black",
-          image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  10550  Color -  Brass:Black.webp",
+          image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  10,550  Color -  Brass:Black.webp",
           color: "Brass",
         },
         {
           name: "Brass White",
-          image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  10550  Color -  Brass:White.webp",
+          image: "/Louis-Poulsen/Yuh-floor-lamp/Yuh floor lamp from Louis Poulsen NOK  10,550  Color -  Brass:White.webp",
           color: "Brass",
         },
       ],
@@ -903,7 +903,7 @@ export default function LouisPoulsenPage() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
             {currentProducts.map((product) => (
               <Link
                 key={product.id}
@@ -948,7 +948,7 @@ export default function LouisPoulsenPage() {
                               "Opaque Coral": "#FF7F50",
                               "Opaque Indigo Blue": "#4B0082",
                               "Opaque Yellow": "#FFD700",
-                              "Opal White": "#FFFFFF",
+                              "Opal White": "#F8F8FF",
                               "Opal Pale Blue": "#B0E0E6",
                               "Opal Pale Rose": "#FFB6C1",
                               "Opal Beige": "#F5F5DC",
@@ -984,8 +984,7 @@ export default function LouisPoulsenPage() {
                               "Red": "#DC143C",
                               // Additional colors for new products
                               "Copper": "#B87333",
-                              "Metal Black": "#2C2C2C",
-                              "Opal White": "#F8F8FF"
+                              "Metal Black": "#2C2C2C"
                             };
                             return colorMap[variantName] || "#D1D5DB";
                           };

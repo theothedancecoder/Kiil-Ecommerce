@@ -524,10 +524,6 @@ export default async function DuxProductPage({
   const { productId } = await params;
   const product = products.find((p) => p.id === productId);
 
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  const [featuresExpanded, setFeaturesExpanded] = useState(false);
-  const [specsExpanded, setSpecsExpanded] = useState(false);
-
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -535,6 +531,14 @@ export default async function DuxProductPage({
       </div>
     );
   }
+
+  return <DuxProductContent product={product} />;
+}
+
+function DuxProductContent({ product }: { product: Product }) {
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [featuresExpanded, setFeaturesExpanded] = useState(false);
+  const [specsExpanded, setSpecsExpanded] = useState(false);
 
   const selectedVariant = product.variants[selectedVariantIndex];
 

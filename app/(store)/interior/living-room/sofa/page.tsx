@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import InteriorBanner from "@/components/InteriorBanner";
+import InteriorSubBanner from "@/components/InteriorSubBanner";
 import InteriorSidebar from "@/components/InteriorSidebar";
 
 const sofaCollections = [
@@ -52,18 +52,24 @@ export default function SofaPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <InteriorBanner />
+      <InteriorSubBanner 
+        title="Living Room Sofas"
+        subtitle="Transform your living space with our curated collection of luxury sofas, from contemporary designs to timeless classics."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex gap-8">
           <InteriorSidebar />
           <div className="flex-1">
-            <div className="text-center mb-16">
-              <h1 className="text-[24px] text-primary mb-8" style={{ fontFamily: 'Montserrat, Verdana, Helvetica', letterSpacing: '0.05em' }}>
-                Luxury Sofa Collections
+            <div className="text-center mb-12">
+              <h1 className="font-serif text-4xl md:text-5xl text-primary mb-6">
+                Living Room Sofas
               </h1>
+              <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                Browse our living room sofas collection
+              </p>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-8xl mx-auto">
               {sofaCollections.map((collection) => (
                 <div
                   key={collection.id}

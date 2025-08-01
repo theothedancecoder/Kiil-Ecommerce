@@ -1,17 +1,15 @@
-import ProductsView from "@/components/ProductsView";
-import { getAllCategories } from "@/sanity/lib/products/getAllCategories";
-import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
-import { Product } from "@/sanity.types";
 import Image from "next/image";
 import Link from "next/link";
 
 export const dynamic = "force-static";
 export const revalidate = 1800; // 30 minutes
 
-export default async function Home() {
-  const products = await getAllProducts();
-  const categories = await getAllCategories();
+// Preload critical images
+const heroImage = "/living-room-collection.jpg";
+const diningImage = "/dining-collection.webp";
+const outdoorImage = "/outdoor-collection.jpg";
 
+export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section - Ballard Designs Style */}
@@ -52,12 +50,14 @@ export default async function Home() {
             <div className="relative">
               <div className="relative h-[500px] lg:h-[600px] overflow-hidden">
                 <Image
-                  src="/living-room-collection.jpg"
+                  src={heroImage}
                   alt="Elegant living room with sophisticated furniture"
                   fill
                   className="object-cover"
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
@@ -88,6 +88,9 @@ export default async function Home() {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white">
@@ -101,11 +104,14 @@ export default async function Home() {
             <Link href="/interior" className="group">
               <div className="relative h-80 overflow-hidden bg-stone-100">
                 <Image
-                  src="/dining-collection.webp"
+                  src={diningImage}
                   alt="Dining Collection"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white">
@@ -119,11 +125,14 @@ export default async function Home() {
             <Link href="/utendors" className="group">
               <div className="relative h-80 overflow-hidden bg-stone-100">
                 <Image
-                  src="/outdoor-collection.jpg"
+                  src={outdoorImage}
                   alt="Outdoor Collection"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white">
@@ -136,7 +145,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Products Section */}
+      {/* Our Collection - Brand Navigation */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -144,99 +153,194 @@ export default async function Home() {
               Our Collection
             </h2>
             <p className="text-lg text-stone-600">
-              Browse our complete selection of furniture and home accessories.
-            </p>
-          </div>
-
-          <ProductsView 
-            products={products as unknown as Product[]}
-            categories={categories.map(cat => ({
-              _id: cat._id,
-              title: cat.title || '',
-              slug: {
-                current: cat.slug?.current || ''
-              }
-            }))}
-          />
-        </div>
-      </section>
-
-      {/* Featured Brands */}
-      <section className="py-20 bg-stone-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif text-stone-800 mb-4">
-              Featured Brands
-            </h2>
-            <p className="text-lg text-stone-600">
               Discover our carefully selected collection from renowned designers and manufacturers.
             </p>
           </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-8">
-              <Link href="/fritz-hansen" className="group text-center">
-                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                    Fritz Hansen
-                  </h3>
-                  <p className="text-sm text-stone-500 mt-2">Danish Design</p>
-                </div>
-              </Link>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-9 gap-6">
+            <Link href="/fritz-hansen" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Fritz Hansen
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Danish Design</p>
+              </div>
+            </Link>
 
-              <Link href="/kartell" className="group text-center">
-                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                    Kartell
-                  </h3>
-                  <p className="text-sm text-stone-500 mt-2">Italian Innovation</p>
-                </div>
-              </Link>
+            <Link href="/kartell" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Kartell
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Italian Innovation</p>
+              </div>
+            </Link>
 
-              <Link href="/montana" className="group text-center">
-                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                    Montana
-                  </h3>
-                  <p className="text-sm text-stone-500 mt-2">Modular Systems</p>
+            <Link href="/montana" className="group text-center">
+              <div className="bg-white p-8 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300">
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/our-collection/Montana Logo Svart.png"
+                    alt="Montana"
+                    width={140}
+                    height={50}
+                    className="h-10 w-auto group-hover:opacity-80 transition-opacity"
+                    loading="lazy"
+                  />
                 </div>
-              </Link>
+              </div>
+            </Link>
 
-              <Link href="/vitra" className="group text-center">
-                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                    Vitra
-                  </h3>
-                  <p className="text-sm text-stone-500 mt-2">Swiss Design</p>
-                </div>
-              </Link>
+            <Link href="/vitra" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Vitra
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Swiss Design</p>
+              </div>
+            </Link>
 
-              <Link href="/louis-poulsen" className="group text-center">
-                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                    Louis Poulsen
-                  </h3>
-                  <p className="text-sm text-stone-500 mt-2">Scandinavian Lighting</p>
-                </div>
-              </Link>
+            <Link href="/dux" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  DUX
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Swedish Furniture</p>
+              </div>
+            </Link>
 
-              <Link href="/dux" className="group text-center">
-                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                    DUX
-                  </h3>
-                  <p className="text-sm text-stone-500 mt-2">Swedish Furniture</p>
+            <Link href="/umage" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/our-collection/UMAGE_logo_black.png"
+                    alt="Umage"
+                    width={120}
+                    height={40}
+                    className="h-8 w-auto group-hover:opacity-80 transition-opacity"
+                    loading="lazy"
+                  />
                 </div>
-              </Link>
+              </div>
+            </Link>
 
-              <Link href="/umage" className="group text-center">
-                <div className="bg-white p-8 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
-                    Umage
-                  </h3>
-                  <p className="text-sm text-stone-500 mt-2">Furniture Collection</p>
-                </div>
-              </Link>
-            </div>
+            <Link href="/ro-collection" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  RO Collection
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Contemporary Design</p>
+              </div>
+            </Link>
+
+            <Link href="/fredericia" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Fredericia
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Danish Furniture</p>
+              </div>
+            </Link>
+
+            <Link href="/audo-copenhagen" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Audo Copenhagen
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Functional Design</p>
+              </div>
+            </Link>
+
+            <Link href="/soren-lund" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Soren Lund
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Scandinavian Design</p>
+              </div>
+            </Link>
+
+            <Link href="/sibast" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Sibast Furniture
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Danish Craftsmanship</p>
+              </div>
+            </Link>
+
+            <Link href="/eilersen" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Eilersen
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Danish Sofas</p>
+              </div>
+            </Link>
+
+            <Link href="/flos" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  FLOS
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Italian Lighting</p>
+              </div>
+            </Link>
+
+            <Link href="/serax" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Serax
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Belgian Design</p>
+              </div>
+            </Link>
+
+            <Link href="/louis-poulsen" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Louis Poulsen
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Danish Lighting</p>
+              </div>
+            </Link>
+
+            <Link href="/crafts" className="group text-center">
+              <div className="bg-amber-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Crafts
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Artisanal Lighting</p>
+              </div>
+            </Link>
+
+            <Link href="/jonas-ihreborn" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  Jonas Ihreborn
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Swedish Design</p>
+              </div>
+            </Link>
+
+            <Link href="/hay" className="group text-center">
+              <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
+                <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                  HAY
+                </h3>
+                <p className="text-sm text-stone-500 mt-2">Danish Design</p>
+              </div>
+            </Link>
+
+            <Link href="/products" className="group text-center">
+              <div className="bg-stone-800 p-8 hover:bg-stone-700 transition-all duration-300">
+                <h3 className="text-xl font-serif text-white group-hover:text-stone-200 transition-colors">
+                  View All
+                </h3>
+                <p className="text-sm text-stone-300 mt-2">Complete Collection</p>
+              </div>
+            </Link>
+          </div>
         </div>
       </section>
 

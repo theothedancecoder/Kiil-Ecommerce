@@ -38,7 +38,13 @@ async function CategoryPage({params}:{
     return (
         <div className="flex flex-col items-center justify-top min-h-screen bg-gray-100 p-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
-                <ProductsView products={products as Product[]} categories={categories}/>
+                <ProductsView products={products as Product[]} categories={categories.filter(cat => cat.title !== null).map(cat => ({
+                    _id: cat._id,
+                    title: cat.title!,
+                    slug: {
+                        current: cat.slug?.current || ''
+                    }
+                }))}/>
             </div>
         </div>
     )

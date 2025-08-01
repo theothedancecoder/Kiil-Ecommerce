@@ -12,15 +12,9 @@ interface ProductVariant {
 }
 
 export default function PantonChairPage() {
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>({
-    name: 'Classic Red',
-    image: '/Vitra/Panton-Chair /Panton Chair fra Vitra kr 4 350  Farge - Classic red.webp',
-    price: 4350,
-    color: 'Classic Red'
-  });
-
-  const [showSpecifications, setShowSpecifications] = useState(false);
-  const [showFeatures, setShowFeatures] = useState(false);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [featuresExpanded, setFeaturesExpanded] = useState(false);
+  const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
   const variants: ProductVariant[] = [
     { name: 'Classic Red', image: '/Vitra/Panton-Chair /Panton Chair fra Vitra kr 4 350  Farge - Classic red.webp', price: 4350, color: 'Classic Red' },
@@ -32,22 +26,64 @@ export default function PantonChairPage() {
     { name: 'Pale Rose', image: '/Vitra/Panton-Chair /Panton Chair fra Vitra kr 4 350  Farge - Pale Rose.webp', price: 4350, color: 'Pale Rose' }
   ];
 
+  const selectedVariant = variants[selectedVariantIndex];
+
+  const features = [
+    "World's first injection-moulded plastic chair made from a single piece",
+    "Iconic design by Verner Panton from 1960",
+    "Suitable for both indoor and outdoor use",
+    "Lightweight yet durable polypropylene construction",
+    "Available in 7 vibrant colors",
+    "Stackable design for easy storage",
+    "Museum-quality craftsmanship by Vitra",
+    "Revolutionary cantilever design",
+    "Ergonomic seating comfort",
+    "Timeless mid-century modern aesthetic"
+  ];
+
+  const specifications = [
+    { label: "Designer", value: "Verner Panton" },
+    { label: "Manufacturer", value: "Vitra" },
+    { label: "Material", value: "Polypropylene" },
+    { label: "Dimensions", value: "W 50 x D 61 x H 86 cm" },
+    { label: "Seat Height", value: "44 cm" },
+    { label: "Weight", value: "5.6 kg" },
+    { label: "Finish Options", value: "7 colors available" },
+    { label: "Package Dimensions", value: "65 × 55 × 91 cm" },
+    { label: "Delivery Time", value: "8 weeks (made to order)" },
+    { label: "Care", value: "Clean with mild soap and water" },
+    { label: "Warranty", value: "2 years manufacturer warranty" },
+    { label: "Origin", value: "Swiss design, made in Germany" }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
+      {/* Navigation */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center space-x-2 text-sm text-stone-600">
-            <Link href="/" className="hover:text-stone-800 transition-colors">
-              Home
+          <div className="flex items-center justify-between">
+            <Link 
+              href="/vitra" 
+              className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Vitra Collection
             </Link>
-            <span>/</span>
-            <Link href="/vitra" className="hover:text-stone-800 transition-colors">
-              Vitra
-            </Link>
-            <span>/</span>
-            <span className="text-stone-800">Panton Chair</span>
-          </nav>
+            
+            <nav className="flex items-center space-x-2 text-sm">
+              <Link href="/" className="text-stone-600 hover:text-stone-800">
+                Home
+              </Link>
+              <span className="text-stone-400">/</span>
+              <Link href="/vitra" className="text-stone-600 hover:text-stone-800">
+                Vitra
+              </Link>
+              <span className="text-stone-400">/</span>
+              <span className="text-stone-800 font-medium">Panton Chair</span>
+            </nav>
+          </div>
         </div>
       </div>
 
@@ -61,8 +97,8 @@ export default function PantonChairPage() {
                 src={selectedVariant.image}
                 alt={`Panton Chair - ${selectedVariant.color}`}
                 fill
-                className="object-contain object-center p-8"
-                priority
+                className="object-contain object-center p-4"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
 
@@ -71,51 +107,77 @@ export default function PantonChairPage() {
               {variants.map((variant, index) => (
                 <button
                   key={index}
-                  onClick={() => setSelectedVariant(variant)}
-                  className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
-                    selectedVariant.name === variant.name
-                      ? 'border-stone-800 shadow-md'
-                      : 'border-gray-200 hover:border-gray-300'
+                  onClick={() => setSelectedVariantIndex(index)}
+                  className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
+                    selectedVariantIndex === index
+                      ? "border-red-600"
+                      : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
                   <Image
                     src={variant.image}
-                    alt={`Panton Chair - ${variant.color}`}
+                    alt={`${variant.name} variant`}
                     fill
                     className="object-contain object-center p-2"
+                    sizes="(max-width: 768px) 25vw, 12.5vw"
                   />
+                  <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
+                    {variant.color}
+                  </div>
                 </button>
               ))}
+            </div>
+
+            {/* Lifestyle Images */}
+            <div className="grid grid-cols-1 gap-4">
+              <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                <Image
+                  src="/Vitra/Panton-Chair /lifestyle/10133061r_2.webp"
+                  alt="Panton Chair lifestyle image 1"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+              <div className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                <Image
+                  src="/Vitra/Panton-Chair /lifestyle/Panton Chair fra Vitra kr 4 350  Farge - White.webp"
+                  alt="Panton Chair lifestyle image 2"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
             </div>
           </div>
 
           {/* Product Information */}
           <div className="space-y-8">
-            {/* Header */}
             <div>
-              <h1 className="text-3xl md:text-4xl font-serif text-stone-800 mb-4">
+              <div className="text-sm text-red-600 uppercase tracking-wider mb-2">
+                VITRA COLLECTION
+              </div>
+              <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 Panton Chair
               </h1>
-              <p className="text-lg text-stone-600 leading-relaxed">
+              <p className="text-lg text-gray-600 leading-relaxed">
                 The iconic Panton Chair from Vitra. Designed by Verner Panton in 1960 and has become a classic worldwide. 
                 The chair can be used both indoors and outdoors, but it is not recommended to leave the chair outside for long periods of time.
               </p>
+              <div className="mt-4 text-sm text-gray-500">
+                Designed by Verner Panton
+              </div>
             </div>
 
-            {/* Designer Info */}
-            <div className="bg-stone-50 p-6 rounded-lg">
-              <h3 className="font-medium text-stone-800 mb-2">Designer</h3>
-              <p className="text-stone-600">
-                <strong>Verner Panton</strong> - Designed in 1960, but not put into production until 1999. Produced by Vitra.
-              </p>
+            <div className="text-2xl font-light text-gray-900">
+              kr {selectedVariant.price.toLocaleString()}
             </div>
 
-            {/* Variant Selection */}
-            <div>
-              <h3 className="text-sm font-medium text-stone-800 mb-4 uppercase tracking-wider">
-                COLOR: {selectedVariant.color.toUpperCase()}
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                Color: {selectedVariant.color}
               </h3>
-              <div className="flex space-x-3">
+              <div className="grid grid-cols-2 gap-3">
                 {variants.map((variant, index) => {
                   const getColorStyle = (colorName: string) => {
                     const colorMap: { [key: string]: string } = {
@@ -133,28 +195,29 @@ export default function PantonChairPage() {
                   return (
                     <button
                       key={index}
-                      onClick={() => setSelectedVariant(variant)}
-                      className={`w-12 h-12 rounded-full border-2 transition-all ${
-                        selectedVariant.name === variant.name
-                          ? 'border-stone-800 scale-110'
-                          : 'border-stone-300 hover:border-stone-500'
+                      onClick={() => setSelectedVariantIndex(index)}
+                      className={`p-3 text-sm border rounded transition-all ${
+                        selectedVariantIndex === index
+                          ? "border-red-600 bg-red-50"
+                          : "border-gray-300 hover:border-gray-500"
                       }`}
-                      style={{ backgroundColor: getColorStyle(variant.color) }}
-                      title={variant.color}
-                    />
+                    >
+                      <div className="flex items-center space-x-2">
+                        <div 
+                          className="w-4 h-4 rounded-full border border-gray-300"
+                          style={{ backgroundColor: getColorStyle(variant.color) }}
+                        />
+                        <div className="font-medium">{variant.color}</div>
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">kr {variant.price.toLocaleString()}</div>
+                    </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Price */}
-            <div className="text-3xl font-light text-stone-800">
-              kr {selectedVariant.price.toLocaleString()}
-            </div>
-
-            {/* Add to Cart */}
-            <button className="w-full bg-stone-800 text-white py-4 px-8 rounded-lg font-medium hover:bg-stone-700 transition-colors text-lg">
-              ADD TO CART - KR {selectedVariant.price.toLocaleString()}
+            <button className="w-full bg-red-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-red-700 transition-colors">
+              Add to Cart - kr {selectedVariant.price.toLocaleString()}
             </button>
 
             {/* Made to Order Notice */}
@@ -174,159 +237,194 @@ export default function PantonChairPage() {
               </div>
             </div>
 
-            {/* Product Details */}
-            <div className="space-y-4">
-              {/* Specifications */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => setShowSpecifications(!showSpecifications)}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
-                >
-                  <span className="font-medium text-stone-800">Specifications</span>
-                  <svg
-                    className={`w-5 h-5 text-stone-600 transition-transform duration-200 ${
-                      showSpecifications ? 'rotate-180' : ''
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {showSpecifications && (
-                  <div className="px-4 pb-4 border-t border-gray-100">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-stone-600">Width:</span>
-                        <span className="ml-2 text-stone-800">50 cm</span>
-                      </div>
-                      <div>
-                        <span className="text-stone-600">Depth:</span>
-                        <span className="ml-2 text-stone-800">61 cm</span>
-                      </div>
-                      <div>
-                        <span className="text-stone-600">Height:</span>
-                        <span className="ml-2 text-stone-800">86 cm</span>
-                      </div>
-                      <div>
-                        <span className="text-stone-600">Seat Height:</span>
-                        <span className="ml-2 text-stone-800">44 cm</span>
-                      </div>
-                      <div>
-                        <span className="text-stone-600">Weight:</span>
-                        <span className="ml-2 text-stone-800">5.6 kg</span>
-                      </div>
-                      <div>
-                        <span className="text-stone-600">Material:</span>
-                        <span className="ml-2 text-stone-800">Polypropylene</span>
-                      </div>
-                      <div className="col-span-2">
-                        <span className="text-stone-600">Package Dimensions:</span>
-                        <span className="ml-2 text-stone-800">65 × 55 × 91 cm</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+            {/* Collapsible Features */}
+            <div className="border-t border-gray-200 pt-8">
+              <button
+                onClick={() => setFeaturesExpanded(!featuresExpanded)}
+                className="flex justify-between items-center w-full text-left"
+              >
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                  Features
+                </h3>
+                <span className="text-gray-500">
+                  {featuresExpanded ? "−" : "+"}
+                </span>
+              </button>
+              {featuresExpanded && (
+                <ul className="mt-4 space-y-2 text-gray-600">
+                  {features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
-              {/* Features */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => setShowFeatures(!showFeatures)}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
-                >
-                  <span className="font-medium text-stone-800">Features</span>
-                  <svg
-                    className={`w-5 h-5 text-stone-600 transition-transform duration-200 ${
-                      showFeatures ? 'rotate-180' : ''
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {showFeatures && (
-                  <div className="px-4 pb-4 border-t border-gray-100">
-                    <div className="space-y-3 text-sm">
-                      <div className="flex items-start">
-                        <span className="text-green-600 mr-3 mt-1">✓</span>
-                        <span className="text-stone-600">World's first injection-moulded plastic chair made from a single piece</span>
-                      </div>
-                      <div className="flex items-start">
-                        <span className="text-green-600 mr-3 mt-1">✓</span>
-                        <span className="text-stone-600">Iconic design by Verner Panton from 1960</span>
-                      </div>
-                      <div className="flex items-start">
-                        <span className="text-green-600 mr-3 mt-1">✓</span>
-                        <span className="text-stone-600">Suitable for both indoor and outdoor use</span>
-                      </div>
-                      <div className="flex items-start">
-                        <span className="text-green-600 mr-3 mt-1">✓</span>
-                        <span className="text-stone-600">Lightweight yet durable polypropylene construction</span>
-                      </div>
-                      <div className="flex items-start">
-                        <span className="text-green-600 mr-3 mt-1">✓</span>
-                        <span className="text-stone-600">Available in 7 vibrant colors</span>
-                      </div>
-                      <div className="flex items-start">
-                        <span className="text-green-600 mr-3 mt-1">✓</span>
-                        <span className="text-stone-600">Stackable design for easy storage</span>
-                      </div>
-                      <div className="flex items-start">
-                        <span className="text-green-600 mr-3 mt-1">✓</span>
-                        <span className="text-stone-600">Made to order - 8 weeks delivery time</span>
-                      </div>
-                      <div className="flex items-start">
-                        <span className="text-green-600 mr-3 mt-1">✓</span>
-                        <span className="text-stone-600">Museum-quality craftsmanship by Vitra</span>
-                      </div>
+            {/* Collapsible Specifications */}
+            <div className="border-t border-gray-200 pt-8">
+              <button
+                onClick={() => setSpecificationsExpanded(!specificationsExpanded)}
+                className="flex justify-between items-center w-full text-left"
+              >
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                  Specifications
+                </h3>
+                <span className="text-gray-500">
+                  {specificationsExpanded ? "−" : "+"}
+                </span>
+              </button>
+              {specificationsExpanded && (
+                <div className="mt-4 space-y-3 text-gray-600">
+                  {specifications.map((spec, idx) => (
+                    <div key={idx} className="flex justify-between border-b border-gray-100 pb-2">
+                      <span className="font-medium">{spec.label}</span>
+                      <span className="text-right">{spec.value}</span>
                     </div>
-                  </div>
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Back to Collection */}
+            <div className="border-t border-gray-200 pt-8">
+              <Link
+                href="/vitra"
+                className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
+              >
+                View All Vitra Products
+              </Link>
             </div>
           </div>
         </div>
 
-        {/* Lifestyle Images */}
-        <div className="mt-20">
-          <h2 className="text-2xl font-serif text-stone-800 mb-8 text-center">
-            Panton Chair in Context
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="relative h-96 bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src="/Vitra/Panton-Chair /lifestyle/10133061r_2.webp"
-                alt="Panton Chair lifestyle image"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="relative h-96 bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src="/Vitra/Panton-Chair /lifestyle/Panton Chair fra Vitra kr 4 350  Farge - White.webp"
-                alt="Panton Chair in white lifestyle setting"
-                fill
-                className="object-cover"
-              />
-            </div>
+        {/* Related Products Section */}
+        <div className="mt-20 border-t border-gray-200 pt-16">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl lg:text-3xl font-light text-gray-900 mb-4">
+              More Iconic Vitra Designs
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover more timeless furniture and accessories from Vitra's legendary collection
+            </p>
           </div>
-        </div>
 
-        {/* Explore More Vitra */}
-        <div className="mt-20 text-center">
-          <h2 className="text-2xl font-serif text-stone-800 mb-8">
-            Explore More Vitra
-          </h2>
-          <Link
-            href="/vitra"
-            className="inline-block bg-stone-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-stone-700 transition-colors duration-300"
-          >
-            VIEW ALL VITRA PRODUCTS
-          </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Link
+              href="/vitra/eames-re-plastic-chair-dsr"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Vitra/Eames-RE-Plastic-Chair-DSR/Eames RE Plastic Chair DSR fra Vitra kr 2 950  Farge - White.webp"
+                  alt="Eames RE Plastic Chair DSR"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Chair
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Eames RE Plastic Chair DSR
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 2,950
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/vitra/noguchi-coffee-table"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Vitra/Noguchi-Coffee-Table/Noguchi Coffee Table fra Vitra kr 28 950.webp"
+                  alt="Noguchi Coffee Table"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Table
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Noguchi Coffee Table
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 28,950
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/vitra/hang-it-all"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Vitra/Hang-It-All/Hang It All fra Vitra kr 2 950  Farge - Multicolour.webp"
+                  alt="Hang It All"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Accessory
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Hang It All
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 2,950
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/vitra/ball-clock"
+              className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+            >
+              <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                <Image
+                  src="/Vitra/Ball-Clock/Ball Clock fra Vitra kr 4 950  Farge - Multicolour.webp"
+                  alt="Ball Clock"
+                  fill
+                  className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  Clock
+                </div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                  Ball Clock
+                </h3>
+                <div className="text-sm font-light text-gray-900">
+                  From kr 4,950
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* View All Products Link */}
+          <div className="text-center mt-12">
+            <Link
+              href="/vitra"
+              className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
+            >
+              View All Vitra Products
+            </Link>
+          </div>
         </div>
       </div>
     </div>

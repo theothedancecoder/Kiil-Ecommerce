@@ -44,6 +44,7 @@ function AddToBasketButton({ product, disabled }: AddToBasketButtonProps) {
         onClick={() => addItem(product)}
         className="w-8 h-8 rounded-full flex items-center justify-center text-green-600 hover:text-accent transition-colors duration-200"
         disabled={disabled}
+        data-add-to-cart="true"
       >
         <span className="text-xl font-bold">+</span>
       </button>

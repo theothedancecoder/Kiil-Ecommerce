@@ -98,7 +98,12 @@ function BasketPage() {
                 <div className="w-32 h-32 sm:w-24 sm:h-24 flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
                   {item.product.image && (
                     <Image
-                      src={imageUrl(item.product.image).url()}
+                      src={
+                        // Check if this is a cushion product with local image path
+                        (item.product as any).localImagePath 
+                          ? (item.product as any).localImagePath 
+                          : imageUrl(item.product.image).url()
+                      }
                       alt={item.product.name ?? "Product image"}
                       className="w-full h-full object-cover rounded"
                       width={96}

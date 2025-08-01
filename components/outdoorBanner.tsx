@@ -1,48 +1,57 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useLanguage } from "@/lib/languageContext";
 
 const OutdoorBanner = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="flex mx-auto px-6 md:px-8 lg:px-0 max-w-[95%] lg:max-w-[1072px]">
-      {/* Placeholder box */}
-      <div 
-        className="bg-[#eff9ff] rounded-l-xl flex flex-col justify-center items-center p-4 md:p-6"
-        style={{
-          width: "280px",
-          height: "177.97px"
-        }}
-      >
-        <h2 className="text-lg md:text-xl font-serif text-primary mb-3 md:mb-4 text-center">
-          {t("outdoor.banner.title")}
-        </h2>
-        <button className="bg-red-600 hover:bg-red-700 text-white px-4 md:px-6 py-2 rounded-lg font-medium transition-colors text-sm md:text-base">
-          {t("outdoor.banner.shopNow")}
-        </button>
-      </div>
-      
-      {/* Main banner */}
-      <div 
-        className="relative bg-[#eff9ff] overflow-hidden rounded-r-xl"
-        style={{
-          width: "100%",
-          maxWidth: "792px",
-          height: "177.97px",
-          overflow: "hidden"
-        }}
-      >
+    <div className="relative h-96 md:h-[500px] bg-gradient-to-r from-green-900 to-green-700 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
         <Image
           src="/outdoor-collection/outdoor collections banner.jpg"
           alt="outdoor collection banner"
           fill
-          className="object-cover rounded-r-xl"
-          style={{ objectPosition: "center 75%" }}
+          className="object-cover opacity-40"
           priority
         />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
       </div>
+      
+      {/* Content */}
+      <div className="relative h-full flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="max-w-2xl">
+            <h1 className="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight">
+              {t("outdoor.banner.title")}
+            </h1>
+            <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed">
+              Transform your outdoor spaces with our premium collection of weather-resistant furniture from Skagerak by Fritz Hansen. Discover timeless Scandinavian design built to withstand the elements.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link 
+                href="/utendors/furniture"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              >
+                {t("outdoor.banner.shopNow")}
+              </Link>
+              <Link 
+                href="/utendors/cushions-pillows"
+                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition-all duration-300"
+              >
+                Shop Accessories
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Decorative Elements */}
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-gradient-to-tl from-white/10 to-transparent rounded-full transform translate-x-32 translate-y-32" />
+      <div className="absolute top-0 right-1/4 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full transform -translate-y-16" />
     </div>
   );
 };

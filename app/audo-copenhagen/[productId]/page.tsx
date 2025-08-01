@@ -1,0 +1,305 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { getProductsByBrand } from "@/lib/allProducts";
+
+interface ProductVariant {
+  name: string;
+  image: string;
+  price?: number;
+  color?: string;
+  material?: string;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  variants: ProductVariant[];
+  designer?: string;
+  features?: string[];
+  specifications?: { label: string; value: string }[];
+  lifestyleImages?: string[];
+}
+
+const products: Product[] = [
+  {
+    id: "interconnect-candlestick",
+    name: "Interconnect Candlestick",
+    description: "The Interconnect Candlestick embodies Audo Copenhagen's philosophy of functional design with sculptural beauty. This elegant modular candlestick system allows you to create unique configurations, making it both a practical lighting solution and an artistic statement piece. Crafted with meticulous attention to detail, each piece can stand alone or be combined with others to create stunning arrangements that reflect your personal style.",
+    price: 5795,
+    category: "Accessories",
+    variants: [
+      { name: 'Brass', image: '/Audo-Copenhagen/Audo Copenhagen Interconnect candlestick NOK  5,795  Color -  Brass/Audo Copenhagen Interconnect candlestick NOK  5,795  Color -  Brass.webp', color: 'Brass', price: 5795 },
+      { name: 'Black', image: '/Audo-Copenhagen/Audo Copenhagen Interconnect candlestick NOK  5,795  Color -  Brass/Interconnect candlestick NOK  5,795  Color -  Black.webp', color: 'Black', price: 5795 },
+    ],
+    designer: "Audo Copenhagen Design Team",
+    features: [
+      "Modular design allows for unique configurations",
+      "Available in premium brass and black finishes",
+      "Sculptural beauty meets functional design",
+      "Perfect as standalone piece or in groups",
+      "High-quality materials and craftsmanship",
+      "Suitable for various candle sizes",
+      "Easy to clean and maintain",
+      "Timeless Scandinavian aesthetic",
+      "Creates ambient lighting atmosphere",
+      "Ideal for dining tables and mantels",
+    ],
+    specifications: [
+      { label: "Designer", value: "Audo Copenhagen Design Team" },
+      { label: "Manufacturer", value: "Audo Copenhagen" },
+      { label: "Material", value: "Metal with premium finish" },
+      { label: "Dimensions", value: "H 15cm, Ø 8cm" },
+      { label: "Weight", value: "0.8 kg" },
+      { label: "Finish Options", value: "Brass, Black" },
+      { label: "Candle Compatibility", value: "Standard dinner candles" },
+      { label: "Style", value: "Contemporary Scandinavian" },
+      { label: "Care", value: "Clean with soft cloth" },
+      { label: "Assembly", value: "No assembly required" },
+      { label: "Warranty", value: "2 years manufacturer warranty" },
+      { label: "Origin", value: "Designed in Denmark" },
+    ],
+    lifestyleImages: [
+      "/Audo-Copenhagen/Audo Copenhagen Interconnect candlestick NOK  5,795  Color -  Brass/lifestyle/10696988r_2.webp"
+    ],
+  },
+];
+
+export default function AudoCopenhagenProductPage({
+  params,
+}: {
+  params: { productId: string };
+}) {
+  const product = products.find((p) => p.id === params.productId);
+
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [featuresExpanded, setFeaturesExpanded] = useState(false);
+  const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <h1 className="text-2xl font-semibold">Product not found</h1>
+      </div>
+    );
+  }
+
+  const selectedVariant = product.variants[selectedVariantIndex];
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <div className="bg-gray-50 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <Link 
+              href="/audo-copenhagen" 
+              className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Audo Copenhagen Collection
+            </Link>
+            
+            <nav className="flex items-center space-x-2 text-sm">
+              <Link href="/" className="text-stone-600 hover:text-stone-800">
+                Home
+              </Link>
+              <span className="text-stone-400">/</span>
+              <Link href="/audo-copenhagen" className="text-stone-600 hover:text-stone-800">
+                Audo Copenhagen
+              </Link>
+              <span className="text-stone-400">/</span>
+              <span className="text-stone-800 font-medium">{product.name}</span>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Product Images */}
+          <div className="space-y-6">
+            {/* Main Image */}
+            <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
+              <Image
+                src={selectedVariant.image}
+                alt={`${product.name} - ${selectedVariant.name}`}
+                fill
+                className="object-contain object-center p-4"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+
+            {/* Variant Thumbnails */}
+            {product.variants.length > 1 && (
+              <div className="grid grid-cols-4 gap-3">
+                {product.variants.map((variant, index) => (
+                  <button
+                    key={variant.name}
+                    onClick={() => setSelectedVariantIndex(index)}
+                    className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
+                      selectedVariantIndex === index
+                        ? "border-slate-600"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    <Image
+                      src={variant.image}
+                      alt={`${variant.name} variant`}
+                      fill
+                      className="object-contain object-center p-2"
+                      sizes="(max-width: 768px) 25vw, 12.5vw"
+                    />
+                    <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
+                      {variant.color || variant.material}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Lifestyle Images */}
+            {product.lifestyleImages && product.lifestyleImages.length > 0 && (
+              <div className="grid grid-cols-1 gap-4">
+                {product.lifestyleImages.map((image, index) => (
+                  <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                    <Image
+                      src={image}
+                      alt={`${product.name} lifestyle image ${index + 1}`}
+                      fill
+                      className="object-cover object-center"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Product Information */}
+          <div className="space-y-8">
+            <div>
+              <div className="text-sm text-slate-600 uppercase tracking-wider mb-2">
+                Audo Copenhagen Collection
+              </div>
+              <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
+                {product.name}
+              </h1>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                {product.description}
+              </p>
+              {product.designer && (
+                <div className="mt-4 text-sm text-gray-500">
+                  Designed by {product.designer}
+                </div>
+              )}
+            </div>
+
+            <div className="text-2xl font-light text-gray-900">
+              kr {(selectedVariant.price || product.price).toLocaleString()}
+            </div>
+
+            {product.variants.length > 1 && (
+              <div className="space-y-4">
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                  Finish: {selectedVariant.color || selectedVariant.material}
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {product.variants.map((variant, index) => (
+                    <button
+                      key={variant.name}
+                      onClick={() => setSelectedVariantIndex(index)}
+                      className={`p-3 text-sm border rounded transition-all ${
+                        selectedVariantIndex === index
+                          ? "border-slate-600 bg-slate-50"
+                          : "border-gray-300 hover:border-gray-500"
+                      }`}
+                    >
+                      <div className="font-medium">{variant.color || variant.material}</div>
+                      <div className="text-xs text-gray-500">kr {(variant.price || product.price).toLocaleString()}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button className="w-full bg-slate-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-slate-700 transition-colors">
+              Add to Cart - kr {(selectedVariant.price || product.price).toLocaleString()}
+            </button>
+
+            {/* Collapsible Features */}
+            {product.features && (
+              <div className="border-t border-gray-200 pt-8">
+                <button
+                  onClick={() => setFeaturesExpanded(!featuresExpanded)}
+                  className="flex justify-between items-center w-full text-left"
+                >
+                  <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                    Features
+                  </h3>
+                  <span className="text-gray-500">
+                    {featuresExpanded ? "−" : "+"}
+                  </span>
+                </button>
+                {featuresExpanded && (
+                  <ul className="mt-4 space-y-2 text-gray-600">
+                    {product.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+
+            {/* Collapsible Specifications */}
+            {product.specifications && (
+              <div className="border-t border-gray-200 pt-8">
+                <button
+                  onClick={() => setSpecificationsExpanded(!specificationsExpanded)}
+                  className="flex justify-between items-center w-full text-left"
+                >
+                  <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                    Specifications
+                  </h3>
+                  <span className="text-gray-500">
+                    {specificationsExpanded ? "−" : "+"}
+                  </span>
+                </button>
+                {specificationsExpanded && (
+                  <div className="mt-4 space-y-3 text-gray-600">
+                    {product.specifications.map((spec, idx) => (
+                      <div key={idx} className="flex justify-between border-b border-gray-100 pb-2">
+                        <span className="font-medium">{spec.label}</span>
+                        <span className="text-right">{spec.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Back to Collection */}
+            <div className="border-t border-gray-200 pt-8">
+              <Link
+                href="/audo-copenhagen"
+                className="inline-block bg-gray-100 text-gray-900 px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-200 transition-colors"
+              >
+                View All Audo Copenhagen Products
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

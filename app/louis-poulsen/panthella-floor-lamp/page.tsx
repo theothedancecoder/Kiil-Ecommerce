@@ -20,9 +20,9 @@ export default function PanthellaFloorLampPage() {
     {
       id: 'white',
       name: 'White',
-      image: '/Louis-Poulsen/Panthella-Floor-Lamp/Panthella Floor Lamp.webp',
+      image: '/Louis-Poulsen/Panthella-Floor-Lamp/Panthella Floor Lamp NOK  11,775.jpg',
       color: 'White',
-      price: 12995,
+      price: 11775,
     },
   ];
 
@@ -211,7 +211,7 @@ export default function PanthellaFloorLampPage() {
               <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                 <div className="relative aspect-square bg-gray-50">
                   <Image
-                    src="/Louis-Poulsen/Panthella-400-Table-Lamp/Panthella 400 Table Lamp.webp"
+                    src="/Louis-Poulsen/Panthella-400-Table-Lamp/Panthella 400 Table Lamp NOK  9,170.jpg"
                     alt="Panthella 400 Table Lamp"
                     fill
                     className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
@@ -220,7 +220,7 @@ export default function PanthellaFloorLampPage() {
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-light text-gray-900 mb-2">Panthella 400 Table Lamp</h3>
-                  <p className="text-gray-900 font-medium">kr 8,995</p>
+                  <p className="text-gray-900 font-medium">kr 9,170</p>
                 </div>
               </div>
             </Link>

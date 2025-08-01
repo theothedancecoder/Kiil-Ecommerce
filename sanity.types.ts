@@ -272,6 +272,11 @@ export type SanityAssetSourceData = {
 
 export type AllSanitySchemaTypes = Sales | Product | Order | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./app/ablo-blommaert/[productId]/page.tsx
+// Variable: PRODUCT_QUERY
+// Query: *[_type == "product" && slug.current == $productId && brand == "Ablo Blommaert"][0] {      _id,      name,      slug,      description,      price,      image {        asset-> {          _id,          url        }      },      brand,      stock,      inStock,      lifestyleImages[] {        asset-> {          _id,          url        },        alt,        caption      }    }
+export type PRODUCT_QUERYResult = null;
+
 // Source: ./sanity/lib/orders/getMyOrders.tsx
 // Variable: MY_ORDERS_QUERY
 // Query: *[_type == "order" && clerkUserId == $userId] | order(orderDate desc) {    _id,    _type,    _createdAt,    _updatedAt,    _rev,    OrderNumber,    stripeCheckoutSessionId,    stripeCustomerId,    customerName,    customerEmail,    stripePaymentIntentId,    totalPrice,    currency,    amountDiscount,    status,    orderDate,    "products": products[]{      "quantity": quantity,      "product": product->{        _id,        name,        price,        image      }    }  }
@@ -307,28 +312,40 @@ export type ALL_CATEGORIES_QUERYResult = Array<{
 
 // Source: ./sanity/lib/products/getAllProducts.ts
 // Variable: ALL_PRODUCTS_QUERY
-// Query: *[_type == "product"]       | order(name asc)
+// Query: *[_type == "product"] {    _id,    name,    slug,    image {      ...,      asset->    },    description,    price,    brand,    categories[]->{      _id,      title,      slug    },    href,    variants[] {      name,      image {        ...,        asset->      },      color,      material,      size,      price    },    lifestyleImages[] {      ...,      asset->    },    roomCategory,    stock,    inStock  } | order(name asc)
 export type ALL_PRODUCTS_QUERYResult = Array<{
   _id: string;
-  _type: "product";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: string;
-  slug?: Slug;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+  name: string | null;
+  slug: Slug | null;
+  image: {
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash?: string;
+      extension?: string;
+      mimeType?: string;
+      size?: number;
+      assetId?: string;
+      uploadId?: string;
+      path?: string;
+      url?: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    } | null;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
-  };
-  description?: Array<{
+  } | null;
+  description: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -358,21 +375,114 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
     alt?: string;
     _type: "image";
     _key: string;
-  }>;
-  price?: number;
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
-  }>;
-  stock?: number;
+  }> | null;
+  price: number | null;
+  brand: null;
+  categories: Array<{
+    _id: string;
+    title: string | null;
+    slug: Slug | null;
+  }> | null;
+  href: null;
+  variants: null;
+  lifestyleImages: null;
+  roomCategory: null;
+  stock: number | null;
+  inStock: null;
 }>;
+// Variable: PRODUCTS_BY_BRAND_QUERY
+// Query: *[_type == "product" && brand == $brand] {    _id,    name,    slug,    image {      ...,      asset->    },    description,    price,    brand,    categories[]->{      _id,      title,      slug    },    href,    variants[] {      name,      image {        ...,        asset->      },      color,      material,      size,      price    },    lifestyleImages[] {      ...,      asset->    },    roomCategory,    stock,    inStock  } | order(name asc)
+export type PRODUCTS_BY_BRAND_QUERYResult = Array<{
+  _id: string;
+  name: string | null;
+  slug: Slug | null;
+  image: {
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash?: string;
+      extension?: string;
+      mimeType?: string;
+      size?: number;
+      assetId?: string;
+      uploadId?: string;
+      path?: string;
+      url?: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  description: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }> | null;
+  price: number | null;
+  brand: null;
+  categories: Array<{
+    _id: string;
+    title: string | null;
+    slug: Slug | null;
+  }> | null;
+  href: null;
+  variants: null;
+  lifestyleImages: null;
+  roomCategory: null;
+  stock: number | null;
+  inStock: null;
+}>;
+// Variable: ALL_BRANDS_QUERY
+// Query: *[_type == "product"] {    brand  } | order(brand asc)
+export type ALL_BRANDS_QUERYResult = Array<{
+  brand: null;
+}>;
+
+// Source: ./sanity/lib/products/getFlosProducts.ts
+// Variable: FLOS_PRODUCTS_QUERY
+// Query: *[_type == "product" && brand == "FLOS"] {            _id,            name,            slug,            image,            description,            price,            brand,            categories[]->{                _id,                title,                slug            },            variants,            stock,            inStock,            href        } | order(name asc)
+export type FLOS_PRODUCTS_QUERYResult = Array<never>;
 
 // Source: ./sanity/lib/products/getProductByCategory.ts
 // Variable: PRODUCT_BY_CATEGORY_QUERY
-// Query: *[_type == "product" && references(*[_type == "category" && slug.current == $categorySlug]._id)] {            _id,            name,            slug,            image,            description,            price,            categories[]->{                _id,                title,                slug            },            stock        } | order(name asc)
+// Query: *[_type == "product" && $categorySlug in categories[]->slug.current] {            _id,            name,            slug,            image,            description,            price,            brand,            categories[]->{                _id,                title,                slug            },            variants,            stock,            inStock,            href        } | order(name asc)
 export type PRODUCT_BY_CATEGORY_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -421,12 +531,16 @@ export type PRODUCT_BY_CATEGORY_QUERYResult = Array<{
     _key: string;
   }> | null;
   price: number | null;
+  brand: null;
   categories: Array<{
     _id: string;
     title: string | null;
     slug: Slug | null;
   }> | null;
+  variants: null;
   stock: number | null;
+  inStock: null;
+  href: null;
 }>;
 
 // Source: ./sanity/lib/products/getProductBySlug.ts
@@ -494,71 +608,6 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
   stock?: number;
 } | null;
 
-// Source: ./sanity/lib/products/searchProductsByName.ts
-// Variable: PRODUCT_SEARCH_QUERY
-// Query: *[_type == "product" && name match $searchParam]    | order(name asc)
-export type PRODUCT_SEARCH_QUERYResult = Array<{
-  _id: string;
-  _type: "product";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: string;
-  slug?: Slug;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  description?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }>;
-  price?: number;
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
-  }>;
-  stock?: number;
-}>;
-
 // Source: ./sanity/lib/sales/getActiveSaleByCouponCode.ts
 // Variable: ACTIVE_SALE_BY_COUPON_QUERY
 // Query: *[_type == "sales" && isActive == true        && couponCode ==$couponCode        ]|order(validFrom desc)[0]
@@ -577,16 +626,34 @@ export type ACTIVE_SALE_BY_COUPON_QUERYResult = {
   isActive?: boolean;
 } | null;
 
+// Source: ./sanity/lib/sales/getActiveSales.ts
+// Variable: ACTIVE_SALES_QUERY
+// Query: *[_type == "sales" && isActive == true && dateTime(validFrom) <= now() && dateTime(validUntil) >= now()] {    _id,    title,    description,    discountAmount,    couponCode,    validFrom,    validUntil,    isActive  } | order(validFrom desc)
+export type ACTIVE_SALES_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  description: string | null;
+  discountAmount: number | null;
+  couponCode: string | null;
+  validFrom: string | null;
+  validUntil: string | null;
+  isActive: boolean | null;
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    "\n    *[_type == \"product\" && slug.current == $productId && brand == \"Ablo Blommaert\"][0] {\n      _id,\n      name,\n      slug,\n      description,\n      price,\n      image {\n        asset-> {\n          _id,\n          url\n        }\n      },\n      brand,\n      stock,\n      inStock,\n      lifestyleImages[] {\n        asset-> {\n          _id,\n          url\n        },\n        alt,\n        caption\n      }\n    }\n  ": PRODUCT_QUERYResult;
     "*[_type == \"order\" && clerkUserId == $userId] | order(orderDate desc) {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    OrderNumber,\n    stripeCheckoutSessionId,\n    stripeCustomerId,\n    customerName,\n    customerEmail,\n    stripePaymentIntentId,\n    totalPrice,\n    currency,\n    amountDiscount,\n    status,\n    orderDate,\n    \"products\": products[]{\n      \"quantity\": quantity,\n      \"product\": product->{\n        _id,\n        name,\n        price,\n        image\n      }\n    }\n  }": MY_ORDERS_QUERYResult;
     "\n    *[_type == \"category\"] {\n      _id,\n      title,\n      slug,\n      description\n    } | order(title asc)\n  ": ALL_CATEGORIES_QUERYResult;
-    "*[_type == \"product\"] \n      | order(name asc)": ALL_PRODUCTS_QUERYResult;
-    "\n        *[_type == \"product\" && references(*[_type == \"category\" && slug.current == $categorySlug]._id)] {\n            _id,\n            name,\n            slug,\n            image,\n            description,\n            price,\n            categories[]->{\n                _id,\n                title,\n                slug\n            },\n            stock\n        } | order(name asc)\n    ": PRODUCT_BY_CATEGORY_QUERYResult;
+    "*[_type == \"product\"] {\n    _id,\n    name,\n    slug,\n    image {\n      ...,\n      asset->\n    },\n    description,\n    price,\n    brand,\n    categories[]->{\n      _id,\n      title,\n      slug\n    },\n    href,\n    variants[] {\n      name,\n      image {\n        ...,\n        asset->\n      },\n      color,\n      material,\n      size,\n      price\n    },\n    lifestyleImages[] {\n      ...,\n      asset->\n    },\n    roomCategory,\n    stock,\n    inStock\n  } | order(name asc)": ALL_PRODUCTS_QUERYResult;
+    "*[_type == \"product\" && brand == $brand] {\n    _id,\n    name,\n    slug,\n    image {\n      ...,\n      asset->\n    },\n    description,\n    price,\n    brand,\n    categories[]->{\n      _id,\n      title,\n      slug\n    },\n    href,\n    variants[] {\n      name,\n      image {\n        ...,\n        asset->\n      },\n      color,\n      material,\n      size,\n      price\n    },\n    lifestyleImages[] {\n      ...,\n      asset->\n    },\n    roomCategory,\n    stock,\n    inStock\n  } | order(name asc)": PRODUCTS_BY_BRAND_QUERYResult;
+    "*[_type == \"product\"] {\n    brand\n  } | order(brand asc)": ALL_BRANDS_QUERYResult;
+    "\n        *[_type == \"product\" && brand == \"FLOS\"] {\n            _id,\n            name,\n            slug,\n            image,\n            description,\n            price,\n            brand,\n            categories[]->{\n                _id,\n                title,\n                slug\n            },\n            variants,\n            stock,\n            inStock,\n            href\n        } | order(name asc)\n    ": FLOS_PRODUCTS_QUERYResult;
+    "\n        *[_type == \"product\" && $categorySlug in categories[]->slug.current] {\n            _id,\n            name,\n            slug,\n            image,\n            description,\n            price,\n            brand,\n            categories[]->{\n                _id,\n                title,\n                slug\n            },\n            variants,\n            stock,\n            inStock,\n            href\n        } | order(name asc)\n    ": PRODUCT_BY_CATEGORY_QUERYResult;
     "\n  *[_type == \"product\" && slug.current == $slug][0]\n": PRODUCT_BY_SLUG_QUERYResult;
-    "\n    *[_type == \"product\" && name match $searchParam]\n    | order(name asc)\n  ": PRODUCT_SEARCH_QUERYResult;
     "\n        *[_type == \"sales\" && isActive == true\n        && couponCode ==$couponCode\n        ]|order(validFrom desc)[0]": ACTIVE_SALE_BY_COUPON_QUERYResult;
+    "*[_type == \"sales\" && isActive == true && dateTime(validFrom) <= now() && dateTime(validUntil) >= now()] {\n    _id,\n    title,\n    description,\n    discountAmount,\n    couponCode,\n    validFrom,\n    validUntil,\n    isActive\n  } | order(validFrom desc)": ACTIVE_SALES_QUERYResult;
   }
 }

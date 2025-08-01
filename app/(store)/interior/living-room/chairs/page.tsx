@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import InteriorBanner from "@/components/InteriorBanner";
+import InteriorSubBanner from "@/components/InteriorSubBanner";
 import InteriorSidebar from "@/components/InteriorSidebar";
 
 const chairCollections = [
@@ -104,6 +104,15 @@ const chairCollections = [
     maker: "&TRADITIONS",
     description: "Danish design with premium materials",
     variants: "Available in Hallingdal 103 and 227 fabrics"
+  },
+  {
+    id: 12,
+    name: "RO Collection Salon Dining Chair",
+    image: "/Ro-Collection/Salon dining chair/Salon Dining Chair kr 22 005 Base - Oiled Oak Oiled Oak Smoked Oak Soaped Oak Leather - Supreme Dark Chocolat.webp",
+    route: "/ro-collection/salon-dining-chair",
+    maker: "RO COLLECTION",
+    description: "Elegant dining chair with premium leather upholstery",
+    variants: "Available in multiple wood bases and leather options"
   }
 ];
 
@@ -116,18 +125,24 @@ export default function ChairsPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <InteriorBanner />
+      <InteriorSubBanner 
+        title="Living Room Chairs"
+        subtitle="Discover our curated collection of designer chairs and stools, from iconic classics to contemporary masterpieces that transform your living space."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex gap-8">
           <InteriorSidebar />
           <div className="flex-1">
-            <div className="text-center mb-16">
-              <h1 className="text-[24px] text-primary mb-8" style={{ fontFamily: 'Montserrat, Verdana, Helvetica', letterSpacing: '0.05em' }}>
-                Designer Chairs & Stools Collection
+            <div className="text-center mb-12">
+              <h1 className="font-serif text-4xl md:text-5xl text-primary mb-6">
+                Living Room Chairs
               </h1>
+              <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                Browse our living room chairs collection
+              </p>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-8xl mx-auto">
               {chairCollections.map((collection) => (
                 <div
                   key={collection.id}

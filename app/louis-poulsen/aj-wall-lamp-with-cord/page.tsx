@@ -18,49 +18,49 @@ export default function AJWallLampWithCordPage() {
   const variants: ProductVariant[] = [
     {
       name: "Black",
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Black.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Black.webp",
       color: "Black",
       price: 8995
     },
     {
       name: "White",
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  White.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  White.webp",
       color: "White",
       price: 8995
     },
     {
       name: "Dusty Blue",
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ vegglampe med ledning kr 8 995  Farge - Dusty Blue.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ vegglampe med ledning kr 8 995  Farge - Dusty Blue.webp",
       color: "Dusty Blue",
       price: 8995
     },
     {
       name: "Electric Orange",
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Electric Orange.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Electric Orange.webp",
       color: "Electric Orange",
       price: 8995
     },
     {
       name: "Soft Lemon",
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Soft lemon.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Soft lemon.webp",
       color: "Soft Lemon",
       price: 8995
     },
     {
       name: "Warm Grey",
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Warm Grey.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Warm Grey.webp",
       color: "Warm Grey",
       price: 8995
     },
     {
       name: "Warm Sand",
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Warm Sand.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Warm Sand.webp",
       color: "Warm Sand",
       price: 8995
     },
     {
       name: "Pale Petroleum",
-      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord /AJ wall lamp with cord NOK  8,995  Color -  Pale petroleum.webp",
+      image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  Pale petroleum.webp",
       color: "Pale Petroleum",
       price: 8995
     }
