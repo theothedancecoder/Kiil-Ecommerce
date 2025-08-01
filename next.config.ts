@@ -1,4 +1,4 @@
- import type { NextConfig } from "next";
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Disable ESLint during builds to prevent deployment failures
@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@clerk/nextjs', '@sanity/icons', 'lucide-react'],
   },
 
-  // Image optimization - Disable for production to fix static image issues
+  // Image optimization - Optimized for Sanity CMS
   images: {
     remotePatterns: [
       {
@@ -25,9 +25,15 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       }
     ],
-    // Completely disable optimization in production
-    unoptimized: true,
-    // Legacy domains support
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    dangerouslyAllowSVG: true,
+    // Enable optimization for Sanity images
+    unoptimized: false,
+    loader: 'default',
+    // Legacy domains support for backward compatibility
     domains: ['cdn.sanity.io'],
   },
 
@@ -44,7 +50,7 @@ const nextConfig: NextConfig = {
   // Static optimization
   trailingSlash: false,
   
-  // Headers for better caching
+  // Headers for better caching and Sanity CDN
   async headers() {
     return [
       {
@@ -66,6 +72,16 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/images/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Optimize caching for Sanity CDN images
+      {
+        source: '/_next/image(.*)',
         headers: [
           {
             key: 'Cache-Control',

@@ -1,0 +1,9 @@
+{
+  "test-product-1": {
+    "name": "Test Product 1",
+    "brand": "Test Brand",
+    "mainImage": "/test/image1.jpg",
+    "lifestyleImages": [],
+    "variants": []
+  }
+}

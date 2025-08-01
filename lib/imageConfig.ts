@@ -24,14 +24,9 @@ export function getImageUrl(imagePath: string): string {
     return imagePath;
   }
   
-  // For production, we need to use an external CDN
-  // Since Vercel can't handle 1GB of images
-  
-  // Option 1: Return a placeholder for now
-  return `https://via.placeholder.com/400x400/f0f0f0/666666?text=${encodeURIComponent('Image+Loading')}`;
-  
-  // Option 2: Use CDN (uncomment when you set up CDN)
-  // return IMAGE_CONFIG.fallbackCDN + imagePath.substring(1); // Remove leading /
+  // For production, return a more descriptive placeholder
+  const productName = encodeURIComponent('Product Image');
+  return `https://via.placeholder.com/400x400/f8f9fa/6c757d?text=${productName}`;
 }
 
 export function isImageAvailable(imagePath: string): boolean {
@@ -41,5 +36,15 @@ export function isImageAvailable(imagePath: string): boolean {
   }
   
   // In production, we know images aren't deployed due to size limits
+  // Return false to show placeholders
   return false;
+}
+
+// Global replacement function for all Image components
+export function createImageSrc(originalSrc: string): string {
+  if (process.env.NODE_ENV === 'production') {
+    // In production, always return placeholder since images aren't deployed
+    return getImageUrl(originalSrc);
+  }
+  return originalSrc;
 }
