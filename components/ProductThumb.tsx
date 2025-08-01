@@ -2,7 +2,7 @@
 
 import { imageUrl } from "@/lib/ImageUrl";
 import { Product } from "@/sanity.types";
-import Image from "next/image";
+import ProductionImage from "@/components/ProductionImage";
 import { useState } from "react";
 import { useLanguage } from "@/lib/languageContext";
 import { calculateDiscountPercentage } from "@/lib/discountUtils";
@@ -65,7 +65,7 @@ function ProductThumb({product, showPrice = true, isNew = false}: {product: Exte
             {/* Image Container - Umage Style */}
             <div className="relative aspect-square bg-gray-50 overflow-hidden">
                 {imageSrc ? (
-                    <Image
+                    <ProductionImage
                         className={`${
                             // Use object-contain for furniture products to prevent cropping
                             product.name?.toLowerCase().includes('sofa') || 

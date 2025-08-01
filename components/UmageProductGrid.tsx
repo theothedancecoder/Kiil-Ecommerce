@@ -1,7 +1,7 @@
 "use client";
 
 import { Product } from "@/sanity.types";
-import Image from "next/image";
+import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { imageUrl } from "@/lib/ImageUrl";
@@ -143,14 +143,14 @@ export default function UmageProductGrid({ products }: UmageProductGridProps) {
               {/* Product Image */}
               <div className="relative aspect-square bg-gray-50 overflow-hidden">
                 {(product as any).staticProduct ? (
-                  <Image
+                  <ProductionImage
                     src={(product as any).staticImage}
                     alt={product.name || "Product"}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 ) : product.image?.asset ? (
-                  <Image
+                  <ProductionImage
                     src={imageUrl(product.image).width(400).height(400).url()}
                     alt={product.name || "Product"}
                     fill
