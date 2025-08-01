@@ -14,7 +14,9 @@
     "migration:run": "node scripts/migrate-products-to-sanity.js",
     "migration:help": "echo 'Migration Commands:' && echo '  npm run migration:test  - Test migration setup' && echo '  npm run migration:run   - Run product migration' && echo '  See MIGRATION_GUIDE.md for full instructions'",
     "stock:add": "node scripts/add-stock-to-products.js",
-    "stock:help": "echo 'Stock Management Commands:' && echo '  npm run stock:add  - Add stock quantities to all products in Sanity'"
+    "stock:help": "echo 'Stock Management Commands:' && echo '  npm run stock:add  - Add stock quantities to all products in Sanity'",
+    "validate-env": "node scripts/validate-env.js",
+    "debug:images": "npm run validate-env && echo 'Environment validated. Check browser console for image debug info.'"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.21.0",
