@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { getImageUrl, isImageAvailable } from "@/lib/imageConfig";
 
 interface ProductionImageProps {
   src: string;
@@ -26,9 +27,9 @@ export default function ProductionImage({
 }: ProductionImageProps) {
   const [imageError, setImageError] = useState(false);
   
-  // Properly encode the image source for production
-  const encodedSrc = src ? encodeURI(src) : '';
-  const [imageSrc, setImageSrc] = useState(encodedSrc);
+  // Get the appropriate image URL based on environment
+  const imageSrc = getImageUrl(src);
+  const imageAvailable = isImageAvailable(src);
 
   // Handle image loading errors
   const handleError = () => {
@@ -36,11 +37,15 @@ export default function ProductionImage({
     setImageError(true);
   };
 
-  // If image failed to load, show fallback
-  if (imageError) {
+  // If image failed to load or not available, show fallback
+  if (imageError || !imageAvailable) {
     return (
-      <div className={`bg-gray-200 flex items-center justify-center ${className}`}>
-        <span className="text-gray-400 text-sm">Image unavailable</span>
+      <div className={`bg-gray-100 flex flex-col items-center justify-center ${className} border-2 border-dashed border-gray-300`}>
+        <div className="text-gray-400 text-xs text-center p-2">
+          <div className="mb-1">📷</div>
+          <div>Image Loading</div>
+          <div className="text-xs opacity-75">Setting up CDN...</div>
+        </div>
       </div>
     );
   }
@@ -48,7 +53,7 @@ export default function ProductionImage({
   // Check if it's a static image (starts with /) vs external URL
   const isStaticImage = imageSrc.startsWith('/') && !imageSrc.startsWith('http');
   
-  // For static images, always use regular img tag to avoid Next.js optimization issues
+  // For static images, use regular img tag
   if (isStaticImage) {
     return (
       <img
@@ -71,19 +76,24 @@ export default function ProductionImage({
     );
   }
 
-  // For external URLs (like Sanity CDN), use Next.js Image component
+  // For external URLs (like CDN or placeholders), use regular img tag
   return (
-    <Image
+    <img
       src={imageSrc}
       alt={alt}
-      fill={fill}
-      width={width}
-      height={height}
       className={className}
-      sizes={sizes}
-      priority={priority}
       onError={handleError}
-      unoptimized={true}
+      style={fill ? { 
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        objectFit: 'contain',
+        color: 'transparent'
+      } : { width, height }}
     />
   );
 }
