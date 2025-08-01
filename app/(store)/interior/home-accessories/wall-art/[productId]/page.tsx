@@ -3,13 +3,14 @@ import { wallArtData } from "@/lib/wallArtData";
 import WallArtProductClient from "./WallArtProductClient";
 
 interface WallArtProductPageProps {
-  params: {
+  params: Promise<{
     productId: string;
-  };
+  }>;
 }
 
-export default function WallArtProductPage({ params }: WallArtProductPageProps) {
-  const product = wallArtData.find(p => p.slug.current === params.productId);
+export default async function WallArtProductPage({ params }: WallArtProductPageProps) {
+  const { productId } = await params;
+  const product = wallArtData.find(p => p.slug.current === productId);
 
   if (!product) {
     notFound();
@@ -25,7 +26,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: WallArtProductPageProps) {
-  const product = wallArtData.find(p => p.slug.current === params.productId);
+  const { productId } = await params;
+  const product = wallArtData.find(p => p.slug.current === productId);
 
   if (!product) {
     return {
