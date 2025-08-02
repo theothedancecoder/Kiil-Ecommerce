@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { getProductionImageSrc } from "@/lib/globalImageFix";
+import Image from "next/image";
+import { getImageUrl } from "@/lib/ImageUrl";
 
 interface ProductionImageProps {
-  src: string;
+  src: string | any; // Can be string URL or Sanity image object
   alt: string;
   fill?: boolean;
   className?: string;
@@ -26,20 +27,17 @@ export default function ProductionImage({
 }: ProductionImageProps) {
   const [imageError, setImageError] = useState(false);
   
-  // Get the production-safe image URL
-  const imageSrc = getProductionImageSrc(src, alt);
-  
-  // In production, always show placeholder since images aren't deployed
-  const isProduction = process.env.NODE_ENV === 'production';
+  // Get the proper image URL (handles both Sanity images and regular URLs)
+  const imageUrl = getImageUrl(src);
   
   // Handle image loading errors
   const handleError = () => {
-    console.error(`Failed to load image: ${imageSrc} (original: ${src})`);
+    console.error(`Failed to load image: ${imageUrl} (original: ${src})`);
     setImageError(true);
   };
 
-  // In production or if error, show styled placeholder
-  if (isProduction || imageError) {
+  // Show placeholder only if there's an error or no valid image URL
+  if (imageError || !imageUrl) {
     return (
       <div 
         className={`bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col items-center justify-center ${className} border border-gray-200`}
@@ -56,30 +54,39 @@ export default function ProductionImage({
         <div className="text-gray-400 text-center p-4">
           <div className="text-2xl mb-2">🖼️</div>
           <div className="text-sm font-medium">Product Image</div>
-          <div className="text-xs opacity-75 mt-1">Setting up CDN...</div>
+          <div className="text-xs opacity-75 mt-1">Image unavailable</div>
         </div>
       </div>
     );
   }
 
-  // For development, use regular img tag
+  // Use Next.js Image component for optimization
+  if (fill) {
+    return (
+      <Image
+        src={imageUrl}
+        alt={alt}
+        fill
+        className={className}
+        sizes={sizes}
+        priority={priority}
+        onError={handleError}
+        style={{ objectFit: 'contain' }}
+      />
+    );
+  }
+
   return (
-    <img
-      src={imageSrc}
+    <Image
+      src={imageUrl}
       alt={alt}
+      width={width || 400}
+      height={height || 400}
       className={className}
+      sizes={sizes}
+      priority={priority}
       onError={handleError}
-      style={fill ? { 
-        position: 'absolute',
-        height: '100%',
-        width: '100%',
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-        objectFit: 'contain',
-        color: 'transparent'
-      } : { width, height }}
+      style={{ objectFit: 'contain' }}
     />
   );
 }

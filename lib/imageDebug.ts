@@ -63,15 +63,37 @@ export function fixImagePathForProduction(src: string): string {
     src = '/' + src;
   }
   
-  // For production, encode the URI to handle spaces and special characters
-  if (process.env.NODE_ENV === 'production') {
+  // Enhanced path fixing for production
+  try {
+    // Split path into segments to handle each part
+    const pathParts = src.split('/');
+    const encodedParts = pathParts.map(part => {
+      if (!part) return part; // Keep empty parts (like leading slash)
+      
+      // Handle special characters and spaces more aggressively
+      return encodeURIComponent(part)
+        .replace(/'/g, '%27')  // Handle apostrophes
+        .replace(/"/g, '%22')  // Handle quotes
+        .replace(/×/g, '%C3%97') // Handle multiplication symbol
+        .replace(/%20/g, '%20'); // Keep spaces encoded
+    });
+    
+    const encodedPath = encodedParts.join('/');
+    
+    // Log problematic paths in production for debugging
+    if (process.env.NODE_ENV === 'production' && (src.includes(' ') || src.includes('×') || src.includes("'"))) {
+      console.log(`[Image Path Fix] Original: ${src} -> Fixed: ${encodedPath}`);
+    }
+    
+    return encodedPath;
+  } catch (error) {
+    console.warn('Failed to encode image path:', src, error);
+    // Fallback: basic encoding
     try {
       return encodeURI(src);
-    } catch (error) {
-      console.warn('Failed to encode URI:', src, error);
+    } catch (fallbackError) {
+      console.error('Fallback encoding also failed:', src, fallbackError);
       return src;
     }
   }
-  
-  return src;
 }

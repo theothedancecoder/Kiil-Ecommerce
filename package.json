@@ -16,7 +16,9 @@
     "stock:add": "node scripts/add-stock-to-products.js",
     "stock:help": "echo 'Stock Management Commands:' && echo '  npm run stock:add  - Add stock quantities to all products in Sanity'",
     "validate-env": "node scripts/validate-env.js",
-    "debug:images": "npm run validate-env && echo 'Environment validated. Check browser console for image debug info.'"
+    "debug:images": "npm run validate-env && echo 'Environment validated. Check browser console for image debug info.'",
+    "setup:homepage": "node scripts/create-homepage-content.js",
+    "verify:homepage": "node scripts/verify-homepage-sanity.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.21.0",
