@@ -13,6 +13,7 @@ interface ProductionImageProps {
   priority?: boolean;
   width?: number;
   height?: number;
+  objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
 }
 
 export default function ProductionImage({
@@ -24,6 +25,7 @@ export default function ProductionImage({
   priority = false,
   width,
   height,
+  objectFit = 'contain',
 }: ProductionImageProps) {
   const [imageError, setImageError] = useState(false);
   
@@ -71,7 +73,7 @@ export default function ProductionImage({
         sizes={sizes}
         priority={priority}
         onError={handleError}
-        style={{ objectFit: 'contain' }}
+        style={{ objectFit }}
       />
     );
   }
@@ -86,7 +88,7 @@ export default function ProductionImage({
       sizes={sizes}
       priority={priority}
       onError={handleError}
-      style={{ objectFit: 'contain' }}
+      style={{ objectFit }}
     />
   );
 }

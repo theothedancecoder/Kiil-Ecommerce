@@ -68,9 +68,10 @@ export default async function Home() {
                   src={heroImageUrl}
                   alt={heroData.heroImage?.alt || "Elegant living room with sophisticated furniture"}
                   fill
-                  className="object-cover"
+                  className=""
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
+                  objectFit="cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
@@ -100,13 +101,14 @@ export default async function Home() {
                 
                 return (
                   <Link key={index} href={category.link} className="group">
-                    <div className="relative h-80 overflow-hidden bg-stone-100">
+                    <div className="relative h-80 overflow-hidden bg-stone-100 rounded-sm">
                       <ProductionImage
                         src={categoryImageUrl}
                         alt={category.image?.alt || category.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        className="w-full h-full group-hover:scale-105 transition-transform duration-700"
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        objectFit="cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                       <div className="absolute bottom-6 left-6 text-white">
@@ -126,8 +128,9 @@ export default async function Home() {
                       src="/living-room.jpg"
                       alt="Living Room Collection"
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="group-hover:scale-105 transition-transform duration-700"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      objectFit="cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     <div className="absolute bottom-6 left-6 text-white">
@@ -143,8 +146,9 @@ export default async function Home() {
                       src={diningImage}
                       alt="Dining Collection"
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="group-hover:scale-105 transition-transform duration-700"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      objectFit="cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     <div className="absolute bottom-6 left-6 text-white">
@@ -160,8 +164,9 @@ export default async function Home() {
                       src={outdoorImage}
                       alt="Outdoor Collection"
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="group-hover:scale-105 transition-transform duration-700"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      objectFit="cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     <div className="absolute bottom-6 left-6 text-white">
