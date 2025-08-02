@@ -4,13 +4,13 @@
 const requiredEnvVars = [
   'NEXT_PUBLIC_SANITY_PROJECT_ID',
   'NEXT_PUBLIC_SANITY_DATASET',
-  'NEXT_PUBLIC_SANITY_API_VERSION'
+  'NEXT_PUBLIC_SANITY_API_VERSION',
+  'USE_SANITY_PRODUCTS'
 ];
 
 const optionalEnvVars = [
   'NEXT_PUBLIC_BASE_URL',
-  'VERCEL_URL',
-  'USE_SANITY_PRODUCTS'
+  'VERCEL_URL'
 ];
 
 console.log('🔍 Validating environment variables...\n');

@@ -1,15 +1,31 @@
 import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
+import { getHomepage } from "@/sanity/lib/getHomepage";
+import { getImageUrl } from "@/lib/ImageUrl";
 
 export const dynamic = "force-static";
 export const revalidate = 1800; // 30 minutes
 
 // Preload critical images
-const heroImage = "/living-room-collection.jpg";
 const diningImage = "/dining-collection.webp";
 const outdoorImage = "/outdoor-collection.jpg";
 
 export default async function Home() {
+  // Fetch homepage data from Sanity
+  const homepageData = await getHomepage();
+  
+  // Fallback data if Sanity data is not available
+  const heroData = homepageData?.heroSection || {
+    mainHeading: "Timeless Design",
+    subHeading: "for Modern Living",
+    description: "Discover our curated collection of sophisticated furniture and home accessories, thoughtfully designed to create spaces that inspire and endure.",
+    heroImage: null
+  };
+  
+  // Get hero image URL from Sanity or fallback to static image
+  const heroImageUrl = heroData.heroImage 
+    ? getImageUrl(heroData.heroImage, "/living-room-collection.jpg")
+    : "/living-room-collection.jpg";
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section - Ballard Designs Style */}
@@ -21,12 +37,11 @@ export default async function Home() {
             <div className="space-y-8">
               <div className="space-y-6">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-stone-800 leading-tight">
-                  Timeless Design
-                  <span className="block text-stone-600 italic">for Modern Living</span>
+                  {heroData.mainHeading}
+                  <span className="block text-stone-600 italic">{heroData.subHeading}</span>
                 </h1>
                 <p className="text-lg text-stone-600 leading-relaxed max-w-lg">
-                  Discover our curated collection of sophisticated furniture and home accessories, 
-                  thoughtfully designed to create spaces that inspire and endure.
+                  {heroData.description}
                 </p>
               </div>
               
@@ -50,8 +65,8 @@ export default async function Home() {
             <div className="relative">
               <div className="relative h-[500px] lg:h-[600px] overflow-hidden">
                 <ProductionImage
-                  src={heroImage}
-                  alt="Elegant living room with sophisticated furniture"
+                  src={heroImageUrl}
+                  alt={heroData.heroImage?.alt || "Elegant living room with sophisticated furniture"}
                   fill
                   className="object-cover"
                   priority
