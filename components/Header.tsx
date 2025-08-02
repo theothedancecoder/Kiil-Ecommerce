@@ -1,7 +1,7 @@
 "use client"
 import { ClerkLoaded, ClerkLoading, SignInButton, UserButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link'
-import React from 'react'
+import React, { Suspense } from 'react'
 import Image from 'next/image'
 import Form from 'next/form'
 import { PackageIcon, TrolleyIcon, UserIcon } from '@sanity/icons'
@@ -10,6 +10,7 @@ import Navigation from './Navigation'
 import { Loader } from 'lucide-react'
 import LanguageToggle from './LanguageToggle'
 import { useLanguage } from '@/lib/languageContext'
+import SiteLogo from './SiteLogo'
 
 function Header() {
     const { user } = useUser();
@@ -32,18 +33,22 @@ function Header() {
             <header className='flex flex-wrap justify-between items-center px-4 py-6 max-w-7xl mx-auto'>
                 {/*top row*/}
                 <div className='flex w-full justify-between items-center'>
-                    <Link
-                        href="/" 
-                        className="flex items-center hover:opacity-80 transition-opacity duration-300">
-                        <Image
-                            src="/kiil-black-square-bla.png"
-                            alt="KIIL"
-                            width={178}
-                            height={60}
-                            className="h-14 w-auto"
-                            priority
-                        />
-                    </Link>
+                    <Suspense fallback={
+                        <Link
+                            href="/" 
+                            className="flex items-center hover:opacity-80 transition-opacity duration-300">
+                            <Image
+                                src="/kiil-black-square-bla.png"
+                                alt="KIIL"
+                                width={178}
+                                height={60}
+                                className="h-14 w-auto"
+                                priority
+                            />
+                        </Link>
+                    }>
+                        <SiteLogo />
+                    </Suspense>
 
                     <Form action='/search'
                         className='flex-1 mx-8 max-w-md'>

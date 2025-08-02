@@ -18,7 +18,9 @@
     "validate-env": "node scripts/validate-env.js",
     "debug:images": "npm run validate-env && echo 'Environment validated. Check browser console for image debug info.'",
     "setup:homepage": "node scripts/create-homepage-content.js",
-    "verify:homepage": "node scripts/verify-homepage-sanity.js"
+    "setup:homepage-extended": "node scripts/create-extended-homepage-content.js",
+    "verify:homepage": "node scripts/verify-homepage-sanity.js",
+    "verify:homepage-extended": "node scripts/verify-extended-homepage.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.21.0",
