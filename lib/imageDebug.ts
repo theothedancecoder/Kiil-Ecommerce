@@ -52,21 +52,32 @@ export function isValidImagePath(src: string): boolean {
 }
 
 // Production-specific image path fixer
-export function fixImagePathForProduction(src: string): string {
+export function fixImagePathForProduction(src: any): string {
+  // Type checking and validation
   if (!src) return '';
   
+  // Convert to string if it's not already
+  const srcString = typeof src === 'string' ? src : String(src);
+  
+  // Additional validation
+  if (!srcString || typeof srcString !== 'string') {
+    console.warn('[Image Path Fix] Invalid src provided:', src);
+    return '';
+  }
+  
   // If it's already a full URL, return as-is
-  if (src.startsWith('http')) return src;
+  if (srcString.startsWith('http')) return srcString;
   
   // Ensure local paths start with /
-  if (!src.startsWith('/')) {
-    src = '/' + src;
+  let fixedSrc = srcString;
+  if (!fixedSrc.startsWith('/')) {
+    fixedSrc = '/' + fixedSrc;
   }
   
   // Enhanced path fixing for production
   try {
     // Split path into segments to handle each part
-    const pathParts = src.split('/');
+    const pathParts = fixedSrc.split('/');
     const encodedParts = pathParts.map(part => {
       if (!part) return part; // Keep empty parts (like leading slash)
       
@@ -81,19 +92,19 @@ export function fixImagePathForProduction(src: string): string {
     const encodedPath = encodedParts.join('/');
     
     // Log problematic paths in production for debugging
-    if (process.env.NODE_ENV === 'production' && (src.includes(' ') || src.includes('×') || src.includes("'"))) {
-      console.log(`[Image Path Fix] Original: ${src} -> Fixed: ${encodedPath}`);
+    if (process.env.NODE_ENV === 'production' && (fixedSrc.includes(' ') || fixedSrc.includes('×') || fixedSrc.includes("'"))) {
+      console.log(`[Image Path Fix] Original: ${fixedSrc} -> Fixed: ${encodedPath}`);
     }
     
     return encodedPath;
   } catch (error) {
-    console.warn('Failed to encode image path:', src, error);
+    console.warn('Failed to encode image path:', fixedSrc, error);
     // Fallback: basic encoding
     try {
-      return encodeURI(src);
+      return encodeURI(fixedSrc);
     } catch (fallbackError) {
-      console.error('Fallback encoding also failed:', src, fallbackError);
-      return src;
+      console.error('Fallback encoding also failed:', fixedSrc, fallbackError);
+      return fixedSrc;
     }
   }
 }
