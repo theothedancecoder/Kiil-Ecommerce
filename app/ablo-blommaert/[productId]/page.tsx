@@ -65,11 +65,37 @@ async function AbloBlommaertProductPage({ params }: { params: Promise<{ productI
 
   const product = response.data;
 
-  if (!product) {
+  if (!product || !product.name || !product.slug?.current || !product.description || product.price === null || !product.brand) {
     notFound();
   }
 
-  return <AbloBlommaertProductClient product={product} />;
+  // Type cast to ensure non-null values for the client component
+  const validatedProduct: AbloBlommaertProduct = {
+    _id: product._id,
+    name: product.name,
+    slug: { current: product.slug.current },
+    description: product.description,
+    price: product.price,
+    brand: product.brand,
+    stock: product.stock || 0,
+    inStock: product.inStock || false,
+    image: product.image ? {
+      asset: {
+        _ref: product.image.asset?._id || '',
+        url: product.image.asset?.url || undefined
+      }
+    } : undefined,
+    lifestyleImages: product.lifestyleImages?.map(img => ({
+      asset: {
+        _ref: img.asset?._id || '',
+        url: img.asset?.url || undefined
+      },
+      alt: img.alt || undefined,
+      caption: img.caption || undefined
+    })) || undefined
+  };
+
+  return <AbloBlommaertProductClient product={validatedProduct} />;
 }
 
 export default AbloBlommaertProductPage;

@@ -8,7 +8,7 @@ import { useLanguage } from "@/lib/languageContext";
 import { calculateDiscountPercentage } from "@/lib/discountUtils";
 import Link from "next/link";
 
-interface ExtendedProduct extends Product {
+interface ExtendedProduct extends Omit<Product, 'brand'> {
     salePrice?: number;
     originalPrice?: number;
     staticProduct?: boolean;
@@ -134,11 +134,11 @@ function ProductThumb({product, showPrice = true, isNew = false}: {product: Exte
                 {product.description && Array.isArray(product.description) && (
                     <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                         {product.description
-                            .filter(block => block._type === 'block' && 'children' in block)
-                            .map(block => 
+                            .filter((block: any) => block._type === 'block' && 'children' in block)
+                            .map((block: any) => 
                                 'children' in block && block.children
-                                    ?.filter(child => child._type === 'span')
-                                    ?.map(child => child.text)
+                                    ?.filter((child: any) => child._type === 'span')
+                                    ?.map((child: any) => child.text)
                                     ?.join(' ')
                             )
                             .join(' ')

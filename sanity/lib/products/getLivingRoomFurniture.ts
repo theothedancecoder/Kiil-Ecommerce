@@ -19,7 +19,7 @@ export const getLivingRoomFurniture = async () => {
     'bookcases'
   ];
 
-  let sanityProducts = [];
+  let sanityProducts: any[] = [];
   
   // Try to get products from Sanity if enabled
   const USE_SANITY_PRODUCTS = process.env.USE_SANITY_PRODUCTS === 'true';
