@@ -84,67 +84,94 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif text-stone-800 mb-4">
-              Shop by Category
+              {homepageData?.categorySection?.title || "Shop by Category"}
             </h2>
             <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-              From statement furniture to refined accessories, find everything you need to create your perfect space.
+              {homepageData?.categorySection?.description || "From statement furniture to refined accessories, find everything you need to create your perfect space."}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Living Room */}
-            <Link href="/interior/living-room" className="group">
-              <div className="relative h-80 overflow-hidden bg-stone-100">
-                <ProductionImage
-                  src="/living-room.jpg"
-                  alt="Living Room Collection"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-2xl font-serif mb-2">Living Room</h3>
-                  <p className="text-sm opacity-90">Sophisticated seating & tables</p>
-                </div>
-              </div>
-            </Link>
+            {homepageData?.categorySection?.categories?.length ? (
+              homepageData.categorySection.categories.map((category, index) => {
+                const categoryImageUrl = category.image 
+                  ? getImageUrl(category.image, "/living-room.jpg")
+                  : "/living-room.jpg";
+                
+                return (
+                  <Link key={index} href={category.link} className="group">
+                    <div className="relative h-80 overflow-hidden bg-stone-100">
+                      <ProductionImage
+                        src={categoryImageUrl}
+                        alt={category.image?.alt || category.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      <div className="absolute bottom-6 left-6 text-white">
+                        <h3 className="text-2xl font-serif mb-2">{category.title}</h3>
+                        <p className="text-sm opacity-90">{category.description}</p>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })
+            ) : (
+              // Fallback categories if no Sanity data
+              <>
+                <Link href="/interior/living-room" className="group">
+                  <div className="relative h-80 overflow-hidden bg-stone-100">
+                    <ProductionImage
+                      src="/living-room.jpg"
+                      alt="Living Room Collection"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute bottom-6 left-6 text-white">
+                      <h3 className="text-2xl font-serif mb-2">Living Room</h3>
+                      <p className="text-sm opacity-90">Sophisticated seating & tables</p>
+                    </div>
+                  </div>
+                </Link>
 
-            {/* Dining */}
-            <Link href="/interior" className="group">
-              <div className="relative h-80 overflow-hidden bg-stone-100">
-                <ProductionImage
-                  src={diningImage}
-                  alt="Dining Collection"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-2xl font-serif mb-2">Dining</h3>
-                  <p className="text-sm opacity-90">Tables & chairs for gathering</p>
-                </div>
-              </div>
-            </Link>
+                <Link href="/interior" className="group">
+                  <div className="relative h-80 overflow-hidden bg-stone-100">
+                    <ProductionImage
+                      src={diningImage}
+                      alt="Dining Collection"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute bottom-6 left-6 text-white">
+                      <h3 className="text-2xl font-serif mb-2">Dining</h3>
+                      <p className="text-sm opacity-90">Tables & chairs for gathering</p>
+                    </div>
+                  </div>
+                </Link>
 
-            {/* Outdoor */}
-            <Link href="/utendors" className="group">
-              <div className="relative h-80 overflow-hidden bg-stone-100">
-                <ProductionImage
-                  src={outdoorImage}
-                  alt="Outdoor Collection"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-2xl font-serif mb-2">Outdoor</h3>
-                  <p className="text-sm opacity-90">Garden & patio essentials</p>
-                </div>
-              </div>
-            </Link>
+                <Link href="/utendors" className="group">
+                  <div className="relative h-80 overflow-hidden bg-stone-100">
+                    <ProductionImage
+                      src={outdoorImage}
+                      alt="Outdoor Collection"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute bottom-6 left-6 text-white">
+                      <h3 className="text-2xl font-serif mb-2">Outdoor</h3>
+                      <p className="text-sm opacity-90">Garden & patio essentials</p>
+                    </div>
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -184,8 +211,11 @@ export default async function Home() {
               <div className="bg-white p-8 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300">
                 <div className="flex items-center justify-center">
                   <ProductionImage
-                    src="/our-collection/Montana Logo Svart.png"
-                    alt="Montana"
+                    src={homepageData?.brandLogos?.montanaLogo 
+                      ? getImageUrl(homepageData.brandLogos.montanaLogo, "/our-collection/Montana Logo Svart.png")
+                      : "/our-collection/Montana Logo Svart.png"
+                    }
+                    alt={homepageData?.brandLogos?.montanaLogo?.alt || "Montana"}
                     width={140}
                     height={50}
                     className="h-10 w-auto group-hover:opacity-80 transition-opacity"
@@ -216,8 +246,11 @@ export default async function Home() {
               <div className="bg-stone-50 p-8 hover:shadow-lg hover:bg-white transition-all duration-300">
                 <div className="flex items-center justify-center">
                   <ProductionImage
-                    src="/our-collection/UMAGE_logo_black.png"
-                    alt="Umage"
+                    src={homepageData?.brandLogos?.umageLogo 
+                      ? getImageUrl(homepageData.brandLogos.umageLogo, "/our-collection/UMAGE_logo_black.png")
+                      : "/our-collection/UMAGE_logo_black.png"
+                    }
+                    alt={homepageData?.brandLogos?.umageLogo?.alt || "Umage"}
                     width={120}
                     height={40}
                     className="h-8 w-auto group-hover:opacity-80 transition-opacity"
