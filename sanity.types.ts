@@ -13,6 +13,99 @@
  */
 
 // Source: schema.json
+export type Homepage = {
+  _id: string;
+  _type: "homepage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  siteSettings?: {
+    logo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+  };
+  heroSection?: {
+    mainHeading?: string;
+    subHeading?: string;
+    description?: string;
+    heroImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+  };
+  categorySection?: {
+    title?: string;
+    description?: string;
+    categories?: Array<{
+      title?: string;
+      description?: string;
+      image?: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      };
+      link?: string;
+      _key: string;
+    }>;
+  };
+  brandLogos?: {
+    montanaLogo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+    umageLogo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+  };
+};
+
 export type Sales = {
   _id: string;
   _type: "sales";
@@ -26,6 +119,38 @@ export type Sales = {
   validFrom?: string;
   validUntil?: string;
   isActive?: boolean;
+};
+
+export type Order = {
+  _id: string;
+  _type: "order";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  OrderNumber?: string;
+  stripeCheckoutSessionId?: string;
+  stripeCustomerId?: string;
+  customerName?: string;
+  customerEmail?: string;
+  clerkUserId?: string;
+  stripePaymentIntentId?: string;
+  vippsPaymentReference?: string;
+  paymentProvider?: "stripe" | "vipps";
+  totalPrice?: number;
+  currency?: string;
+  amountDiscount?: number;
+  status?: "pending" | "paid" | "shipped" | "delivered" | "cancelled";
+  orderDate?: string;
+  products?: Array<{
+    product?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "product";
+    };
+    quantity?: number;
+    _key: string;
+  }>;
 };
 
 export type Product = {
@@ -48,24 +173,39 @@ export type Product = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  description?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
+  description?: string;
+  price?: number;
+  brand?: "Ablo Blommaert" | "Fritz Hansen" | "HAY" | "Kartell" | "Montana" | "Vitra" | "DUX" | "Eilersen" | "Fredericia" | "Sibast Furniture" | "UMAGE" | "Soren Lund" | "&Tradition" | "Audo Copenhagen" | "Jonas Ihreborn" | "RO Collection";
+  categories?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
     _key: string;
-  } | {
+    [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  href?: string;
+  variants?: Array<{
+    name?: string;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    color?: string;
+    material?: string;
+    size?: string;
+    price?: number;
+    _type: "variant";
+    _key: string;
+  }>;
+  lifestyleImages?: Array<{
     asset?: {
       _ref: string;
       _type: "reference";
@@ -75,38 +215,12 @@ export type Product = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
     _key: string;
   }>;
-  price?: number;
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
-  }>;
+  roomCategory?: "living-room" | "dining-room" | "bedroom" | "office" | "outdoor" | "kitchen" | "bathroom";
   stock?: number;
-};
-
-export type Order = {
-  _id: string;
-  _type: "order";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  OrderNumber?: string;
-  stripeCheckoutSessionId?: string;
-  stripeCustomerId?: string;
-  customerName?: string;
-  customerEmail?: string;
-  stripePaymentIntentId?: string;
-  totalPrice?: number;
-  currency?: string;
-  amountDiscount?: number;
-  status?: "pending" | "paid" | "shipped" | "delivered" | "cancelled";
-  orderDate?: string;
+  inStock?: boolean;
 };
 
 export type Category = {
@@ -270,12 +384,35 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Sales | Product | Order | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Homepage | Sales | Order | Product | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./app/ablo-blommaert/[productId]/page.tsx
 // Variable: PRODUCT_QUERY
 // Query: *[_type == "product" && slug.current == $productId && brand == "Ablo Blommaert"][0] {      _id,      name,      slug,      description,      price,      image {        asset-> {          _id,          url        }      },      brand,      stock,      inStock,      lifestyleImages[] {        asset-> {          _id,          url        },        alt,        caption      }    }
-export type PRODUCT_QUERYResult = null;
+export type PRODUCT_QUERYResult = {
+  _id: string;
+  name: string | null;
+  slug: Slug | null;
+  description: string | null;
+  price: number | null;
+  image: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+  } | null;
+  brand: "&Tradition" | "Ablo Blommaert" | "Audo Copenhagen" | "DUX" | "Eilersen" | "Fredericia" | "Fritz Hansen" | "HAY" | "Jonas Ihreborn" | "Kartell" | "Montana" | "RO Collection" | "Sibast Furniture" | "Soren Lund" | "UMAGE" | "Vitra" | null;
+  stock: number | null;
+  inStock: boolean | null;
+  lifestyleImages: Array<{
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    alt: null;
+    caption: null;
+  }> | null;
+} | null;
 
 // Source: ./sanity/lib/orders/getMyOrders.tsx
 // Variable: MY_ORDERS_QUERY
@@ -297,7 +434,26 @@ export type MY_ORDERS_QUERYResult = Array<{
   amountDiscount: number | null;
   status: "cancelled" | "delivered" | "paid" | "pending" | "shipped" | null;
   orderDate: string | null;
-  products: null;
+  products: Array<{
+    quantity: number | null;
+    product: {
+      _id: string;
+      name: string | null;
+      price: number | null;
+      image: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      } | null;
+    } | null;
+  }> | null;
 }>;
 
 // Source: ./sanity/lib/products/getAllCategories.ts
@@ -345,50 +501,82 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
-  description: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }> | null;
+  description: string | null;
   price: number | null;
-  brand: null;
+  brand: "&Tradition" | "Ablo Blommaert" | "Audo Copenhagen" | "DUX" | "Eilersen" | "Fredericia" | "Fritz Hansen" | "HAY" | "Jonas Ihreborn" | "Kartell" | "Montana" | "RO Collection" | "Sibast Furniture" | "Soren Lund" | "UMAGE" | "Vitra" | null;
   categories: Array<{
     _id: string;
     title: string | null;
     slug: Slug | null;
   }> | null;
-  href: null;
-  variants: null;
-  lifestyleImages: null;
-  roomCategory: null;
+  href: string | null;
+  variants: Array<{
+    name: string | null;
+    image: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        originalFilename?: string;
+        label?: string;
+        title?: string;
+        description?: string;
+        altText?: string;
+        sha1hash?: string;
+        extension?: string;
+        mimeType?: string;
+        size?: number;
+        assetId?: string;
+        uploadId?: string;
+        path?: string;
+        url?: string;
+        metadata?: SanityImageMetadata;
+        source?: SanityAssetSourceData;
+      } | null;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    color: string | null;
+    material: string | null;
+    size: string | null;
+    price: number | null;
+  }> | null;
+  lifestyleImages: Array<{
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash?: string;
+      extension?: string;
+      mimeType?: string;
+      size?: number;
+      assetId?: string;
+      uploadId?: string;
+      path?: string;
+      url?: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }> | null;
+  roomCategory: "bathroom" | "bedroom" | "dining-room" | "kitchen" | "living-room" | "office" | "outdoor" | null;
   stock: number | null;
-  inStock: null;
+  inStock: boolean | null;
 }>;
 // Variable: PRODUCTS_BY_BRAND_QUERY
 // Query: *[_type == "product" && brand == $brand] {    _id,    name,    slug,    image {      ...,      asset->    },    description,    price,    brand,    categories[]->{      _id,      title,      slug    },    href,    variants[] {      name,      image {        ...,        asset->      },      color,      material,      size,      price    },    lifestyleImages[] {      ...,      asset->    },    roomCategory,    stock,    inStock  } | order(name asc)
@@ -424,61 +612,207 @@ export type PRODUCTS_BY_BRAND_QUERYResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
-  description: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }> | null;
+  description: string | null;
   price: number | null;
-  brand: null;
+  brand: "&Tradition" | "Ablo Blommaert" | "Audo Copenhagen" | "DUX" | "Eilersen" | "Fredericia" | "Fritz Hansen" | "HAY" | "Jonas Ihreborn" | "Kartell" | "Montana" | "RO Collection" | "Sibast Furniture" | "Soren Lund" | "UMAGE" | "Vitra" | null;
   categories: Array<{
     _id: string;
     title: string | null;
     slug: Slug | null;
   }> | null;
-  href: null;
-  variants: null;
-  lifestyleImages: null;
-  roomCategory: null;
+  href: string | null;
+  variants: Array<{
+    name: string | null;
+    image: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        originalFilename?: string;
+        label?: string;
+        title?: string;
+        description?: string;
+        altText?: string;
+        sha1hash?: string;
+        extension?: string;
+        mimeType?: string;
+        size?: number;
+        assetId?: string;
+        uploadId?: string;
+        path?: string;
+        url?: string;
+        metadata?: SanityImageMetadata;
+        source?: SanityAssetSourceData;
+      } | null;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    color: string | null;
+    material: string | null;
+    size: string | null;
+    price: number | null;
+  }> | null;
+  lifestyleImages: Array<{
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash?: string;
+      extension?: string;
+      mimeType?: string;
+      size?: number;
+      assetId?: string;
+      uploadId?: string;
+      path?: string;
+      url?: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }> | null;
+  roomCategory: "bathroom" | "bedroom" | "dining-room" | "kitchen" | "living-room" | "office" | "outdoor" | null;
   stock: number | null;
-  inStock: null;
+  inStock: boolean | null;
 }>;
 // Variable: ALL_BRANDS_QUERY
 // Query: *[_type == "product"] {    brand  } | order(brand asc)
 export type ALL_BRANDS_QUERYResult = Array<{
-  brand: null;
+  brand: "&Tradition" | "Ablo Blommaert" | "Audo Copenhagen" | "DUX" | "Eilersen" | "Fredericia" | "Fritz Hansen" | "HAY" | "Jonas Ihreborn" | "Kartell" | "Montana" | "RO Collection" | "Sibast Furniture" | "Soren Lund" | "UMAGE" | "Vitra" | null;
 }>;
 
 // Source: ./sanity/lib/products/getFlosProducts.ts
 // Variable: FLOS_PRODUCTS_QUERY
 // Query: *[_type == "product" && brand == "FLOS"] {            _id,            name,            slug,            image,            description,            price,            brand,            categories[]->{                _id,                title,                slug            },            variants,            stock,            inStock,            href        } | order(name asc)
 export type FLOS_PRODUCTS_QUERYResult = Array<never>;
+
+// Source: ./sanity/lib/products/getLivingRoomFurniture.ts
+// Variable: LIVING_ROOM_FURNITURE_QUERY
+// Query: *[_type == "product" && (        $categories match categories[]->slug.current ||        $categories match subcategory ||        roomCategory == "living-room"      )] {        _id,        name,        slug,        image {          ...,          asset->        },        description,        price,        brand,        categories[]->{          _id,          title,          slug        },        variants[] {          name,          image {            ...,            asset->          },          color,          material,          size,          price        },        lifestyleImages[] {          ...,          asset->        },        roomCategory,        subcategory,        stock,        inStock,        href      } | order(name asc)
+export type LIVING_ROOM_FURNITURE_QUERYResult = Array<{
+  _id: string;
+  name: string | null;
+  slug: Slug | null;
+  image: {
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash?: string;
+      extension?: string;
+      mimeType?: string;
+      size?: number;
+      assetId?: string;
+      uploadId?: string;
+      path?: string;
+      url?: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  description: string | null;
+  price: number | null;
+  brand: "&Tradition" | "Ablo Blommaert" | "Audo Copenhagen" | "DUX" | "Eilersen" | "Fredericia" | "Fritz Hansen" | "HAY" | "Jonas Ihreborn" | "Kartell" | "Montana" | "RO Collection" | "Sibast Furniture" | "Soren Lund" | "UMAGE" | "Vitra" | null;
+  categories: Array<{
+    _id: string;
+    title: string | null;
+    slug: Slug | null;
+  }> | null;
+  variants: Array<{
+    name: string | null;
+    image: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        originalFilename?: string;
+        label?: string;
+        title?: string;
+        description?: string;
+        altText?: string;
+        sha1hash?: string;
+        extension?: string;
+        mimeType?: string;
+        size?: number;
+        assetId?: string;
+        uploadId?: string;
+        path?: string;
+        url?: string;
+        metadata?: SanityImageMetadata;
+        source?: SanityAssetSourceData;
+      } | null;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    color: string | null;
+    material: string | null;
+    size: string | null;
+    price: number | null;
+  }> | null;
+  lifestyleImages: Array<{
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash?: string;
+      extension?: string;
+      mimeType?: string;
+      size?: number;
+      assetId?: string;
+      uploadId?: string;
+      path?: string;
+      url?: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }> | null;
+  roomCategory: "bathroom" | "bedroom" | "dining-room" | "kitchen" | "living-room" | "office" | "outdoor" | null;
+  subcategory: null;
+  stock: number | null;
+  inStock: boolean | null;
+  href: string | null;
+}>;
 
 // Source: ./sanity/lib/products/getProductByCategory.ts
 // Variable: PRODUCT_BY_CATEGORY_QUERY
@@ -499,48 +833,38 @@ export type PRODUCT_BY_CATEGORY_QUERYResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
-  description: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }> | null;
+  description: string | null;
   price: number | null;
-  brand: null;
+  brand: "&Tradition" | "Ablo Blommaert" | "Audo Copenhagen" | "DUX" | "Eilersen" | "Fredericia" | "Fritz Hansen" | "HAY" | "Jonas Ihreborn" | "Kartell" | "Montana" | "RO Collection" | "Sibast Furniture" | "Soren Lund" | "UMAGE" | "Vitra" | null;
   categories: Array<{
     _id: string;
     title: string | null;
     slug: Slug | null;
   }> | null;
-  variants: null;
+  variants: Array<{
+    name?: string;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    color?: string;
+    material?: string;
+    size?: string;
+    price?: number;
+    _type: "variant";
+    _key: string;
+  }> | null;
   stock: number | null;
-  inStock: null;
-  href: null;
+  inStock: boolean | null;
+  href: string | null;
 }>;
 
 // Source: ./sanity/lib/products/getProductBySlug.ts
@@ -566,24 +890,39 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  description?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
+  description?: string;
+  price?: number;
+  brand?: "&Tradition" | "Ablo Blommaert" | "Audo Copenhagen" | "DUX" | "Eilersen" | "Fredericia" | "Fritz Hansen" | "HAY" | "Jonas Ihreborn" | "Kartell" | "Montana" | "RO Collection" | "Sibast Furniture" | "Soren Lund" | "UMAGE" | "Vitra";
+  categories?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
     _key: string;
-  } | {
+    [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  href?: string;
+  variants?: Array<{
+    name?: string;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    color?: string;
+    material?: string;
+    size?: string;
+    price?: number;
+    _type: "variant";
+    _key: string;
+  }>;
+  lifestyleImages?: Array<{
     asset?: {
       _ref: string;
       _type: "reference";
@@ -593,19 +932,12 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
     _key: string;
   }>;
-  price?: number;
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
-  }>;
+  roomCategory?: "bathroom" | "bedroom" | "dining-room" | "kitchen" | "living-room" | "office" | "outdoor";
   stock?: number;
+  inStock?: boolean;
 } | null;
 
 // Source: ./sanity/lib/sales/getActiveSaleByCouponCode.ts
@@ -651,6 +983,7 @@ declare module "@sanity/client" {
     "*[_type == \"product\" && brand == $brand] {\n    _id,\n    name,\n    slug,\n    image {\n      ...,\n      asset->\n    },\n    description,\n    price,\n    brand,\n    categories[]->{\n      _id,\n      title,\n      slug\n    },\n    href,\n    variants[] {\n      name,\n      image {\n        ...,\n        asset->\n      },\n      color,\n      material,\n      size,\n      price\n    },\n    lifestyleImages[] {\n      ...,\n      asset->\n    },\n    roomCategory,\n    stock,\n    inStock\n  } | order(name asc)": PRODUCTS_BY_BRAND_QUERYResult;
     "*[_type == \"product\"] {\n    brand\n  } | order(brand asc)": ALL_BRANDS_QUERYResult;
     "\n        *[_type == \"product\" && brand == \"FLOS\"] {\n            _id,\n            name,\n            slug,\n            image,\n            description,\n            price,\n            brand,\n            categories[]->{\n                _id,\n                title,\n                slug\n            },\n            variants,\n            stock,\n            inStock,\n            href\n        } | order(name asc)\n    ": FLOS_PRODUCTS_QUERYResult;
+    "\n      *[_type == \"product\" && (\n        $categories match categories[]->slug.current ||\n        $categories match subcategory ||\n        roomCategory == \"living-room\"\n      )] {\n        _id,\n        name,\n        slug,\n        image {\n          ...,\n          asset->\n        },\n        description,\n        price,\n        brand,\n        categories[]->{\n          _id,\n          title,\n          slug\n        },\n        variants[] {\n          name,\n          image {\n            ...,\n            asset->\n          },\n          color,\n          material,\n          size,\n          price\n        },\n        lifestyleImages[] {\n          ...,\n          asset->\n        },\n        roomCategory,\n        subcategory,\n        stock,\n        inStock,\n        href\n      } | order(name asc)\n    ": LIVING_ROOM_FURNITURE_QUERYResult;
     "\n        *[_type == \"product\" && $categorySlug in categories[]->slug.current] {\n            _id,\n            name,\n            slug,\n            image,\n            description,\n            price,\n            brand,\n            categories[]->{\n                _id,\n                title,\n                slug\n            },\n            variants,\n            stock,\n            inStock,\n            href\n        } | order(name asc)\n    ": PRODUCT_BY_CATEGORY_QUERYResult;
     "\n  *[_type == \"product\" && slug.current == $slug][0]\n": PRODUCT_BY_SLUG_QUERYResult;
     "\n        *[_type == \"sales\" && isActive == true\n        && couponCode ==$couponCode\n        ]|order(validFrom desc)[0]": ACTIVE_SALE_BY_COUPON_QUERYResult;

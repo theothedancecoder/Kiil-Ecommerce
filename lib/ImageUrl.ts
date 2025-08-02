@@ -31,8 +31,13 @@ export function getImageUrl(source: SanityImageSource, fallback?: string): strin
       console.log('getImageUrl: Processing source:', typeof source, source);
     }
     
-    // If source is already a string URL, return it
+    // Handle the case where source is a string representation of [object Object]
     if (typeof source === 'string') {
+      if (source.includes('[object Object]') || source === '[object Object]') {
+        console.error('getImageUrl: Received serialized object string instead of actual object:', source);
+        return fallback || '';
+      }
+      // If it's a valid URL string, return it
       return source;
     }
     
