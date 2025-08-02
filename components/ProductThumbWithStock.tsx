@@ -41,25 +41,16 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
   
   if (isStaticProduct) {
     // For static products, use the image path directly
-    imageSrc = (product as any).staticImage || (product as StaticProduct).image || (product as any).image || '';
+    const staticImageSrc = (product as any).staticImage || (product as StaticProduct).image || (product as any).image || '';
+    imageSrc = fixImagePathForProduction(staticImageSrc);
   } else if (product.image) {
-    // For Sanity products, use the improved getImageUrl helper
+    // For Sanity products, use the improved getImageUrl helper first
     imageSrc = getImageUrl(product.image, '');
-  }
-
-  // Fix image path for production
-  imageSrc = fixImagePathForProduction(imageSrc);
-
-  // Debug image URL and validate Sanity config
-  if (imageSrc) {
-    debugImageUrl(imageSrc, productName);
-    validateSanityConfig();
-  }
-
-  // Validate image path
-  const isValidImage = isValidImagePath(imageSrc);
-  if (imageSrc && !isValidImage) {
-    console.warn(`Invalid image path for product ${productName}:`, imageSrc);
+    
+    // Only apply path fixing if it's not already a Sanity CDN URL
+    if (imageSrc && !imageSrc.includes('cdn.sanity.io')) {
+      imageSrc = fixImagePathForProduction(imageSrc);
+    }
   }
 
   return (
@@ -67,9 +58,9 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
       <div className="relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-lg">
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden bg-gray-50">
-          {imageSrc && isValidImage ? (
+          {(product.image || imageSrc) ? (
             <ProductionImage
-              src={imageSrc}
+              src={product.image || imageSrc}
               alt={productName || 'Product image'}
               fill
               className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
