@@ -131,19 +131,22 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-stone-800">Available Options</h3>
                 <div className="flex flex-wrap gap-3">
-                  {product.variants.map((variant: any, index: number) => (
-                    <button 
-                      key={index}
-                      className="px-4 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors"
-                    >
-                      {variant.name || variant.color || variant.material || `Option ${index + 1}`}
-                      {variant.price && variant.price !== product.price && (
-                        <span className="ml-2 text-sm text-gray-600">
-                          (+kr {(variant.price - (product.price || 0)).toLocaleString()})
-                        </span>
-                      )}
-                    </button>
-                  ))}
+                  {product.variants.map((variant: any, index: number) => {
+                    console.log('Rendering variant:', variant); // Debug log
+                    return (
+                      <button 
+                        key={variant._key || index}
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors"
+                      >
+                        {variant.name || variant.color || variant.material || `Option ${index + 1}`}
+                        {variant.price && variant.price !== product.price && (
+                          <span className="ml-2 text-sm text-gray-600">
+                            (+kr {(variant.price - (product.price || 0)).toLocaleString()})
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
