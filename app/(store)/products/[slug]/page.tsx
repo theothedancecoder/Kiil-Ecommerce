@@ -1,9 +1,12 @@
+"use client";
+
 import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
 import { Product, ALL_PRODUCTS_QUERYResult } from "@/sanity.types";
 import Image from 'next/image';
 import { imageUrl } from "@/lib/ImageUrl";
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export const dynamic = "force-dynamic";
 export const revalidate = 1800; // 30 minutes
@@ -14,14 +17,39 @@ interface ProductPageProps {
   }>;
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
-  const allProducts = await getAllProducts();
-  const product = allProducts.find((p: any) => p.slug?.current === slug);
+function ProductPageClient({ product }: { product: any }) {
+  const [selectedVariant, setSelectedVariant] = useState<any>(null);
+  const [currentImage, setCurrentImage] = useState<string>('');
+  const [currentPrice, setCurrentPrice] = useState<number>(product.price || 0);
 
-  if (!product) {
-    notFound();
-  }
+  // Initialize with first variant or main product image
+  useEffect(() => {
+    if (product.variants && product.variants.length > 0) {
+      setSelectedVariant(product.variants[0]);
+      if (product.variants[0].image) {
+        setCurrentImage(imageUrl(product.variants[0].image).url());
+      } else if (product.image) {
+        setCurrentImage(imageUrl(product.image).url());
+      }
+      setCurrentPrice(product.variants[0].price || product.price || 0);
+    } else if (product.image) {
+      setCurrentImage(imageUrl(product.image).url());
+    }
+  }, [product]);
+
+  const handleVariantSelect = (variant: any) => {
+    setSelectedVariant(variant);
+    
+    // Update image if variant has one
+    if (variant.image) {
+      setCurrentImage(imageUrl(variant.image).url());
+    } else if (product.image) {
+      setCurrentImage(imageUrl(product.image).url());
+    }
+    
+    // Update price if variant has different price
+    setCurrentPrice(variant.price || product.price || 0);
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -60,7 +88,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* Product Image */}
           <div className="space-y-4">
             <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
-              {product.image ? (
+              {currentImage ? (
+                <Image
+                  src={currentImage}
+                  alt={selectedVariant?.name || product.name || 'Product'}
+                  fill
+                  className="object-cover transition-opacity duration-300"
+                  priority
+                />
+              ) : product.image ? (
                 <Image
                   src={imageUrl(product.image).url()}
                   alt={product.name || 'Product'}
@@ -75,13 +111,36 @@ export default async function ProductPage({ params }: ProductPageProps) {
               )}
             </div>
             
-            {/* Additional product images could go here */}
-            <div className="grid grid-cols-4 gap-4">
-              {/* Placeholder for additional images */}
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="aspect-square bg-gray-100 rounded-lg"></div>
-              ))}
-            </div>
+            {/* Variant thumbnails */}
+            {product.variants && product.variants.length > 1 && (
+              <div className="grid grid-cols-4 gap-4">
+                {product.variants.slice(0, 4).map((variant: any, index: number) => (
+                  <button
+                    key={variant._key || index}
+                    onClick={() => handleVariantSelect(variant)}
+                    className={`aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-colors ${
+                      selectedVariant?._key === variant._key 
+                        ? 'border-stone-800' 
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    {variant.image ? (
+                      <Image
+                        src={imageUrl(variant.image).url()}
+                        alt={variant.name || `Variant ${index + 1}`}
+                        width={100}
+                        height={100}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
+                        {variant.name?.substring(0, 3) || `V${index + 1}`}
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Info */}
@@ -95,13 +154,30 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {product.name}
               </h1>
               
-              {/* Price */}
-              {product.price && (
-                <div className="text-3xl font-light text-stone-800 mb-6">
-                  kr {product.price.toLocaleString()}
-                </div>
-              )}
+              {/* Dynamic Price */}
+              <div className="text-3xl font-light text-stone-800 mb-6">
+                kr {currentPrice.toLocaleString()}
+                {selectedVariant && selectedVariant.price !== product.price && (
+                  <span className="text-lg text-gray-500 ml-2">
+                    (was kr {product.price?.toLocaleString()})
+                  </span>
+                )}
+              </div>
             </div>
+
+            {/* Selected Variant Info */}
+            {selectedVariant && (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h4 className="font-medium text-stone-800 mb-2">Selected Option:</h4>
+                <p className="text-stone-600">{selectedVariant.name}</p>
+                {selectedVariant.color && (
+                  <p className="text-sm text-gray-500">Color: {selectedVariant.color}</p>
+                )}
+                {selectedVariant.material && (
+                  <p className="text-sm text-gray-500">Material: {selectedVariant.material}</p>
+                )}
+              </div>
+            )}
 
             {/* Description */}
             {product.description && (
@@ -131,22 +207,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-stone-800">Available Options</h3>
                 <div className="flex flex-wrap gap-3">
-                  {product.variants.map((variant: any, index: number) => {
-                    console.log('Rendering variant:', variant); // Debug log
-                    return (
-                      <button 
-                        key={variant._key || index}
-                        className="px-4 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors"
-                      >
-                        {variant.name || variant.color || variant.material || `Option ${index + 1}`}
-                        {variant.price && variant.price !== product.price && (
-                          <span className="ml-2 text-sm text-gray-600">
-                            (+kr {(variant.price - (product.price || 0)).toLocaleString()})
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
+                  {product.variants.map((variant: any, index: number) => (
+                    <button 
+                      key={variant._key || index}
+                      onClick={() => handleVariantSelect(variant)}
+                      className={`px-4 py-2 border rounded-lg transition-all ${
+                        selectedVariant?._key === variant._key
+                          ? 'border-stone-800 bg-stone-800 text-white'
+                          : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                      }`}
+                    >
+                      {variant.name || variant.color || variant.material || `Option ${index + 1}`}
+                      {variant.price && variant.price !== product.price && (
+                        <span className={`ml-2 text-sm ${
+                          selectedVariant?._key === variant._key ? 'text-gray-200' : 'text-gray-600'
+                        }`}>
+                          (+kr {(variant.price - (product.price || 0)).toLocaleString()})
+                        </span>
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
@@ -168,7 +248,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               {/* Add to Cart Button */}
               <button className="w-full bg-stone-800 text-white py-4 px-8 text-lg font-medium uppercase tracking-wider hover:bg-stone-700 transition-colors">
-                Add to Cart
+                Add to Cart {selectedVariant && `- ${selectedVariant.name}`}
               </button>
 
               {/* Stock Status */}
@@ -209,6 +289,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <span>SKU:</span>
                   <span>{product._id}</span>
                 </div>
+                {selectedVariant && (
+                  <div className="flex justify-between">
+                    <span>Selected:</span>
+                    <span>{selectedVariant.name}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -233,6 +319,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </section>
     </div>
   );
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
+  const allProducts = await getAllProducts();
+  const product = allProducts.find((p: any) => p.slug?.current === slug);
+
+  if (!product) {
+    notFound();
+  }
+
+  return <ProductPageClient product={product} />;
 }
 
 // Generate static params for all products
