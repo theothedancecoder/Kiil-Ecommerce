@@ -562,38 +562,6 @@ const loadProducts = (): StaticProduct[] => {
       inStock: true,
     },
 
-    // UMAGE FURNITURE PRODUCTS
-    {
-      id: 'umage-a-conversation-piece-dining-chair',
-      name: 'A Conversation Piece Dining Chair',
-      description: 'Elegant dining chair with premium upholstery and solid wood construction. Available in multiple wood finishes and fabric options.',
-      price: 7499,
-      brand: 'UMAGE',
-      category: 'Chair',
-      image: '/umage/A-Conversation-Piece/umage_packshoA Conversation Piece dining chair 7,499 krt_5589c740-01_a-conversation-piece_dining-chair_oak_sugar-brown_-2_900x.webp',
-      href: '/umage/a-conversation-piece-dining-chair',
-      variants: [
-        { name: 'Oak with Sugar Brown', image: '/umage/A-Conversation-Piece/umage_packshoA Conversation Piece dining chair 7,499 krt_5589c740-01_a-conversation-piece_dining-chair_oak_sugar-brown_-2_900x.webp', color: 'Oak', material: 'Sugar Brown', price: 7499 },
-        { name: 'Oak with White Sands', image: '/umage/A-Conversation-Piece/oak-white-sands.svg', color: 'Oak', material: 'White Sands', price: 7499 }
-      ],
-      inStock: true,
-    },
-
-    {
-      id: 'umage-gather-cafe-table',
-      name: 'Gather Café Table',
-      description: 'Elegant café table with premium travertine top and modern base. Perfect for dining areas and kitchen spaces.',
-      price: 8999,
-      brand: 'UMAGE',
-      category: 'Tables',
-      image: '/umage/Gather-Café-table/ Gather Café table 8.999 kr.webp',
-      href: '/umage/gather-cafe-table',
-      variants: [
-        { name: 'Beige Travertine', image: '/umage/Gather-Café-table/ Gather Café table 8.999 kr.webp', color: 'Beige', material: 'Travertine', price: 8999 }
-      ],
-      inStock: true,
-    },
-
     // MONTANA FURNITURE PRODUCTS
     {
       id: 'montana-bureau-desk',

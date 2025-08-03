@@ -3,74 +3,12 @@
 import { Product } from "@/sanity.types";
 import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { imageUrl } from "@/lib/ImageUrl";
-import { allProducts, StaticProduct } from "@/lib/allProducts";
 
 interface UmageProductGridProps {
   products: Product[];
 }
-
-// Extended Product type to include static product fields
-type ExtendedProduct = Product & {
-  staticProduct?: boolean;
-  staticHref?: string;
-  staticImage?: string;
-  staticBrand?: string;
-  staticCategory?: string;
-  staticVariants?: any[];
-};
-
-// Convert static products to match Sanity product format for display
-const convertStaticProductToSanityFormat = (staticProduct: StaticProduct): ExtendedProduct => {
-  return {
-    _id: staticProduct.id,
-    _type: 'product',
-    _createdAt: new Date().toISOString(),
-    _updatedAt: new Date().toISOString(),
-    _rev: '',
-    name: staticProduct.name,
-    description: [
-      {
-        _type: 'block',
-        _key: 'description',
-        style: 'normal',
-        children: [
-          {
-            _type: 'span',
-            _key: 'span',
-            text: staticProduct.description,
-            marks: []
-          }
-        ]
-      }
-    ] as any, // Type assertion to handle the mismatch
-    price: staticProduct.price,
-    image: {
-      _type: 'image',
-      asset: {
-        _ref: staticProduct.image,
-        _type: 'reference'
-      }
-    },
-    slug: {
-      _type: 'slug',
-      current: staticProduct.href.replace('/', '')
-    },
-    categories: [{
-      _ref: staticProduct.brand.toLowerCase().replace(/\s+/g, '-'),
-      _type: 'reference',
-      _key: staticProduct.brand.toLowerCase().replace(/\s+/g, '-')
-    }],
-    // Add custom fields for static products
-    staticProduct: true,
-    staticHref: staticProduct.href,
-    staticImage: staticProduct.image,
-    staticBrand: staticProduct.brand,
-    staticCategory: staticProduct.category,
-    staticVariants: staticProduct.variants
-  };
-};
 
 export default function UmageProductGrid({ products }: UmageProductGridProps) {
   const [sortBy, setSortBy] = useState("name");
@@ -78,14 +16,8 @@ export default function UmageProductGrid({ products }: UmageProductGridProps) {
   const [displayCount, setDisplayCount] = useState(12); // Show 12 products initially
   const [isLoading, setIsLoading] = useState(false);
 
-  // Combine Sanity products with static products
-  const combinedProducts = useMemo(() => {
-    const staticProductsConverted = allProducts.map(convertStaticProductToSanityFormat);
-    return [...products, ...staticProductsConverted] as ExtendedProduct[];
-  }, [products]);
-
   // Sort products
-  const sortedProducts = [...combinedProducts].sort((a, b) => {
+  const sortedProducts = [...products].sort((a, b) => {
     if (sortBy === "price") {
       return (a.price || 0) - (b.price || 0);
     }
@@ -142,21 +74,18 @@ export default function UmageProductGrid({ products }: UmageProductGridProps) {
             <div className="bg-white rounded-lg overflow-hidden">
               {/* Product Image */}
               <div className="relative aspect-square bg-gray-50 overflow-hidden">
-                {(product as any).staticProduct ? (
-                  <ProductionImage
-                    src={(product as any).staticImage}
-                    alt={product.name || "Product"}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : product.image?.asset ? (
+                {product.image?.asset ? (
                   <ProductionImage
                     src={imageUrl(product.image).width(400).height(400).url()}
                     alt={product.name || "Product"}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                ) : null}
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    <span className="text-gray-400">No image</span>
+                  </div>
+                )}
                 
                 {/* NEW Badge - show on some products */}
                 {index < 4 && (
@@ -175,32 +104,35 @@ export default function UmageProductGrid({ products }: UmageProductGridProps) {
 
               {/* Product Info */}
               <div className="p-4">
-                <Link href={(product as any).staticProduct ? `/umage/${product._id}` : `/products/${product.slug?.current || product._id}`}>
+                <Link href={product.href || `/products/${product.slug?.current || product._id}`}>
                   <h3 className="text-lg font-light text-gray-900 mb-1 hover:text-gray-600 transition-colors">
                     {product.name}
                   </h3>
                 </Link>
                 
-                {/* Brand Badge for Static Products */}
-                {(product as any).staticProduct && (
-                  <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
-                    {(product as any).staticBrand}
-                  </div>
-                )}
+                {/* Brand Badge */}
+                <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                  {product.brand}
+                </div>
                 
                 {/* Product Description */}
-                {product.description && Array.isArray(product.description) && (
+                {product.description && (
                   <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                    {product.description
-                      .filter((block: any) => block._type === 'block' && 'children' in block)
-                      .map((block: any) => 
-                        'children' in block && block.children
-                          ?.filter((child: any) => child._type === 'span')
-                          ?.map((child: any) => child.text)
-                          ?.join(' ')
-                      )
-                      .join(' ')
-                      .slice(0, 100)}...
+                    {typeof product.description === 'string' 
+                      ? product.description.slice(0, 100) + (product.description.length > 100 ? '...' : '')
+                      : Array.isArray(product.description) 
+                        ? (product.description as any[])
+                            .filter((block: any) => block._type === 'block' && 'children' in block)
+                            .map((block: any) => 
+                              'children' in block && block.children
+                                ?.filter((child: any) => child._type === 'span')
+                                ?.map((child: any) => child.text)
+                                ?.join(' ')
+                            )
+                            .join(' ')
+                            .slice(0, 100) + '...'
+                        : ''
+                    }
                   </p>
                 )}
 
@@ -211,29 +143,39 @@ export default function UmageProductGrid({ products }: UmageProductGridProps) {
 
                 {/* Color Variants */}
                 <div className="flex space-x-2">
-                  {(product as any).staticProduct && (product as any).staticVariants ? (
-                    // Show actual variants for static products
-                    (product as any).staticVariants.slice(0, 3).map((variant: any, idx: number) => (
+                  {product.variants && product.variants.length > 0 ? (
+                    // Show actual variants from Sanity
+                    product.variants.slice(0, 3).map((variant: any, idx: number) => (
                       <div
                         key={idx}
                         className="w-4 h-4 rounded-full border border-gray-200"
-                        style={{ backgroundColor: variant.color || '#D1D5DB' }}
+                        style={{ 
+                          backgroundColor: variant.color 
+                            ? (variant.color.toLowerCase().includes('white') ? '#F3F4F6' 
+                               : variant.color.toLowerCase().includes('black') ? '#1F2937'
+                               : variant.color.toLowerCase().includes('brown') ? '#92400E'
+                               : variant.color.toLowerCase().includes('oak') ? '#D2B48C'
+                               : '#D1D5DB') 
+                            : '#D1D5DB' 
+                        }}
                         title={variant.name}
                       />
                     ))
                   ) : (
-                    // Mock variants for Sanity products
+                    // Default variant indicators if no variants
                     <>
                       <div className="w-4 h-4 rounded-full bg-amber-100 border border-gray-200"></div>
                       <div className="w-4 h-4 rounded-full bg-gray-800 border border-gray-200"></div>
                       <div className="w-4 h-4 rounded-full bg-green-700 border border-gray-200"></div>
                     </>
                   )}
-                  <button className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
-                    <svg className="w-2 h-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                  </button>
+                  {product.variants && product.variants.length > 3 && (
+                    <button className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+                      <svg className="w-2 h-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

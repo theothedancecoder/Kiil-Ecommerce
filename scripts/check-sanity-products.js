@@ -1,112 +1,57 @@
-// Load environment variables from .env.local
-require('dotenv').config({ path: '.env.local' });
+#!/usr/bin/env node
 
-// Try to use the client from next-sanity first, fallback to @sanity/client
-let createClient;
-try {
-  createClient = require('next-sanity').createClient;
-} catch (error) {
-  try {
-    createClient = require('@sanity/client').createClient;
-  } catch (fallbackError) {
-    console.error('❌ Could not import Sanity client. Please install @sanity/client:');
-    console.error('npm install @sanity/client');
-    process.exit(1);
-  }
-}
+const { createClient } = require('@sanity/client');
+require('dotenv').config({ path: '.env.local' });
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  token: process.env.SANITY_API_READ_TOKEN,
   useCdn: false,
-  token: process.env.SANITY_API_TOKEN,
-  apiVersion: '2025-06-13',
+  apiVersion: '2024-01-01',
 });
 
-async function checkSanityProducts() {
+async function checkProducts() {
   try {
-    console.log('Checking products in Sanity...\n');
-
-    // Get all products
-    const allProducts = await client.fetch(`
-      *[_type == "product"] {
-        _id,
-        name,
-        brand,
-        categories[]-> {
-          title,
-          slug
-        }
-      }
-    `);
-
-    console.log(`📊 Total products in Sanity: ${allProducts.length}\n`);
-
-    if (allProducts.length === 0) {
-      console.log('❌ No products found in Sanity. You may need to run the migration script first.');
-      return;
+    console.log('🔍 Checking products in Sanity...\n');
+    
+    // Check all products
+    const allProducts = await client.fetch('*[_type == "product"] | order(_createdAt desc) [0...10] { _id, name, brand, price }');
+    console.log(`📦 Total products found: ${allProducts.length}`);
+    
+    if (allProducts.length > 0) {
+      console.log('\n📋 Sample products:');
+      allProducts.forEach((product, index) => {
+        console.log(`${index + 1}. ${product.name} (${product.brand}) - ${product.price} kr`);
+      });
     }
-
-    // Group by brand
-    const brandGroups = {};
-    allProducts.forEach(product => {
-      const brand = product.brand || 'No Brand';
-      if (!brandGroups[brand]) {
-        brandGroups[brand] = [];
-      }
-      brandGroups[brand].push(product);
-    });
-
-    console.log('🏷️  Products by Brand:');
-    Object.keys(brandGroups).sort().forEach(brand => {
-      console.log(`  ${brand}: ${brandGroups[brand].length} products`);
-    });
-
-    // Check for lighting-related brands
-    console.log('\n💡 Looking for lighting brands...');
-    const lightingBrands = Object.keys(brandGroups).filter(brand => 
-      brand.toLowerCase().includes('flos') || 
-      brand.toLowerCase().includes('louis') || 
-      brand.toLowerCase().includes('poulsen')
-    );
-
-    if (lightingBrands.length > 0) {
-      console.log('Found lighting brands:');
-      lightingBrands.forEach(brand => {
-        console.log(`  - ${brand}: ${brandGroups[brand].length} products`);
-        brandGroups[brand].slice(0, 3).forEach(product => {
-          console.log(`    • ${product.name}`);
-        });
-        if (brandGroups[brand].length > 3) {
-          console.log(`    ... and ${brandGroups[brand].length - 3} more`);
-        }
+    
+    // Check specifically for UMAGE products
+    const umageProducts = await client.fetch('*[_type == "product" && brand == "UMAGE"] { _id, name, brand, price }');
+    console.log(`\n🎯 UMAGE products found: ${umageProducts.length}`);
+    
+    if (umageProducts.length > 0) {
+      console.log('\n✅ UMAGE products in Sanity:');
+      umageProducts.forEach((product, index) => {
+        console.log(`${index + 1}. ${product.name} - ${product.price} kr`);
       });
     } else {
-      console.log('❌ No FLOS or Louis Poulsen products found');
-      console.log('\n🔍 All brands found:');
-      Object.keys(brandGroups).forEach(brand => {
-        console.log(`  - ${brand}`);
+      console.log('\n⚠️  No UMAGE products found in Sanity CMS');
+      console.log('This explains why the UMAGE page shows "No UMAGE products found"');
+    }
+    
+    // Check categories
+    const categories = await client.fetch('*[_type == "category"] { _id, title }');
+    console.log(`\n📂 Categories found: ${categories.length}`);
+    if (categories.length > 0) {
+      categories.forEach((cat, index) => {
+        console.log(`${index + 1}. ${cat.title}`);
       });
     }
-
-    // Check categories
-    console.log('\n📂 Checking categories...');
-    const categories = await client.fetch(`
-      *[_type == "category"] {
-        _id,
-        title,
-        slug
-      }
-    `);
-
-    console.log(`Total categories: ${categories.length}`);
-    categories.forEach(cat => {
-      console.log(`  - ${cat.title} (${cat.slug.current})`);
-    });
-
+    
   } catch (error) {
-    console.error('Error checking Sanity products:', error);
+    console.error('❌ Error checking Sanity products:', error.message);
   }
 }
 
-checkSanityProducts();
+checkProducts();

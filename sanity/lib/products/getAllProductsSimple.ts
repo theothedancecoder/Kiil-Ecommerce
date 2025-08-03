@@ -4,8 +4,15 @@ import { client } from '@/sanity/lib/client';
 const USE_SANITY_PRODUCTS = process.env.USE_SANITY_PRODUCTS === 'true';
 
 export const getAllProducts = async () => {
+  console.log("Environment check:", {
+    USE_SANITY_PRODUCTS: process.env.USE_SANITY_PRODUCTS,
+    NODE_ENV: process.env.NODE_ENV,
+    SANITY_PROJECT_ID: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+    SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET
+  });
+  
   if (!USE_SANITY_PRODUCTS) {
-    console.log("Sanity products are disabled. Set USE_SANITY_PRODUCTS=true to enable.");
+    console.error("❌ PRODUCTION ERROR: Sanity products are disabled. Set USE_SANITY_PRODUCTS=true in Vercel environment variables.");
     return [];
   }
 
