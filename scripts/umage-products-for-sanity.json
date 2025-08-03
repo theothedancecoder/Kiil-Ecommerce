@@ -1,0 +1,248 @@
+{
+  "products": [
+    {
+      "_type": "product",
+      "name": "A Conversation Piece Dining Chair",
+      "slug": {
+        "_type": "slug",
+        "current": "a-conversation-piece-dining-chair"
+      },
+      "description": [
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "_type": "span",
+              "text": "An elegant dining chair that combines comfort with sophisticated design."
+            }
+          ]
+        }
+      ],
+      "price": 7499,
+      "brand": "UMAGE",
+      "variants": [
+        {
+          "_key": "variant-0",
+          "name": "Oak - Sugar Brown",
+          "material": "Oak",
+          "price": 7499
+        },
+        {
+          "_key": "variant-1", 
+          "name": "Black Oak - Sugar Brown",
+          "material": "Black Oak",
+          "price": 7499
+        },
+        {
+          "_key": "variant-2",
+          "name": "Black Oak - White Sands", 
+          "material": "Black Oak",
+          "price": 7499
+        },
+        {
+          "_key": "variant-3",
+          "name": "Oak - White Sands",
+          "material": "Oak", 
+          "price": 7499
+        }
+      ],
+      "inStock": true,
+      "stock": 10,
+      "href": "/umage/a-conversation-piece-dining-chair",
+      "roomCategory": "living-room"
+    },
+    {
+      "_type": "product",
+      "name": "Gather Café Table",
+      "slug": {
+        "_type": "slug",
+        "current": "gather-cafe-table"
+      },
+      "description": [
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "_type": "span",
+              "text": "A versatile café table that brings people together. Perfect for intimate dining, coffee moments, or as a stylish accent piece."
+            }
+          ]
+        }
+      ],
+      "price": 8999,
+      "brand": "UMAGE",
+      "variants": [
+        {
+          "_key": "variant-0",
+          "name": "Beige Travertine",
+          "material": "Travertine",
+          "price": 8999
+        }
+      ],
+      "inStock": true,
+      "stock": 10,
+      "href": "/umage/gather-cafe-table",
+      "roomCategory": "living-room"
+    },
+    {
+      "_type": "product",
+      "name": "Heiko Dining Chair",
+      "slug": {
+        "_type": "slug",
+        "current": "heiko-dining-chair"
+      },
+      "description": [
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "_type": "span",
+              "text": "The Heiko dining chair embodies Scandinavian simplicity and comfort."
+            }
+          ]
+        }
+      ],
+      "price": 5999,
+      "brand": "UMAGE",
+      "variants": [
+        {
+          "_key": "variant-0",
+          "name": "Oak",
+          "material": "Oak",
+          "price": 5999
+        },
+        {
+          "_key": "variant-1",
+          "name": "Walnut",
+          "material": "Walnut",
+          "price": 6299
+        }
+      ],
+      "inStock": true,
+      "stock": 10,
+      "href": "/umage/heiko-dining-chair",
+      "roomCategory": "living-room"
+    },
+    {
+      "_type": "product",
+      "name": "Audacious Desk",
+      "slug": {
+        "_type": "slug",
+        "current": "audacious-desk"
+      },
+      "description": [
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "_type": "span",
+              "text": "A bold and functional desk that makes a statement in any workspace."
+            }
+          ]
+        }
+      ],
+      "price": 12999,
+      "brand": "UMAGE",
+      "variants": [
+        {
+          "_key": "variant-0",
+          "name": "Oak - Sugar Brown",
+          "material": "Oak",
+          "price": 12999
+        },
+        {
+          "_key": "variant-1",
+          "name": "Oak - White Sands",
+          "material": "Oak",
+          "price": 12999
+        }
+      ],
+      "inStock": true,
+      "stock": 10,
+      "href": "/umage/audacious-desk",
+      "roomCategory": "living-room"
+    },
+    {
+      "_type": "product",
+      "name": "Treasures Dresser",
+      "slug": {
+        "_type": "slug",
+        "current": "treasures-dresser"
+      },
+      "description": [
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "_type": "span",
+              "text": "A sophisticated dresser that combines storage functionality with elegant design. Perfect for bedrooms or living spaces, offering ample storage with style."
+            }
+          ]
+        }
+      ],
+      "price": 16999,
+      "brand": "UMAGE",
+      "variants": [
+        {
+          "_key": "variant-0",
+          "name": "Oak - Sugar Brown",
+          "material": "Oak",
+          "price": 16999
+        },
+        {
+          "_key": "variant-1",
+          "name": "Oak - White Sands",
+          "material": "Oak",
+          "price": 16999
+        }
+      ],
+      "inStock": true,
+      "stock": 10,
+      "href": "/umage/treasures-dresser",
+      "roomCategory": "living-room"
+    }
+  ],
+  "categories": [
+    {
+      "_type": "category",
+      "title": "Dining Chairs",
+      "slug": {
+        "_type": "slug",
+        "current": "dining-chairs"
+      },
+      "description": "UMAGE Dining Chairs collection"
+    },
+    {
+      "_type": "category", 
+      "title": "Tables",
+      "slug": {
+        "_type": "slug",
+        "current": "tables"
+      },
+      "description": "UMAGE Tables collection"
+    },
+    {
+      "_type": "category",
+      "title": "Desks", 
+      "slug": {
+        "_type": "slug",
+        "current": "desks"
+      },
+      "description": "UMAGE Desks collection"
+    },
+    {
+      "_type": "category",
+      "title": "Storage",
+      "slug": {
+        "_type": "slug", 
+        "current": "storage"
+      },
+      "description": "UMAGE Storage collection"
+    }
+  ]
+}
