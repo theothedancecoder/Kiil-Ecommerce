@@ -216,7 +216,7 @@ export default function FlosPage() {
               {currentProducts.map((product) => (
                 <Link
                   key={product._id}
-                  href={product.href || `/products/${product.slug?.current || product._id}`}
+                  href={`/products/${product.slug?.current || product._id}`}
                   className="group"
                 >
                   <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
