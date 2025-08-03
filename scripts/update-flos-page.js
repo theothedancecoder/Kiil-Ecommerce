@@ -1,4 +1,9 @@
-"use client";
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+
+const newFlosPageContent = `"use client";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -179,11 +184,11 @@ export default function FlosPage() {
                   <button
                     key={category}
                     onClick={() => handleCategoryChange(category)}
-                    className={`px-4 py-2 text-sm font-medium transition-all ${
+                    className={\`px-4 py-2 text-sm font-medium transition-all \${
                       selectedCategory === category
                         ? "bg-yellow-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
+                    }\`}
                   >
                     {category}
                   </button>
@@ -216,7 +221,7 @@ export default function FlosPage() {
               {currentProducts.map((product) => (
                 <Link
                   key={product._id}
-                  href={product.href || `/products/${product.slug?.current || product._id}`}
+                  href={product.href || \`/products/\${product.slug?.current || product._id}\`}
                   className="group"
                 >
                   <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
@@ -248,7 +253,7 @@ export default function FlosPage() {
                         }
                       </p>
                       <div className="text-lg font-light text-gray-900">
-                        {product.price ? `From kr ${product.price.toLocaleString()}` : 'Price on request'}
+                        {product.price ? \`From kr \${product.price.toLocaleString()}\` : 'Price on request'}
                       </div>
                     </div>
                   </div>
@@ -264,11 +269,11 @@ export default function FlosPage() {
               <button
                 onClick={goToPreviousPage}
                 disabled={currentPage === 1}
-                className={`flex items-center px-4 py-2 text-sm font-medium transition-colors ${
+                className={\`flex items-center px-4 py-2 text-sm font-medium transition-colors \${
                   currentPage === 1
                     ? "text-gray-400 cursor-not-allowed"
                     : "text-gray-700 hover:text-yellow-600"
-                }`}
+                }\`}
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -282,11 +287,11 @@ export default function FlosPage() {
                   <button
                     key={page}
                     onClick={() => goToPage(page)}
-                    className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    className={\`px-3 py-2 text-sm font-medium transition-colors \${
                       currentPage === page
                         ? "bg-yellow-600 text-white"
                         : "text-gray-700 hover:text-yellow-600 hover:bg-yellow-50"
-                    }`}
+                    }\`}
                   >
                     {page}
                   </button>
@@ -297,11 +302,11 @@ export default function FlosPage() {
               <button
                 onClick={goToNextPage}
                 disabled={currentPage === totalPages}
-                className={`flex items-center px-4 py-2 text-sm font-medium transition-colors ${
+                className={\`flex items-center px-4 py-2 text-sm font-medium transition-colors \${
                   currentPage === totalPages
                     ? "text-gray-400 cursor-not-allowed"
                     : "text-gray-700 hover:text-yellow-600"
-                }`}
+                }\`}
               >
                 Next
                 <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -352,4 +357,14 @@ export default function FlosPage() {
       </section>
     </div>
   );
+}
+`;
+
+try {
+  const flosPagePath = path.join(process.cwd(), 'app/flos/page.tsx');
+  fs.writeFileSync(flosPagePath, newFlosPageContent);
+  console.log('✅ Successfully updated FLOS page to use Sanity data');
+} catch (error) {
+  console.error('❌ Failed to update FLOS page:', error.message);
+  process.exit(1);
 }
