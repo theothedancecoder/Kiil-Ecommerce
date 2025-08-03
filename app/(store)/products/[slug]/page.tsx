@@ -2,9 +2,7 @@ import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
 import { notFound } from 'next/navigation';
 import dynamicImport from 'next/dynamic';
 
-const ProductPageClient = dynamicImport(() => import('./ProductPageClient'), {
-  ssr: false
-});
+const ProductPageClient = dynamicImport(() => import('./ProductPageClient'));
 
 export const dynamic = "force-dynamic";
 export const revalidate = 1800; // 30 minutes
