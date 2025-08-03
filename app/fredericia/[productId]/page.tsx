@@ -151,19 +151,39 @@ export default async function FredericiaProductPage({
   params: Promise<{ productId: string }>;
 }) {
   const { productId } = await params;
-  
-  // For now, use static products only until Sanity products have proper image data
-  // This ensures all products display with correct images and variant information
-  const product = staticProducts.find((p) => p.id === productId);
-  
+  let product: any = null;
+  let relatedProducts: any[] = [];
+
+  try {
+    // Try to get product from Sanity first
+    product = await getFredericiaProduct(productId);
+    
+    if (product) {
+      // Get related products from Sanity
+      const allProducts = await getFredericiaProducts();
+      relatedProducts = allProducts.filter((p: any) => p._id !== product._id).slice(0, 3);
+      console.log(`Loading Fredericia product: ${product.name} (from Sanity)`);
+    } else {
+      // Fallback to static data
+      product = staticProducts.find((p) => p.id === productId);
+      if (product) {
+        relatedProducts = staticProducts.filter((p) => p.id !== productId).slice(0, 3);
+        console.log(`Loading Fredericia product: ${product.name} (static fallback)`);
+      }
+    }
+  } catch (error) {
+    console.error('Error loading Fredericia product:', error);
+    // Fallback to static data
+    product = staticProducts.find((p) => p.id === productId);
+    if (product) {
+      relatedProducts = staticProducts.filter((p) => p.id !== productId).slice(0, 3);
+      console.log(`Loading Fredericia product: ${product.name} (static fallback after error)`);
+    }
+  }
+
   if (!product) {
     notFound();
   }
-
-  // Get related products from static data
-  const relatedProducts = staticProducts.filter((p) => p.id !== productId).slice(0, 3);
-
-  console.log(`Loading Fredericia product: ${product.name} (static data)`);
 
   return (
     <div className="min-h-screen bg-white">

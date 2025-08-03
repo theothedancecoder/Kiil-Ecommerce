@@ -70,193 +70,26 @@ function getProductUrl(product: any): string {
 
 export default async function FredericiaPage() {
   let sanityProducts: any[] = [];
-  
-  // Complete static product collection (all 15 original products)
-  const staticProducts = [
-    {
-      id: 'bm71-library-table',
-      name: 'BM71 Library Table',
-      description: 'Elegant library table designed with clean lines and premium materials. Perfect for modern workspaces and home offices.',
-      price: 75750,
-      image: '/fredericia/bm71-library-table/main.jpg',
-      href: '/fredericia/bm71-library-table',
-      variants: [
-        { name: 'Standard', image: '/fredericia/bm71-library-table/main.jpg', material: 'Premium oak' }
-      ],
-      lifestyleImages: ['/fredericia/bm71-library-table/lifestyle1.jpg']
-    },
-    {
-      id: 'wegner-ox-chair',
-      name: 'Wegner Ox Chair',
-      description: 'Iconic Ox Chair designed by Hans J. Wegner. A masterpiece of Danish furniture design with exceptional comfort and style.',
-      price: 139995,
-      image: '/fredericia/wegner-ox-chair/main.jpg',
-      href: '/fredericia/wegner-ox-chair',
-      variants: [
-        { name: 'Essene Cognac', image: '/fredericia/wegner-ox-chair/main.jpg', material: 'Premium leather' }
-      ]
-    },
-    {
-      id: 'delphi-elements-sofa',
-      name: 'Delphi Elements Sofa',
-      description: 'Modular sofa system offering endless configuration possibilities. Contemporary design meets exceptional comfort.',
-      price: 125000,
-      image: '/fredericia/delphi-elements-sofa/main.jpg',
-      href: '/fredericia/delphi-elements-sofa',
-      variants: [
-        { name: 'Steelcut Trio 213', image: '/fredericia/delphi-elements-sofa/main.jpg', material: 'Steelcut Trio fabric' }
-      ]
-    },
-    {
-      id: 'ej220-sofa-2-seater',
-      name: 'EJ220 Sofa 2 Seater',
-      description: 'Elegant two-seater sofa with refined proportions and premium materials. Available in various upholstery options.',
-      price: 98000,
-      image: '/fredericia/ej220-sofa/main.jpg',
-      href: '/fredericia/ej220-sofa-2-seater',
-      variants: [
-        { name: 'Leather Max 95 Cognac', image: '/fredericia/ej220-sofa/main.jpg', material: 'Leather Max 95' },
-        { name: 'Erik 9998 Broken Grey', image: '/fredericia/ej220-sofa/variant1.jpg', material: 'Erik fabric' }
-      ],
-      lifestyleImages: ['/fredericia/ej220-sofa/lifestyle1.jpg']
-    },
-    {
-      id: 'delphi-sofa-2-seater',
-      name: 'Delphi Sofa 2 Seater',
-      description: 'Contemporary two-seater sofa with clean lines and premium leather upholstery. Perfect centerpiece for modern living spaces.',
-      price: 95000,
-      image: '/fredericia/delphi-sofa/main.jpg',
-      href: '/fredericia/delphi-sofa-2-seater',
-      variants: [
-        { name: 'Leather Max 98 Black', image: '/fredericia/delphi-sofa/main.jpg', material: 'Leather Max 98' }
-      ]
-    },
-    {
-      id: 'ej-5-corona-armchair',
-      name: 'EJ 5 Corona Armchair',
-      description: 'Elegant armchair designed by Erik Jørgensen, featuring refined proportions and exceptional comfort.',
-      price: 69347,
-      image: '/fredericia/corona-armchair/main.jpg',
-      href: '/fredericia/ej-5-corona-armchair',
-      variants: [
-        { name: 'Omni 301 Black', image: '/fredericia/corona-armchair/main.jpg', material: 'Omni 301 leather' }
-      ]
-    },
-    {
-      id: 'insula-piccolo-side-table',
-      name: 'Insula Piccolo Side Table',
-      description: 'Compact side table with elegant proportions and premium materials. Perfect for modern living spaces.',
-      price: 5295,
-      image: '/fredericia/insula-piccolo-side-table/main.jpg',
-      href: '/fredericia/insula-piccolo-side-table',
-      variants: [
-        { name: 'H 58cm', image: '/fredericia/insula-piccolo-side-table/main.jpg', material: 'Solid oak' }
-      ],
-      lifestyleImages: ['/fredericia/insula-piccolo-side-table/lifestyle1.jpg']
-    },
-    {
-      id: 'mogensen-6284-dining-table',
-      name: 'Mogensen 6284 Dining Table',
-      description: 'Classic dining table designed by Børge Mogensen, featuring clean lines and exceptional craftsmanship.',
-      price: 50395,
-      image: '/fredericia/mogensen-dining-table/main.jpg',
-      href: '/fredericia/mogensen-6284-dining-table',
-      variants: [
-        { name: 'Oak Natural', image: '/fredericia/mogensen-dining-table/main.jpg', material: 'Solid oak' }
-      ]
-    },
-    {
-      id: 'mogensen-j39-dining-chair',
-      name: 'Mogensen J39 Dining Chair',
-      description: 'Iconic dining chair designed by Børge Mogensen in 1947. Perfect balance between traditional craftsmanship and modern functionality.',
-      price: 8930,
-      image: '/fredericia/mogensen-j39-dining-chair/main.jpg',
-      href: '/fredericia/mogensen-j39-dining-chair',
-      variants: [
-        { name: 'Oiled Oak', image: '/fredericia/mogensen-j39-dining-chair/main.jpg', material: 'Solid oak' },
-        { name: 'Soaped Oak', image: '/fredericia/mogensen-j39-dining-chair/variant1.webp', material: 'Solid oak' },
-        { name: 'Black Oak', image: '/fredericia/mogensen-j39-dining-chair/variant2.jpg', material: 'Solid oak' }
-      ],
-      lifestyleImages: [
-        '/fredericia/mogensen-j39-dining-chair/lifestyle1.jpg',
-        '/fredericia/mogensen-j39-dining-chair/lifestyle2.jpg'
-      ]
-    },
-    {
-      id: 'piloti-coffee-table',
-      name: 'Piloti Coffee Table',
-      description: 'Contemporary coffee table with architectural design elements. Clean lines and premium materials create a sophisticated centerpiece.',
-      price: 9840,
-      image: '/fredericia/piloti-coffee-table/main.jpg',
-      href: '/fredericia/piloti-coffee-table',
-      variants: [
-        { name: 'Light Oiled Oak', image: '/fredericia/piloti-coffee-table/main.jpg', material: 'Solid oak' }
-      ]
-    },
-    {
-      id: 'post-dining-chair-with-wooden-seat',
-      name: 'Post Dining Chair',
-      description: 'Minimalist dining chair with wooden seat, designed for comfort and durability. Embodies Scandinavian simplicity.',
-      price: 6500,
-      image: '/fredericia/post-dining-chair/main.jpg',
-      href: '/fredericia/post-dining-chair-with-wooden-seat',
-      variants: [
-        { name: 'Oak Natural', image: '/fredericia/post-dining-chair/main.jpg', material: 'Solid oak' }
-      ]
-    },
-    {
-      id: 'risom-magazine-table',
-      name: 'Risom Magazine Table',
-      description: 'Functional magazine table with elegant design. Perfect for organizing reading materials while maintaining sophisticated aesthetics.',
-      price: 6945,
-      image: '/fredericia/risom-magazine-table/main.jpg',
-      href: '/fredericia/risom-magazine-table',
-      variants: [
-        { name: 'Lacquered Oak', image: '/fredericia/risom-magazine-table/main.jpg', material: 'Solid oak' }
-      ]
-    },
-    {
-      id: 'the-canvas-chair',
-      name: 'The Canvas Chair',
-      description: 'Contemporary chair with canvas upholstery, combining comfort with modern aesthetics. Perfect for casual and formal settings.',
-      price: 15500,
-      image: '/fredericia/canvas-chair/main.jpg',
-      href: '/fredericia/the-canvas-chair',
-      variants: [
-        { name: 'Natural Canvas & Oak', image: '/fredericia/canvas-chair/main.jpg', material: 'Oak & Canvas' }
-      ]
-    },
-    {
-      id: 'trinidad-chair',
-      name: 'Trinidad Chair',
-      description: 'Iconic chair with distinctive perforated shell design. Available in multiple color combinations with chrome or powder-coated finishes.',
-      price: 6245,
-      image: '/fredericia/trinidad-chair/main.jpg',
-      href: '/fredericia/trinidad-chair',
-      variants: [
-        { name: 'Beech & Chrome', image: '/fredericia/trinidad-chair/main.jpg', material: 'Beech & Chrome' },
-        { name: 'Black & Chrome', image: '/fredericia/trinidad-chair/variant1.jpg', material: 'Black & Chrome' },
-        { name: 'Grey & Flint', image: '/fredericia/trinidad-chair/variant2.jpg', material: 'Grey & Flint' }
-      ]
-    },
-    {
-      id: 'wegner-j16-rocking-chair',
-      name: 'Wegner J16 Rocking Chair',
-      description: 'Classic rocking chair designed by Hans J. Wegner. Combines traditional craftsmanship with timeless comfort and elegance.',
-      price: 30900,
-      image: '/fredericia/wegner-j16-rocking-chair/main.jpg',
-      href: '/fredericia/wegner-j16-rocking-chair',
-      variants: [
-        { name: 'Oiled Oak Natural Seat', image: '/fredericia/wegner-j16-rocking-chair/main.jpg', material: 'Oiled oak' }
-      ]
+  let fredericiaProducts: any[] = [];
+
+  try {
+    // Try to get products from Sanity first
+    sanityProducts = await getFredericiaProducts();
+    console.log(`Found ${sanityProducts.length} Fredericia products in Sanity`);
+    
+    if (sanityProducts.length > 0) {
+      fredericiaProducts = sanityProducts;
     }
-  ];
+  } catch (error) {
+    console.error('Error fetching Fredericia products from Sanity:', error);
+  }
 
-  // For now, use static products only until Sanity products have proper variant data
-  // This ensures all products display with correct variant information
-  const fredericiaProducts = staticProducts;
+  // If no Sanity products or error, show message
+  if (fredericiaProducts.length === 0) {
+    console.log('No Fredericia products found in Sanity');
+  }
 
-  console.log(`Total Fredericia products: ${fredericiaProducts.length} (static only)`);
+  console.log(`Total Fredericia products: ${fredericiaProducts.length} (from Sanity)`);
 
   return (
     <div className="min-h-screen bg-white">
