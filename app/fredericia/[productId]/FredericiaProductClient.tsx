@@ -4,76 +4,39 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-interface ProductPageClientProps {
-  product: any;
-  relatedProducts: any[];
+interface ProductVariant {
+  name: string;
+  image: string;
+  size?: string;
+  price: number;
+  material?: string;
 }
 
-import { urlFor } from '@/sanity/lib/image';
-
-// Utility function to get image URL from Sanity or fallback to static
-function getImageUrl(imageData: any, productName?: string, variantName?: string): string {
-  // If it's already a string (static path), return it
-  if (typeof imageData === 'string') return imageData;
-  
-  // If it has a Sanity asset, use urlFor
-  if (imageData?.asset) {
-    return urlFor(imageData).width(800).height(800).url();
-  }
-  
-  // For Fredericia products without Sanity images, construct static path
-  if (productName) {
-    const productSlug = productName.toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-');
-    
-    // Map product names to their folder names
-    const folderMap: { [key: string]: string } = {
-      'bm71-library-table': 'bm71-library-table',
-      'wegner-ox-chair': 'wegner-ox-chair',
-      'delphi-elements-sofa': 'delphi-elements-sofa',
-      'ej220-sofa-2-seater': 'ej220-sofa',
-      'delphi-sofa-2-seater': 'delphi-sofa',
-      'ej-5-corona-armchair': 'corona-armchair',
-      'insula-piccolo-side-table': 'insula-piccolo-side-table',
-      'mogensen-6284-dining-table': 'mogensen-dining-table',
-      'mogensen-j39-dining-chair': 'mogensen-j39-dining-chair',
-      'piloti-coffee-table': 'piloti-coffee-table',
-      'post-dining-chair': 'post-dining-chair',
-      'risom-magazine-table': 'risom-magazine-table',
-      'the-canvas-chair': 'canvas-chair',
-      'trinidad-chair': 'trinidad-chair',
-      'wegner-j16-rocking-chair': 'wegner-j16-rocking-chair'
-    };
-    
-    const folderName = folderMap[productSlug] || productSlug;
-    
-    // Determine image filename based on variant
-    let imageName = 'main.jpg';
-    if (variantName) {
-      const variantLower = variantName.toLowerCase();
-      if (variantLower.includes('soaped') || variantLower.includes('variant1')) {
-        imageName = 'variant1.webp';
-      } else if (variantLower.includes('black') || variantLower.includes('variant2')) {
-        imageName = 'variant2.jpg';
-      } else if (variantLower.includes('grey') || variantLower.includes('flint')) {
-        imageName = 'variant2.jpg';
-      }
-    }
-    
-    return `/fredericia/${folderName}/${imageName}`;
-  }
-  
-  return '/placeholder-image.jpg';
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  variants: ProductVariant[];
+  designer?: string;
+  features?: string[];
+  specifications?: { label: string; value: string }[];
+  relatedProducts?: { id: string; name: string }[];
+  lifestyleImages?: string[];
 }
 
-export default function ProductPageClient({ product, relatedProducts }: ProductPageClientProps) {
+interface FredericiaProductClientProps {
+  product: Product;
+  products: Product[];
+}
+
+export default function FredericiaProductClient({ product, products }: FredericiaProductClientProps) {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
-  const selectedVariant = product.variants?.[selectedVariantIndex] || product.variants?.[0];
+  const selectedVariant = product.variants[selectedVariantIndex];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -83,8 +46,8 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
           {/* Main Image */}
           <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
             <Image
-              src={getImageUrl(selectedVariant?.image || product.image, product.name, selectedVariant?.name)}
-              alt={`${product.name} - ${selectedVariant?.name || 'Main'}`}
+              src={selectedVariant.image}
+              alt={`${product.name} - ${selectedVariant.name}`}
               fill
               className="object-contain object-center p-8"
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -92,11 +55,11 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
           </div>
 
           {/* Variant Thumbnails */}
-          {product.variants && product.variants.length > 1 && (
+          {product.variants.length > 1 && (
             <div className="grid grid-cols-4 gap-3">
-              {product.variants.map((variant: any, index: number) => (
+              {product.variants.map((variant, index) => (
                 <button
-                  key={variant.name || index}
+                  key={variant.name}
                   onClick={() => setSelectedVariantIndex(index)}
                   className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
                     selectedVariantIndex === index
@@ -105,7 +68,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                   }`}
                 >
                   <Image
-                    src={getImageUrl(variant.image, product.name, variant.name)}
+                    src={variant.image}
                     alt={`${variant.name} variant`}
                     fill
                     className="object-contain object-center p-2"
@@ -122,10 +85,10 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
           {/* Lifestyle Images */}
           {product.lifestyleImages && product.lifestyleImages.length > 0 && (
             <div className="grid grid-cols-1 gap-4">
-              {product.lifestyleImages.map((image: any, index: number) => (
+              {product.lifestyleImages.map((image, index) => (
                 <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
                   <Image
-                    src={getImageUrl(image, product.name)}
+                    src={image}
                     alt={`${product.name} lifestyle image ${index + 1}`}
                     fill
                     className="object-cover object-center"
@@ -149,21 +112,26 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
             <p className="text-lg text-gray-600 leading-relaxed">
               {product.description}
             </p>
+            {product.designer && (
+              <div className="mt-4 text-sm text-gray-500">
+                Designed by {product.designer}
+              </div>
+            )}
           </div>
 
           <div className="text-2xl font-light text-gray-900">
-            kr {selectedVariant?.price?.toLocaleString() || product.price?.toLocaleString() || 'Price on request'}
+            kr {selectedVariant.price.toLocaleString()}
           </div>
 
-          {product.variants && product.variants.length > 1 && (
+          {product.variants.length > 1 && (
             <div className="space-y-4">
               <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                Material: {selectedVariant?.material || selectedVariant?.name}
+                Material: {selectedVariant.material || selectedVariant.name}
               </h3>
               <div className="grid grid-cols-2 gap-3">
-                {product.variants.map((variant: any, index: number) => (
+                {product.variants.map((variant, index) => (
                   <button
-                    key={variant.name || index}
+                    key={variant.name}
                     onClick={() => setSelectedVariantIndex(index)}
                     className={`p-3 text-sm border rounded transition-all ${
                       selectedVariantIndex === index
@@ -172,9 +140,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                     }`}
                   >
                     <div className="font-medium">{variant.material || variant.name}</div>
-                    <div className="text-xs text-gray-500">
-                      kr {variant.price?.toLocaleString() || product.price?.toLocaleString()}
-                    </div>
+                    <div className="text-xs text-gray-500">kr {variant.price.toLocaleString()}</div>
                   </button>
                 ))}
               </div>
@@ -182,7 +148,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
           )}
 
           <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
-            Add to Cart - kr {selectedVariant?.price?.toLocaleString() || product.price?.toLocaleString()}
+            Add to Cart - kr {selectedVariant.price.toLocaleString()}
           </button>
 
           {/* Collapsible Features */}
@@ -201,7 +167,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
               </button>
               {featuresExpanded && (
                 <ul className="mt-4 space-y-2 text-gray-600">
-                  {product.features.map((feature: any, idx: number) => (
+                  {product.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start">
                       <span className="mr-2">•</span>
                       <span>{feature}</span>
@@ -228,7 +194,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
               </button>
               {specificationsExpanded && (
                 <div className="mt-4 space-y-3 text-gray-600">
-                  {product.specifications.map((spec: any, idx: number) => (
+                  {product.specifications.map((spec, idx) => (
                     <div key={idx} className="flex justify-between border-b border-gray-100 pb-2">
                       <span className="font-medium">{spec.label}</span>
                       <span className="text-right">{spec.value}</span>
@@ -240,39 +206,46 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
           )}
 
           {/* Related Products */}
-          {relatedProducts && relatedProducts.length > 0 && (
+          {product.relatedProducts && (
             <div className="border-t border-gray-200 pt-16">
               <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
                 Related Products
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {relatedProducts.slice(0, 4).map((related: any) => (
-                  <Link
-                    key={related._id || related.id}
-                    href={`/fredericia/${related.slug?.current || related.id}`}
-                    className="group"
-                  >
-                    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-                      <div className="relative aspect-square bg-gray-50">
-                        <Image
-                          src={getImageUrl(related.image, related.name)}
-                          alt={related.name}
-                          fill
-                          className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-                          sizes="(max-width: 640px) 50vw, 25vw"
-                        />
+                {product.relatedProducts.map((related) => {
+                  const relatedProduct = products.find(p => p.id === related.id);
+                  return (
+                    <Link
+                      key={related.id}
+                      href={`/fredericia/${related.id}`}
+                      className="group"
+                    >
+                      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                        <div className="relative aspect-square bg-gray-50">
+                          {relatedProduct && (
+                            <Image
+                              src={relatedProduct.variants[0].image}
+                              alt={related.name}
+                              fill
+                              className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                              sizes="(max-width: 640px) 50vw, 25vw"
+                            />
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <h3 className="text-lg font-light text-gray-900 mb-2">
+                            {related.name}
+                          </h3>
+                          {relatedProduct && (
+                            <p className="text-gray-900 font-medium">
+                              kr {relatedProduct.price.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div className="p-4">
-                        <h3 className="text-lg font-light text-gray-900 mb-2">
-                          {related.name}
-                        </h3>
-                        <p className="text-gray-900 font-medium">
-                          kr {related.price?.toLocaleString() || 'Price on request'}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
               <div className="text-center mt-8">
                 <Link
