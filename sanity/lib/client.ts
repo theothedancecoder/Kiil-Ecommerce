@@ -6,8 +6,8 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  // Use CDN in production for better performance, but disable for ISR/SSG
-  useCdn: process.env.NODE_ENV === 'production',
+  // Disable CDN to ensure fresh data with variants
+  useCdn: false,
   // Add perspective for better data consistency
   perspective: 'published',
   stega: {

@@ -45,6 +45,7 @@ export const getAllProducts = async () => {
     },
     href,
     variants[] {
+      _key,
       name,
       image {
         _type,
@@ -135,6 +136,7 @@ export const getProductsByBrand = async (brand: string) => {
     },
     href,
     variants[] {
+      _key,
       name,
       image {
         _type,
