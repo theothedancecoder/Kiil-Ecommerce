@@ -1,29 +1,114 @@
+import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
+import { Product } from "@/sanity.types";
 import { notFound } from "next/navigation";
 import UmageProductClient from "./UmageProductClient";
 
-interface ProductVariant {
-  name: string;
-  image: string;
-  size?: string;
-  price: number;
-  material?: string;
+export const dynamic = "force-dynamic";
+export const revalidate = 1800; // 30 minutes
+
+interface UmageProductPageProps {
+  params: Promise<{
+    productId: string;
+  }>;
 }
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  variants: ProductVariant[];
-  designer?: string;
-  features?: string[];
-  specifications?: { label: string; value: string }[];
-  relatedProducts?: { id: string; name: string }[];
-  lifestyleImages?: string[];
+export default async function UmageProductPage({ params }: UmageProductPageProps) {
+  const { productId } = await params;
+  
+  // Get all products from Sanity
+  const allProducts = await getAllProducts();
+  
+  // Find the Umage product by matching the productId with the slug
+  const product = allProducts.find((p: any) => 
+    p.brand === 'UMAGE' && 
+    (p.slug?.current === productId || p._id === productId)
+  );
+
+  if (!product) {
+    notFound();
+  }
+
+  // Convert Sanity product to format expected by UmageProductClient
+  const convertedProduct = {
+    id: product._id,
+    name: product.name,
+    description: typeof product.description === 'string' 
+      ? product.description 
+      : Array.isArray(product.description)
+        ? product.description
+            .filter((block: any) => block._type === 'block' && 'children' in block)
+            .map((block: any) => 
+              'children' in block && block.children
+                ?.filter((child: any) => child._type === 'span')
+                ?.map((child: any) => child.text)
+                ?.join(' ')
+            )
+            .join(' ')
+        : 'Detailed product description available upon request.',
+    price: product.price || 0,
+    category: product.categories?.[0]?.title || 'Furniture',
+    variants: product.variants?.map((variant: any) => ({
+      name: variant.name || variant.color || variant.material || 'Default',
+      image: variant.image?.asset?.url || '',
+      material: variant.material || variant.color || '',
+      price: variant.price || product.price || 0,
+      size: variant.size || undefined,
+    })) || [],
+    designer: 'Umage Design Team',
+    features: [
+      'Premium Scandinavian design',
+      'High-quality materials',
+      'Contemporary aesthetic',
+      'Durable construction',
+      'Multiple finish options',
+      'Sustainable materials',
+      'Danish craftsmanship',
+      'Timeless design',
+    ],
+    specifications: [
+      { label: "Designer", value: "Umage Design Team" },
+      { label: "Manufacturer", value: "UMAGE" },
+      { label: "Brand", value: product.brand || "UMAGE" },
+      { label: "Category", value: product.categories?.[0]?.title || "Furniture" },
+      { label: "Style", value: "Contemporary Scandinavian" },
+      { label: "SKU", value: product._id },
+      { label: "Warranty", value: "2 years manufacturer warranty" },
+      { label: "Origin", value: "Danish design" },
+    ],
+    lifestyleImages: product.lifestyleImages?.map((img: any) => img.asset?.url).filter(Boolean) || [],
+    relatedProducts: [], // Could be enhanced to find related products
+  };
+
+  // Get other Umage products for the client
+  const umageProducts = allProducts
+    .filter((p: any) => p.brand === 'UMAGE')
+    .map((p: any) => ({
+      id: p._id,
+      name: p.name,
+      slug: p.slug?.current,
+    }));
+
+  return <UmageProductClient product={convertedProduct} products={umageProducts} />;
 }
 
-const products: Product[] = [
+// Generate static params for all Umage products
+export async function generateStaticParams() {
+  try {
+    const products = await getAllProducts();
+    
+    return products
+      .filter((product: any) => product.brand === 'UMAGE' && product.slug?.current)
+      .map((product: any) => ({
+        productId: product.slug!.current,
+      }));
+  } catch (error) {
+    console.error('Error generating static params for Umage products:', error);
+    return [];
+  }
+}
+
+// Legacy static products data - keeping for fallback but not used when Sanity is available
+const legacyProducts = [
   {
     id: "a-conversation-piece-dining-chair",
     name: "A Conversation Piece Dining Chair",
@@ -1766,18 +1851,3 @@ const products: Product[] = [
     ],
   },
 ];
-
-export default async function UmageProductPage({
-  params,
-}: {
-  params: Promise<{ productId: string }>;
-}) {
-  const { productId } = await params;
-  const product = products.find((p) => p.id === productId);
-
-  if (!product) {
-    notFound();
-  }
-
-  return <UmageProductClient product={product} products={products} />;
-}
