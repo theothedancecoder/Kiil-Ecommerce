@@ -1,39 +1,89 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getFredericiaProducts } from '@/sanity/lib/products/getFredericiaProducts';
+import { urlFor } from '@/sanity/lib/image';
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 export const revalidate = 1800; // 30 minutes
 
-interface FredericiaProduct {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  variants: {
-    name: string;
-    image: string;
-    color?: string;
-    material?: string;
-  }[];
-  lifestyleImages?: string[];
+// Utility function to get image URL from Sanity or fallback to static
+function getImageUrl(product: any): string {
+  // Try Sanity image first
+  if (product.image?.asset) {
+    try {
+      return urlFor(product.image).width(800).height(800).url();
+    } catch (error) {
+      console.error('Error generating Sanity image URL:', error);
+    }
+  }
+  
+  // Fallback to static image path
+  if (product.image && typeof product.image === 'string') {
+    return product.image;
+  }
+  
+  // Try to generate static image path based on product name
+  if (product.name) {
+    const productSlug = product.name.toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+    
+    // Map common product names to their static image paths
+    const imageMap: { [key: string]: string } = {
+      'bm71-library-table': '/fredericia/bm71-library-table/main.jpg',
+      'wegner-ox-chair': '/fredericia/wegner-ox-chair/main.jpg',
+      'delphi-elements-sofa': '/fredericia/delphi-elements-sofa/main.jpg',
+      'ej220-sofa-2-seater': '/fredericia/ej220-sofa/main.jpg',
+      'delphi-sofa-2-seater': '/fredericia/delphi-sofa/main.jpg',
+      'ej-5-corona-armchair': '/fredericia/corona-armchair/main.jpg',
+      'insula-piccolo-side-table': '/fredericia/insula-piccolo-side-table/main.jpg',
+      'mogensen-6284-dining-table': '/fredericia/mogensen-dining-table/main.jpg',
+      'mogensen-j39-dining-chair': '/fredericia/mogensen-j39-dining-chair/main.jpg',
+      'piloti-coffee-table': '/fredericia/piloti-coffee-table/main.jpg',
+      'post-dining-chair': '/fredericia/post-dining-chair/main.jpg',
+      'risom-magazine-table': '/fredericia/risom-magazine-table/main.jpg',
+      'the-canvas-chair': '/fredericia/canvas-chair/main.jpg',
+      'trinidad-chair': '/fredericia/trinidad-chair/main.jpg',
+      'wegner-j16-rocking-chair': '/fredericia/wegner-j16-rocking-chair/main.jpg'
+    };
+    
+    if (imageMap[productSlug]) {
+      return imageMap[productSlug];
+    }
+    
+    // Try generic path
+    return `/fredericia/${productSlug}/main.jpg`;
+  }
+  
+  // Final fallback - use a real image that exists
+  return '/fredericia/bm71-library-table/main.jpg';
+}
+
+// Utility function to get product URL
+function getProductUrl(product: any): string {
+  if (product.slug?.current) {
+    return `/fredericia/${product.slug.current}`;
+  }
+  // Fallback for static products
+  return product.href || `/fredericia/${product._id || product.id}`;
 }
 
 export default async function FredericiaPage() {
-  // Define all Fredericia products based on the public folder structure
-  const fredericiaProducts: FredericiaProduct[] = [
+  let sanityProducts: any[] = [];
+  
+  // Complete static product collection (all 15 original products)
+  const staticProducts = [
     {
       id: 'bm71-library-table',
       name: 'BM71 Library Table',
       description: 'Elegant library table designed with clean lines and premium materials. Perfect for modern workspaces and home offices.',
       price: 75750,
       image: '/fredericia/bm71-library-table/main.jpg',
+      href: '/fredericia/bm71-library-table',
       variants: [
         { name: 'Standard', image: '/fredericia/bm71-library-table/main.jpg', material: 'Premium oak' }
       ],
-      lifestyleImages: [
-        '/fredericia/bm71-library-table/lifestyle1.jpg'
-      ]
+      lifestyleImages: ['/fredericia/bm71-library-table/lifestyle1.jpg']
     },
     {
       id: 'wegner-ox-chair',
@@ -41,6 +91,7 @@ export default async function FredericiaPage() {
       description: 'Iconic Ox Chair designed by Hans J. Wegner. A masterpiece of Danish furniture design with exceptional comfort and style.',
       price: 139995,
       image: '/fredericia/wegner-ox-chair/main.jpg',
+      href: '/fredericia/wegner-ox-chair',
       variants: [
         { name: 'Essene Cognac', image: '/fredericia/wegner-ox-chair/main.jpg', material: 'Premium leather' }
       ]
@@ -51,6 +102,7 @@ export default async function FredericiaPage() {
       description: 'Modular sofa system offering endless configuration possibilities. Contemporary design meets exceptional comfort.',
       price: 125000,
       image: '/fredericia/delphi-elements-sofa/main.jpg',
+      href: '/fredericia/delphi-elements-sofa',
       variants: [
         { name: 'Steelcut Trio 213', image: '/fredericia/delphi-elements-sofa/main.jpg', material: 'Steelcut Trio fabric' }
       ]
@@ -61,13 +113,12 @@ export default async function FredericiaPage() {
       description: 'Elegant two-seater sofa with refined proportions and premium materials. Available in various upholstery options.',
       price: 98000,
       image: '/fredericia/ej220-sofa/main.jpg',
+      href: '/fredericia/ej220-sofa-2-seater',
       variants: [
         { name: 'Leather Max 95 Cognac', image: '/fredericia/ej220-sofa/main.jpg', material: 'Leather Max 95' },
         { name: 'Erik 9998 Broken Grey', image: '/fredericia/ej220-sofa/variant1.jpg', material: 'Erik fabric' }
       ],
-      lifestyleImages: [
-        '/fredericia/ej220-sofa/lifestyle1.jpg'
-      ]
+      lifestyleImages: ['/fredericia/ej220-sofa/lifestyle1.jpg']
     },
     {
       id: 'delphi-sofa-2-seater',
@@ -75,6 +126,7 @@ export default async function FredericiaPage() {
       description: 'Contemporary two-seater sofa with clean lines and premium leather upholstery. Perfect centerpiece for modern living spaces.',
       price: 95000,
       image: '/fredericia/delphi-sofa/main.jpg',
+      href: '/fredericia/delphi-sofa-2-seater',
       variants: [
         { name: 'Leather Max 98 Black', image: '/fredericia/delphi-sofa/main.jpg', material: 'Leather Max 98' }
       ]
@@ -85,6 +137,7 @@ export default async function FredericiaPage() {
       description: 'Elegant armchair designed by Erik Jørgensen, featuring refined proportions and exceptional comfort.',
       price: 69347,
       image: '/fredericia/corona-armchair/main.jpg',
+      href: '/fredericia/ej-5-corona-armchair',
       variants: [
         { name: 'Omni 301 Black', image: '/fredericia/corona-armchair/main.jpg', material: 'Omni 301 leather' }
       ]
@@ -95,12 +148,11 @@ export default async function FredericiaPage() {
       description: 'Compact side table with elegant proportions and premium materials. Perfect for modern living spaces.',
       price: 5295,
       image: '/fredericia/insula-piccolo-side-table/main.jpg',
+      href: '/fredericia/insula-piccolo-side-table',
       variants: [
         { name: 'H 58cm', image: '/fredericia/insula-piccolo-side-table/main.jpg', material: 'Solid oak' }
       ],
-      lifestyleImages: [
-        '/fredericia/insula-piccolo-side-table/lifestyle1.jpg'
-      ]
+      lifestyleImages: ['/fredericia/insula-piccolo-side-table/lifestyle1.jpg']
     },
     {
       id: 'mogensen-6284-dining-table',
@@ -108,6 +160,7 @@ export default async function FredericiaPage() {
       description: 'Classic dining table designed by Børge Mogensen, featuring clean lines and exceptional craftsmanship.',
       price: 50395,
       image: '/fredericia/mogensen-dining-table/main.jpg',
+      href: '/fredericia/mogensen-6284-dining-table',
       variants: [
         { name: 'Oak Natural', image: '/fredericia/mogensen-dining-table/main.jpg', material: 'Solid oak' }
       ]
@@ -118,6 +171,7 @@ export default async function FredericiaPage() {
       description: 'Iconic dining chair designed by Børge Mogensen in 1947. Perfect balance between traditional craftsmanship and modern functionality.',
       price: 8930,
       image: '/fredericia/mogensen-j39-dining-chair/main.jpg',
+      href: '/fredericia/mogensen-j39-dining-chair',
       variants: [
         { name: 'Oiled Oak', image: '/fredericia/mogensen-j39-dining-chair/main.jpg', material: 'Solid oak' },
         { name: 'Soaped Oak', image: '/fredericia/mogensen-j39-dining-chair/variant1.webp', material: 'Solid oak' },
@@ -134,6 +188,7 @@ export default async function FredericiaPage() {
       description: 'Contemporary coffee table with architectural design elements. Clean lines and premium materials create a sophisticated centerpiece.',
       price: 9840,
       image: '/fredericia/piloti-coffee-table/main.jpg',
+      href: '/fredericia/piloti-coffee-table',
       variants: [
         { name: 'Light Oiled Oak', image: '/fredericia/piloti-coffee-table/main.jpg', material: 'Solid oak' }
       ]
@@ -144,6 +199,7 @@ export default async function FredericiaPage() {
       description: 'Minimalist dining chair with wooden seat, designed for comfort and durability. Embodies Scandinavian simplicity.',
       price: 6500,
       image: '/fredericia/post-dining-chair/main.jpg',
+      href: '/fredericia/post-dining-chair-with-wooden-seat',
       variants: [
         { name: 'Oak Natural', image: '/fredericia/post-dining-chair/main.jpg', material: 'Solid oak' }
       ]
@@ -154,6 +210,7 @@ export default async function FredericiaPage() {
       description: 'Functional magazine table with elegant design. Perfect for organizing reading materials while maintaining sophisticated aesthetics.',
       price: 6945,
       image: '/fredericia/risom-magazine-table/main.jpg',
+      href: '/fredericia/risom-magazine-table',
       variants: [
         { name: 'Lacquered Oak', image: '/fredericia/risom-magazine-table/main.jpg', material: 'Solid oak' }
       ]
@@ -164,6 +221,7 @@ export default async function FredericiaPage() {
       description: 'Contemporary chair with canvas upholstery, combining comfort with modern aesthetics. Perfect for casual and formal settings.',
       price: 15500,
       image: '/fredericia/canvas-chair/main.jpg',
+      href: '/fredericia/the-canvas-chair',
       variants: [
         { name: 'Natural Canvas & Oak', image: '/fredericia/canvas-chair/main.jpg', material: 'Oak & Canvas' }
       ]
@@ -174,6 +232,7 @@ export default async function FredericiaPage() {
       description: 'Iconic chair with distinctive perforated shell design. Available in multiple color combinations with chrome or powder-coated finishes.',
       price: 6245,
       image: '/fredericia/trinidad-chair/main.jpg',
+      href: '/fredericia/trinidad-chair',
       variants: [
         { name: 'Beech & Chrome', image: '/fredericia/trinidad-chair/main.jpg', material: 'Beech & Chrome' },
         { name: 'Black & Chrome', image: '/fredericia/trinidad-chair/variant1.jpg', material: 'Black & Chrome' },
@@ -186,11 +245,18 @@ export default async function FredericiaPage() {
       description: 'Classic rocking chair designed by Hans J. Wegner. Combines traditional craftsmanship with timeless comfort and elegance.',
       price: 30900,
       image: '/fredericia/wegner-j16-rocking-chair/main.jpg',
+      href: '/fredericia/wegner-j16-rocking-chair',
       variants: [
         { name: 'Oiled Oak Natural Seat', image: '/fredericia/wegner-j16-rocking-chair/main.jpg', material: 'Oiled oak' }
       ]
     }
   ];
+
+  // For now, use static products only until Sanity products have proper variant data
+  // This ensures all products display with correct variant information
+  const fredericiaProducts = staticProducts;
+
+  console.log(`Total Fredericia products: ${fredericiaProducts.length} (static only)`);
 
   return (
     <div className="min-h-screen bg-white">
@@ -253,18 +319,18 @@ export default async function FredericiaPage() {
           </div>
           
           {/* Clean Grid Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {fredericiaProducts.map((product: FredericiaProduct) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {fredericiaProducts.map((product: any) => (
               <Link 
-                key={product.id} 
-                href={`/fredericia/${product.id}`}
+                key={product._id || product.id} 
+                href={getProductUrl(product)}
                 className="group block"
               >
                 <div className="bg-white hover:shadow-lg transition-shadow duration-300">
                   {/* Product Image */}
                   <div className="relative aspect-square bg-stone-50 overflow-hidden mb-4">
                     <Image
-                      src={product.image}
+                      src={getImageUrl(product)}
                       alt={product.name}
                       fill
                       className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
@@ -279,24 +345,24 @@ export default async function FredericiaPage() {
                     
                     <div className="flex items-center justify-between">
                       <p className="text-lg font-light text-stone-800">
-                        kr {product.price.toLocaleString()}
+                        kr {product.price?.toLocaleString() || 'Price on request'}
                       </p>
                       <p className="text-sm text-stone-500">
-                        {product.variants.length} variant{product.variants.length !== 1 ? 's' : ''}
+                        {(product.variants?.length || 0)} variant{(product.variants?.length || 0) !== 1 ? 's' : ''}
                       </p>
                     </div>
                     
                     {/* Material Swatches Preview */}
                     <div className="flex space-x-1 pt-2">
-                      {product.variants.slice(0, 4).map((variant, index) => (
+                      {(product.variants || []).slice(0, 4).map((variant: any, index: number) => (
                         <div 
                           key={index}
                           className="w-3 h-3 rounded-full border border-stone-200 bg-gradient-to-br from-stone-100 to-stone-300"
                           title={variant.name}
                         />
                       ))}
-                      {product.variants.length > 4 && (
-                        <span className="text-xs text-stone-400 ml-1">+{product.variants.length - 4}</span>
+                      {(product.variants?.length || 0) > 4 && (
+                        <span className="text-xs text-stone-400 ml-1">+{(product.variants?.length || 0) - 4}</span>
                       )}
                     </div>
                   </div>

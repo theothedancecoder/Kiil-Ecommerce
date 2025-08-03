@@ -50,7 +50,7 @@ export const getFredericiaProducts = async () => {
   }
 };
 
-export const getFredericiaProductsByCategory = async (category) => {
+export const getFredericiaProductsByCategory = async (category: string) => {
   const categoryFilter = category && category !== "All"
     ? `&& count(categories[title match "${category}"]) > 0`
     : "";
@@ -101,7 +101,7 @@ export const getFredericiaProductsByCategory = async (category) => {
   }
 };
 
-export const getFredericiaProduct = async (slug) => {
+export const getFredericiaProduct = async (slug: string) => {
   const FREDERICIA_PRODUCT_QUERY = defineQuery(`*[_type == "product" && brand == "Fredericia" && slug.current == $slug][0] {
     _id,
     name,
@@ -158,9 +158,9 @@ export const getFredericiaCategories = async () => {
 
   try {
     const result = await client.fetch(FREDERICIA_CATEGORIES_QUERY);
-    const allCategories = result?.flatMap((product) => product.categories || []) || [];
-    const uniqueCategories = allCategories.filter((category, index, self) =>
-      index === self.findIndex((c) => c.title === category.title)
+    const allCategories = result?.flatMap((product: any) => product.categories || []) || [];
+    const uniqueCategories = allCategories.filter((category: any, index: number, self: any[]) =>
+      index === self.findIndex((c: any) => c.title === category.title)
     );
     return uniqueCategories;
   } catch (error) {
