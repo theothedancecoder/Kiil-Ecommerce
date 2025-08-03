@@ -318,3 +318,4 @@ export default function UmagePage() {
       </div>
     </div>
   );
+}
