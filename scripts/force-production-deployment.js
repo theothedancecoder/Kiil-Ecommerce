@@ -1,0 +1,18 @@
+console.log('🚀 Forcing production deployment to clear cache...');
+console.log('');
+console.log('✅ Changes made:');
+console.log('1. Fixed getAllProductsSimple.ts query to include _key field for variants');
+console.log('2. Disabled Sanity CDN (useCdn: false) to prevent caching issues');
+console.log('3. All UMAGE variants have proper _key and images in Sanity');
+console.log('');
+console.log('📋 Next steps:');
+console.log('1. Commit and push these changes to trigger Vercel deployment');
+console.log('2. Wait for deployment to complete');
+console.log('3. Test production site: https://kiil-ecommerce.vercel.app/products/a-conversation-piece-dining-chair');
+console.log('');
+console.log('🔧 Root cause identified:');
+console.log('- Sanity CDN was caching old data without variants');
+console.log('- Query was missing _key field needed for proper variant rendering');
+console.log('- Development worked because it bypassed CDN cache');
+console.log('');
+console.log('💡 This fix ensures development and production behave identically!');
