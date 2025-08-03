@@ -159,7 +159,7 @@ export default function FlosPage() {
         </div>
       </div>
 
-      {/* Products Section */}
+      {/* Products Section - Updated for variant fix */}
       <section id="products" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
