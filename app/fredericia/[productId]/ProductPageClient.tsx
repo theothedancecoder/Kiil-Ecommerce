@@ -12,11 +12,59 @@ interface ProductPageClientProps {
 import { urlFor } from '@/sanity/lib/image';
 
 // Utility function to get image URL from Sanity or fallback to static
-function getImageUrl(imageData: any): string {
+function getImageUrl(imageData: any, productName?: string, variantName?: string): string {
+  // If it's already a string (static path), return it
   if (typeof imageData === 'string') return imageData;
+  
+  // If it has a Sanity asset, use urlFor
   if (imageData?.asset) {
     return urlFor(imageData).width(800).height(800).url();
   }
+  
+  // For Fredericia products without Sanity images, construct static path
+  if (productName) {
+    const productSlug = productName.toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+    
+    // Map product names to their folder names
+    const folderMap: { [key: string]: string } = {
+      'bm71-library-table': 'bm71-library-table',
+      'wegner-ox-chair': 'wegner-ox-chair',
+      'delphi-elements-sofa': 'delphi-elements-sofa',
+      'ej220-sofa-2-seater': 'ej220-sofa',
+      'delphi-sofa-2-seater': 'delphi-sofa',
+      'ej-5-corona-armchair': 'corona-armchair',
+      'insula-piccolo-side-table': 'insula-piccolo-side-table',
+      'mogensen-6284-dining-table': 'mogensen-dining-table',
+      'mogensen-j39-dining-chair': 'mogensen-j39-dining-chair',
+      'piloti-coffee-table': 'piloti-coffee-table',
+      'post-dining-chair': 'post-dining-chair',
+      'risom-magazine-table': 'risom-magazine-table',
+      'the-canvas-chair': 'canvas-chair',
+      'trinidad-chair': 'trinidad-chair',
+      'wegner-j16-rocking-chair': 'wegner-j16-rocking-chair'
+    };
+    
+    const folderName = folderMap[productSlug] || productSlug;
+    
+    // Determine image filename based on variant
+    let imageName = 'main.jpg';
+    if (variantName) {
+      const variantLower = variantName.toLowerCase();
+      if (variantLower.includes('soaped') || variantLower.includes('variant1')) {
+        imageName = 'variant1.webp';
+      } else if (variantLower.includes('black') || variantLower.includes('variant2')) {
+        imageName = 'variant2.jpg';
+      } else if (variantLower.includes('grey') || variantLower.includes('flint')) {
+        imageName = 'variant2.jpg';
+      }
+    }
+    
+    return `/fredericia/${folderName}/${imageName}`;
+  }
+  
   return '/placeholder-image.jpg';
 }
 
@@ -35,7 +83,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
           {/* Main Image */}
           <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
             <Image
-              src={getImageUrl(selectedVariant?.image || product.image)}
+              src={getImageUrl(selectedVariant?.image || product.image, product.name, selectedVariant?.name)}
               alt={`${product.name} - ${selectedVariant?.name || 'Main'}`}
               fill
               className="object-contain object-center p-8"
@@ -57,7 +105,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                   }`}
                 >
                   <Image
-                    src={getImageUrl(variant.image)}
+                    src={getImageUrl(variant.image, product.name, variant.name)}
                     alt={`${variant.name} variant`}
                     fill
                     className="object-contain object-center p-2"
@@ -77,7 +125,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
               {product.lifestyleImages.map((image: any, index: number) => (
                 <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
                   <Image
-                    src={getImageUrl(image)}
+                    src={getImageUrl(image, product.name)}
                     alt={`${product.name} lifestyle image ${index + 1}`}
                     fill
                     className="object-cover object-center"
@@ -207,7 +255,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                     <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                       <div className="relative aspect-square bg-gray-50">
                         <Image
-                          src={getImageUrl(related.image)}
+                          src={getImageUrl(related.image, related.name)}
                           alt={related.name}
                           fill
                           className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
