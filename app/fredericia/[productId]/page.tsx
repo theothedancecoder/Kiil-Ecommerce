@@ -5,7 +5,7 @@ import Link from "next/link";
 import FredericiaProductClient from "./FredericiaProductClient";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 1800; // 30 minutes
+export const revalidate = 0; // Force fresh data on every request
 
 interface FredericiaProductPageProps {
   params: Promise<{
