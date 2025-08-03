@@ -36,7 +36,60 @@ export default function FredericiaProductClient({ product, products }: Frederici
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
-  const selectedVariant = product.variants[selectedVariantIndex];
+  const selectedVariant = product.variants[selectedVariantIndex] || product.variants[0];
+
+  // Fallback function for missing images
+  const getImageUrl = (imageUrl: string, fallbackName?: string): string => {
+    if (imageUrl && imageUrl.trim() !== '') {
+      return imageUrl;
+    }
+    
+    // If no image URL, try to construct a fallback path
+    if (fallbackName && product.name) {
+      const productSlug = product.name.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+      
+      // Map product names to their folder names
+      const folderMap: { [key: string]: string } = {
+        'ej-5-corona-armchair': 'corona-armchair',
+        'bm71-library-table': 'bm71-library-table',
+        'wegner-ox-chair': 'wegner-ox-chair',
+        'delphi-elements-sofa': 'delphi-elements-sofa',
+        'ej220-sofa-2-seater': 'ej220-sofa',
+        'delphi-sofa-2-seater': 'delphi-sofa',
+        'insula-piccolo-side-table': 'insula-piccolo-side-table',
+        'mogensen-6284-dining-table': 'mogensen-dining-table',
+        'mogensen-j39-dining-chair': 'mogensen-j39-dining-chair',
+        'piloti-coffee-table': 'piloti-coffee-table',
+        'post-dining-chair': 'post-dining-chair',
+        'risom-magazine-table': 'risom-magazine-table',
+        'the-canvas-chair': 'canvas-chair',
+        'trinidad-chair': 'trinidad-chair',
+        'wegner-j16-rocking-chair': 'wegner-j16-rocking-chair'
+      };
+      
+      const folderName = folderMap[productSlug] || productSlug;
+      
+      // Determine image filename based on variant
+      let imageName = 'main.jpg';
+      if (fallbackName) {
+        const variantLower = fallbackName.toLowerCase();
+        if (variantLower.includes('soaped') || variantLower.includes('variant1')) {
+          imageName = 'variant1.webp';
+        } else if (variantLower.includes('black') || variantLower.includes('variant2')) {
+          imageName = 'variant2.jpg';
+        } else if (variantLower.includes('grey') || variantLower.includes('flint')) {
+          imageName = 'variant2.jpg';
+        }
+      }
+      
+      return `/fredericia/${folderName}/${imageName}`;
+    }
+    
+    return '/placeholder-image.jpg';
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -46,7 +99,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
           {/* Main Image */}
           <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
             <Image
-              src={selectedVariant.image}
+              src={getImageUrl(selectedVariant.image, selectedVariant.name)}
               alt={`${product.name} - ${selectedVariant.name}`}
               fill
               className="object-contain object-center p-8"
@@ -68,7 +121,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
                   }`}
                 >
                   <Image
-                    src={variant.image}
+                    src={getImageUrl(variant.image, variant.name)}
                     alt={`${variant.name} variant`}
                     fill
                     className="object-contain object-center p-2"
@@ -88,7 +141,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
               {product.lifestyleImages.map((image, index) => (
                 <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
                   <Image
-                    src={image}
+                    src={getImageUrl(image)}
                     alt={`${product.name} lifestyle image ${index + 1}`}
                     fill
                     className="object-cover object-center"
