@@ -1,48 +1,44 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { getAllProducts } from '@/sanity/lib/products/getAllProductsSimple';
-import { urlFor } from '@/sanity/lib/image';
+"use client";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0; // Always fresh data
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Product } from "@/sanity.types";
+import { getFredericiaProducts } from "@/sanity/lib/products/getFredericiaProducts";
+import { imageUrl } from "@/lib/ImageUrl";
+import ProductionImage from "@/components/ProductionImage";
 
-// Utility function to get image URL from Sanity with fallback
-function getImageUrl(product: any): string {
-  // Try Sanity image first
-  if (product.image?.asset) {
-    try {
-      return urlFor(product.image).width(800).height(800).url();
-    } catch (error) {
-      console.error('Error generating Sanity image URL:', error);
-    }
+export default function FredericiaPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const productsData = await getFredericiaProducts();
+        setProducts(productsData);
+        console.log(`Found ${productsData.length} Fredericia products`);
+      } catch (error) {
+        console.error("Error fetching Fredericia data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Fredericia products...</p>
+        </div>
+      </div>
+    );
   }
-  
-  // Fallback to static image path
-  return '/fredericia/bm71-library-table/main.jpg';
-}
-
-// Utility function to get product URL
-function getProductUrl(product: any): string {
-  if (product.slug?.current) {
-    return `/fredericia/${product.slug.current}`;
-  }
-  // Fallback using product ID
-  return `/fredericia/${product._id?.replace('fredericia-', '') || product._id}`;
-}
-
-export default async function FredericiaPage() {
-  let fredericiaProducts: any[] = [];
-
-  try {
-    // Get all products from Sanity and filter for Fredericia
-    const allProducts = await getAllProducts();
-    fredericiaProducts = allProducts.filter((product: any) => product.brand === 'Fredericia');
-    console.log(`Found ${fredericiaProducts.length} Fredericia products in Sanity`);
-  } catch (error) {
-    console.error('Error fetching Fredericia products from Sanity:', error);
-  }
-
-  console.log(`Total Fredericia products: ${fredericiaProducts.length}`);
 
   return (
     <div className="min-h-screen bg-white">
@@ -100,68 +96,84 @@ export default async function FredericiaPage() {
               Fredericia Collection
             </h2>
             <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-              Discover our complete selection of Fredericia furniture and accessories. {fredericiaProducts.length} products available.
+              Discover our complete selection of Fredericia furniture and accessories. {products.length} products available.
             </p>
           </div>
           
-          {/* Clean Grid Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {fredericiaProducts.map((product: any) => (
-              <Link 
-                key={product._id || product.id} 
-                href={getProductUrl(product)}
-                className="group block"
-              >
-                <div className="bg-white hover:shadow-lg transition-shadow duration-300">
-                  {/* Product Image */}
-                  <div className="relative aspect-square bg-stone-50 overflow-hidden mb-4">
-                    <Image
-                      src={getImageUrl(product)}
-                      alt={product.name}
-                      fill
-                      className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  
-                  {/* Product Info */}
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-serif text-stone-800 group-hover:text-stone-600 transition-colors leading-tight text-center">
-                      {product.name}
-                    </h3>
-                    
-                    <div className="flex items-center justify-between">
-                      <p className="text-lg font-light text-stone-800">
-                        kr {product.price?.toLocaleString() || 'Price on request'}
-                      </p>
-                      <p className="text-sm text-stone-500">
-                        {(product.variants?.length || 0)} variant{(product.variants?.length || 0) !== 1 ? 's' : ''}
-                      </p>
-                    </div>
-                    
-                    {/* Material Swatches Preview */}
-                    <div className="flex space-x-1 pt-2">
-                      {(product.variants || []).slice(0, 4).map((variant: any, index: number) => (
-                        <div 
-                          key={index}
-                          className="w-3 h-3 rounded-full border border-stone-200 bg-gradient-to-br from-stone-100 to-stone-300"
-                          title={variant.name}
+          {/* Products Grid */}
+          {products.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No Fredericia products found.</p>
+              <p className="text-gray-400 text-sm mt-2">
+                Make sure Fredericia products are added to Sanity CMS.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.map((product) => (
+                <Link
+                  key={product._id}
+                  href={`/fredericia/${product.slug?.current || product._id}`}
+                  className="group block"
+                >
+                  <div className="bg-white hover:shadow-lg transition-shadow duration-300">
+                    {/* Product Image */}
+                    <div className="relative aspect-square bg-stone-50 overflow-hidden mb-4">
+                      {product.image?.asset ? (
+                        <ProductionImage
+                          src={imageUrl(product.image).width(400).height(400).url()}
+                          alt={product.name || "Product"}
+                          fill
+                          className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
-                      ))}
-                      {(product.variants?.length || 0) > 4 && (
-                        <span className="text-xs text-stone-400 ml-1">+{(product.variants?.length || 0) - 4}</span>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="text-gray-400">No image</span>
+                        </div>
                       )}
                     </div>
+                    
+                    {/* Product Info */}
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-serif text-stone-800 group-hover:text-stone-600 transition-colors leading-tight text-center">
+                        {product.name}
+                      </h3>
+                      
+                      <div className="flex items-center justify-between">
+                        <p className="text-lg font-light text-stone-800">
+                          kr {product.price?.toLocaleString() || 'Price on request'}
+                        </p>
+                        <p className="text-sm text-stone-500">
+                          {(product.variants?.length || 0)} variant{(product.variants?.length || 0) !== 1 ? 's' : ''}
+                        </p>
+                      </div>
+                      
+                      {/* Material Swatches Preview */}
+                      <div className="flex space-x-1 pt-2">
+                        {(product.variants || []).slice(0, 4).map((variant: any, index: number) => (
+                          <div 
+                            key={index}
+                            className="w-3 h-3 rounded-full border border-stone-200 bg-gradient-to-br from-stone-100 to-stone-300"
+                            title={variant.name}
+                          />
+                        ))}
+                        {(product.variants?.length || 0) > 4 && (
+                          <span className="text-xs text-stone-400 ml-1">+{(product.variants?.length || 0) - 4}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          )}
           
           {/* Filter/Sort Options - Ballard Style */}
           <div className="mt-16 pt-8 border-t border-stone-200">
             <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
               <p className="text-sm text-stone-600">
-                Showing all {fredericiaProducts.length} products
+                Showing all {products.length} products
               </p>
               <div className="flex items-center space-x-4 text-sm">
                 <span className="text-stone-600">Sort by:</span>
