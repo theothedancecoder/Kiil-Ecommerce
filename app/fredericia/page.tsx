@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getFredericiaProducts } from '@/sanity/lib/products/getFredericiaProducts';
+import { getAllProducts } from '@/sanity/lib/products/getAllProductsSimple';
 import { urlFor } from '@/sanity/lib/image';
 
 export const dynamic = "force-dynamic";
-export const revalidate = 1800; // 30 minutes
+export const revalidate = 0; // Always fresh data
 
-// Utility function to get image URL from Sanity or fallback to static
+// Utility function to get image URL from Sanity with fallback
 function getImageUrl(product: any): string {
   // Try Sanity image first
   if (product.image?.asset) {
@@ -18,44 +18,6 @@ function getImageUrl(product: any): string {
   }
   
   // Fallback to static image path
-  if (product.image && typeof product.image === 'string') {
-    return product.image;
-  }
-  
-  // Try to generate static image path based on product name
-  if (product.name) {
-    const productSlug = product.name.toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '');
-    
-    // Map common product names to their static image paths
-    const imageMap: { [key: string]: string } = {
-      'bm71-library-table': '/fredericia/bm71-library-table/main.jpg',
-      'wegner-ox-chair': '/fredericia/wegner-ox-chair/main.jpg',
-      'delphi-elements-sofa': '/fredericia/delphi-elements-sofa/main.jpg',
-      'ej220-sofa-2-seater': '/fredericia/ej220-sofa/main.jpg',
-      'delphi-sofa-2-seater': '/fredericia/delphi-sofa/main.jpg',
-      'ej-5-corona-armchair': '/fredericia/corona-armchair/main.jpg',
-      'insula-piccolo-side-table': '/fredericia/insula-piccolo-side-table/main.jpg',
-      'mogensen-6284-dining-table': '/fredericia/mogensen-dining-table/main.jpg',
-      'mogensen-j39-dining-chair': '/fredericia/mogensen-j39-dining-chair/main.jpg',
-      'piloti-coffee-table': '/fredericia/piloti-coffee-table/main.jpg',
-      'post-dining-chair': '/fredericia/post-dining-chair/main.jpg',
-      'risom-magazine-table': '/fredericia/risom-magazine-table/main.jpg',
-      'the-canvas-chair': '/fredericia/canvas-chair/main.jpg',
-      'trinidad-chair': '/fredericia/trinidad-chair/main.jpg',
-      'wegner-j16-rocking-chair': '/fredericia/wegner-j16-rocking-chair/main.jpg'
-    };
-    
-    if (imageMap[productSlug]) {
-      return imageMap[productSlug];
-    }
-    
-    // Try generic path
-    return `/fredericia/${productSlug}/main.jpg`;
-  }
-  
-  // Final fallback - use a real image that exists
   return '/fredericia/bm71-library-table/main.jpg';
 }
 
@@ -64,32 +26,23 @@ function getProductUrl(product: any): string {
   if (product.slug?.current) {
     return `/fredericia/${product.slug.current}`;
   }
-  // Fallback for static products
-  return product.href || `/fredericia/${product._id || product.id}`;
+  // Fallback using product ID
+  return `/fredericia/${product._id?.replace('fredericia-', '') || product._id}`;
 }
 
 export default async function FredericiaPage() {
-  let sanityProducts: any[] = [];
   let fredericiaProducts: any[] = [];
 
   try {
-    // Try to get products from Sanity first
-    sanityProducts = await getFredericiaProducts();
-    console.log(`Found ${sanityProducts.length} Fredericia products in Sanity`);
-    
-    if (sanityProducts.length > 0) {
-      fredericiaProducts = sanityProducts;
-    }
+    // Get all products from Sanity and filter for Fredericia
+    const allProducts = await getAllProducts();
+    fredericiaProducts = allProducts.filter((product: any) => product.brand === 'Fredericia');
+    console.log(`Found ${fredericiaProducts.length} Fredericia products in Sanity`);
   } catch (error) {
     console.error('Error fetching Fredericia products from Sanity:', error);
   }
 
-  // If no Sanity products or error, show message
-  if (fredericiaProducts.length === 0) {
-    console.log('No Fredericia products found in Sanity');
-  }
-
-  console.log(`Total Fredericia products: ${fredericiaProducts.length} (from Sanity)`);
+  console.log(`Total Fredericia products: ${fredericiaProducts.length}`);
 
   return (
     <div className="min-h-screen bg-white">
