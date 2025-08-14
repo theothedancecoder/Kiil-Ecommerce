@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/sanity.types";
 import { getUmageProducts, getUmageCategories } from "@/sanity/lib/products/getUmageProducts";
+import { getBrandBanner, BrandBanner } from "@/sanity/lib/getBrandBanner";
 import { imageUrl } from "@/lib/ImageUrl";
 import ProductionImage from "@/components/ProductionImage";
 
@@ -15,18 +15,21 @@ export default function UmagePage() {
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [banner, setBanner] = useState<BrandBanner | null>(null);
   const productsPerPage = 15; // 5 rows × 3 columns
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [productsData, categoriesData] = await Promise.all([
+        const [productsData, categoriesData, bannerData] = await Promise.all([
           getUmageProducts(),
-          getUmageCategories()
+          getUmageCategories(),
+          getBrandBanner('umage')
         ]);
         
         setProducts(productsData);
+        setBanner(bannerData);
         
         // Extract category titles and add "All" option
         const categoryTitles = categoriesData.map((cat: any) => cat.title);
@@ -118,12 +121,18 @@ export default function UmagePage() {
       </div>
 
       {/* Hero Section */}
-      <section 
-        className="relative h-[500px] overflow-hidden bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80')`
-        }}
-      >
+      <section className="relative h-[500px] overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <ProductionImage
+            src={banner?.bannerImage ? imageUrl(banner.bannerImage).width(1200).height(500).url() : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'}
+            alt={banner?.title || "Umage Collection"}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+        
         {/* Warm Scandinavian Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-amber-100/30 via-orange-50/20 to-rose-100/30" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
@@ -133,10 +142,10 @@ export default function UmagePage() {
           <div className="max-w-4xl mx-auto px-4">
             <div className="inline-block bg-white/90 backdrop-blur-sm px-12 py-8 rounded-2xl shadow-lg">
               <h1 className="text-4xl md:text-6xl font-light text-gray-900 mb-4">
-                UMAGE
+                {banner?.title || "UMAGE"}
               </h1>
               <p className="text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed">
-                Scandinavian furniture design that brings people together
+                {banner?.subtitle || "Scandinavian furniture design that brings people together"}
               </p>
             </div>
           </div>
