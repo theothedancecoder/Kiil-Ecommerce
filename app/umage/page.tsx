@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/sanity.types";
 import { getUmageProducts, getUmageCategories } from "@/sanity/lib/products/getUmageProducts";
@@ -120,11 +119,14 @@ export default function UmagePage() {
       {/* Hero Section */}
       <section className="relative h-[500px] overflow-hidden">
         {/* Background Image */}
-        <Image
-          src="/umage/Treasures Dresser/lifestyle/UMAGE_lifestyle_Treasures_dresser_oak_sugar_brown__2_1_1000x.webp"
-          alt="Umage Collection"
+        <ProductionImage
+          src="/umage/Treasures%20Dresser/lifestyle/UMAGE_lifestyle_Treasures_dresser_oak_sugar_brown__2_1_1000x.webp"
+          alt="Umage Collection - Scandinavian furniture design"
           fill
           className="object-cover"
+          priority={true}
+          sizes="100vw"
+          objectFit="cover"
         />
         
         {/* Warm Scandinavian Gradient Overlay */}
