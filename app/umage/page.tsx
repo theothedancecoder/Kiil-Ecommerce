@@ -121,7 +121,7 @@ export default function UmagePage() {
       <section className="relative h-[500px] overflow-hidden">
         {/* Background Image */}
         <Image
-          src="/umage/Treasures%20Dresser/lifestyle/UMAGE_lifestyle_Treasures_dresser_oak_sugar_brown__2_1_1000x.webp"
+          src="/umage-hero-banner.webp"
           alt="Umage Collection - Scandinavian furniture design"
           fill
           className="object-cover"
