@@ -121,7 +121,7 @@ export default function UmagePage() {
       <section 
         className="relative h-[500px] overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/living-room-collection.jpg')`
+          backgroundImage: `url('/umage-banner.webp')`
         }}
       >
         {/* Warm Scandinavian Gradient Overlay */}
