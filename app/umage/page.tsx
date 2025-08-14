@@ -118,17 +118,12 @@ export default function UmagePage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative h-[500px] overflow-hidden">
-        {/* Background Image */}
-        <Image
-          src="/living-room-collection.jpg"
-          alt="Umage Collection - Scandinavian furniture design"
-          fill
-          className="object-cover"
-          priority={true}
-          sizes="100vw"
-        />
-        
+      <section 
+        className="relative h-[500px] overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('/living-room-collection.jpg')`
+        }}
+      >
         {/* Warm Scandinavian Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-amber-100/30 via-orange-50/20 to-rose-100/30" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
