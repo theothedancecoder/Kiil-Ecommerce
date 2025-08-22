@@ -1,4 +1,5 @@
 import ProductionImage from "@/components/ProductionImage";
+import Image from "next/image";
 import Link from "next/link";
 import { getHomepage } from "@/sanity/lib/getHomepage";
 import { getImageUrl } from "@/lib/ImageUrl";
@@ -197,7 +198,7 @@ export default async function Home() {
             <Link href="/fritz-hansen" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/fritz-hansen.png"
                     alt="Fritz Hansen"
                     width={180}
@@ -222,7 +223,7 @@ export default async function Home() {
             <Link href="/montana" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/montana.webp"
                     alt="Montana"
                     width={180}
@@ -236,7 +237,7 @@ export default async function Home() {
             <Link href="/vitra" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/Vitra.svg"
                     alt="Vitra"
                     width={160}
@@ -250,7 +251,7 @@ export default async function Home() {
             <Link href="/dux" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/dux.webp"
                     alt="DUX"
                     width={160}
@@ -264,7 +265,7 @@ export default async function Home() {
             <Link href="/umage" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/umage.webp"
                     alt="Umage"
                     width={160}
@@ -278,7 +279,7 @@ export default async function Home() {
             <Link href="/ro-collection" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/ro-collection.png"
                     alt="RO Collection"
                     width={180}
@@ -292,7 +293,7 @@ export default async function Home() {
             <Link href="/fredericia" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/FREDERICIA.png"
                     alt="Fredericia"
                     width={180}
@@ -306,7 +307,7 @@ export default async function Home() {
             <Link href="/audo-copenhagen" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/audo-copenhagen.webp"
                     alt="Audo Copenhagen"
                     width={180}
@@ -320,7 +321,7 @@ export default async function Home() {
             <Link href="/soren-lund" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/soren-lund.png"
                     alt="Soren Lund"
                     width={160}
@@ -334,7 +335,7 @@ export default async function Home() {
             <Link href="/sibast" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/Sibast.webp"
                     alt="Sibast Furniture"
                     width={180}
@@ -348,7 +349,7 @@ export default async function Home() {
             <Link href="/eilersen" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/eilersen.webp"
                     alt="Eilersen"
                     width={160}
@@ -362,7 +363,7 @@ export default async function Home() {
             <Link href="/flos" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/Flos.webp"
                     alt="FLOS"
                     width={140}
@@ -376,7 +377,7 @@ export default async function Home() {
             <Link href="/serax" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/serax.webp"
                     alt="Serax"
                     width={160}
@@ -390,7 +391,7 @@ export default async function Home() {
             <Link href="/louis-poulsen" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/Louis Poulsen.jpg"
                     alt="Louis Poulsen"
                     width={180}
@@ -415,7 +416,7 @@ export default async function Home() {
             <Link href="/jonas-ihreborn" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/jonas-lhreborn.png"
                     alt="Jonas Ihreborn"
                     width={160}
@@ -429,7 +430,7 @@ export default async function Home() {
             <Link href="/hay" className="group text-center">
               <div className="bg-white p-12 hover:shadow-lg border border-stone-200 hover:border-stone-300 transition-all duration-300 min-h-[120px]">
                 <div className="flex items-center justify-center h-full">
-                  <ProductionImage
+                  <Image
                     src="/LOGO/hay.webp"
                     alt="HAY"
                     width={140}
