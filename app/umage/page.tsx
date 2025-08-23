@@ -8,6 +8,18 @@ import { getBrandBanner, BrandBanner } from "@/sanity/lib/getBrandBanner";
 import { imageUrl } from "@/lib/ImageUrl";
 import ProductionImage from "@/components/ProductionImage";
 
+// Enhanced pricing for specific Umage products
+const umageEnhancedPricing: { [key: string]: number } = {
+  "asteria-spotlight": 2099,
+  "a-conversation-piece-dining-chair": 7499,
+  "heiko-dining-chair": 6999,
+  "comfort-circle-dining-table": 17999,
+  "heart-n-soul-200-dining-table": 19999,
+  "audacious-desk": 14999,
+  "chordis": 5699,
+  "duende-desk": 12999,
+};
+
 export default function UmagePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>(["All"]);
@@ -242,7 +254,12 @@ export default function UmagePage() {
                       }
                     </p>
                     <div className="text-lg font-light text-gray-900">
-                      {product.price ? `kr ${product.price.toLocaleString()}` : 'Price on request'}
+                      {(() => {
+                        // Use enhanced pricing if available, otherwise use Sanity price
+                        const enhancedPrice = product.slug?.current ? umageEnhancedPricing[product.slug.current] : null;
+                        const displayPrice = enhancedPrice || product.price;
+                        return displayPrice ? `kr ${displayPrice.toLocaleString()}` : 'Price on request';
+                      })()}
                     </div>
                   </div>
                 </div>

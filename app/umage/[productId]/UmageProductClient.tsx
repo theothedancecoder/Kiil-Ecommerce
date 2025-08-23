@@ -23,7 +23,11 @@ interface Product {
   features?: string[];
   specifications?: { label: string; value: string }[];
   relatedProducts?: { id: string; name: string }[];
-  lifestyleImages?: string[];
+  lifestyleImages?: Array<{
+    url: string;
+    alt: string;
+    caption?: string;
+  }> | string[];
 }
 
 interface UmageProductClientProps {
@@ -118,17 +122,29 @@ export default function UmageProductClient({ product, products }: UmageProductCl
             {/* Lifestyle Images */}
             {product.lifestyleImages && product.lifestyleImages.length > 0 && (
               <div className="grid grid-cols-1 gap-4">
-                {product.lifestyleImages.map((image, index) => (
-                  <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                    <Image
-                      src={image}
-                      alt={`${product.name} lifestyle image ${index + 1}`}
-                      fill
-                      className="object-cover object-center"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                  </div>
-                ))}
+                {product.lifestyleImages.map((image, index) => {
+                  const imageUrl = typeof image === 'string' ? image : image.url;
+                  const imageAlt = typeof image === 'string' 
+                    ? `${product.name} lifestyle image ${index + 1}` 
+                    : image.alt;
+                  
+                  return (
+                    <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                      <Image
+                        src={imageUrl}
+                        alt={imageAlt}
+                        fill
+                        className="object-cover object-center"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                      {typeof image !== 'string' && image.caption && (
+                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                          {image.caption}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

@@ -12,113 +12,13 @@ interface UmageProductPageProps {
   }>;
 }
 
-export default async function UmageProductPage({ params }: UmageProductPageProps) {
-  const { productId } = await params;
-  
-  // Get all products from Sanity
-  const allProducts = await getAllProducts();
-  
-  // Find the Umage product by matching the productId with the slug
-  const product = allProducts.find((p: any) => 
-    p.brand === 'UMAGE' && 
-    (p.slug?.current === productId || p._id === productId)
-  );
-
-  if (!product) {
-    notFound();
-  }
-
-  // Convert Sanity product to format expected by UmageProductClient
-  const convertedProduct = {
-    id: product._id,
-    name: product.name,
-    description: typeof product.description === 'string' 
-      ? product.description 
-      : Array.isArray(product.description)
-        ? product.description
-            .filter((block: any) => block._type === 'block' && 'children' in block)
-            .map((block: any) => 
-              'children' in block && block.children
-                ?.filter((child: any) => child._type === 'span')
-                ?.map((child: any) => child.text)
-                ?.join(' ')
-            )
-            .join(' ')
-        : 'Detailed product description available upon request.',
-    price: product.price || 0,
-    category: product.categories?.[0]?.title || 'Furniture',
-    variants: product.variants?.map((variant: any) => ({
-      name: variant.name || variant.color || variant.material || 'Default',
-      image: variant.image?.asset?.url || '',
-      material: variant.material || variant.color || '',
-      price: variant.price || product.price || 0,
-      size: variant.size || undefined,
-    })) || [],
-    designer: 'Umage Design Team',
-    features: [
-      'Premium Scandinavian design',
-      'High-quality materials',
-      'Contemporary aesthetic',
-      'Durable construction',
-      'Multiple finish options',
-      'Sustainable materials',
-      'Danish craftsmanship',
-      'Timeless design',
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "UMAGE" },
-      { label: "Brand", value: product.brand || "UMAGE" },
-      { label: "Category", value: product.categories?.[0]?.title || "Furniture" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "SKU", value: product._id },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: product.lifestyleImages?.map((img: any) => img.asset?.url).filter(Boolean) || [],
-    relatedProducts: [], // Could be enhanced to find related products
-  };
-
-  // Get other Umage products for the client
-  const umageProducts = allProducts
-    .filter((p: any) => p.brand === 'UMAGE')
-    .map((p: any) => ({
-      id: p._id,
-      name: p.name,
-      slug: p.slug?.current,
-    }));
-
-  return <UmageProductClient product={convertedProduct} products={umageProducts} />;
-}
-
-// Generate static params for all Umage products
-export async function generateStaticParams() {
-  try {
-    const products = await getAllProducts();
-    
-    return products
-      .filter((product: any) => product.brand === 'UMAGE' && product.slug?.current)
-      .map((product: any) => ({
-        productId: product.slug!.current,
-      }));
-  } catch (error) {
-    console.error('Error generating static params for Umage products:', error);
-    return [];
-  }
-}
-
-// Legacy static products data - keeping for fallback but not used when Sanity is available
-const legacyProducts = [
-  {
-    id: "a-conversation-piece-dining-chair",
-    name: "A Conversation Piece Dining Chair",
-    description: "An elegant dining chair that combines comfort with sophisticated design.",
-    price: 7499,
-    category: "Dining Chairs",
+// Enhanced legacy products data with complete variants - used to supplement Sanity data
+const legacyProductsData: Record<string, any> = {
+  "a-conversation-piece-dining-chair": {
     variants: [
       {
         name: "Oak - Sugar Brown",
-        image: "/umage/A-Conversation-Piece/umage_packshoA Conversation Piece dining chair 7,499 krt_5589c740-01_a-conversation-piece_dining-chair_oak_sugar-brown_-2_900x.webp",
+        image: "/umage/A-Conversation-Piece/umage_packshoA%20Conversation%20Piece%20dining%20chair%207,499%20krt_5589c740-01_a-conversation-piece_dining-chair_oak_sugar-brown_-2_900x.webp",
         material: "Oak",
         price: 7499,
       },
@@ -165,32 +65,12 @@ const legacyProducts = [
         price: 7499,
       },
     ],
-    designer: "Umage Design Team",
-    features: [
-      "Premium solid wood construction",
-      "Ergonomic design for comfort",
-      "Multiple wood and upholstery options",
-      "Sustainable materials",
-      "Handcrafted details",
-      "Durable finish",
-      "Contemporary Scandinavian design",
-      "Suitable for dining and office spaces",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood with upholstered seat" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak, Walnut" },
-      { label: "Upholstery", value: "Sugar Brown, White Sands" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Dimensions", value: "H: 80cm, W: 50cm, D: 55cm" },
-      { label: "Seat Height", value: "45cm" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
     lifestyleImages: [
-      "/umage/A-Conversation-Piece/lifestyle/umage_lifestyle_a-conversation-piece_dining-chair_walnut_morning-meadows_1600x.webp"
+      {
+        url: "/umage/A-Conversation-Piece/lifestyle/umage_lifestyle_a-conversation-piece_dining-chair_walnut_morning-meadows_1600x.webp",
+        alt: "A Conversation Piece Dining Chair in lifestyle setting",
+        caption: "Walnut finish in Morning Meadows setting"
+      }
     ],
     relatedProducts: [
       { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
@@ -198,162 +78,52 @@ const legacyProducts = [
       { id: "comfort-circle-dining-table", name: "Comfort Circle Dining Table" }
     ],
   },
-  {
-    id: "gather-cafe-table",
-    name: "Gather Café Table",
-    description: "A versatile café table that brings people together. Perfect for intimate dining, coffee moments, or as a stylish accent piece.",
-    price: 8999,
-    category: "Tables",
+  "lounge-around-shuffle-puff": {
     variants: [
       {
-        name: "Beige Travertine",
-        image: "/umage/Gather-Café-table/%20Gather%20Café%20table%208.999%20kr.webp",
-        material: "Travertine",
-        price: 8999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Natural travertine stone top",
-      "Elegant pedestal base",
-      "Perfect for 2-4 people",
-      "Durable construction",
-      "Easy to clean surface",
-      "Timeless design",
-      "Suitable for indoor use",
-      "Pairs beautifully with Umage chairs",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Travertine stone top with metal base" },
-      { label: "Top Finish", value: "Natural travertine" },
-      { label: "Base", value: "Powder-coated metal" },
-      { label: "Style", value: "Contemporary minimalist" },
-      { label: "Diameter", value: "Ø90cm" },
-      { label: "Height", value: "75cm" },
-      { label: "Seating", value: "2-4 people" },
-      { label: "Care", value: "Clean with mild soap and water" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Gather-Café-table/lifestyle/umage_lifestyle_gather_bar-table_brown-emperador_asteria-move_monochrome_leaf_-2_900x.webp",
-      "/umage/Gather-Café-table/lifestyle/umage_lifestyle_gather_bar-table_brown-emperador_asteria-move_monochrome_pale-blue_-5_900x.webp"
-    ],
-    relatedProducts: [
-      { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
-      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
-      { id: "asteria-spotlight", name: "Asteria Spotlight" }
-    ],
-  },
-  {
-    id: "heiko-dining-chair",
-    name: "Heiko Dining Chair",
-    description: "The Heiko dining chair embodies Scandinavian simplicity and comfort.",
-    price: 5999,
-    category: "Dining Chairs",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Heiko-dinning-chair/umage_packshot_5538_heiko_dining-chair_oak_-2_900x.webp",
+        name: "Oak - Sugar Brown",
+        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-01_lounge_around_shuffle_oak_sugar_brown_3_900x.webp",
         material: "Oak",
-        price: 5999,
+        price: 7999,
       },
       {
-        name: "Walnut",
-        image: "/umage/Heiko-dinning-chair/umage_packshot_5896_heiko_dining-chair_walnut_-2_900x.webp",
-        material: "Walnut",
-        price: 6299,
+        name: "Oak - White Sands",
+        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-02_lounge_around_shuffle_oak_white_sands_3_1400x.webp",
+        material: "Oak",
+        price: 7999,
       },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Solid wood construction",
-      "Minimalist Scandinavian design",
-      "Comfortable curved backrest",
-      "Durable and sustainable materials",
-      "Natural wood finish",
-      "Lightweight yet sturdy",
-      "Easy to maintain",
-      "Stackable design",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Walnut" },
-      { label: "Finish", value: "Natural oil finish" },
-      { label: "Style", value: "Scandinavian minimalist" },
-      { label: "Dimensions", value: "H: 78cm, W: 45cm, D: 50cm" },
-      { label: "Seat Height", value: "44cm" },
-      { label: "Weight", value: "4.5kg" },
-      { label: "Care", value: "Dust regularly, oil treatment annually" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Heiko-dinning-chair/lifestyle/UMAGE_lifestyle_Gather_café table_brown emperador_Heiko_dining chair_oak_(2).jpg"
-    ],
-    relatedProducts: [
-      { id: "gather-cafe-table", name: "Gather Café Table" },
-      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
-      { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" }
-    ],
-  },
-  {
-    id: "chordis",
-    name: "Chordis",
-    description: "An elegant brass pendant lamp that combines classic materials with contemporary design. The Chordis creates beautiful ambient lighting with its sophisticated form.",
-    price: 5999,
-    category: "Lighting",
-    variants: [
       {
-        name: "Brass",
-        image: "/umage/Chordis/umage_packshot_2523_chordis_brass_-2_900x.webp",
-        material: "Brass",
-        price: 5999,
+        name: "Oak - Shadow",
+        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-04_lounge_around_shuffle_oak_shadow_3_1400x.webp",
+        material: "Oak",
+        price: 7999,
+      },
+      {
+        name: "Dark Oak - Sugar Brown",
+        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-01_lounge-around-shuffle_dark-oak_sugar-brown_-3_900x.webp",
+        material: "Dark Oak",
+        price: 8299,
+      },
+      {
+        name: "Dark Oak - White Sands",
+        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-02_lounge-around-shuffle_dark-oak_white-sands_-3_900x.webp",
+        material: "Dark Oak",
+        price: 8299,
+      },
+      {
+        name: "Dark Oak - Shadow",
+        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-04_lounge-around-shuffle_dark-oak_shadow_-3_900x.webp",
+        material: "Dark Oak",
+        price: 8299,
       },
     ],
-    designer: "Umage Design Team",
-    features: [
-      "Premium brass construction",
-      "Contemporary pendant design",
-      "Creates beautiful ambient lighting",
-      "Ceiling-mounted installation",
-      "Modern minimalist aesthetic",
-      "Energy efficient LED compatible",
-      "Easy installation",
-      "Timeless brass finish",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Brass" },
-      { label: "Finish", value: "Brass" },
-      { label: "Type", value: "Pendant lamp" },
-      { label: "Style", value: "Contemporary minimalist" },
-      { label: "Installation", value: "Ceiling-mounted" },
-      { label: "Light Source", value: "LED compatible" },
-      { label: "Care", value: "Clean with soft cloth" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Chordis/lifestyle/umage_lifestyle_chordis_brass_-2_447687af-b575-4ad7-8839-2266d9adaecb_900x.webp"
-    ],
     relatedProducts: [
-      { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" },
-      { id: "asteria-spotlight", name: "Asteria Spotlight" },
-      { id: "lemon-squeeze-wall-lamp-single", name: "Lemon Squeeze Wall Lamp Single" }
+      { id: "lounge-around-3-seater", name: "Lounge Around 3-Seater" },
+      { id: "lounge-around-shuffle-coffee-table", name: "Lounge Around Shuffle Coffee Table" },
+      { id: "the-reader", name: "The Reader" }
     ],
   },
-  {
-    id: "the-reader",
-    name: "The Reader",
-    description: "A comfortable reading chair that combines ergonomic design with sophisticated style. Perfect for creating a cozy reading nook in any space.",
-    price: 8999,
-    category: "Chairs",
+  "the-reader": {
     variants: [
       {
         name: "Oak - Sugar Brown",
@@ -392,42 +162,13 @@ const legacyProducts = [
         price: 8999,
       },
     ],
-    designer: "Umage Design Team",
-    features: [
-      "Ergonomic reading chair design",
-      "Premium solid wood construction",
-      "Multiple wood and upholstery options",
-      "Comfortable seating position",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Perfect for reading nooks",
-      "Stylish accent piece",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood with upholstered seat" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak" },
-      { label: "Upholstery", value: "Sugar Brown, Summer Shine" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Type", value: "Reading chair" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [],
     relatedProducts: [
       { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
       { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
       { id: "lounge-around-3-seater", name: "Lounge Around 3-Seater" }
     ],
   },
-  {
-    id: "lounge-around-3-seater",
-    name: "Lounge Around 3-Seater",
-    description: "A spacious 3-seater sofa that invites relaxation and conversation. The Lounge Around collection combines comfort with contemporary Scandinavian design.",
-    price: 24999,
-    category: "Sofas",
+  "lounge-around-3-seater": {
     variants: [
       {
         name: "Oak - Sugar Brown",
@@ -466,43 +207,13 @@ const legacyProducts = [
         price: 24999,
       },
     ],
-    designer: "Umage Design Team",
-    features: [
-      "Spacious 3-seater design",
-      "Premium solid wood frame",
-      "Multiple upholstery options",
-      "Comfortable deep seating",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Perfect for living rooms",
-      "Modular collection compatibility",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood frame with upholstered cushions" },
-      { label: "Wood Options", value: "Oak, Dark Oak" },
-      { label: "Upholstery", value: "Sugar Brown, White Sands, Shadow" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Seating", value: "3 people" },
-      { label: "Collection", value: "Lounge Around" },
-      { label: "Care", value: "Vacuum regularly, professional cleaning recommended" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [],
     relatedProducts: [
       { id: "lounge-around-shuffle-coffee-table", name: "Lounge Around Shuffle Coffee Table" },
       { id: "lounge-around-shuffle-puff", name: "Lounge Around Shuffle Puff" },
       { id: "the-reader", name: "The Reader" }
     ],
   },
-  {
-    id: "treasures-dresser",
-    name: "Treasures Dresser",
-    description: "A sophisticated dresser that combines storage functionality with elegant design. Perfect for bedrooms or living spaces, offering ample storage with style.",
-    price: 16999,
-    category: "Storage",
+  "treasures-dresser": {
     variants: [
       {
         name: "Oak - Sugar Brown",
@@ -559,219 +270,13 @@ const legacyProducts = [
         price: 16999,
       },
     ],
-    designer: "Umage Design Team",
-    features: [
-      "Spacious storage capacity",
-      "Premium solid wood construction",
-      "Multiple finish options",
-      "Elegant design details",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Perfect for bedrooms",
-      "Functional and stylish",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood with upholstered elements" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak" },
-      { label: "Upholstery", value: "Sugar Brown, White Sands, Morning Meadows" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Type", value: "Dresser with storage" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Treasures Dresser/lifestyle/UMAGE_lifestyle_Treasures_dresser_oak_sugar_brown__2_1_1000x.webp"
-    ],
     relatedProducts: [
       { id: "stories-shelving", name: "Stories Shelving" },
       { id: "audacious-desk", name: "Audacious Desk" },
       { id: "duende-desk", name: "Duende Desk" }
     ],
   },
-  {
-    id: "the-socialite-counter-chair",
-    name: "The Socialite Counter Chair",
-    description: "A stylish counter-height chair perfect for kitchen islands and bar areas. The Socialite collection brings contemporary elegance to casual dining spaces.",
-    price: 4999,
-    category: "Chairs",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/The-Socialite-counter-chair/umage_packshot_5519_the-socialite_counter-stool_oak_-2_f0c03811-16c6-4e21-8530-dba9073e87c8_900x.webp",
-        material: "Oak",
-        price: 4999,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/The-Socialite-counter-chair/umage_packshot_5119_the-socialite_counter-stool_black-oak_-2_900x.webp",
-        material: "Black Oak",
-        price: 4999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/The-Socialite-counter-chair/umage_packshot_5880_the-socialite_counter-stool_dark-oak_-2_1200x.webp",
-        material: "Dark Oak",
-        price: 4999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Counter-height seating",
-      "Premium solid wood construction",
-      "Multiple wood finish options",
-      "Comfortable seating position",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Perfect for kitchen islands",
-      "Stylish bar seating",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Type", value: "Counter chair" },
-      { label: "Height", value: "Counter height" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [],
-    relatedProducts: [
-      { id: "the-socialite-bar-stool", name: "The Socialite Bar Stool" },
-      { id: "gather-cafe-table", name: "Gather Café Table" },
-      { id: "heart-n-soul-console-table", name: "Heart'n'Soul Console Table" }
-    ],
-  },
-  {
-    id: "the-socialite-bar-stool",
-    name: "The Socialite Bar Stool",
-    description: "An elegant bar-height stool that combines comfort with sophisticated design. Perfect for home bars and high dining tables.",
-    price: 5499,
-    category: "Chairs",
-    variants: [
-      {
-        name: "Dark Oak",
-        image: "/umage/The-Socialite-bar-stool/umage_packshot_5881_the-socialite_bar-stool_dark-oak_-2_900x.webp",
-        material: "Dark Oak",
-        price: 5499,
-      },
-      {
-        name: "Oak",
-        image: "/umage/The-Socialite-bar-stool/umage_packshot_5520_the-socialite_bar-stool_oak_-2_9b7e336d-74b3-44f4-b041-3d94394316e6_900x.webp",
-        material: "Oak",
-        price: 5499,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/The-Socialite-bar-stool/umage_packshot_5120_the-socialite_bar-stool_black-oak_-2_900x.webp",
-        material: "Black Oak",
-        price: 5499,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Bar-height seating",
-      "Premium solid wood construction",
-      "Multiple wood finish options",
-      "Comfortable seating position",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Perfect for home bars",
-      "Stylish high seating",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Type", value: "Bar stool" },
-      { label: "Height", value: "Bar height" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/The-Socialite-bar-stool/lifestyle/umage_packshot_5120_the-socialite_bar-stool_black-oak_-1_900x.webp"
-    ],
-    relatedProducts: [
-      { id: "the-socialite-counter-chair", name: "The Socialite Counter Chair" },
-      { id: "gather-cafe-table", name: "Gather Café Table" },
-      { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" }
-    ],
-  },
-  {
-    id: "asteria-spotlight",
-    name: "Asteria Spotlight",
-    description: "A sophisticated spotlight that combines functionality with elegant design.",
-    price: 3999,
-    category: "Lighting",
-    variants: [
-      {
-        name: "Plated Brass",
-        image: "/umage/Asteria-spotlight/umage_packshot_2496_asteria_spot_plated_brass_4_900x.webp",
-        material: "Plated Brass",
-        price: 3999,
-      },
-      {
-        name: "Black",
-        image: "/umage/Asteria-spotlight/umage_packshot_2496_asteria-spot_black_-4_900x.webp",
-        material: "Black",
-        price: 3999,
-      },
-      {
-        name: "Polished Steel",
-        image: "/umage/Asteria-spotlight/umage_packshot_2497_asteria_spot_polished_steel_4_900x.webp",
-        material: "Polished Steel",
-        price: 3999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Adjustable spotlight positioning",
-      "LED light source included",
-      "Dimmable functionality",
-      "Premium metal construction",
-      "Multiple finish options",
-      "Energy efficient lighting",
-      "Modern minimalist design",
-      "Easy installation",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Metal with LED light source" },
-      { label: "Finish Options", value: "Plated Brass, Black, Polished Steel" },
-      { label: "Light Source", value: "LED (included)" },
-      { label: "Dimmable", value: "Yes" },
-      { label: "Style", value: "Contemporary minimalist" },
-      { label: "Dimensions", value: "H: 15cm, Ø: 12cm" },
-      { label: "Power", value: "12W LED" },
-      { label: "Color Temperature", value: "2700K warm white" },
-      { label: "Care", value: "Clean with soft cloth" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Asteria-spotlight/lifestyle/UMAGE_lifestyle_Asteria_Spot_black__2_09905591-6b1a-4cef-87a6-acfe05096aa3.webp"
-    ],
-    relatedProducts: [
-      { id: "chordis", name: "Chordis" },
-      { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" },
-      { id: "lemon-squeeze-wall-lamp-single", name: "Lemon Squeeze Wall Lamp Single" }
-    ],
-  },
-  {
-    id: "audacious-desk",
-    name: "Audacious Desk",
-    description: "A bold and functional desk that makes a statement in any workspace.",
-    price: 12999,
-    category: "Desks",
+  "audacious-desk": {
     variants: [
       {
         name: "Oak - Sugar Brown",
@@ -816,1038 +321,140 @@ const legacyProducts = [
         price: 12999,
       },
     ],
-    designer: "Umage Design Team",
-    features: [
-      "Premium solid oak construction",
-      "Built-in storage solutions",
-      "Multiple upholstery options",
-      "Contemporary Scandinavian design",
-      "Functional workspace design",
-      "Durable construction",
-      "Ergonomic design",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid oak with upholstered elements" },
-      { label: "Wood", value: "Oak" },
-      { label: "Upholstery Options", value: "Sugar Brown, White Sands, Sterling, Shadow, Morning Meadows, Hazelnut, Charcoal" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Features", value: "Built-in storage, ergonomic design" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Audacious-desk/lifestyle/UMAGE_lifestyle_Audacious_desk_oak_sterling__1_7.webp"
-    ],
     relatedProducts: [
       { id: "duende-desk", name: "Duende Desk" },
       { id: "stories-shelving", name: "Stories Shelving" },
       { id: "treasures-dresser", name: "Treasures Dresser" }
     ],
   },
-  {
-    id: "comfort-circle-dining-table",
-    name: "Comfort Circle Dining Table",
-    description: "A circular dining table that creates an intimate and comfortable dining experience for family and friends.",
-    price: 18999,
-    category: "Tables",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Comfort-Circle-dining-table/umage_packshot_5656-5656-1_comfort_circle_rippled_oak_2_900x.webp",
-        material: "Oak",
-        price: 18999,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/Comfort-Circle-dining-table/umage_packshot_5156-5156-1_comfort_circle_rippled_black_oak_2_1400x.webp",
-        material: "Black Oak",
-        price: 18999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/Comfort-Circle-dining-table/umage_packshot_5856-5856-1_comfort_circle_rippled_dark_oak_2_1400x.webp",
-        material: "Dark Oak",
-        price: 18999,
-      },
-    ],
-    designer: "Umage Design Team",
+};
+
+// Related products mapping for products not in the enhanced data
+const relatedProductsMap: Record<string, Array<{id: string, name: string}>> = {
+  "gather-cafe-table": [
+    { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
+    { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
+    { id: "asteria-spotlight", name: "Asteria Spotlight" }
+  ],
+  "heiko-dining-chair": [
+    { id: "gather-cafe-table", name: "Gather Café Table" },
+    { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
+    { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" }
+  ],
+  "chordis": [
+    { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" },
+    { id: "asteria-spotlight", name: "Asteria Spotlight" },
+    { id: "lemon-squeeze-wall-lamp-single", name: "Lemon Squeeze Wall Lamp Single" }
+  ],
+  "asteria-spotlight": [
+    { id: "chordis", name: "Chordis" },
+    { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" },
+    { id: "lemon-squeeze-wall-lamp-single", name: "Lemon Squeeze Wall Lamp Single" }
+  ],
+};
+
+export default async function UmageProductPage({ params }: UmageProductPageProps) {
+  const { productId } = await params;
+  
+  // Get all products from Sanity
+  const allProducts = await getAllProducts();
+  
+  // Find the Umage product by matching the productId with the slug
+  const product = allProducts.find((p: any) => 
+    p.brand === 'UMAGE' && 
+    (p.slug?.current === productId || p._id === productId)
+  );
+
+  if (!product) {
+    notFound();
+  }
+
+  // Get enhanced data for this product
+  const enhancedData = legacyProductsData[productId];
+  
+  // Use enhanced variants if available, otherwise use Sanity variants
+  const variants = enhancedData?.variants || product.variants?.map((variant: any) => ({
+    name: variant.name || variant.color || variant.material || 'Default',
+    image: variant.image?.asset?.url || '',
+    material: variant.material || variant.color || '',
+    price: variant.price || product.price || 0,
+    size: variant.size || undefined,
+  })) || [];
+
+  // Get related products - use enhanced data first, then mapping, then empty array
+  const relatedProducts = enhancedData?.relatedProducts || 
+                          relatedProductsMap[productId] || 
+                          [];
+
+  // Convert Sanity product to format expected by UmageProductClient
+  const convertedProduct = {
+    id: product._id,
+    name: product.name,
+    description: typeof product.description === 'string' 
+      ? product.description 
+      : Array.isArray(product.description)
+        ? product.description
+            .filter((block: any) => block._type === 'block' && 'children' in block)
+            .map((block: any) => 
+              'children' in block && block.children
+                ?.filter((child: any) => child._type === 'span')
+                ?.map((child: any) => child.text)
+                ?.join(' ')
+            )
+            .join(' ')
+        : 'Detailed product description available upon request.',
+    price: product.price || 0,
+    category: product.categories?.[0]?.title || 'Furniture',
+    variants,
+    designer: 'Umage Design Team',
     features: [
-      "Circular design for intimate dining",
-      "Premium solid wood construction",
-      "Rippled surface texture",
-      "Multiple wood finish options",
-      "Contemporary Scandinavian design",
-      "Seats 4-6 people comfortably",
-      "Durable construction",
-      "Timeless design",
+      'Premium Scandinavian design',
+      'High-quality materials',
+      'Contemporary aesthetic',
+      'Durable construction',
+      'Multiple finish options',
+      'Sustainable materials',
+      'Danish craftsmanship',
+      'Timeless design',
     ],
     specifications: [
       { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak" },
+      { label: "Manufacturer", value: "UMAGE" },
+      { label: "Brand", value: product.brand || "UMAGE" },
+      { label: "Category", value: product.categories?.[0]?.title || "Furniture" },
       { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Shape", value: "Circular" },
-      { label: "Seating", value: "4-6 people" },
-      { label: "Surface", value: "Rippled texture" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
+      { label: "SKU", value: product._id },
       { label: "Warranty", value: "2 years manufacturer warranty" },
       { label: "Origin", value: "Danish design" },
     ],
-    lifestyleImages: [
-      "/umage/Comfort-Circle-dining-table/lifestyle/comfortcircle_blackoak_0c206d3b-220c-4089-a5da-d374ecda1255_900x.webp"
-    ],
-    relatedProducts: [
-      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
-      { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
-      { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" }
-    ],
-  },
-  {
-    id: "duende-desk",
-    name: "Duende Desk",
-    description: "A minimalist desk that combines functionality with elegant Scandinavian design. Perfect for modern workspaces.",
-    price: 9999,
-    category: "Desks",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Duende-desk/umage_packshot_5605_duende_oak_1_900x.webp",
-        material: "Oak",
-        price: 9999,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/Duende-desk/umage_packshot_5117_duende_black-oak_-1_900x.webp",
-        material: "Black Oak",
-        price: 9999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/Duende-desk/umage_packshot_5805_duende_dark-oak_-1_900x.webp",
-        material: "Dark Oak",
-        price: 9999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Minimalist Scandinavian design",
-      "Premium solid wood construction",
-      "Multiple wood finish options",
-      "Clean lines and simple form",
-      "Functional workspace design",
-      "Durable construction",
-      "Perfect for home offices",
-      "Timeless aesthetic",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak" },
-      { label: "Style", value: "Scandinavian minimalist" },
-      { label: "Type", value: "Writing desk" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Duende-desk/lifestyle/umage_lifestyle_duende_blackoak__1_c6dcacde-2a16-4cfd-a947-4c95079771c1_900x.webp"
-    ],
-    relatedProducts: [
-      { id: "audacious-desk", name: "Audacious Desk" },
-      { id: "stories-shelving", name: "Stories Shelving" },
-      { id: "treasures-dresser", name: "Treasures Dresser" }
-    ],
-  },
-  {
-    id: "heart-n-soul-200-dining-table",
-    name: "Heart'n'Soul 200 Dining Table",
-    description: "A spacious 200cm dining table that brings families together. The Heart'n'Soul collection embodies warmth and togetherness.",
-    price: 22999,
-    category: "Tables",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5658_heart-n-soul_dining-table_oak_-2_6d603e60-d050-4480-8863-d04d03022f7d_900x.webp",
-        material: "Oak",
-        price: 22999,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5658_heart-n-soul_dining-table_black-oak_-2_900x.webp",
-        material: "Black Oak",
-        price: 22999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5858_heart-n-soul_dining-table-200_dark-oak_-2_900x.webp",
-        material: "Dark Oak",
-        price: 22999,
-      },
-      {
-        name: "Walnut",
-        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5890_heart-n-soul-200_dining-table_walnut_-2_900x.webp",
-        material: "Walnut",
-        price: 24999,
-      },
-      {
-        name: "Oak - Obsidian Black",
-        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5664_heart-n-soul_dining-table_oak_obsidian-black_-2_900x.webp",
-        material: "Oak",
-        price: 22999,
-      },
-      {
-        name: "Oak - Cloud Grey",
-        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5665_heart-n-soul_dining-table_oak_cloud-grey_-2_900x.webp",
-        material: "Oak",
-        price: 22999,
-      },
-      {
-        name: "Oak - Moss Green",
-        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5666_heart-n-soul_dining-table_oak_moss-green_-2_900x.webp",
-        material: "Oak",
-        price: 22999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Spacious 200cm length",
-      "Premium solid wood construction",
-      "Multiple wood and finish options",
-      "Seats 6-8 people comfortably",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Perfect for family dining",
-      "Timeless design",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak, Walnut" },
-      { label: "Finish Options", value: "Natural, Obsidian Black, Cloud Grey, Moss Green" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Length", value: "200cm" },
-      { label: "Seating", value: "6-8 people" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Heart'n'Soul-200-dining-table-200/lifestyle/UMAGE_lifestyle_Curious_oak_black_Heart_n_Soul_oak__2_2_94e85f23-2062-4a6a-a687-f9be8d99667a.webp",
-      "/umage/Heart'n'Soul-200-dining-table-200/lifestyle/UMAGE_lifestyle_Heart_n_Soul_oak_cloud_grey_Curious_oak_black_2.webp"
-    ],
-    relatedProducts: [
-      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
-      { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
-      { id: "heart-n-soul-console-table", name: "Heart'n'Soul Console Table" }
-    ],
-  },
-  {
-    id: "heart-n-soul-console-table",
-    name: "Heart'n'Soul Console Table",
-    description: "An elegant console table that adds style and functionality to any space. Perfect for entryways, living rooms, or hallways.",
-    price: 14999,
-    category: "Tables",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Heart'n'Soul-console-table/umage_packshot_5653_heart-n-soul_console-table_oak_-2_900x.webp",
-        material: "Oak",
-        price: 14999,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/Heart'n'Soul-console-table/umage_packshot_5110_heart-n-soul_console-table_black-oak_-2_900x.webp",
-        material: "Black Oak",
-        price: 14999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/Heart'n'Soul-console-table/umage_packshot_5715_heart-n-soul_console-table_dark-oak_-2_900x.webp",
-        material: "Dark Oak",
-        price: 14999,
-      },
-      {
-        name: "Oak - Cloud Grey",
-        image: "/umage/Heart'n'Soul-console-table/umage_packshot_5668_heart-n-soul_console-table_oak_cloud-grey_-2_900x.webp",
-        material: "Oak",
-        price: 14999,
-      },
-      {
-        name: "Oak - Moss Green",
-        image: "/umage/Heart'n'Soul-console-table/umage_packshot_5669_heart-n-soul_console-table_oak_moss-green_-2_900x.webp",
-        material: "Oak",
-        price: 14999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Elegant console design",
-      "Premium solid wood construction",
-      "Multiple wood and finish options",
-      "Perfect for entryways",
-      "Contemporary Scandinavian design",
-      "Functional storage surface",
-      "Durable construction",
-      "Versatile placement",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak" },
-      { label: "Finish Options", value: "Natural, Cloud Grey, Moss Green" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Type", value: "Console table" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Heart'n'Soul-console-table/lifestyle/UMAGE_lifestyle_Heart_n_Soul_console_table_oak_obsidian_black__1_2.webp",
-      "/umage/Heart'n'Soul-console-table/lifestyle/UMAGE_lifestyle_Heart_n_Soul_console_table_oak_obsidian_black__2.webp"
-    ],
-    relatedProducts: [
-      { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" },
-      { id: "heart-n-soul-120-dining-table", name: "Heart'n'Soul 120 Dining Table" },
-      { id: "stories-shelving", name: "Stories Shelving" }
-    ],
-  },
-  {
-    id: "heart-n-soul-120-dining-table",
-    name: "Heart'n'Soul 120 Dining Table",
-    description: "A compact 120cm dining table perfect for smaller spaces while maintaining the warmth and style of the Heart'n'Soul collection.",
-    price: 18999,
-    category: "Tables",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5659_heart_n_soul_dining_table_120_oak_2_f7100c94-d1c3-43d6-9ed0-6893363dac34_900x.webp",
-        material: "Oak",
-        price: 18999,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5132_heart-n-soul_dining-table-120_black-oak_-3-_1_900x.webp",
-        material: "Black Oak",
-        price: 18999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5725_heart-n-soul_dining-table-120_dark-oak_-2-_1_c1b94521-3ea6-4657-b245-8785e492f694_900x.webp",
-        material: "Dark Oak",
-        price: 18999,
-      },
-      {
-        name: "Walnut",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5891_heart-n-soul-120_dining-table_walnut_-2_900x.webp",
-        material: "Walnut",
-        price: 20999,
-      },
-      {
-        name: "Oak - Obsidian Black",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5671_heart_n_soul_dining_table_120_oak_obsidian_black_2_1400x.webp",
-        material: "Oak",
-        price: 18999,
-      },
-      {
-        name: "Oak - Cloud Grey",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5672_heart_n_soul_dining_table_120_oak_cloud_grey_2_1400x.webp",
-        material: "Oak",
-        price: 18999,
-      },
-      {
-        name: "Oak - Moss Green",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5673_heart_n_soul_dining_table_120_oak_moss_green_2_1400x.webp",
-        material: "Oak",
-        price: 18999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Compact 120cm length",
-      "Premium solid wood construction",
-      "Multiple wood and finish options",
-      "Seats 4-6 people comfortably",
-      "Contemporary Scandinavian design",
-      "Perfect for smaller spaces",
-      "Durable construction",
-      "Timeless design",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak, Walnut" },
-      { label: "Finish Options", value: "Natural, Obsidian Black, Cloud Grey, Moss Green" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Length", value: "120cm" },
-      { label: "Seating", value: "4-6 people" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Heart'n'Soul-dinning-120/lifestyle/UMAGE_lifestyle_Heart_n_Soul_120_oak_Curious_oak_black_Omni_ceiling_plated_brass__3_3.webp"
-    ],
-    relatedProducts: [
-      { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" },
-      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
-      { id: "heiko-dining-chair", name: "Heiko Dining Chair" }
-    ],
-  },
-  {
-    id: "italic-table",
-    name: "Italic Table",
-    description: "A sleek side table with a distinctive italic design that adds modern sophistication to any space.",
-    price: 7999,
-    category: "Tables",
-    variants: [
-      {
-        name: "Oak with Glass",
-        image: "/umage/Italic/umage_packshot_5523c5523-2_italic_oak_glass_2_900x.webp",
-        material: "Oak",
-        price: 7999,
-      },
-      {
-        name: "Black Oak with Glass",
-        image: "/umage/Italic/umage_packshot_5124c5523-2_italic_black_oak_glass_2_1400x.webp",
-        material: "Black Oak",
-        price: 7999,
-      },
-      {
-        name: "Dark Oak with Glass",
-        image: "/umage/Italic/umage_packshot_5719c5523-2_italic_dark_oak_glass_2_1400x.webp",
-        material: "Dark Oak",
-        price: 7999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Distinctive italic design",
-      "Premium solid wood construction",
-      "Tempered glass top",
-      "Multiple wood finish options",
-      "Contemporary design",
-      "Perfect as side table",
-      "Durable construction",
-      "Modern aesthetic",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood with tempered glass" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak" },
-      { label: "Top", value: "Tempered glass" },
-      { label: "Style", value: "Contemporary modern" },
-      { label: "Type", value: "Side table" },
-      { label: "Care", value: "Dust regularly, clean glass with appropriate cleaner" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Italic/lifestyle/UMAGE_lifestyle_Italic_oak_Omni_wall__1_4.webp"
-    ],
-    relatedProducts: [
-      { id: "lounge-around-shuffle-coffee-table", name: "Lounge Around Shuffle Coffee Table" },
-      { id: "heart-n-soul-console-table", name: "Heart'n'Soul Console Table" },
-      { id: "gather-cafe-table", name: "Gather Café Table" }
-    ],
-  },
-  {
-    id: "lemon-squeeze-ceiling-lamp",
-    name: "Lemon Squeeze Ceiling Lamp",
-    description: "A distinctive pendant lamp with a unique lemon-squeeze design that creates beautiful ambient lighting.",
-    price: 4999,
-    category: "Lighting",
-    variants: [
-      {
-        name: "Long Penta - Plated Brass",
-        image: "/umage/Lemon-Squeeze-ceiling-lamp/umage_packshot_2202_lemon-squeeze_pendant-lamp_long_penta_plated-brass_1400x.webp",
-        material: "Plated Brass",
-        price: 4999,
-      },
-      {
-        name: "Long Penta - Polished Steel",
-        image: "/umage/Lemon-Squeeze-ceiling-lamp/umage_packshot_2529_lemon-squeeze_pendant-lamp_long_penta_polished-steel_1400x.webp",
-        material: "Polished Steel",
-        price: 4999,
-      },
-      {
-        name: "Short Penta - Plated Brass",
-        image: "/umage/Lemon-Squeeze-ceiling-lamp/umage_packshot_2622_lemon-squeeze_pendant-lamp_short_penta_plated-brass_1400x.webp",
-        material: "Plated Brass",
-        price: 4499,
-      },
-      {
-        name: "Short Penta - Polished Steel",
-        image: "/umage/Lemon-Squeeze-ceiling-lamp/umage_packshot_2625_lemon-squeeze_pendant-lamp_short_penta_polished-steel_900x.webp",
-        material: "Polished Steel",
-        price: 4499,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Unique lemon-squeeze design",
-      "Premium metal construction",
-      "Multiple size and finish options",
-      "Creates beautiful ambient lighting",
-      "Contemporary pendant design",
-      "Energy efficient LED compatible",
-      "Easy installation",
-      "Distinctive sculptural form",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Metal" },
-      { label: "Finish Options", value: "Plated Brass, Polished Steel" },
-      { label: "Type", value: "Pendant lamp" },
-      { label: "Style", value: "Contemporary sculptural" },
-      { label: "Installation", value: "Ceiling-mounted" },
-      { label: "Light Source", value: "LED compatible" },
-      { label: "Care", value: "Clean with soft cloth" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Lemon-Squeeze-ceiling-lamp/lifestyle/umage_lifestyle_lemon-squeeze_pendant-lamp_long_penta_plated-brass_900x.webp"
-    ],
-    relatedProducts: [
-      { id: "chordis", name: "Chordis" },
-      { id: "asteria-spotlight", name: "Asteria Spotlight" },
-      { id: "lemon-squeeze-wall-lamp-single", name: "Lemon Squeeze Wall Lamp Single" }
-    ],
-  },
-  {
-    id: "stories-shelving",
-    name: "Stories Shelving",
-    description: "A versatile shelving system that tells your story through display. The Stories collection offers modular flexibility to showcase your treasured items.",
-    price: 8999,
-    category: "Storage",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Stories-shelving/umage_packshot_5621_stories_oak_2_900x.webp",
-        material: "Oak",
-        price: 8999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/Stories-shelving/umage_packshot_5773_stories_dark-oak_-2_900x.webp",
-        material: "Dark Oak",
-        price: 8999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Modular shelving system",
-      "Premium solid wood construction",
-      "Multiple wood finish options",
-      "Versatile display solution",
-      "Contemporary Scandinavian design",
-      "Easy assembly and reconfiguration",
-      "Perfect for books and decorative items",
-      "Sustainable materials",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Dark Oak" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Type", value: "Modular shelving system" },
-      { label: "Assembly", value: "Easy assembly required" },
-      { label: "Use", value: "Books, decorative items, storage" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Stories-shelving/lifestyle/stories_darkoak_900x.webp"
-    ],
-    relatedProducts: [
-      { id: "treasures-dresser", name: "Treasures Dresser" },
-      { id: "audacious-desk", name: "Audacious Desk" },
-      { id: "duende-desk", name: "Duende Desk" }
-    ],
-  },
-  {
-    id: "heart-n-soul-dining-table",
-    name: "Heart'n'Soul Dining Table",
-    description: "A beautiful dining table that brings heart and soul to your dining space with elegant design. This compact 120cm table is perfect for smaller spaces while maintaining the warmth and style of the Heart'n'Soul collection.",
-    price: 16999,
-    category: "Tables",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Heart'n'Soul-Dinning table/umage_packshot_5659_heart_n_soul_dining_table_120_oak_2_f7100c94-d1c3-43d6-9ed0-6893363dac34_900x.webp",
-        material: "Oak",
-        price: 16999,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/Heart'n'Soul-Dinning table/umage_packshot_5132_heart-n-soul_dining-table-120_black-oak_-3-_1_900x.webp",
-        material: "Black Oak",
-        price: 16999,
-      },
-      {
-        name: "Oak - Cloud Grey",
-        image: "/umage/Heart'n'Soul-Dinning table/umage_packshot_5672_heart_n_soul_dining_table_120_oak_cloud_grey_2_1400x.webp",
-        material: "Oak",
-        price: 16999,
-      },
-      {
-        name: "Oak - Moss Green",
-        image: "/umage/Heart'n'Soul-Dinning table/umage_packshot_5673_heart_n_soul_dining_table_120_oak_moss_green_2_1400x.webp",
-        material: "Oak",
-        price: 16999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Compact 120cm dining table",
-      "Premium solid wood construction",
-      "Multiple wood and finish options",
-      "Seats 4-6 people comfortably",
-      "Contemporary Scandinavian design",
-      "Perfect for smaller dining spaces",
-      "Durable construction",
-      "Timeless design aesthetic",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak" },
-      { label: "Finish Options", value: "Natural, Cloud Grey, Moss Green" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Length", value: "120cm" },
-      { label: "Seating", value: "4-6 people" },
-      { label: "Collection", value: "Heart'n'Soul" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Heart'n'Soul-Dinning table/lifestyle/umage_packshot_5671_heart_n_soul_dining_table_120_oak_obsidian_black_4_1400x.webp"
-    ],
-    relatedProducts: [
-      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
-      { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
-      { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" }
-    ],
-  },
-  {
-    id: "heart-n-soul-dining-120",
-    name: "Heart'n'Soul Dining Table 120",
-    description: "A compact 120cm dining table perfect for smaller spaces while maintaining the warmth and style of the Heart'n'Soul collection. This elegant table brings heart and soul to your dining space with its beautiful design and premium craftsmanship.",
-    price: 15999,
-    category: "Tables",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5659_heart_n_soul_dining_table_120_oak_2_f7100c94-d1c3-43d6-9ed0-6893363dac34_900x.webp",
-        material: "Oak",
-        price: 15999,
-      },
-      {
-        name: "Black Oak",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5132_heart-n-soul_dining-table-120_black-oak_-3-_1_900x.webp",
-        material: "Black Oak",
-        price: 15999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5725_heart-n-soul_dining-table-120_dark-oak_-2-_1_c1b94521-3ea6-4657-b245-8785e492f694_900x.webp",
-        material: "Dark Oak",
-        price: 15999,
-      },
-      {
-        name: "Walnut",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5891_heart-n-soul-120_dining-table_walnut_-2_900x.webp",
-        material: "Walnut",
-        price: 17999,
-      },
-      {
-        name: "Oak - Obsidian Black",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5671_heart_n_soul_dining_table_120_oak_obsidian_black_2_1400x.webp",
-        material: "Oak",
-        price: 15999,
-      },
-      {
-        name: "Oak - Cloud Grey",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5672_heart_n_soul_dining_table_120_oak_cloud_grey_2_1400x.webp",
-        material: "Oak",
-        price: 15999,
-      },
-      {
-        name: "Oak - Moss Green",
-        image: "/umage/Heart'n'Soul-dinning-120/umage_packshot_5673_heart_n_soul_dining_table_120_oak_moss_green_2_1400x.webp",
-        material: "Oak",
-        price: 15999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Compact 120cm dining table",
-      "Premium solid wood construction",
-      "Multiple wood and finish options",
-      "Seats 4-6 people comfortably",
-      "Contemporary Scandinavian design",
-      "Perfect for smaller dining spaces",
-      "Durable construction",
-      "Timeless design aesthetic",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Black Oak, Dark Oak, Walnut" },
-      { label: "Finish Options", value: "Natural, Obsidian Black, Cloud Grey, Moss Green" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Length", value: "120cm" },
-      { label: "Seating", value: "4-6 people" },
-      { label: "Collection", value: "Heart'n'Soul" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Heart'n'Soul-dinning-120/lifestyle/UMAGE_lifestyle_Heart_n_Soul_120_oak_Curious_oak_black_Omni_ceiling_plated_brass__3_3.webp"
-    ],
-    relatedProducts: [
-      { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" },
-      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
-      { id: "heiko-dining-chair", name: "Heiko Dining Chair" }
-    ],
-  },
-  {
-    id: "lemon-squeeze-wall-lamp-double",
-    name: "Lemon Squeeze Wall Lamp Double",
-    description: "A playful yet sophisticated double wall lamp that creates beautiful ambient lighting with its distinctive geometric design. The double configuration provides enhanced illumination while maintaining the iconic lemon-squeeze aesthetic.",
-    price: 4999,
-    category: "Lighting",
-    variants: [
-      {
-        name: "Short Double - Plated Brass",
-        image: "/umage/Lemon-Squeeze-wall-lamp,double/umage_packshot_2621_lemon-squeeze_wall-lamp_short_double_plated-brass_2b9ca272-8267-494d-8dd1-41f2461905a6_1400x.webp",
-        material: "Plated Brass",
-        size: "Short",
-        price: 4999,
-      },
-      {
-        name: "Short Double - Polished Steel",
-        image: "/umage/Lemon-Squeeze-wall-lamp,double/umage_packshot_2624_lemon-squeeze_wall-lamp_short_double_polished-steel_d0ce1f18-77ff-49b0-ad9f-76d197174256_1400x.webp",
-        material: "Polished Steel",
-        size: "Short",
-        price: 4999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Distinctive geometric pentagon design",
-      "Double wall-mounted configuration",
-      "Premium metal finishes",
-      "Creates beautiful ambient lighting",
-      "Contemporary Scandinavian design",
-      "Easy wall installation",
-      "Energy efficient LED compatible",
-      "Award-nominated design",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Metal with premium finishes" },
-      { label: "Finish Options", value: "Plated Brass, Polished Steel" },
-      { label: "Configuration", value: "Double wall lamp" },
-      { label: "Shape", value: "Pentagon (Penta)" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Light Source", value: "LED compatible" },
-      { label: "Installation", value: "Wall mounted" },
-      { label: "Awards", value: "BOB Design Favoritter 2025 Nominated" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Lemon-Squeeze-wall-lamp,double/lifestyle/UMAGE_lifestyle_Lemon_Squeeze_wall_lamp_short_double_plated_brass__1_029152e9-5abe-4a6d-a302-4076fb3610df_1000x.webp",
-      "/umage/Lemon-Squeeze-wall-lamp,double/lifestyle/umage_lifestyle_lemon-squeeze_wall-lamp_long_double_polished-steel_-2_2b48fb61-622a-48d6-986c-365ca495771c_900x.webp"
-    ],
-    relatedProducts: [
-      { id: "lemon-squeeze-wall-lamp-single", name: "Lemon Squeeze Wall Lamp Single" },
-      { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" },
-      { id: "asteria-spotlight", name: "Asteria Spotlight" }
-    ],
-  },
-  {
-    id: "lemon-squeeze-wall-lamp-single",
-    name: "Lemon Squeeze Wall Lamp Single",
-    description: "A sophisticated single wall lamp that creates beautiful ambient lighting with its distinctive geometric design. The single configuration offers elegant illumination while maintaining the iconic lemon-squeeze aesthetic.",
-    price: 3999,
-    category: "Lighting",
-    variants: [
-      {
-        name: "Long Single - Plated Brass",
-        image: "/umage/Lemon-Squeeze-wall-lamp,single/umage_packshot_2200_lemon-squeeze_wall-lamp_long_single_plated-brass_1400x.webp",
-        material: "Plated Brass",
-        size: "Long",
-        price: 3999,
-      },
-      {
-        name: "Long Single - Polished Steel",
-        image: "/umage/Lemon-Squeeze-wall-lamp,single/umage_packshot_2527_lemon-squeeze_wall-lamp_long_single_polished-steel_63dbc0cc-a376-4de7-b92f-7960de74bd98_900x.webp",
-        material: "Polished Steel",
-        size: "Long",
-        price: 3999,
-      },
-      {
-        name: "Short Single - Plated Brass",
-        image: "/umage/Lemon-Squeeze-wall-lamp,single/umage_packshot_2620_lemon-squeeze_wall-lamp_short_single_plated-brass_1400x.webp",
-        material: "Plated Brass",
-        size: "Short",
-        price: 3699,
-      },
-      {
-        name: "Short Single - Polished Steel",
-        image: "/umage/Lemon-Squeeze-wall-lamp,single/umage_packshot_2623_lemon-squeeze_wall-lamp_short_single_polished-steel_ab0becfe-e21f-440c-b5a1-747c32d58cac_1400x.webp",
-        material: "Polished Steel",
-        size: "Short",
-        price: 3699,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Distinctive geometric pentagon design",
-      "Single wall-mounted configuration",
-      "Available in two sizes",
-      "Premium metal finishes",
-      "Creates beautiful ambient lighting",
-      "Contemporary Scandinavian design",
-      "Easy wall installation",
-      "Energy efficient LED compatible",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Metal with premium finishes" },
-      { label: "Finish Options", value: "Plated Brass, Polished Steel" },
-      { label: "Size Options", value: "Long, Short" },
-      { label: "Configuration", value: "Single wall lamp" },
-      { label: "Shape", value: "Pentagon (Penta)" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Light Source", value: "LED compatible" },
-      { label: "Installation", value: "Wall mounted" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Lemon-Squeeze-wall-lamp,single/lifestyle/UMAGE_lifestyle_Lemon_Squeeze_wall_lamp_short_single_plated_brass__1_1_1000x.webp",
-      "/umage/Lemon-Squeeze-wall-lamp,single/lifestyle/UMAGE_lifestyle_Lemon_Squeeze_wall_lamp_long_single_polished_steel__3_600x.webp"
-    ],
-    relatedProducts: [
-      { id: "lemon-squeeze-wall-lamp-double", name: "Lemon Squeeze Wall Lamp Double" },
-      { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" },
-      { id: "asteria-spotlight", name: "Asteria Spotlight" }
-    ],
-  },
-  {
-    id: "lounge-around-shuffle-coffee-table",
-    name: "Lounge Around Shuffle Coffee Table",
-    description: "A versatile coffee table that perfectly complements the Lounge Around collection. With its contemporary Scandinavian design and premium solid wood construction, this table brings both functionality and style to your living space.",
-    price: 9999,
-    category: "Tables",
-    variants: [
-      {
-        name: "Oak",
-        image: "/umage/Lounge-Around-Shuffle-coffee-table/umage_packshot_5552_lounge-around-shuffle_oak_-3_e7c808bb-3f3c-4857-8052-b7c6e0de3f98_900x.webp",
-        material: "Oak",
-        price: 9999,
-      },
-      {
-        name: "Dark Oak",
-        image: "/umage/Lounge-Around-Shuffle-coffee-table/umage_packshot_5752_lounge-around-shuffle_dark-oak_-3_b784ed95-b003-4457-94dc-dec34c424f8a_900x.webp",
-        material: "Dark Oak",
-        price: 10299,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Part of the Lounge Around collection",
-      "Premium solid wood construction",
-      "Contemporary Scandinavian design",
-      "Multiple wood finish options",
-      "Perfect coffee table height",
-      "Durable construction",
-      "Matches Lounge Around seating",
-      "Timeless aesthetic",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oak, Dark Oak" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Collection", value: "Lounge Around" },
-      { label: "Type", value: "Coffee table" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Lounge-Around-Shuffle-coffee-table/lifestyle/UMAGE_GALLERY_lifestyle_Lounge_Around_Shuffle_oak__3__1_600x.webp",
-      "/umage/Lounge-Around-Shuffle-coffee-table/lifestyle/UMAGE_lifestyle_Lounge_Around_Shuffle_dark_oak__2_1000x.webp"
-    ],
-    relatedProducts: [
-      { id: "lounge-around-3-seater", name: "Lounge Around 3-Seater" },
-      { id: "lounge-around-shuffle-puff", name: "Lounge Around Shuffle Puff" },
-      { id: "italic-table", name: "Italic Table" }
-    ],
-  },
-  {
-    id: "lounge-around-shuffle-puff",
-    name: "Lounge Around Shuffle Puff",
-    description: "A comfortable ottoman that perfectly complements the Lounge Around collection. This versatile piece serves as both additional seating and a footrest, featuring premium solid wood construction and multiple upholstery options.",
-    price: 7999,
-    category: "Seating",
-    variants: [
-      {
-        name: "Oak - Sugar Brown",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-01_lounge_around_shuffle_oak_sugar_brown_3_900x.webp",
-        material: "Oak",
-        price: 7999,
-      },
-      {
-        name: "Oak - White Sands",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-02_lounge_around_shuffle_oak_white_sands_3_1400x.webp",
-        material: "Oak",
-        price: 7999,
-      },
-      {
-        name: "Oak - Shadow",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-04_lounge_around_shuffle_oak_shadow_3_1400x.webp",
-        material: "Oak",
-        price: 7999,
-      },
-      {
-        name: "Dark Oak - Sugar Brown",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-01_lounge-around-shuffle_dark-oak_sugar-brown_-3_900x.webp",
-        material: "Dark Oak",
-        price: 8299,
-      },
-      {
-        name: "Dark Oak - White Sands",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-02_lounge-around-shuffle_dark-oak_white-sands_-3_900x.webp",
-        material: "Dark Oak",
-        price: 8299,
-      },
-      {
-        name: "Dark Oak - Shadow",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-04_lounge-around-shuffle_dark-oak_shadow_-3_900x.webp",
-        material: "Dark Oak",
-        price: 8299,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Comfortable ottoman design",
-      "Part of the Lounge Around collection",
-      "Multiple upholstery options",
-      "Solid wood frame construction",
-      "Versatile seating solution",
-      "Premium materials",
-      "Contemporary Scandinavian design",
-      "Perfect complement to Lounge Around seating",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Wood frame with upholstered cushion" },
-      { label: "Wood Options", value: "Oak, Dark Oak" },
-      { label: "Upholstery", value: "Sugar Brown, White Sands, Shadow" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Collection", value: "Lounge Around" },
-      { label: "Type", value: "Ottoman/Footrest" },
-      { label: "Care", value: "Vacuum regularly, professional cleaning recommended" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Lounge-Around-Shuffle-puff/lifestyle/UMAGE_lifestyle_Lounge_Around_Shuffle_oak__1_600x.webp",
-      "/umage/Lounge-Around-Shuffle-puff/lifestyle/UMAGE_lifestyle_Lounge_Around_Shuffle_dark_oak__1_1_1000x.webp"
-    ],
-    relatedProducts: [
-      { id: "lounge-around-3-seater", name: "Lounge Around 3-Seater" },
-      { id: "lounge-around-shuffle-coffee-table", name: "Lounge Around Shuffle Coffee Table" },
-      { id: "the-reader", name: "The Reader" }
-    ],
-  },
-  {
-    id: "metal-cover-accessories-asteria",
-    name: "Metal Cover Accessories for Asteria",
-    description: "Premium metal cover accessories designed specifically for Asteria lighting fixtures. These elegant covers enhance the aesthetic appeal of your Asteria lamps while providing additional design versatility and light control.",
-    price: 1999,
-    category: "Accessories",
-    variants: [
-      {
-        name: "Steel Cover - Model 4172",
-        image: "/umage/Metal-Cover-accessories-for-Asteria/4172_900x.webp",
-        material: "Steel",
-        price: 1999,
-      },
-      {
-        name: "Steel Cover - Model 4173",
-        image: "/umage/Metal-Cover-accessories-for-Asteria/4173_900x.webp",
-        material: "Steel",
-        price: 1999,
-      },
-      {
-        name: "Steel Cover - Model 4174",
-        image: "/umage/Metal-Cover-accessories-for-Asteria/4174_900x.webp",
-        material: "Steel",
-        price: 1999,
-      },
-      {
-        name: "Steel Cover - Model 4175",
-        image: "/umage/Metal-Cover-accessories-for-Asteria/4175_900x.webp",
-        material: "Steel",
-        price: 1999,
-      },
-    ],
-    designer: "Umage Design Team",
-    features: [
-      "Compatible with Asteria lighting fixtures",
-      "Premium metal construction",
-      "Enhanced light control and diffusion",
-      "Multiple design options available",
-      "Easy installation and removal",
-      "Durable steel construction",
-      "Contemporary design aesthetic",
-      "Extends design versatility of Asteria lamps",
-    ],
-    specifications: [
-      { label: "Designer", value: "Umage Design Team" },
-      { label: "Manufacturer", value: "Umage" },
-      { label: "Material", value: "Steel" },
-      { label: "Compatibility", value: "Asteria lighting fixtures" },
-      { label: "Type", value: "Lamp accessory/cover" },
-      { label: "Style", value: "Contemporary minimalist" },
-      { label: "Installation", value: "Easy attachment to Asteria fixtures" },
-      { label: "Function", value: "Light control and aesthetic enhancement" },
-      { label: "Care", value: "Clean with soft cloth" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Danish design" },
-    ],
-    lifestyleImages: [
-      "/umage/Metal-Cover-accessories-for-Asteria/lifestyle/umage_lifestyle_asteria_pendant-lamp_micro_nuance-olive_metal-cover_micro_steel_-2_600x.webp"
-    ],
-    relatedProducts: [
-      { id: "asteria-spotlight", name: "Asteria Spotlight" },
-      { id: "chordis", name: "Chordis" },
-      { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" }
-    ],
-  },
-];
+    lifestyleImages: enhancedData?.lifestyleImages || product.lifestyleImages?.map((img: any) => img.asset?.url).filter(Boolean) || [],
+    relatedProducts,
+  };
+
+  // Get other Umage products for the client
+  const umageProducts = allProducts
+    .filter((p: any) => p.brand === 'UMAGE')
+    .map((p: any) => ({
+      id: p._id,
+      name: p.name,
+      slug: p.slug?.current,
+    }));
+
+  return <UmageProductClient product={convertedProduct} products={umageProducts} />;
+}
+
+// Generate static params for all Umage products
+export async function generateStaticParams() {
+  try {
+    const products = await getAllProducts();
+    
+    return products
+      .filter((product: any) => product.brand === 'UMAGE' && product.slug?.current)
+      .map((product: any) => ({
+        productId: product.slug!.current,
+      }));
+  } catch (error) {
+    console.error('Error generating static params for Umage products:', error);
+    return [];
+  }
+}

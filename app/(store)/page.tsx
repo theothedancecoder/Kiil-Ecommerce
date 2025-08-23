@@ -62,18 +62,19 @@ export default async function Home() {
               </div>
             </div>
 
-            {/* Right Content - Hero Image */}
+            {/* Right Content - Hero Video */}
             <div className="relative">
               <div className="relative h-[500px] lg:h-[600px] overflow-hidden">
-                <ProductionImage
-                  src={heroImageUrl}
-                  alt={heroData.heroImage?.alt || "Elegant living room with sophisticated furniture"}
-                  fill
-                  className=""
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  objectFit="cover"
-                />
+                <video
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                >
+                  <source src="/video/UMAGE_Video_FSC_WEB_16x9.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
             </div>
