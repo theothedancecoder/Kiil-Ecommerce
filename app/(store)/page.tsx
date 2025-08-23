@@ -1,4 +1,5 @@
 import ProductionImage from "@/components/ProductionImage";
+import HeroVideo from "@/components/HeroVideo";
 import Image from "next/image";
 import Link from "next/link";
 import { getHomepage } from "@/sanity/lib/getHomepage";
@@ -62,19 +63,14 @@ export default async function Home() {
               </div>
             </div>
 
-            {/* Right Content - Hero Video */}
+            {/* Right Content - Hero Video with Fallback */}
             <div className="relative">
               <div className="relative h-[500px] lg:h-[600px] overflow-hidden">
-                <video
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                >
-                  <source src="/video/UMAGE_Video_FSC_WEB_16x9.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <HeroVideo
+                  videoSrc="/video/UMAGE_Video_FSC_WEB_16x9.mp4"
+                  fallbackImageSrc={heroImageUrl}
+                  fallbackImageAlt={heroData.heroImage?.alt || "Elegant living room with sophisticated furniture"}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
             </div>
