@@ -2,7 +2,7 @@ import { defineQuery } from 'next-sanity';
 import { sanityFetch } from '@/sanity/lib/live';
 
 export const getFritzHansenProducts = async () => {
-  const FRITZ_HANSEN_PRODUCTS_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen"] {
+  const FRITZ_HANSEN_PRODUCTS_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current)] {
     _id,
     name,
     slug,
@@ -51,7 +51,7 @@ export const getFritzHansenProducts = async () => {
 };
 
 export const getFritzHansenProductsByCategory = async (category: string) => {
-  const FRITZ_HANSEN_CATEGORY_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && $category in categories[]->title] {
+  const FRITZ_HANSEN_CATEGORY_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current) && $category in categories[]->title] {
     _id,
     name,
     slug,
@@ -101,7 +101,7 @@ export const getFritzHansenProductsByCategory = async (category: string) => {
 };
 
 export const getFritzHansenProduct = async (slug: string) => {
-  const FRITZ_HANSEN_PRODUCT_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && slug.current == $slug][0] {
+  const FRITZ_HANSEN_PRODUCT_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current) && slug.current == $slug][0] {
     _id,
     name,
     slug,
@@ -151,7 +151,7 @@ export const getFritzHansenProduct = async (slug: string) => {
 };
 
 export const getFritzHansenCategories = async () => {
-  const FRITZ_HANSEN_CATEGORIES_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen"] {
+  const FRITZ_HANSEN_CATEGORIES_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current)] {
     categories[]->{
       _id,
       title,
