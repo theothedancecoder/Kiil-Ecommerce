@@ -33,7 +33,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
   
   const products: FritzHansenProduct[] = [
     {
-      id: 'grand-prix-4130',
+      id: 'grand-prix-4130-chair',
       name: 'Grand Prix 4130 Chair',
       description: 'Iconic stackable chair designed by Arne Jacobsen in 1957. A timeless piece of Danish design that combines functionality with aesthetic beauty.',
       price: 4890,
@@ -57,7 +57,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       }
     },
     {
-      id: 'grand-prix-4130-upholstery',
+      id: 'grand-prix-4130-upholstered',
       name: 'Grand Prix 4130 Upholstered',
       description: 'Upholstered version of the iconic Grand Prix chair with premium fabric options for enhanced comfort.',
       price: 6890,
@@ -82,7 +82,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       }
     },
     {
-      id: 'grand-prix-3130',
+      id: 'grand-prix-3130-chair',
       name: 'Grand Prix 3130 Chair',
       description: 'Classic three-legged version of the Grand Prix chair with elegant proportions and timeless appeal.',
       price: 5290,
@@ -106,7 +106,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       }
     },
     {
-      id: 'regatta-chair',
+      id: 'regatta-lounge-chair',
       name: 'Regatta Lounge Chair',
       description: 'Contemporary outdoor lounge chair with weather-resistant materials and modern design for outdoor living.',
       price: 12900,
@@ -137,7 +137,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       ]
     },
     {
-      id: 'regatta-stool',
+      id: 'regatta-lounge-stool',
       name: 'Regatta Lounge Stool',
       description: 'Matching stool for the Regatta collection, perfect for outdoor relaxation and versatile seating.',
       price: 8900,
@@ -167,7 +167,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       ]
     },
     {
-      id: 'regatta-table',
+      id: 'regatta-lounge-table-60',
       name: 'Regatta Lounge Table Ø 60',
       description: 'Round outdoor table designed to complement the Regatta seating collection with weather-resistant finish.',
       price: 9900,
@@ -213,7 +213,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       }
     },
     {
-      id: 'candlestick-single-1',
+      id: 'single-candlestick-1',
       name: 'Single Candlestick #1',
       description: 'Elegant single candlestick with minimalist Danish design, perfect for creating ambient lighting.',
       price: 999,
@@ -233,7 +233,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       }
     },
     {
-      id: 'candlestick-single-2',
+      id: 'single-candlestick-2',
       name: 'Single Candlestick #2',
       description: 'Second design of the elegant single candlestick collection with refined proportions.',
       price: 1099,
@@ -285,7 +285,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       ]
     },
     {
-      id: 'drachmann-table-round',
+      id: 'drachmann-table-126',
       name: 'Drachmann Table Ø-126',
       description: 'The Drachmann series was designed by Bernt Santesson in 1982, inspired by the beautiful garden of Danish poet and painter Holger Drachmann. This round table is made by Mogens Holmriis in collaboration with Skagerak. Designed by Mogens Holmriis for Skagerak by Fritz Hansen. This is a made to order item with expected delivery time of approximately 6 weeks.',
       price: 24999,
@@ -327,7 +327,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       ]
     },
     {
-      id: 'cutter-mini-wardrobe',
+      id: 'skagerak-cutter-mini-wardrobe',
       name: 'Cutter Mini Wardrobe',
       description: 'Compact and elegant wardrobe from Skagerak. Perfect for small spaces with clean Scandinavian design and premium wood construction. Made to order with approximately 4 weeks delivery time.',
       price: 4199,
@@ -363,7 +363,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       ]
     },
     {
-      id: 'georg-skohorn',
+      id: 'skagerak-georg-skohorn',
       name: 'Georg Skohorn',
       description: 'Elegant Scandinavian design piece from Skagerak. Crafted with attention to detail and premium materials for modern living spaces.',
       price: 1099,
@@ -382,7 +382,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       }
     },
     {
-      id: 'georg-stool-with-cushion',
+      id: 'skagerak-georg-stool-with-cushion',
       name: 'Georg Stool with Cushion',
       description: 'This simple and beautiful stool Georg is designed by Chris Liljenberg Halstrøm for Skagerak. It can also be used around the dining table. The chair has a soft wool cushion that ensures good seating comfort, the cushion is held in place by a braided leather strap. The round wooden legs characterize the Georg series from Skagerak, where Nordic and Japanese design meet. Made to order with approximately 4 weeks delivery time.',
       price: 4699,
@@ -417,7 +417,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       ]
     },
     {
-      id: 'georg-mirror',
+      id: 'skagerak-georg-mirror',
       name: 'Georg Mirror',
       description: 'Georg Mirror is designed by Christina Liljenberg Halstrøm for Fritz Hansen. The mirror is part of the Georg series, which makes it possible to furnish the hall and other parts of the home in a functional and at the same time stylish way. The series includes coat hangers, coat racks, stool, bench, console table, desk, dining table, bar stools and two mirrors. All in solid oak and some with details in natural materials such as wool and leather. The furniture series has been awarded several international design awards since its launch in 2012. The series expression is a mixture of Scandinavian sensuality and Japanese minimalism.',
       price: 6699,
@@ -446,7 +446,7 @@ function FritzHansenProductPage({ params }: { params: Promise<{ productId: strin
       ]
     },
     {
-      id: 'clam',
+      id: 'clam-pendant',
       name: 'CLAM™',
       description: 'CLAM™ is a contemporary pendant light that combines elegant design with premium materials and exceptional craftsmanship. This sophisticated lighting solution is perfect for creating ambient lighting in dining areas, living spaces, and modern interiors. Available in two sizes to accommodate different room dimensions and lighting requirements.',
       price: 13999,
