@@ -84,7 +84,7 @@ export default async function FritzHansenPage() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product: any) => {
               const imageUrl = product.images?.[0]?.asset?.url;
               const variantCount = product.variants?.length || 0;
@@ -92,7 +92,7 @@ export default async function FritzHansenPage() {
               return (
                 <Link 
                   key={product._id} 
-                  href={`/products/${product.slug?.current}`}
+                  href={`/fritz-hansen/${product.slug?.current || product._id}`}
                   className="group cursor-pointer"
                 >
                   <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
