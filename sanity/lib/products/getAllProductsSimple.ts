@@ -82,6 +82,28 @@ export const getAllProducts = async () => {
       },
       alt
     },
+    relatedProducts[]-> {
+      _id,
+      name,
+      slug,
+      image {
+        _type,
+        asset-> {
+          _id,
+          _type,
+          url,
+          metadata {
+            dimensions {
+              width,
+              height
+            }
+          }
+        },
+        alt
+      },
+      price,
+      brand
+    },
     roomCategory,
     stock,
     inStock
@@ -172,6 +194,28 @@ export const getProductsByBrand = async (brand: string) => {
         }
       },
       alt
+    },
+    relatedProducts[]-> {
+      _id,
+      name,
+      slug,
+      image {
+        _type,
+        asset-> {
+          _id,
+          _type,
+          url,
+          metadata {
+            dimensions {
+              width,
+              height
+            }
+          }
+        },
+        alt
+      },
+      price,
+      brand
     },
     roomCategory,
     stock,

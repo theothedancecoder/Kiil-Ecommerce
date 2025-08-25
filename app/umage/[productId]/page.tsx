@@ -12,7 +12,7 @@ interface UmageProductPageProps {
   }>;
 }
 
-// Enhanced legacy products data with complete variants - used to supplement Sanity data
+// Enhanced legacy products data with complete variants and lifestyle images - used to supplement Sanity data
 const legacyProductsData: Record<string, any> = {
   "a-conversation-piece-dining-chair": {
     variants: [
@@ -66,11 +66,7 @@ const legacyProductsData: Record<string, any> = {
       },
     ],
     lifestyleImages: [
-      {
-        url: "/umage/A-Conversation-Piece/lifestyle/umage_lifestyle_a-conversation-piece_dining-chair_walnut_morning-meadows_1600x.webp",
-        alt: "A Conversation Piece Dining Chair in lifestyle setting",
-        caption: "Walnut finish in Morning Meadows setting"
-      }
+      "/umage/A-Conversation-Piece/lifestyle/umage_lifestyle_a-conversation-piece_dining-chair_walnut_morning-meadows_1600x.webp"
     ],
     relatedProducts: [
       { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
@@ -78,202 +74,34 @@ const legacyProductsData: Record<string, any> = {
       { id: "comfort-circle-dining-table", name: "Comfort Circle Dining Table" }
     ],
   },
-  "lounge-around-shuffle-puff": {
+  "asteria-spotlight": {
     variants: [
       {
-        name: "Oak - Sugar Brown",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-01_lounge_around_shuffle_oak_sugar_brown_3_900x.webp",
-        material: "Oak",
-        price: 7999,
+        name: "Plated Brass",
+        image: "/umage/Asteria-spotlight/umage_packshot_2496_asteria_spot_plated_brass_4_900x.webp",
+        material: "Plated Brass",
+        price: 2999,
       },
       {
-        name: "Oak - White Sands",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-02_lounge_around_shuffle_oak_white_sands_3_1400x.webp",
-        material: "Oak",
-        price: 7999,
+        name: "Black",
+        image: "/umage/Asteria-spotlight/umage_packshot_2496_asteria-spot_black_-4_900x.webp",
+        material: "Black",
+        price: 2999,
       },
       {
-        name: "Oak - Shadow",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5552c720-04_lounge_around_shuffle_oak_shadow_3_1400x.webp",
-        material: "Oak",
-        price: 7999,
+        name: "Polished Steel",
+        image: "/umage/Asteria-spotlight/umage_packshot_2497_asteria_spot_polished_steel_4_900x.webp",
+        material: "Polished Steel",
+        price: 2999,
       },
-      {
-        name: "Dark Oak - Sugar Brown",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-01_lounge-around-shuffle_dark-oak_sugar-brown_-3_900x.webp",
-        material: "Dark Oak",
-        price: 8299,
-      },
-      {
-        name: "Dark Oak - White Sands",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-02_lounge-around-shuffle_dark-oak_white-sands_-3_900x.webp",
-        material: "Dark Oak",
-        price: 8299,
-      },
-      {
-        name: "Dark Oak - Shadow",
-        image: "/umage/Lounge-Around-Shuffle-puff/umage_packshot_5752c720-04_lounge-around-shuffle_dark-oak_shadow_-3_900x.webp",
-        material: "Dark Oak",
-        price: 8299,
-      },
+    ],
+    lifestyleImages: [
+      "/umage/Asteria-spotlight/lifestyle/UMAGE_lifestyle_Asteria_Spot_black__2_09905591-6b1a-4cef-87a6-acfe05096aa3.webp"
     ],
     relatedProducts: [
-      { id: "lounge-around-3-seater", name: "Lounge Around 3-Seater" },
-      { id: "lounge-around-shuffle-coffee-table", name: "Lounge Around Shuffle Coffee Table" },
-      { id: "the-reader", name: "The Reader" }
-    ],
-  },
-  "the-reader": {
-    variants: [
-      {
-        name: "Oak - Sugar Brown",
-        image: "/umage/The-Reader/umage_packshot_5502-702-01_the_reader_oak_sugar_brown_2_7b723e73-d1fc-4340-9e5b-a540aed0b1aa_900x.webp",
-        material: "Oak",
-        price: 8999,
-      },
-      {
-        name: "Oak - Summer Shine",
-        image: "/umage/The-Reader/umage_packshot_5502c702-11_the_reader_oak_summer_shine_2_900x.webp",
-        material: "Oak",
-        price: 8999,
-      },
-      {
-        name: "Black Oak - Sugar Brown",
-        image: "/umage/The-Reader/umage_packshot_5103-702-01_the_reader_black_oak_sugar_brown_2_900x.webp",
-        material: "Black Oak",
-        price: 8999,
-      },
-      {
-        name: "Black Oak - Summer Shine",
-        image: "/umage/The-Reader/umage_packshot_5103c702-11_the_reader_black_oak_summer_shine_2_900x.webp",
-        material: "Black Oak",
-        price: 8999,
-      },
-      {
-        name: "Dark Oak - Sugar Brown",
-        image: "/umage/The-Reader/umage_packshot_5701-702-01_the_reader_dark_oak_sugar_brown_2_900x.webp",
-        material: "Dark Oak",
-        price: 8999,
-      },
-      {
-        name: "Dark Oak - Summer Shine",
-        image: "/umage/The-Reader/umage_packshot_5701c702-11_the_reader_dark_oak_summer_shine_2_900x.webp",
-        material: "Dark Oak",
-        price: 8999,
-      },
-    ],
-    relatedProducts: [
-      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
-      { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
-      { id: "lounge-around-3-seater", name: "Lounge Around 3-Seater" }
-    ],
-  },
-  "lounge-around-3-seater": {
-    variants: [
-      {
-        name: "Oak - Sugar Brown",
-        image: "/umage/Lounge-Around-3-seter/umage_packshot_5550c723-01_lounge_around_3-seater_oak_sugar_brown_2_59509b40-b394-46b2-bbd4-cf8d5fe0f15f_900x.webp",
-        material: "Oak",
-        price: 24999,
-      },
-      {
-        name: "Oak - White Sands",
-        image: "/umage/Lounge-Around-3-seter/umage_packshot_5550c723-02_lounge_around_3-seater_oak_white_sands_2_1400x.webp",
-        material: "Oak",
-        price: 24999,
-      },
-      {
-        name: "Oak - Shadow",
-        image: "/umage/Lounge-Around-3-seter/umage_packshot_5550c723-04_lounge_around_3-seater_oak_shadow_2_1400x.webp",
-        material: "Oak",
-        price: 24999,
-      },
-      {
-        name: "Dark Oak - Sugar Brown",
-        image: "/umage/Lounge-Around-3-seter/umage_packshot_5750c723-01_lounge_around_3-seater_dark_oak_sugar_brown_2_1400x.webp",
-        material: "Dark Oak",
-        price: 24999,
-      },
-      {
-        name: "Dark Oak - White Sands",
-        image: "/umage/Lounge-Around-3-seter/umage_packshot_5750c723-02_lounge_around_3-seater_dark_oak_white_sands_2_1400x.webp",
-        material: "Dark Oak",
-        price: 24999,
-      },
-      {
-        name: "Dark Oak - Shadow",
-        image: "/umage/Lounge-Around-3-seter/umage_packshot_5750c723-04_lounge_around_3-seater_dark_oak_shadow_2_1400x.webp",
-        material: "Dark Oak",
-        price: 24999,
-      },
-    ],
-    relatedProducts: [
-      { id: "lounge-around-shuffle-coffee-table", name: "Lounge Around Shuffle Coffee Table" },
-      { id: "lounge-around-shuffle-puff", name: "Lounge Around Shuffle Puff" },
-      { id: "the-reader", name: "The Reader" }
-    ],
-  },
-  "treasures-dresser": {
-    variants: [
-      {
-        name: "Oak - Sugar Brown",
-        image: "/umage/Treasures Dresser/umage_packshot_5624c735-01_treasures-dresser_oak_sugar-brown_-2_900x.webp",
-        material: "Oak",
-        price: 16999,
-      },
-      {
-        name: "Oak - White Sands",
-        image: "/umage/Treasures Dresser/umage_packshot_5624c735-02_treasures-dresser_oak_white-sands_-2_900x.webp",
-        material: "Oak",
-        price: 16999,
-      },
-      {
-        name: "Oak - Morning Meadows",
-        image: "/umage/Treasures Dresser/umage_packshot_5624c735-12_treasures-dresser_oak_morning-meadows_-2_900x.webp",
-        material: "Oak",
-        price: 16999,
-      },
-      {
-        name: "Black Oak - Sugar Brown",
-        image: "/umage/Treasures Dresser/umage_packshot_5126c734-01_treasures-dresser_black-oak_sugar-brown_-2_900x.webp",
-        material: "Black Oak",
-        price: 16999,
-      },
-      {
-        name: "Black Oak - White Sands",
-        image: "/umage/Treasures Dresser/umage_packshot_5126c734-02_treasures-dresser_black-oak_white-sands_-2_900x.webp",
-        material: "Black Oak",
-        price: 16999,
-      },
-      {
-        name: "Black Oak - Morning Meadows",
-        image: "/umage/Treasures Dresser/umage_packshot_5126c734-12_treasures-dresser_black-oak_morning-meadows_-2_900x.webp",
-        material: "Black Oak",
-        price: 16999,
-      },
-      {
-        name: "Dark Oak - Sugar Brown",
-        image: "/umage/Treasures Dresser/umage_packshot_5776c736-01_treasures-dresser_dark-oak_sugar-brown_-2_900x.webp",
-        material: "Dark Oak",
-        price: 16999,
-      },
-      {
-        name: "Dark Oak - White Sands",
-        image: "/umage/Treasures Dresser/umage_packshot_5776c736-02_treasures-dresser_dark-oak_white-sands_-2_900x.webp",
-        material: "Dark Oak",
-        price: 16999,
-      },
-      {
-        name: "Dark Oak - Morning Meadows",
-        image: "/umage/Treasures Dresser/umage_packshot_5776c736-12_treasures-dresser_dark-oak_morning-meadows_-2_900x.webp",
-        material: "Dark Oak",
-        price: 16999,
-      },
-    ],
-    relatedProducts: [
-      { id: "stories-shelving", name: "Stories Shelving" },
-      { id: "audacious-desk", name: "Audacious Desk" },
-      { id: "duende-desk", name: "Duende Desk" }
+      { id: "chordis", name: "Chordis" },
+      { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" },
+      { id: "metal-cover-accessories-for-asteria", name: "Metal Cover Accessories for Asteria" }
     ],
   },
   "audacious-desk": {
@@ -321,13 +149,128 @@ const legacyProductsData: Record<string, any> = {
         price: 12999,
       },
     ],
+    lifestyleImages: [
+      "/umage/Audacious-desk/lifestyle/UMAGE_lifestyle_Audacious_desk_oak_sterling__1_7.webp"
+    ],
     relatedProducts: [
       { id: "duende-desk", name: "Duende Desk" },
       { id: "stories-shelving", name: "Stories Shelving" },
       { id: "treasures-dresser", name: "Treasures Dresser" }
     ],
   },
-};
+  "chordis": {
+    variants: [
+      {
+        name: "Brass",
+        image: "/umage/Chordis/umage_packshot_2523_chordis_brass_-2_900x.webp",
+        material: "Brass",
+        price: 3999,
+      },
+    ],
+    lifestyleImages: [
+      "/umage/Chordis/lifestyle/umage_lifestyle_chordis_brass_-2_447687af-b575-4ad7-8839-2266d9adaecb_900x.webp"
+    ],
+    relatedProducts: [
+      { id: "asteria-spotlight", name: "Asteria Spotlight" },
+      { id: "lemon-squeeze-ceiling-lamp", name: "Lemon Squeeze Ceiling Lamp" },
+      { id: "lemon-squeeze-wall-lamp-single", name: "Lemon Squeeze Wall Lamp Single" }
+    ],
+  },
+  "comfort-circle-dining-table": {
+    variants: [
+      {
+        name: "Black Oak - Rippled",
+        image: "/umage/Comfort-Circle-dining-table/umage_packshot_5156-5156-1_comfort_circle_rippled_black_oak_2_1400x.webp",
+        material: "Black Oak",
+        price: 18999,
+      },
+      {
+        name: "Oak - Rippled",
+        image: "/umage/Comfort-Circle-dining-table/umage_packshot_5656-5656-1_comfort_circle_rippled_oak_2_900x.webp",
+        material: "Oak",
+        price: 18999,
+      },
+      {
+        name: "Dark Oak - Rippled",
+        image: "/umage/Comfort-Circle-dining-table/umage_packshot_5856-5856-1_comfort_circle_rippled_dark_oak_2_1400x.webp",
+        material: "Dark Oak",
+        price: 18999,
+      },
+    ],
+    lifestyleImages: [
+      "/umage/Comfort-Circle-dining-table/lifestyle/comfortcircle_blackoak_0c206d3b-220c-4089-a5da-d374ecda1255_900x.webp"
+    ],
+    relatedProducts: [
+      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
+      { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
+      { id: "heart-n-soul-200-dining-table", name: "Heart'n'Soul 200 Dining Table" }
+    ],
+  },
+  "duende-desk": {
+    variants: [
+      {
+        name: "Black Oak",
+        image: "/umage/Duende-desk/umage_packshot_5117_duende_black-oak_-1_900x.webp",
+        material: "Black Oak",
+        price: 9999,
+      },
+      {
+        name: "Oak",
+        image: "/umage/Duende-desk/umage_packshot_5605_duende_oak_1_900x.webp",
+        material: "Oak",
+        price: 9999,
+      },
+      {
+        name: "Dark Oak",
+        image: "/umage/Duende-desk/umage_packshot_5805_duende_dark-oak_-1_900x.webp",
+        material: "Dark Oak",
+        price: 9999,
+      },
+    ],
+    lifestyleImages: [
+      "/umage/Duende-desk/lifestyle/umage_lifestyle_duende_blackoak__1_c6dcacde-2a16-4cfd-a947-4c95079771c1_900x.webp"
+    ],
+    relatedProducts: [
+      { id: "audacious-desk", name: "Audacious Desk" },
+      { id: "stories-shelving", name: "Stories Shelving" },
+      { id: "treasures-dresser", name: "Treasures Dresser" }
+    ],
+  },
+  "gather-cafe-table": {
+    variants: [
+      {
+        name: "Beige Travertine",
+        image: "/umage/Gather-Café-table/ Gather Café table 8.999 kr.webp",
+        material: "Beige Travertine",
+        price: 8999,
+      },
+    ],
+    lifestyleImages: [
+      "/umage/Gather-Café-table/lifestyle/umage_lifestyle_gather_bar-table_brown-emperador_asteria-move_monochrome_leaf_-2_900x.webp",
+      "/umage/Gather-Café-table/lifestyle/umage_lifestyle_gather_bar-table_brown-emperador_asteria-move_monochrome_pale-blue_-5_900x.webp"
+    ],
+    relatedProducts: [
+      { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
+      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
+      { id: "asteria-spotlight", name: "Asteria Spotlight" }
+    ],
+  },
+  "heart-n-soul-200-dining-table": {
+    variants: [
+      {
+        name: "Black Oak",
+        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5658_heart-n-soul_dining-table_black-oak_-2_900x.webp",
+        material: "Black Oak",
+        price: 21999,
+      },
+      {
+        name: "Oak",
+        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5658_heart-n-soul_dining-table_oak_-2_6d603e60-d050-4480-8863-d04d03022f7d_900x.webp",
+        material: "Oak",
+        price: 21999,
+      },
+      {
+        name: "Oak - Obsidian Black",
 
 // Related products mapping for products not in the enhanced data
 const relatedProductsMap: Record<string, Array<{id: string, name: string}>> = {

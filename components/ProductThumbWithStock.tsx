@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Product } from "@/sanity.types";
 import { StaticProduct } from "@/lib/allProducts";
@@ -17,6 +17,7 @@ interface ProductThumbWithStockProps {
 
 function ProductThumbWithStock({ product, showPrice = false, isNew = false }: ProductThumbWithStockProps) {
   const [stockStatus, setStockStatus] = useState<any>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const stockManager = StockManager.getInstance();
 
   useEffect(() => {
@@ -30,6 +31,7 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
   const productId = '_id' in product ? product._id : (product as StaticProduct).id;
   const productName = product.name || '';
   const productPrice = product.price || 0;
+  const productBrand = isStaticProduct ? (product as any).staticBrand : (product as any).brand || 'Brand';
   const productHref = isStaticProduct 
     ? (product as any).staticHref || (product as StaticProduct).href || '#'
     : (product as any).brand === 'RO Collection' 
@@ -53,119 +55,130 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
     }
   }
 
-  return (
-    <Link href={productHref} className="group block">
-      <div className="relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-lg">
-        {/* Product Image */}
-        <div className="relative aspect-square overflow-hidden bg-gray-50">
-          {(product.image || imageSrc) ? (
-            <ProductionImage
-              src={product.image || imageSrc}
-              alt={productName || 'Product image'}
-              fill
-              className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              priority={false}
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-400 text-sm">
-                {imageSrc ? 'Invalid image' : 'No image'}
-              </span>
-            </div>
-          )}
-          
-          {/* New Badge */}
-          {isNew && (
-            <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 text-xs font-medium rounded-full">
-              NEW
-            </div>
-          )}
+  const isOutOfStock = stockStatus && !stockStatus.inStock;
 
+  return (
+    <Link 
+      href={productHref} 
+      className="group relative block w-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-100">
+        {/* Badges container */}
+        <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+          {isNew && (
+            <span className="bg-black text-white text-xs font-medium px-3 py-1 rounded-full">
+              NEW
+            </span>
+          )}
+          {isOutOfStock && (
+            <span className="bg-red-600 text-white text-xs font-medium px-3 py-1 rounded-full">
+              OUT OF STOCK
+            </span>
+          )}
         </div>
 
-        {/* Product Info */}
-        <div className="p-4">
-          <h3 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 group-hover:text-gray-700 transition-colors">
-            {productName}
-          </h3>
-          
-          {/* Brand */}
-          <p className="text-xs text-gray-500 mb-2">
-            {isStaticProduct ? (product as any).staticBrand : (product as any).brand || 'Brand'}
-          </p>
+        {/* Product Image */}
+        {(product.image || imageSrc) ? (
+          <ProductionImage
+            src={product.image || imageSrc}
+            alt={productName || 'Product image'}
+            fill
+            className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            priority={false}
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-400 text-sm">
+              {imageSrc ? 'Invalid image' : 'No image'}
+            </span>
+          </div>
+        )}
+      </div>
 
-          {/* Price and Quantity */}
-          {showPrice && (
-            <div className="space-y-3">
-              <span className="text-lg font-semibold text-gray-900">
-                kr {productPrice.toLocaleString()}
-              </span>
-              
-              {/* Quantity Selector and Add to Cart */}
-              <div className="flex items-center gap-2">
-                {/* Quantity Selector */}
-                <div className="flex items-center border border-gray-300 rounded">
-                  <button 
-                    className="px-2 py-1 text-sm hover:bg-gray-100 transition-colors"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const input = e.currentTarget.nextElementSibling as HTMLInputElement;
-                      if (input && parseInt(input.value) > 1) {
-                        input.value = (parseInt(input.value) - 1).toString();
-                      }
-                    }}
-                  >
-                    −
-                  </button>
-                  <input 
-                    type="number" 
-                    min="1" 
-                    max={stockStatus?.quantity || 99}
-                    defaultValue="1"
-                    className="w-12 text-center text-sm border-0 focus:ring-0 focus:outline-none"
-                    onClick={(e) => e.preventDefault()}
-                  />
-                  <button 
-                    className="px-2 py-1 text-sm hover:bg-gray-100 transition-colors"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                      const maxQty = stockStatus?.quantity || 99;
-                      if (input && parseInt(input.value) < maxQty) {
-                        input.value = (parseInt(input.value) + 1).toString();
-                      }
-                    }}
-                  >
-                    +
-                  </button>
-                </div>
-                
-                {/* Add to Cart Button */}
+      {/* Product Info */}
+      <div className="p-4">
+        <h3 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 group-hover:text-gray-700 transition-colors">
+          {productName}
+        </h3>
+        
+        {/* Brand */}
+        <p className="text-xs text-gray-500 mb-2">
+          {productBrand}
+        </p>
+
+        {/* Price and Quantity */}
+        {showPrice && (
+          <div className="space-y-3">
+            <span className="text-lg font-semibold text-gray-900">
+              kr {productPrice.toLocaleString()}
+            </span>
+            
+            {/* Quantity Selector and Add to Cart */}
+            <div className="flex items-center gap-2">
+              {/* Quantity Selector */}
+              <div className="flex items-center border border-gray-300 rounded">
                 <button 
-                  className={`flex-1 px-3 py-1 text-xs font-medium rounded transition-colors ${
-                    stockStatus && !stockStatus.inStock 
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-900 text-white hover:bg-gray-800'
-                  }`}
-                  disabled={stockStatus && !stockStatus.inStock}
+                  className="px-2 py-1 text-sm hover:bg-gray-100 transition-colors"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (stockStatus && stockStatus.inStock) {
-                      const quantityInput = e.currentTarget.parentElement?.querySelector('input[type="number"]') as HTMLInputElement;
-                      const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
-                      console.log('Add to cart:', productId, 'Quantity:', quantity);
-                      // Here you would integrate with your cart system
-                      alert(`Added ${quantity} x ${productName} to cart!`);
+                    const input = e.currentTarget.nextElementSibling as HTMLInputElement;
+                    if (input && parseInt(input.value) > 1) {
+                      input.value = (parseInt(input.value) - 1).toString();
                     }
                   }}
                 >
-                  {stockStatus && !stockStatus.inStock ? 'Out of Stock' : 'Add to Cart'}
+                  −
+                </button>
+                <input 
+                  type="number" 
+                  min="1" 
+                  max={stockStatus?.quantity || 99}
+                  defaultValue="1"
+                  className="w-12 text-center text-sm border-0 focus:ring-0 focus:outline-none"
+                  onClick={(e) => e.preventDefault()}
+                />
+                <button 
+                  className="px-2 py-1 text-sm hover:bg-gray-100 transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                    const maxQty = stockStatus?.quantity || 99;
+                    if (input && parseInt(input.value) < maxQty) {
+                      input.value = (parseInt(input.value) + 1).toString();
+                    }
+                  }}
+                >
+                  +
                 </button>
               </div>
+              
+              {/* Add to Cart Button */}
+              <button 
+                className={`flex-1 px-3 py-1 text-xs font-medium rounded transition-colors ${
+                  isOutOfStock 
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-900 text-white hover:bg-gray-800'
+                }`}
+                disabled={isOutOfStock}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!isOutOfStock) {
+                    const quantityInput = e.currentTarget.parentElement?.querySelector('input[type="number"]') as HTMLInputElement;
+                    const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+                    console.log('Add to cart:', productId, 'Quantity:', quantity);
+                    // Here you would integrate with your cart system
+                    alert(`Added ${quantity} x ${productName} to cart!`);
+                  }
+                }}
+              >
+                {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </Link>
   );
