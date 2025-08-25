@@ -3,10 +3,10 @@
 import ProductThumbWithStock from "@/components/ProductThumbWithStock";
 import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
 import { useEffect, useState } from "react";
-import { Product } from "@/types/Product";
+import { ALL_PRODUCTS_QUERYResult } from "@/sanity.types";
 
 export default function TestProductThumbPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ALL_PRODUCTS_QUERYResult>([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showOutOfStock, setShowOutOfStock] = useState(true);
@@ -136,9 +136,9 @@ export default function TestProductThumbPage() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">
-                {products.filter(p => p.salePrice && p.salePrice < (p.price || 0)).length}
+                {products.filter(p => p.variants && p.variants.length > 0).length}
               </div>
-              <div className="text-sm text-gray-600">On Sale</div>
+              <div className="text-sm text-gray-600">With Variants</div>
             </div>
           </div>
         </div>
@@ -158,9 +158,9 @@ export default function TestProductThumbPage() {
               {filteredProducts.map((product) => (
                 <div key={product._id} className={viewMode === 'list' ? 'border-b pb-4' : ''}>
                   <ProductThumbWithStock 
-                    product={product} 
+                    product={product as any} 
                     showPrice={showPrice}
-                    isNew={product.isNew || false}
+                    isNew={false}
                   />
                 </div>
               ))}
