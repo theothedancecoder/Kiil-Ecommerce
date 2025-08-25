@@ -271,6 +271,21 @@ const legacyProductsData: Record<string, any> = {
       },
       {
         name: "Oak - Obsidian Black",
+        image: "/umage/Heart'n'Soul-200-dining-table-200/umage_packshot_5658_heart-n-soul_dining-table_oak_obsidian-black_-2_900x.webp",
+        material: "Oak",
+        price: 21999,
+      },
+    ],
+    lifestyleImages: [
+      "/umage/Heart'n'Soul-200-dining-table-200/lifestyle/umage_lifestyle_heart-n-soul_dining-table_oak_-1_900x.webp"
+    ],
+    relatedProducts: [
+      { id: "a-conversation-piece-dining-chair", name: "A Conversation Piece Dining Chair" },
+      { id: "heiko-dining-chair", name: "Heiko Dining Chair" },
+      { id: "comfort-circle-dining-table", name: "Comfort Circle Dining Table" }
+    ],
+  },
+};
 
 // Related products mapping for products not in the enhanced data
 const relatedProductsMap: Record<string, Array<{id: string, name: string}>> = {
