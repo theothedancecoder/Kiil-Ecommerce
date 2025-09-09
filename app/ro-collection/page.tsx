@@ -1,435 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-interface ProductVariant {
-  name: string;
-  image: string;
-  size?: string;
-  price: number;
-  material?: string;
-  base?: string;
-  leather?: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  variants: ProductVariant[];
-  designer?: string;
-  features?: string[];
-  specifications?: { label: string; value: string }[];
-}
-
-const products: Product[] = [
-  {
-    id: "salon-dining-chair",
-    name: "Salon Dining Chair",
-    description: "An elegant dining chair with premium leather upholstery and solid wood base options.",
-    price: 22005,
-    category: "Dining Chairs",
-    variants: [
-      {
-        name: "Oiled Oak - Supreme Dark Chocolate",
-        image: "/Ro-Collection/Salon dining chair/Salon Dining Chair kr 22 005 Base - Oiled Oak Oiled Oak Smoked Oak Soaped Oak Leather - Supreme Dark Chocolat.webp",
-        base: "Oiled Oak",
-        leather: "Supreme Dark Chocolate",
-        price: 22005,
-      },
-      {
-        name: "Soaped Oak - Supreme Dark Chocolate",
-        image: "/Ro-Collection/Salon dining chair/ Salon dining chair NOK  22,005  Base -  Soaped oak Oiled oak Smoked oak Soaped oak Shine -  Supreme Dark Chocolate.webp",
-        base: "Soaped Oak",
-        leather: "Supreme Dark Chocolate",
-        price: 22005,
-      },
-      {
-        name: "Oiled Oak - Supreme Cognac",
-        image: "/Ro-Collection/Salon dining chair/Salon dining chair NOK  22,005  Base -  Oiled oak Oiled oak Smoked oak Soaped oak Shine -  Supreme Cognac.webp",
-        base: "Oiled Oak",
-        leather: "Supreme Cognac",
-        price: 22005,
-      },
-      {
-        name: "Smoked Oak - Supreme Cognac",
-        image: "/Ro-Collection/Salon dining chair/Salon dining chair NOK  22,005  Base -  Smoked oak Oiled oak Smoked oak Soaped oak Shine -  Supreme Cognac.webp",
-        base: "Smoked Oak",
-        leather: "Supreme Cognac",
-        price: 22005,
-      },
-      {
-        name: "Smoked Oak - Supreme Dark Chocolate",
-        image: "/Ro-Collection/Salon dining chair/Salon dining chair NOK  22,005  Base -  Smoked oak Oiled oak Smoked oak Soaped oak Shine -  Supreme Dark Chocolate.webp",
-        base: "Smoked Oak",
-        leather: "Supreme Dark Chocolate",
-        price: 22005,
-      },
-      {
-        name: "Soaped Oak - Supreme Cognac",
-        image: "/Ro-Collection/Salon dining chair/Salon dining chair NOK  22,005  Base -  Soaped oak Oiled oak Smoked oak Soaped oak Shine -  Supreme Cognac.webp",
-        base: "Soaped Oak",
-        leather: "Supreme Cognac",
-        price: 22005,
-      },
-    ],
-    designer: "RO Collection Design Team",
-    features: [
-      "Premium leather upholstery",
-      "Solid wood base construction",
-      "Multiple wood finish options",
-      "Supreme quality leather",
-      "Contemporary Scandinavian design",
-      "Comfortable ergonomic design",
-      "Handcrafted details",
-      "Durable construction",
-    ],
-    specifications: [
-      { label: "Designer", value: "RO Collection Design Team" },
-      { label: "Manufacturer", value: "RO Collection" },
-      { label: "Material", value: "Solid wood with leather upholstery" },
-      { label: "Base Options", value: "Oiled Oak, Soaped Oak, Smoked Oak" },
-      { label: "Leather Options", value: "Supreme Dark Chocolate, Supreme Cognac" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Care", value: "Regular leather care and wood maintenance" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Scandinavian design" },
-    ],
-  },
-  {
-    id: "salon-dining-table-round-120",
-    name: "Salon Dining Table Ø-120",
-    description: "A beautiful round dining table perfect for intimate dining experiences.",
-    price: 29940,
-    category: "Dining Tables",
-    variants: [
-      {
-        name: "Oiled Oak",
-        image: "/Ro-Collection/Salon dining table Ø-120/Salon dining table Ø-120 NOK  29,940  Color -  Oiled oak.webp",
-        material: "Oiled Oak",
-        price: 29940,
-      },
-      {
-        name: "Soaped Oak",
-        image: "/Ro-Collection/Salon dining table Ø-120/Salon dining table Ø-120 NOK  29,940  Color -  Soaped oak.webp",
-        material: "Soaped Oak",
-        price: 29940,
-      },
-      {
-        name: "Smoked Oak",
-        image: "/Ro-Collection/Salon dining table Ø-120/Salon dining table Ø-120 NOK  33,450  Color -  Smoked oak.webp",
-        material: "Smoked Oak",
-        price: 33450,
-      },
-    ],
-    designer: "RO Collection Design Team",
-    features: [
-      "Round dining table design",
-      "Premium solid wood construction",
-      "Multiple wood finish options",
-      "Seats 4-6 people comfortably",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Perfect for intimate dining",
-      "Timeless aesthetic",
-    ],
-    specifications: [
-      { label: "Designer", value: "RO Collection Design Team" },
-      { label: "Manufacturer", value: "RO Collection" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oiled Oak, Soaped Oak, Smoked Oak" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Diameter", value: "Ø120cm" },
-      { label: "Seating", value: "4-6 people" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Scandinavian design" },
-    ],
-  },
-  {
-    id: "salon-dining-table-round-120-extension",
-    name: "Salon Dining Table with Extension Option, Ø-120",
-    description: "A versatile round dining table with extension capability for larger gatherings.",
-    price: 29940,
-    category: "Dining Tables",
-    variants: [
-      {
-        name: "Oiled Oak",
-        image: "/Ro-Collection/Salon dining table with extension option, Ø-120/Salon dining table with extension option, Ø-120 NOK  29,940  Color -  Oiled oak.webp",
-        material: "Oiled Oak",
-        price: 29940,
-      },
-      {
-        name: "Soaped Oak",
-        image: "/Ro-Collection/Salon dining table with extension option, Ø-120/Salon dining table with extension option, Ø-120 NOK  29,940  Color -  Soaped oak.webp",
-        material: "Soaped Oak",
-        price: 29940,
-      },
-      {
-        name: "Smoked Oak",
-        image: "/Ro-Collection/Salon dining table with extension option, Ø-120/Salon dining table with extension option, Ø-120 NOK  33,450  Color -  Smoked oak.webp",
-        material: "Smoked Oak",
-        price: 33450,
-      },
-    ],
-    designer: "RO Collection Design Team",
-    features: [
-      "Round dining table with extension",
-      "Premium solid wood construction",
-      "Multiple wood finish options",
-      "Expandable for larger gatherings",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Versatile dining solution",
-      "Easy extension mechanism",
-    ],
-    specifications: [
-      { label: "Designer", value: "RO Collection Design Team" },
-      { label: "Manufacturer", value: "RO Collection" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oiled Oak, Soaped Oak, Smoked Oak" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Diameter", value: "Ø120cm (extendable)" },
-      { label: "Seating", value: "4-8 people (with extension)" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Scandinavian design" },
-    ],
-  },
-  {
-    id: "salon-dining-table-rectangular-extension",
-    name: "Salon Dining Table with Extension Option",
-    description: "A spacious rectangular dining table with extension capability for large gatherings.",
-    price: 35190,
-    category: "Dining Tables",
-    variants: [
-      {
-        name: "190x90 - Oiled Oak",
-        image: "/Ro-Collection/Salon dining table with extenstion option/Ro Collection Salon dining table with extension option NOK  35,190  Size -  190x90 190x90 220x100 Color -  Oiled oak.webp",
-        size: "190x90",
-        material: "Oiled Oak",
-        price: 35190,
-      },
-      {
-        name: "190x90 - Soaped Oak",
-        image: "/Ro-Collection/Salon dining table with extenstion option/Salon dining table with extension option NOK  35,190  Size -  190x90 190x90 220x100 Color -  Soaped oak.webp",
-        size: "190x90",
-        material: "Soaped Oak",
-        price: 35190,
-      },
-      {
-        name: "220x100 - Oiled Oak",
-        image: "/Ro-Collection/Salon dining table with extenstion option/Salon dining table with extension option NOK  37,815  Size -  220x100 190x90 220x100 Color -  Oiled oak.webp",
-        size: "220x100",
-        material: "Oiled Oak",
-        price: 37815,
-      },
-      {
-        name: "220x100 - Soaped Oak",
-        image: "/Ro-Collection/Salon dining table with extenstion option/Salon dining table with extension option NOK  37,815  Size -  220x100 190x90 220x100 Color -  Soaped oak.webp",
-        size: "220x100",
-        material: "Soaped Oak",
-        price: 37815,
-      },
-      {
-        name: "190x90 - Smoked Oak",
-        image: "/Ro-Collection/Salon dining table with extenstion option/Salon dining table with extension option NOK  38,700  Size -  190x90 190x90 220x100 Color -  Smoked oak.webp",
-        size: "190x90",
-        material: "Smoked Oak",
-        price: 38700,
-      },
-      {
-        name: "220x100 - Smoked Oak",
-        image: "/Ro-Collection/Salon dining table with extenstion option/Salon dining table with extension option NOK  41,385  Size -  220x100 190x90 220x100 Color -  Smoked oak.webp",
-        size: "220x100",
-        material: "Smoked Oak",
-        price: 41385,
-      },
-    ],
-    designer: "RO Collection Design Team",
-    features: [
-      "Rectangular dining table with extension",
-      "Premium solid wood construction",
-      "Multiple size and wood options",
-      "Perfect for large gatherings",
-      "Contemporary Scandinavian design",
-      "Durable construction",
-      "Spacious dining solution",
-      "Easy extension mechanism",
-    ],
-    specifications: [
-      { label: "Designer", value: "RO Collection Design Team" },
-      { label: "Manufacturer", value: "RO Collection" },
-      { label: "Material", value: "Solid wood" },
-      { label: "Wood Options", value: "Oiled Oak, Soaped Oak, Smoked Oak" },
-      { label: "Size Options", value: "190x90cm, 220x100cm" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Seating", value: "6-10 people (with extension)" },
-      { label: "Care", value: "Dust regularly, use wood care products" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Scandinavian design" },
-    ],
-  },
-  {
-    id: "extension-leaf-round-120",
-    name: "Extension Leaf for Salon Dining Table Ø-120",
-    description: "Extension leaf accessory for the round Salon dining table.",
-    price: 5130,
-    category: "Accessories",
-    variants: [
-      {
-        name: "Black MDF",
-        image: "/Ro-Collection/Extension leaf for Salon dining table Ø-120/Extension leaf for Salon dining table Ø-120 NOK  5,130  Color -  Black MDF.webp",
-        material: "Black MDF",
-        price: 5130,
-      },
-      {
-        name: "Oiled Oak",
-        image: "/Ro-Collection/Extension leaf for Salon dining table Ø-120/Extension leaf for Salon dining table Ø-120 NOK  7,950  Color -  Oiled oak.webp",
-        material: "Oiled Oak",
-        price: 7950,
-      },
-      {
-        name: "Soaped Oak",
-        image: "/Ro-Collection/Extension leaf for Salon dining table Ø-120/Extension leaf for Salon dining table Ø-120 NOK  7,950  Color -  Soaped oak.webp",
-        material: "Soaped Oak",
-        price: 7950,
-      },
-      {
-        name: "Smoked Oak",
-        image: "/Ro-Collection/Extension leaf for Salon dining table Ø-120/Extension leaf for Salon dining table Ø-120 NOK  9,690  Color -  Smoked oak.webp",
-        material: "Smoked Oak",
-        price: 9690,
-      },
-    ],
-    designer: "RO Collection Design Team",
-    features: [
-      "Extension leaf for round table",
-      "Multiple material options",
-      "Perfect fit for Salon table",
-      "Easy to install and store",
-      "Matching finishes available",
-      "Durable construction",
-    ],
-    specifications: [
-      { label: "Designer", value: "RO Collection Design Team" },
-      { label: "Manufacturer", value: "RO Collection" },
-      { label: "Material Options", value: "Black MDF, Oiled Oak, Soaped Oak, Smoked Oak" },
-      { label: "Compatibility", value: "Salon Dining Table Ø-120" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Care", value: "Clean with appropriate materials" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Scandinavian design" },
-    ],
-  },
-  {
-    id: "extension-plate-rectangular",
-    name: "Extension Plate for Salon Dining Table",
-    description: "Extension plate accessory for the rectangular Salon dining table.",
-    price: 5130,
-    category: "Accessories",
-    variants: [
-      {
-        name: "50x90 - Black MDF",
-        image: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  5,130  Size -  50x90 50x100 50x90 Color -  Black MDF.webp",
-        size: "50x90",
-        material: "Black MDF",
-        price: 5130,
-      },
-      {
-        name: "50x100 - Black MDF",
-        image: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  5,130  Size -  50x100 50x100 50x90 Color -  Black MDF.webp",
-        size: "50x100",
-        material: "Black MDF",
-        price: 5130,
-      },
-      {
-        name: "50x90 - Oiled Oak",
-        image: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  7,950  Size -  50x90 50x100 50x90 Color -  Oiled oak.webp",
-        size: "50x90",
-        material: "Oiled Oak",
-        price: 7950,
-      },
-      {
-        name: "50x100 - Oiled Oak",
-        image: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  7,950  Size -  50x100 50x100 50x90 Color -  Oiled oak.webp",
-        size: "50x100",
-        material: "Oiled Oak",
-        price: 7950,
-      },
-      {
-        name: "50x90 - Soaped Oak",
-        image: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  7,950  Size -  50x90 50x100 50x90 Color -  Soaped oak.webp",
-        size: "50x90",
-        material: "Soaped Oak",
-        price: 7950,
-      },
-      {
-        name: "50x100 - Soaped Oak",
-        image: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  7,950  Size -  50x100 50x100 50x90 Color -  Soaped oak.webp",
-        size: "50x100",
-        material: "Soaped Oak",
-        price: 7950,
-      },
-      {
-        name: "50x90 - Smoked Oak",
-        image: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  9,690  Size -  50x90 50x100 50x90 Color -  Smoked oak.webp",
-        size: "50x90",
-        material: "Smoked Oak",
-        price: 9690,
-      },
-      {
-        name: "50x100 - Smoked Oak",
-        image: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  9,690  Size -  50x100 50x100 50x90 Color -  Smoked oak.webp",
-        size: "50x100",
-        material: "Smoked Oak",
-        price: 9690,
-      },
-    ],
-    designer: "RO Collection Design Team",
-    features: [
-      "Extension plate for rectangular table",
-      "Multiple size and material options",
-      "Perfect fit for Salon table",
-      "Easy to install and store",
-      "Matching finishes available",
-      "Durable construction",
-    ],
-    specifications: [
-      { label: "Designer", value: "RO Collection Design Team" },
-      { label: "Manufacturer", value: "RO Collection" },
-      { label: "Material Options", value: "Black MDF, Oiled Oak, Soaped Oak, Smoked Oak" },
-      { label: "Size Options", value: "50x90cm, 50x100cm" },
-      { label: "Compatibility", value: "Salon Dining Table (Rectangular)" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Care", value: "Clean with appropriate materials" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Scandinavian design" },
-    ],
-  },
-];
+import { getRoCollectionProducts, RoCollectionProduct } from "@/sanity/lib/products/getRoCollectionProducts";
 
 export default function ROCollectionPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState<RoCollectionProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const productsPerPage = 15;
 
   const categories = ["All", "Dining Chairs", "Dining Tables", "Accessories"];
 
-  const filteredProducts = products.filter(product => 
-    selectedCategory === "All" || product.category === selectedCategory
+  useEffect(() => {
+    async function fetchProducts() {
+      setLoading(true);
+      setError(null);
+      try {
+        const roProducts = await getRoCollectionProducts();
+        setProducts(roProducts);
+      } catch (err) {
+        setError("Failed to load products.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  const filteredProducts = products.filter(product =>
+    selectedCategory === "All" || product.categories?.some(cat => cat.title === selectedCategory)
   );
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === "name") {
-      return a.name.localeCompare(b.name);
+      return (a.name ?? "").localeCompare(b.name ?? "");
     } else if (sortBy === "price") {
-      return a.price - b.price;
+      return (a.price ?? 0) - (b.price ?? 0);
     }
     return 0;
   });
@@ -456,26 +68,34 @@ export default function ROCollectionPage() {
     }
   };
 
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading products...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600">{error}</div>;
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Back to Homepage */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link 
+          <Link
             href="/"
             className="inline-flex items-center text-stone-600 hover:text-stone-800 transition-colors"
           >
-            <svg 
-              className="w-5 h-5 mr-2" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
             Back to Homepage
@@ -491,10 +111,10 @@ export default function ROCollectionPage() {
           fill
           className="object-cover"
         />
-        
+
         <div className="absolute inset-0 bg-gradient-to-r from-stone-900/60 via-stone-800/40 to-stone-700/60" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
-        
+
         <div className="relative h-full flex items-center justify-center text-center">
           <div className="max-w-4xl mx-auto px-4">
             <div className="inline-block bg-white/90 backdrop-blur-sm px-12 py-8 rounded-2xl shadow-lg">
@@ -528,7 +148,7 @@ export default function ROCollectionPage() {
                 </button>
               ))}
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">
                 {sortedProducts.length} products
@@ -548,19 +168,25 @@ export default function ROCollectionPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentProducts.map((product) => (
             <Link
-              key={product.id}
-              href={`/ro-collection/${product.id}`}
+              key={product._id}
+              href={`/ro-collection/${product.slug?.current}`}
               className="group"
             >
               <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
                 <div className="relative aspect-square bg-gray-50">
-                  <Image
-                    src={product.variants[0].image}
-                    alt={product.name}
-                    fill
-                    className="object-contain object-center p-8 group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
+                  {product.image?.asset?.url ? (
+                    <Image
+                      src={product.image.asset.url}
+                      alt={product.name ?? "RO Collection product"}
+                      fill
+                      className="object-contain object-center p-8 group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-400">
+                      No Image
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -570,7 +196,7 @@ export default function ROCollectionPage() {
                     {product.description}
                   </p>
                   <div className="text-lg font-light text-gray-900">
-                    kr {product.price.toLocaleString()}
+                    kr {product.price?.toLocaleString()}
                   </div>
                 </div>
               </div>

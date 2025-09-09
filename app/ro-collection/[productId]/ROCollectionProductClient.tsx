@@ -1,52 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-interface ProductVariant {
-  name: string;
-  image: string;
-  size?: string;
-  price: number;
-  material?: string;
-  base?: string;
-  leather?: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  variants: ProductVariant[];
-  designer?: string;
-  features?: string[];
-  specifications?: { label: string; value: string }[];
-  relatedProducts?: { id: string; name: string }[];
-  lifestyleImages?: string[];
-}
+import { getRoCollectionProductBySlug, RoCollectionProduct } from "@/sanity/lib/products/getRoCollectionProducts";
+import { useRouter } from "next/navigation";
 
 interface ROCollectionProductClientProps {
-  product: Product;
-  products: Product[];
+  params: {
+    productId: string;
+  };
 }
 
-export default function ROCollectionProductClient({ product, products }: ROCollectionProductClientProps) {
+export default function ROCollectionProductClient({ params }: ROCollectionProductClientProps) {
+  const slug = params.productId;
+  const [product, setProduct] = useState<RoCollectionProduct | null>(null);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const selectedVariant = product.variants[selectedVariantIndex];
+  useEffect(() => {
+    async function fetchProduct() {
+      setLoading(true);
+      setError(null);
+      try {
+        const fetchedProduct = await getRoCollectionProductBySlug(slug);
+        if (!fetchedProduct) {
+          setError("Product not found");
+          setProduct(null);
+        } else {
+          setProduct(fetchedProduct);
+        }
+      } catch (err) {
+        setError("Failed to load product");
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [slug]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading product...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600">{error}</div>;
+  }
+
+  if (!product) {
+    return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
+  }
+
+  const selectedVariant = product.variants?.[selectedVariantIndex];
 
   return (
     <div className="min-h-screen bg-white">
       {/* Back Button */}
       <div className="bg-white border-b border-gray-200 py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link 
-            href="/ro-collection" 
+          <Link
+            href="/ro-collection"
             className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,17 +97,31 @@ export default function ROCollectionProductClient({ product, products }: ROColle
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src={selectedVariant.image}
-                alt={`${product.name} - ${selectedVariant.name}`}
-                fill
-                className="object-contain object-center p-8"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+              {selectedVariant?.image?.asset?.url ? (
+                <Image
+                  src={selectedVariant.image.asset.url}
+                  alt={`${product.name} - ${selectedVariant.name}`}
+                  fill
+                  className="object-contain object-center p-8"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : product.image?.asset?.url ? (
+                <Image
+                  src={product.image.asset.url}
+                  alt={product.name ?? "RO Collection product"}
+                  fill
+                  className="object-contain object-center p-8"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  No Image
+                </div>
+              )}
             </div>
 
             {/* Variant Thumbnails */}
-            {product.variants.length > 1 && (
+            {product.variants && product.variants.length > 1 && (
               <div className="grid grid-cols-4 gap-3">
                 {product.variants.map((variant, index) => (
                   <button
@@ -102,13 +133,19 @@ export default function ROCollectionProductClient({ product, products }: ROColle
                         : "border-gray-200 hover:border-gray-400"
                     }`}
                   >
-                    <Image
-                      src={variant.image}
-                      alt={`${variant.name} variant`}
-                      fill
-                      className="object-contain object-center p-2"
-                      sizes="(max-width: 768px) 25vw, 12.5vw"
-                    />
+                    {variant.image?.asset?.url ? (
+                      <Image
+                        src={variant.image.asset.url}
+                        alt={`${variant.name} variant`}
+                        fill
+                        className="object-contain object-center p-2"
+                        sizes="(max-width: 768px) 25vw, 12.5vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        No Image
+                      </div>
+                    )}
                     <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
                       {variant.material || variant.base || variant.name}
                     </div>
@@ -122,13 +159,19 @@ export default function ROCollectionProductClient({ product, products }: ROColle
               <div className="grid grid-cols-1 gap-4">
                 {product.lifestyleImages.map((image, index) => (
                   <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                    <Image
-                      src={image}
-                      alt={`${product.name} lifestyle image ${index + 1}`}
-                      fill
-                      className="object-cover object-center"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                    {image.asset?.url ? (
+                      <Image
+                        src={image.asset.url}
+                        alt={`${product.name} lifestyle image ${index + 1}`}
+                        fill
+                        className="object-cover object-center"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        No Image
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -155,17 +198,17 @@ export default function ROCollectionProductClient({ product, products }: ROColle
             </div>
 
             <div className="text-2xl font-light text-gray-900">
-              kr {selectedVariant.price.toLocaleString()}
+              kr {selectedVariant?.price?.toLocaleString() ?? product.price?.toLocaleString()}
             </div>
 
-            {product.variants.length > 1 && (
+            {product.variants && product.variants.length > 1 && (
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  {selectedVariant.base ? `Base: ${selectedVariant.base}` : 
-                   selectedVariant.material ? `Material: ${selectedVariant.material}` : 
-                   selectedVariant.size ? `Size: ${selectedVariant.size}` : 
+                  {selectedVariant?.base ? `Base: ${selectedVariant.base}` : 
+                   selectedVariant?.material ? `Material: ${selectedVariant.material}` : 
+                   selectedVariant?.size ? `Size: ${selectedVariant.size}` : 
                    'Options'}
-                  {selectedVariant.leather && ` | Leather: ${selectedVariant.leather}`}
+                  {selectedVariant?.leather && ` | Leather: ${selectedVariant.leather}`}
                 </h3>
                 <div className="grid grid-cols-1 gap-3">
                   {product.variants.map((variant, index) => (
@@ -179,7 +222,7 @@ export default function ROCollectionProductClient({ product, products }: ROColle
                       }`}
                     >
                       <div className="font-medium">{variant.name}</div>
-                      <div className="text-xs text-gray-500">kr {variant.price.toLocaleString()}</div>
+                      <div className="text-xs text-gray-500">kr {variant.price?.toLocaleString()}</div>
                     </button>
                   ))}
                 </div>
@@ -187,7 +230,7 @@ export default function ROCollectionProductClient({ product, products }: ROColle
             )}
 
             <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
-              Add to Cart - kr {selectedVariant.price.toLocaleString()}
+              Add to Cart - kr {selectedVariant?.price?.toLocaleString() ?? product.price?.toLocaleString()}
             </button>
 
             {/* Collapsible Features */}
@@ -252,7 +295,7 @@ export default function ROCollectionProductClient({ product, products }: ROColle
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {product.relatedProducts.map((related) => {
-                    const relatedProduct = products.find(p => p.id === related.id);
+                    const relatedProduct = product.relatedProducts ? product.relatedProducts.find(p => p.id === related.id) : null;
                     return (
                       <Link
                         key={related.id}
@@ -261,14 +304,18 @@ export default function ROCollectionProductClient({ product, products }: ROColle
                       >
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                           <div className="relative aspect-square bg-gray-50">
-                            {relatedProduct && (
+                            {relatedProduct?.image?.asset?.url ? (
                               <Image
-                                src={relatedProduct.variants[0].image}
+                                src={relatedProduct.image.asset.url}
                                 alt={related.name}
                                 fill
                                 className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
                                 sizes="(max-width: 640px) 50vw, 25vw"
                               />
+                            ) : (
+                              <div className="flex items-center justify-center h-full text-gray-400">
+                                No Image
+                              </div>
                             )}
                           </div>
                           <div className="p-4">
@@ -277,7 +324,7 @@ export default function ROCollectionProductClient({ product, products }: ROColle
                             </h3>
                             {relatedProduct && (
                               <p className="text-gray-900 font-medium">
-                                kr {relatedProduct.price.toLocaleString()}
+                                kr {relatedProduct.price?.toLocaleString()}
                               </p>
                             )}
                           </div>
