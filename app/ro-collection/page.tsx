@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getRoCollectionProducts, RoCollectionProduct } from "@/sanity/lib/products/getRoCollectionProducts";
+import ProductionImage from "@/components/ProductionImage";
 
 // Static fallback data
 const staticProducts = [
@@ -290,7 +291,7 @@ export default function ROCollectionPage() {
               <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
                 <div className="relative aspect-square bg-gray-50">
                   {(product.image?.asset?.url || (product as any).imagePath) ? (
-                    <Image
+                    <ProductionImage
                       src={product.image?.asset?.url || (product as any).imagePath}
                       alt={product.name ?? "RO Collection product"}
                       fill

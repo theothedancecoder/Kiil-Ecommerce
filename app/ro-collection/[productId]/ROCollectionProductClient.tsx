@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getRoCollectionProductBySlug, RoCollectionProduct } from "@/sanity/lib/products/getRoCollectionProducts";
 import { useRouter } from "next/navigation";
+import ProductionImage from "@/components/ProductionImage";
 
 interface ROCollectionProductClientProps {
   params: {
@@ -98,7 +99,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
               {(selectedVariant?.image?.asset?.url || (selectedVariant as any)?.imagePath) ? (
-                <Image
+                <ProductionImage
                   src={selectedVariant?.image?.asset?.url || (selectedVariant as any)?.imagePath}
                   alt={`${product.name} - ${selectedVariant?.name}`}
                   fill
@@ -106,7 +107,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               ) : (product.image?.asset?.url || (product as any).imagePath) ? (
-                <Image
+                <ProductionImage
                   src={product.image?.asset?.url || (product as any).imagePath}
                   alt={product.name ?? "RO Collection product"}
                   fill
@@ -134,7 +135,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
                     }`}
                   >
                     {(variant.image?.asset?.url || (variant as any).imagePath) ? (
-                      <Image
+                      <ProductionImage
                         src={variant.image?.asset?.url || (variant as any).imagePath}
                         alt={`${variant.name} variant`}
                         fill
@@ -160,7 +161,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
                 {product.lifestyleImages.map((image, index) => (
                   <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
                     {(image.asset?.url || (image as any).imagePath) ? (
-                      <Image
+                      <ProductionImage
                         src={image.asset?.url || (image as any).imagePath}
                         alt={`${product.name} lifestyle image ${index + 1}`}
                         fill
@@ -304,7 +305,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
                       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                         <div className="relative aspect-square bg-gray-50">
                           {(related.image?.asset?.url || (related as any).imagePath) ? (
-                            <Image
+                            <ProductionImage
                               src={related.image?.asset?.url || (related as any).imagePath}
                               alt={related.name || "Related product"}
                               fill
