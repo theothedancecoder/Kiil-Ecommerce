@@ -221,11 +221,12 @@ export default function ROCollectionPage() {
 
       {/* Hero Section */}
       <section className="relative h-[500px] overflow-hidden">
-        <Image
+        <ProductionImage
           src="/Ro-Collection/lifestyle/Gal_2_724663c2-5a86-4611-8289-baf4b34e6c5e.webp"
           alt="RO Collection"
           fill
           className="object-cover"
+          sizes="100vw"
         />
 
         <div className="absolute inset-0 bg-gradient-to-r from-stone-900/60 via-stone-800/40 to-stone-700/60" />
