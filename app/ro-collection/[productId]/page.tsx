@@ -452,6 +452,65 @@ const products: Product[] = [
       { id: "salon-dining-table-rectangular-extension", name: "Salon Dining Table with Extension Option" },
     ],
   },
+  {
+    id: "salon-dining-table-extension-round-120",
+    name: "RO Collection Salon Dining Table with Extension Ø-120",
+    description: "A versatile round dining table with extension capability for larger gatherings from the RO Collection.",
+    price: 29940,
+    category: "Dining Tables",
+    variants: [
+      {
+        name: "Oiled Oak",
+        image: "/Ro-Collection/Salon dining table with extension option, Ø-120/Salon dining table with extension option, Ø-120 NOK  29,940  Color -  Oiled oak.webp",
+        material: "Oiled Oak",
+        price: 29940,
+      },
+      {
+        name: "Soaped Oak",
+        image: "/Ro-Collection/Salon dining table with extension option, Ø-120/Salon dining table with extension option, Ø-120 NOK  29,940  Color -  Soaped oak.webp",
+        material: "Soaped Oak",
+        price: 29940,
+      },
+      {
+        name: "Smoked Oak",
+        image: "/Ro-Collection/Salon dining table with extension option, Ø-120/Salon dining table with extension option, Ø-120 NOK  33,450  Color -  Smoked oak.webp",
+        material: "Smoked Oak",
+        price: 33450,
+      },
+    ],
+    designer: "RO Collection Design Team",
+    features: [
+      "Round dining table with extension",
+      "Premium solid wood construction",
+      "Multiple wood finish options",
+      "Expandable for larger gatherings",
+      "Contemporary Scandinavian design",
+      "Durable construction",
+      "Versatile dining solution",
+      "Easy extension mechanism",
+    ],
+    specifications: [
+      { label: "Designer", value: "RO Collection Design Team" },
+      { label: "Manufacturer", value: "RO Collection" },
+      { label: "Material", value: "Solid wood" },
+      { label: "Wood Options", value: "Oiled Oak, Soaped Oak, Smoked Oak" },
+      { label: "Style", value: "Contemporary Scandinavian" },
+      { label: "Diameter", value: "Ø120cm (extendable)" },
+      { label: "Seating", value: "4-8 people (with extension)" },
+      { label: "Care", value: "Dust regularly, use wood care products" },
+      { label: "Warranty", value: "2 years manufacturer warranty" },
+      { label: "Origin", value: "Scandinavian design" },
+    ],
+    lifestyleImages: [
+      "/Ro-Collection/Salon dining table with extension option, Ø-120/lifestyle/SAL-ET-O120OO-720_2_800x800_crop_center@2x.webp",
+      "/Ro-Collection/Salon dining table with extension option, Ø-120/lifestyle/Salon_extension_table_round_1920x1920_re_800x800_crop_center@2x.webp"
+    ],
+    relatedProducts: [
+      { id: "salon-dining-chair", name: "Salon Dining Chair" },
+      { id: "salon-dining-table-round-120", name: "Salon Dining Table Ø-120" },
+      { id: "extension-leaf-round-120", name: "Extension Leaf for Salon Dining Table Ø-120" },
+    ],
+  },
 ];
 
 export default async function ROProductPage({
