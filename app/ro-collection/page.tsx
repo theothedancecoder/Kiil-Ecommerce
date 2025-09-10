@@ -5,6 +5,118 @@ import Image from "next/image";
 import Link from "next/link";
 import { getRoCollectionProducts, RoCollectionProduct } from "@/sanity/lib/products/getRoCollectionProducts";
 
+// Static fallback data
+const staticProducts = [
+  {
+    _id: "salon-dining-chair",
+    _type: "product" as const,
+    _createdAt: "",
+    _updatedAt: "",
+    _rev: "",
+    name: "Salon Dining Chair",
+    slug: { _type: "slug" as const, current: "salon-dining-chair" },
+    description: "An elegant dining chair with premium leather upholstery and solid wood base options.",
+    price: 22005,
+    image: {
+      asset: {
+        _id: "",
+        url: "/Ro-Collection/Salon dining chair/Salon Dining Chair kr 22 005 Base - Oiled Oak Oiled Oak Smoked Oak Soaped Oak Leather - Supreme Dark Chocolat.webp"
+      }
+    },
+    categories: [{ _id: "", title: "Dining Chairs", slug: { _type: "slug" as const, current: "dining-chairs" } }]
+  },
+  {
+    _id: "salon-dining-table-round-120",
+    _type: "product" as const,
+    _createdAt: "",
+    _updatedAt: "",
+    _rev: "",
+    name: "Salon Dining Table Ø-120",
+    slug: { _type: "slug" as const, current: "salon-dining-table-round-120" },
+    description: "A beautiful round dining table perfect for intimate dining experiences.",
+    price: 29940,
+    image: {
+      asset: {
+        _id: "",
+        url: "/Ro-Collection/Salon dining table Ø-120/Salon dining table Ø-120 NOK  29,940  Color -  Oiled oak.webp"
+      }
+    },
+    categories: [{ _id: "", title: "Dining Tables", slug: { _type: "slug" as const, current: "dining-tables" } }]
+  },
+  {
+    _id: "salon-dining-table-round-120-extension",
+    _type: "product" as const,
+    _createdAt: "",
+    _updatedAt: "",
+    _rev: "",
+    name: "Salon Dining Table with Extension Option, Ø-120",
+    slug: { _type: "slug" as const, current: "salon-dining-table-round-120-extension" },
+    description: "A versatile round dining table with extension capability for larger gatherings.",
+    price: 29940,
+    image: {
+      asset: {
+        _id: "",
+        url: "/Ro-Collection/Salon dining table with extension option, Ø-120/Salon dining table with extension option, Ø-120 NOK  29,940  Color -  Oiled oak.webp"
+      }
+    },
+    categories: [{ _id: "", title: "Dining Tables", slug: { _type: "slug" as const, current: "dining-tables" } }]
+  },
+  {
+    _id: "salon-dining-table-rectangular-extension",
+    _type: "product" as const,
+    _createdAt: "",
+    _updatedAt: "",
+    _rev: "",
+    name: "Salon Dining Table with Extension Option",
+    slug: { _type: "slug" as const, current: "salon-dining-table-rectangular-extension" },
+    description: "A spacious rectangular dining table with extension capability for large gatherings.",
+    price: 35190,
+    image: {
+      asset: {
+        _id: "",
+        url: "/Ro-Collection/Salon dining table with extenstion option/Ro Collection Salon dining table with extension option NOK  35,190  Size -  190x90 190x90 220x100 Color -  Oiled oak.webp"
+      }
+    },
+    categories: [{ _id: "", title: "Dining Tables", slug: { _type: "slug" as const, current: "dining-tables" } }]
+  },
+  {
+    _id: "extension-leaf-round-120",
+    _type: "product" as const,
+    _createdAt: "",
+    _updatedAt: "",
+    _rev: "",
+    name: "Extension Leaf for Salon Dining Table Ø-120",
+    slug: { _type: "slug" as const, current: "extension-leaf-round-120" },
+    description: "Extension leaf accessory for the round Salon dining table.",
+    price: 5130,
+    image: {
+      asset: {
+        _id: "",
+        url: "/Ro-Collection/Extension leaf for Salon dining table Ø-120/Extension leaf for Salon dining table Ø-120 NOK  5,130  Color -  Black MDF.webp"
+      }
+    },
+    categories: [{ _id: "", title: "Accessories", slug: { _type: "slug" as const, current: "accessories" } }]
+  },
+  {
+    _id: "extension-plate-rectangular",
+    _type: "product" as const,
+    _createdAt: "",
+    _updatedAt: "",
+    _rev: "",
+    name: "Extension Plate for Salon Dining Table",
+    slug: { _type: "slug" as const, current: "extension-plate-rectangular" },
+    description: "Extension plate accessory for the rectangular Salon dining table.",
+    price: 5130,
+    image: {
+      asset: {
+        _id: "",
+        url: "/Ro-Collection/Extension plate for Salon dining table/Extension plate for Salon dining table NOK  5,130  Size -  50x90 50x100 50x90 Color -  Black MDF.webp"
+      }
+    },
+    categories: [{ _id: "", title: "Accessories", slug: { _type: "slug" as const, current: "accessories" } }]
+  }
+] as RoCollectionProduct[];
+
 export default function ROCollectionPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("name");
@@ -23,9 +135,12 @@ export default function ROCollectionPage() {
       setError(null);
       try {
         const roProducts = await getRoCollectionProducts();
-        setProducts(roProducts);
+        // Use Sanity data if available, otherwise fall back to static data
+        setProducts(roProducts.length > 0 ? roProducts : staticProducts);
       } catch (err) {
-        setError("Failed to load products.");
+        console.warn("Failed to load products from Sanity, using static data:", err);
+        // Fall back to static data if Sanity fails
+        setProducts(staticProducts);
       } finally {
         setLoading(false);
       }
@@ -174,9 +289,9 @@ export default function ROCollectionPage() {
             >
               <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
                 <div className="relative aspect-square bg-gray-50">
-                  {product.image?.asset?.url ? (
+                  {(product.image?.asset?.url || (product as any).imagePath) ? (
                     <Image
-                      src={product.image.asset.url}
+                      src={product.image?.asset?.url || (product as any).imagePath}
                       alt={product.name ?? "RO Collection product"}
                       fill
                       className="object-contain object-center p-8 group-hover:scale-105 transition-transform duration-300"
