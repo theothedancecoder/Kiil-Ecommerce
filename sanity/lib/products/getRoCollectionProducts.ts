@@ -57,6 +57,7 @@ export async function getRoCollectionProducts(): Promise<RoCollectionProduct[]> 
       relatedProducts[]-> {
         _id,
         name,
+        slug,
         price,
         image {
           asset-> {
@@ -138,6 +139,7 @@ export async function getRoCollectionTables(): Promise<RoCollectionProduct[]> {
       relatedProducts[]-> {
         _id,
         name,
+        slug,
         price,
         image {
           asset-> {
@@ -219,6 +221,7 @@ export async function getRoCollectionChairs(): Promise<RoCollectionProduct[]> {
       relatedProducts[]-> {
         _id,
         name,
+        slug,
         price,
         image {
           asset-> {
@@ -296,6 +299,10 @@ export interface RoCollectionProduct {
   relatedProducts?: Array<{
     _id: string;
     name?: string;
+    slug?: {
+      _type: "slug";
+      current?: string;
+    };
     price?: number;
     image?: {
       asset?: {
@@ -375,6 +382,7 @@ export async function getRoCollectionProductBySlug(slug: string): Promise<RoColl
       relatedProducts[]-> {
         _id,
         name,
+        slug,
         price,
         image {
           asset-> {
