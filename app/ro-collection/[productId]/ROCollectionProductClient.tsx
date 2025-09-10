@@ -294,44 +294,43 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
                   Related Products
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {product.relatedProducts.map((related) => {
-                    const relatedProduct = product.relatedProducts ? product.relatedProducts.find(p => p.id === related.id) : null;
-                    return (
-                      <Link
-                        key={related.id}
-                        href={`/ro-collection/${related.id}`}
-                        className="group"
-                      >
-                        <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-                          <div className="relative aspect-square bg-gray-50">
-                            {relatedProduct?.image?.asset?.url ? (
-                              <Image
-                                src={relatedProduct.image.asset.url}
-                                alt={related.name}
-                                fill
-                                className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-                                sizes="(max-width: 640px) 50vw, 25vw"
-                              />
-                            ) : (
-                              <div className="flex items-center justify-center h-full text-gray-400">
-                                No Image
-                              </div>
-                            )}
-                          </div>
-                          <div className="p-4">
-                            <h3 className="text-lg font-light text-gray-900 mb-2">
-                              {related.name}
-                            </h3>
-                            {relatedProduct && (
-                              <p className="text-gray-900 font-medium">
-                                kr {relatedProduct.price?.toLocaleString()}
-                              </p>
-                            )}
-                          </div>
+                {product.relatedProducts.map((related) => {
+                  return (
+                    <Link
+                      key={related._id}
+                      href={`/ro-collection/${related._id}`}
+                      className="group"
+                    >
+                      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                        <div className="relative aspect-square bg-gray-50">
+                          {related.image?.asset?.url ? (
+                            <Image
+                              src={related.image.asset.url}
+                              alt={related.name || "Related product"}
+                              fill
+                              className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                              sizes="(max-width: 640px) 50vw, 25vw"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full text-gray-400">
+                              No Image
+                            </div>
+                          )}
                         </div>
-                      </Link>
-                    );
-                  })}
+                        <div className="p-4">
+                          <h3 className="text-lg font-light text-gray-900 mb-2">
+                            {related.name}
+                          </h3>
+                          {related.price && (
+                            <p className="text-gray-900 font-medium">
+                              kr {related.price.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
                 </div>
                 <div className="text-center mt-8">
                   <Link

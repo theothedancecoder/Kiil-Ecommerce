@@ -15,6 +15,7 @@ export async function getRoCollectionProducts(): Promise<RoCollectionProduct[]> 
       description,
       price,
       brand,
+      designer,
       image {
         asset-> {
           _id,
@@ -39,6 +40,24 @@ export async function getRoCollectionProducts(): Promise<RoCollectionProduct[]> 
         material,
         color,
         size,
+        base,
+        leather,
+        image {
+          asset-> {
+            _id,
+            url
+          }
+        }
+      },
+      features,
+      specifications[] {
+        label,
+        value
+      },
+      relatedProducts[]-> {
+        _id,
+        name,
+        price,
         image {
           asset-> {
             _id,
@@ -77,6 +96,7 @@ export async function getRoCollectionTables(): Promise<RoCollectionProduct[]> {
       description,
       price,
       brand,
+      designer,
       image {
         asset-> {
           _id,
@@ -101,6 +121,24 @@ export async function getRoCollectionTables(): Promise<RoCollectionProduct[]> {
         material,
         color,
         size,
+        base,
+        leather,
+        image {
+          asset-> {
+            _id,
+            url
+          }
+        }
+      },
+      features,
+      specifications[] {
+        label,
+        value
+      },
+      relatedProducts[]-> {
+        _id,
+        name,
+        price,
         image {
           asset-> {
             _id,
@@ -139,6 +177,7 @@ export async function getRoCollectionChairs(): Promise<RoCollectionProduct[]> {
       description,
       price,
       brand,
+      designer,
       image {
         asset-> {
           _id,
@@ -163,6 +202,24 @@ export async function getRoCollectionChairs(): Promise<RoCollectionProduct[]> {
         material,
         color,
         size,
+        base,
+        leather,
+        image {
+          asset-> {
+            _id,
+            url
+          }
+        }
+      },
+      features,
+      specifications[] {
+        label,
+        value
+      },
+      relatedProducts[]-> {
+        _id,
+        name,
+        price,
         image {
           asset-> {
             _id,
@@ -202,6 +259,7 @@ export interface RoCollectionProduct {
   description?: string;
   price?: number;
   brand?: string;
+  designer?: string;
   image?: {
     asset?: {
       _id: string;
@@ -221,6 +279,24 @@ export interface RoCollectionProduct {
     material?: string;
     color?: string;
     size?: string;
+    base?: string;
+    leather?: string;
+    image?: {
+      asset?: {
+        _id: string;
+        url: string;
+      };
+    };
+  }>;
+  features?: string[];
+  specifications?: Array<{
+    label: string;
+    value: string;
+  }>;
+  relatedProducts?: Array<{
+    _id: string;
+    name?: string;
+    price?: number;
     image?: {
       asset?: {
         _id: string;
@@ -257,6 +333,7 @@ export async function getRoCollectionProductBySlug(slug: string): Promise<RoColl
       description,
       price,
       brand,
+      designer,
       image {
         asset-> {
           _id,
@@ -281,6 +358,24 @@ export async function getRoCollectionProductBySlug(slug: string): Promise<RoColl
         material,
         color,
         size,
+        base,
+        leather,
+        image {
+          asset-> {
+            _id,
+            url
+          }
+        }
+      },
+      features,
+      specifications[] {
+        label,
+        value
+      },
+      relatedProducts[]-> {
+        _id,
+        name,
+        price,
         image {
           asset-> {
             _id,

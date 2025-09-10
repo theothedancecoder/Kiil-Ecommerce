@@ -466,5 +466,5 @@ export default async function ROProductPage({
     notFound();
   }
 
-  return <ROCollectionProductClient product={product} products={products} />;
+  return <ROCollectionProductClient params={{ productId }} />;
 }
