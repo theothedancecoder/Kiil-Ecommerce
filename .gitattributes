@@ -56,9 +56,3 @@ public/sales/* !text !filter !merge !diff
 app/(store)/* !text !filter !merge !diff
 app/fritz-hansen/* !text !filter !merge !diff
 app/montana/* !text !filter !merge !diff
-
-# Kartell image exclusions - prevent LFS tracking
-public/Kartell* !filter !diff !merge
-public/kartell* !filter !diff !merge
-public/ Kartell* !filter !diff !merge
-app/kartell* !filter !diff !merge
