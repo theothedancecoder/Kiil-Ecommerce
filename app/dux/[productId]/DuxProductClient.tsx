@@ -1,46 +1,79 @@
 "use client";
 
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useState } from "react";
+import { getDuxProductBySlug, DuxProduct } from "@/sanity/lib/products/getDuxProducts";
 import { useRouter } from "next/navigation";
-
-interface ProductVariant {
-  id: string;
-  name: string;
-  image: string;
-  color?: string;
-  colorCode?: string;
-}
-
-interface DuxProduct {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  variants: ProductVariant[];
-  category: string;
-  designer?: string;
-  manufacturer?: string;
-  dimensions?: string;
-  weight?: string;
-  designOptions?: string;
-  lifestyleImages?: string[];
-}
+import ProductionImage from "@/components/ProductionImage";
 
 interface DuxProductClientProps {
-  product: DuxProduct;
+  params: {
+    productId: string;
+  };
 }
 
-export default function DuxProductClient({ product }: DuxProductClientProps) {
-  const router = useRouter();
-  const [selectedVariant, setSelectedVariant] = useState(0);
-  const [isProductDetailsExpanded, setIsProductDetailsExpanded] = useState(false);
+export default function DuxProductClient({ params }: DuxProductClientProps) {
+  const slug = params.productId;
+  const [product, setProduct] = useState<DuxProduct | null>(null);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [featuresExpanded, setFeaturesExpanded] = useState(false);
+  const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const currentVariant = product.variants[selectedVariant];
+  useEffect(() => {
+    async function fetchProduct() {
+      setLoading(true);
+      setError(null);
+      try {
+        const fetchedProduct = await getDuxProductBySlug(slug);
+        if (!fetchedProduct) {
+          setError("Product not found");
+          setProduct(null);
+        } else {
+          setProduct(fetchedProduct);
+        }
+      } catch (err) {
+        setError("Failed to load product");
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [slug]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading product...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600">{error}</div>;
+  }
+
+  if (!product) {
+    return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
+  }
+
+  const selectedVariant = product.variants?.[selectedVariantIndex];
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Back Button */}
+      <div className="bg-white border-b border-gray-200 py-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link
+            href="/dux"
+            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to DUX
+          </Link>
+        </div>
+      </div>
+
       {/* Breadcrumb Navigation */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,27 +97,81 @@ export default function DuxProductClient({ product }: DuxProductClientProps) {
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src={currentVariant.image}
-                alt={`${product.name} - ${currentVariant.name}`}
-                fill
-                className="object-contain object-center p-8"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+              {selectedVariant?.image?.asset?.url ? (
+                <ProductionImage
+                  src={selectedVariant.image.asset.url}
+                  alt={`${product.name} - ${selectedVariant.name}`}
+                  fill
+                  className="object-contain object-center p-8"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : product.image?.asset?.url ? (
+                <ProductionImage
+                  src={product.image.asset.url}
+                  alt={product.name ?? "DUX product"}
+                  fill
+                  className="object-contain object-center p-8"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  No Image
+                </div>
+              )}
             </div>
+
+            {/* Variant Thumbnails */}
+            {product.variants && product.variants.length > 1 && (
+              <div className="grid grid-cols-4 gap-3">
+                {product.variants.map((variant, index) => (
+                  <button
+                    key={variant.name}
+                    onClick={() => setSelectedVariantIndex(index)}
+                    className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
+                      selectedVariantIndex === index
+                        ? "border-gray-900"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    {variant.image?.asset?.url ? (
+                      <ProductionImage
+                        src={variant.image.asset.url}
+                        alt={`${variant.name} variant`}
+                        fill
+                        className="object-contain object-center p-2"
+                        sizes="(max-width: 768px) 25vw, 12.5vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        No Image
+                      </div>
+                    )}
+                    <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
+                      {variant.material || variant.leather || variant.color || variant.name}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Lifestyle Images */}
             {product.lifestyleImages && product.lifestyleImages.length > 0 && (
               <div className="grid grid-cols-1 gap-4">
                 {product.lifestyleImages.map((image, index) => (
                   <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                    <Image
-                      src={image}
-                      alt={`${product.name} lifestyle image ${index + 1}`}
-                      fill
-                      className="object-cover object-center"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                    {image.asset?.url ? (
+                      <ProductionImage
+                        src={image.asset.url}
+                        alt={`${product.name} lifestyle image ${index + 1}`}
+                        fill
+                        className="object-cover object-center"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        No Image
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -93,7 +180,6 @@ export default function DuxProductClient({ product }: DuxProductClientProps) {
 
           {/* Product Information */}
           <div className="space-y-8">
-            {/* Product Header */}
             <div>
               <div className="text-sm text-gray-500 uppercase tracking-wider mb-2">
                 DUX Collection
@@ -101,115 +187,160 @@ export default function DuxProductClient({ product }: DuxProductClientProps) {
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 {product.name}
               </h1>
-              <div className="text-lg text-gray-600 leading-relaxed whitespace-pre-line">
+              <p className="text-lg text-gray-600 leading-relaxed">
                 {product.description}
-              </div>
-            </div>
-
-            {/* Price */}
-            <div className="text-2xl font-light text-gray-900">
-              kr {product.price.toLocaleString()}
-            </div>
-
-            {/* Variant Selection */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                Variant: {currentVariant.name}
-              </h3>
-              <div className="grid grid-cols-6 gap-3">
-                {product.variants.map((variant, index) => (
-                  <button
-                    key={variant.id}
-                    onClick={() => setSelectedVariant(index)}
-                    className={`relative w-12 h-12 rounded-full border-2 transition-all ${
-                      selectedVariant === index
-                        ? "border-gray-900 scale-110"
-                        : "border-gray-300 hover:border-gray-500"
-                    }`}
-                    style={{ backgroundColor: variant.colorCode || "#D1D5DB" }}
-                    title={variant.name}
-                  >
-                    {selectedVariant === index && (
-                      <div className="absolute inset-0 rounded-full border-2 border-white" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Add to Cart Button */}
-            <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
-              Add to Cart - kr {product.price.toLocaleString()}
-            </button>
-
-            {/* Product Details - Expandable */}
-            <div className="space-y-4 pt-8 border-t border-gray-200">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  Product Details
-                </h3>
-                <button
-                  onClick={() => setIsProductDetailsExpanded(!isProductDetailsExpanded)}
-                  className="flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 hover:border-gray-400 transition-colors"
-                >
-                  <svg
-                    className={`w-3 h-3 transition-transform ${
-                      isProductDetailsExpanded ? "rotate-45" : ""
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                </button>
-              </div>
-              {isProductDetailsExpanded && (
-                <div className="space-y-6 text-sm text-gray-600">
-                  <div className="space-y-4">
-                    {product.designer && (
-                      <div>
-                        <h4 className="font-medium text-gray-900 mb-1">Designer</h4>
-                        <p>{product.designer}</p>
-                      </div>
-                    )}
-                    
-                    {product.manufacturer && (
-                      <div>
-                        <h4 className="font-medium text-gray-900 mb-1">Manufacturer</h4>
-                        <p>{product.manufacturer}</p>
-                      </div>
-                    )}
-                    
-                    {product.dimensions && (
-                      <div>
-                        <h4 className="font-medium text-gray-900 mb-1">Dimensions</h4>
-                        <p>{product.dimensions}</p>
-                      </div>
-                    )}
-                    
-                    {product.weight && (
-                      <div>
-                        <h4 className="font-medium text-gray-900 mb-1">Weight</h4>
-                        <p>{product.weight}</p>
-                      </div>
-                    )}
-                    
-                    {product.designOptions && (
-                      <div>
-                        <h4 className="font-medium text-gray-900 mb-1">Design Options</h4>
-                        <p>{product.designOptions}</p>
-                      </div>
-                    )}
-                  </div>
+              </p>
+              {product.designer && (
+                <div className="mt-4 text-sm text-gray-500">
+                  Designed by {product.designer}
                 </div>
               )}
             </div>
+
+            <div className="text-2xl font-light text-gray-900">
+              kr {selectedVariant?.price?.toLocaleString() ?? product.price?.toLocaleString()}
+            </div>
+
+            {product.variants && product.variants.length > 1 && (
+              <div className="space-y-4">
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                  {selectedVariant?.material ? `Material: ${selectedVariant.material}` : 
+                   selectedVariant?.leather ? `Leather: ${selectedVariant.leather}` : 
+                   selectedVariant?.color ? `Color: ${selectedVariant.color}` : 
+                   selectedVariant?.size ? `Size: ${selectedVariant.size}` : 
+                   'Options'}
+                  {selectedVariant?.base && ` | ${selectedVariant.base}`}
+                </h3>
+                <div className="grid grid-cols-1 gap-3">
+                  {product.variants.map((variant, index) => (
+                    <button
+                      key={variant.name}
+                      onClick={() => setSelectedVariantIndex(index)}
+                      className={`p-3 text-sm border rounded transition-all text-left ${
+                        selectedVariantIndex === index
+                          ? "border-gray-900 bg-gray-50"
+                          : "border-gray-300 hover:border-gray-500"
+                      }`}
+                    >
+                      <div className="font-medium">{variant.name}</div>
+                      <div className="text-xs text-gray-500">kr {variant.price?.toLocaleString()}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
+              Add to Cart - kr {selectedVariant?.price?.toLocaleString() ?? product.price?.toLocaleString()}
+            </button>
+
+            {/* Collapsible Features */}
+            {product.features && (
+              <div className="border-t border-gray-200 pt-8">
+                <button
+                  onClick={() => setFeaturesExpanded(!featuresExpanded)}
+                  className="flex justify-between items-center w-full text-left"
+                >
+                  <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                    Features
+                  </h3>
+                  <span className="text-gray-500">
+                    {featuresExpanded ? "−" : "+"}
+                  </span>
+                </button>
+                {featuresExpanded && (
+                  <ul className="mt-4 space-y-2 text-gray-600">
+                    {product.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+
+            {/* Collapsible Specifications */}
+            {product.specifications && (
+              <div className="border-t border-gray-200 pt-8">
+                <button
+                  onClick={() => setSpecificationsExpanded(!specificationsExpanded)}
+                  className="flex justify-between items-center w-full text-left"
+                >
+                  <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                    Specifications
+                  </h3>
+                  <span className="text-gray-500">
+                    {specificationsExpanded ? "−" : "+"}
+                  </span>
+                </button>
+                {specificationsExpanded && (
+                  <div className="mt-4 space-y-3 text-gray-600">
+                    {product.specifications.map((spec, idx) => (
+                      <div key={idx} className="flex justify-between border-b border-gray-100 pb-2">
+                        <span className="font-medium">{spec.label}</span>
+                        <span className="text-right">{spec.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Related Products */}
+            {product.relatedProducts && product.relatedProducts.length > 0 && (
+              <div className="border-t border-gray-200 pt-16">
+                <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
+                  Related Products
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {product.relatedProducts.map((related) => (
+                    <Link
+                      key={related._id}
+                      href={`/dux/${related.slug?.current}`}
+                      className="group"
+                    >
+                      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                        <div className="relative aspect-square bg-gray-50">
+                          {related.image?.asset?.url ? (
+                            <ProductionImage
+                              src={related.image.asset.url}
+                              alt={related.name || "Related product"}
+                              fill
+                              className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                              sizes="(max-width: 640px) 50vw, 25vw"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full text-gray-400">
+                              No Image
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <h3 className="text-lg font-light text-gray-900 mb-2">
+                            {related.name}
+                          </h3>
+                          {related.price && (
+                            <p className="text-gray-900 font-medium">
+                              kr {related.price.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <div className="text-center mt-8">
+                  <Link
+                    href="/dux"
+                    className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
+                  >
+                    View All DUX Products
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

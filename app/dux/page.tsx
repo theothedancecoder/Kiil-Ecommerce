@@ -1,306 +1,64 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-
-interface DuxProduct {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  variants: {
-    id: string;
-    name: string;
-    image: string;
-    color?: string;
-    material?: string;
-  }[];
-  category: string;
-}
+import { useState, useEffect } from "react";
+import { getDuxProducts, DuxProduct } from "@/sanity/lib/products/getDuxProducts";
+import ProductionImage from "@/components/ProductionImage";
 
 export default function DuxPage() {
   const [sortBy, setSortBy] = useState("name");
   const [filterBy, setFilterBy] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState<DuxProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const productsPerPage = 20;
 
-  // Enhanced DUX products data with comprehensive information
-  const products: DuxProduct[] = [
-    {
-      id: "inter-dining-table",
-      name: "Inter Dining Table",
-      description: "Made to order - 8 weeks delivery. Classic cafe table perfect for smaller dining areas or dining table for 6 people. Durable nanolaminate surface.",
-      price: 19490,
-      image: "/dux/Inter-dining-table/Inter spisebord fra DUX kr 19 490  Varianter - Ø-110 hvit laminat.webp",
-      category: "Tables",
-      variants: [
-        {
-          id: "ø-110-white-laminate",
-          name: "Ø-110 White Laminate",
-          image: "/dux/Inter-dining-table/Inter spisebord fra DUX kr 19 490  Varianter - Ø-110 hvit laminat.webp",
-          color: "White",
-        },
-        {
-          id: "ø-110-black-laminate",
-          name: "Ø-110 Black Laminate",
-          image: "/dux/Inter-dining-table/Inter spisebord fra DUX kr 19 490  Varianter - Ø-110 sort laminat.jpg",
-          color: "Black",
-        },
-        {
-          id: "100x180-white-laminate",
-          name: "100×180 White Laminate",
-          image: "/dux/Inter-dining-table/Inter spisebord fra DUX kr 19 490  Varianter - Ø-110 hvit laminat.webp",
-          color: "White",
-        },
-        {
-          id: "100x180-black-laminate",
-          name: "100×180 Black Laminate",
-          image: "/dux/Inter-dining-table/Inter spisebord fra DUX kr 26 440  Varianter - 100x180 sort laminat.webp",
-          color: "Black",
-        },
-        {
-          id: "100x180-white-laminate-2-plates",
-          name: "100×180 White w/2 Insert Panels",
-          image: "/dux/Inter-dining-table/Inter spisebord fra DUX kr 45 990  Varianter - 100x180 hvit laminat m:2 illeggsplater.webp",
-          color: "White",
-        },
-        {
-          id: "100x180-black-laminate-2-plates",
-          name: "100×180 Black w/2 Insert Panels",
-          image: "/dux/Inter-dining-table/Inter spisebord fra DUX kr 45 990  Varianter - 100x180 sort laminat m:2 illeggsplater.webp",
-          color: "Black",
-        },
-      ],
-    },
-    {
-      id: "jetson-classic-soft-88",
-      name: "Jetson Classic Soft 88",
-      description: "Ergonomic swivel armchair by Bruno Mathsson (1966). Premium Classic Soft leather upholstery with sophisticated design for modern and classic homes.",
-      price: 27990,
-      image: "/dux/Jetson Classic soft 88/classic soft 88 black.jpg",
-      category: "Chairs",
-      variants: [
-        {
-          id: "classic-soft-88-black",
-          name: "Classic Soft 88 Black",
-          image: "/dux/Jetson Classic soft 88/classic soft 88 black.jpg",
-          color: "Black",
-        },
-        {
-          id: "classic-soft-25-brown",
-          name: "Classic Soft 25 Brown",
-          image: "/dux/Jetson Classic soft 88/classic soft 25 brown.jpg",
-          color: "Brown",
-        },
-      ],
-    },
-    {
-      id: "jetson-match-flax-21",
-      name: "Jetson Match Flax 21",
-      description: "Special tribute to Bruno Mathsson's Swedish design classic. Flax 21 linen fabric with exclusive Dakota leather edges, frame and neck cushion.",
-      price: 27990,
-      image: "/dux/Jetson-Match-Flax-21/Jetson Match Flax 21 : dakota 88 leather NOK  27,990.jpg",
-      category: "Chairs",
-      variants: [
-        {
-          id: "flax-21-dakota-88-black",
-          name: "Flax 21 with Dakota 88 Black",
-          image: "/dux/Jetson-Match-Flax-21/Jetson Match Flax 21 : dakota 88 leather NOK  27,990.jpg",
-          color: "Black",
-        },
-        {
-          id: "flax-21-dakota-29-cognac",
-          name: "Flax 21 with Dakota 29 Cognac",
-          image: "/dux/Jetson-Match-Flax-21/Jetson Match Flax : daktota 29 leather :21 NOK  27,990.jpg",
-          color: "Cognac",
-        },
-        {
-          id: "flax-21-dakota-24",
-          name: "Flax 21 with Dakota 24",
-          image: "/dux/Jetson-Match-Flax-21/Jetson Match Flax-dakota 24 leather: 21 NOK  27,990.webp",
-          color: "Brown",
-        },
-      ],
-    },
-    {
-      id: "lunaria-table",
-      name: "Lunaria Table",
-      description: "Made to order - 8 weeks delivery. Organic shaped tables by Claesson Koivisto Rune (2018). Available in ash, oak, and walnut with wax-oil finish.",
-      price: 10215,
-      image: "/dux/Lunaria-table /Lunaria bord fra DUX kr 10 215  Størrelse - Small Large Medium Small Nullstill H-50 Ø-39.webp",
-      category: "Tables",
-      variants: [
-        {
-          id: "small-ash",
-          name: "Small - Wax-oiled Ash",
-          image: "/dux/Lunaria-table /Lunaria bord fra DUX kr 10 215  Størrelse - Small Large Medium Small Nullstill H-50 Ø-39.webp",
-          color: "Ash",
-        },
-        {
-          id: "medium-ash",
-          name: "Medium - Wax-oiled Ash",
-          image: "/dux/Lunaria-table /Lunaria bord fra DUX kr 10 980  Størrelse - Medium Large Medium Small Nullstill H-45 Ø-60.webp",
-          color: "Ash",
-        },
-        {
-          id: "large-ash",
-          name: "Large - Wax-oiled Ash",
-          image: "/dux/Lunaria-table /Lunaria table from DUX NOK  16 080  Size -  Large Large Medium Small Reset H-40 Ø-86.webp",
-          color: "Ash",
-        },
-        {
-          id: "small-oak",
-          name: "Small - Wax-oiled Oak",
-          image: "/dux/Lunaria-table /Lunaria bord fra DUX kr 10 215  Størrelse - Small Large Medium Small Nullstill H-50 Ø-39.webp",
-          color: "Oak",
-        },
-        {
-          id: "medium-oak",
-          name: "Medium - Wax-oiled Oak",
-          image: "/dux/Lunaria-table /Lunaria bord fra DUX kr 10 980  Størrelse - Medium Large Medium Small Nullstill H-45 Ø-60.webp",
-          color: "Oak",
-        },
-        {
-          id: "large-oak",
-          name: "Large - Wax-oiled Oak",
-          image: "/dux/Lunaria-table /Lunaria table from DUX NOK  16 080  Size -  Large Large Medium Small Reset H-40 Ø-86.webp",
-          color: "Oak",
-        },
-        {
-          id: "small-walnut",
-          name: "Small - Wax-oiled Walnut",
-          image: "/dux/Lunaria-table /Lunaria bord fra DUX kr 10 215  Størrelse - Small Large Medium Small Nullstill H-50 Ø-39.webp",
-          color: "Walnut",
-        },
-        {
-          id: "medium-walnut",
-          name: "Medium - Wax-oiled Walnut",
-          image: "/dux/Lunaria-table /Lunaria bord fra DUX kr 10 980  Størrelse - Medium Large Medium Small Nullstill H-45 Ø-60.webp",
-          color: "Walnut",
-        },
-        {
-          id: "large-walnut",
-          name: "Large - Wax-oiled Walnut",
-          image: "/dux/Lunaria-table /Lunaria table from DUX NOK  16 080  Size -  Large Large Medium Small Reset H-40 Ø-86.webp",
-          color: "Walnut",
-        },
-      ],
-    },
-    {
-      id: "sam-dining-chair",
-      name: "Sam Dining Chair",
-      description: "Made to order - 12 weeks delivery. Elegant chair by Sam Larsson (1974), relaunched 2015. Chrome frame with tufted seat and premium leather upholstery.",
-      price: 13790,
-      image: "/dux/Sam-Dining-Chair/Sam Spisestol fra DUX Fra kr 13 790  Farge - Classic Soft 88.jpg",
-      category: "Chairs",
-      variants: [
-        {
-          id: "classic-soft-88-with-armrest",
-          name: "Classic Soft 88 - With Armrest",
-          image: "/dux/Sam-Dining-Chair/Sam Spisestol fra DUX Fra kr 13 790  Farge - Classic Soft 88.jpg",
-          color: "Black",
-        },
-        {
-          id: "naturale-camel-with-armrest",
-          name: "Naturale Camel - With Armrest",
-          image: "/dux/Sam-Dining-Chair/Sam Dining Chair from DUX FromNOK  13,790  Color -  Natural Camel.jpg",
-          color: "Camel",
-        },
-        {
-          id: "naturale-perle-with-armrest",
-          name: "Naturale Perle - With Armrest",
-          image: "/dux/Sam-Dining-Chair/Sam Spisestol fra DUX Fra kr 13 790  Farge - Naturale Perle.jpg",
-          color: "Perle",
-        },
-        {
-          id: "naturale-truffle-with-armrest",
-          name: "Naturale Truffle - With Armrest",
-          image: "/dux/Sam-Dining-Chair/Sam Spisestol fra DUX Fra kr 13 790  Farge - Naturale Truffle.jpg",
-          color: "Truffle",
-        },
-        {
-          id: "classic-soft-88-without-armrest",
-          name: "Classic Soft 88 - Without Armrest",
-          image: "/dux/Sam-Dining-Chair/Sam Spisestol fra DUX Fra kr 13 790  Farge - Classic Soft 88.jpg",
-          color: "Black",
-        },
-        {
-          id: "naturale-camel-without-armrest",
-          name: "Naturale Camel - Without Armrest",
-          image: "/dux/Sam-Dining-Chair/Sam Dining Chair from DUX FromNOK  13,790  Color -  Natural Camel.jpg",
-          color: "Camel",
-        },
-        {
-          id: "naturale-perle-without-armrest",
-          name: "Naturale Perle - Without Armrest",
-          image: "/dux/Sam-Dining-Chair/Sam Spisestol fra DUX Fra kr 13 790  Farge - Naturale Perle.jpg",
-          color: "Perle",
-        },
-        {
-          id: "naturale-truffle-without-armrest",
-          name: "Naturale Truffle - Without Armrest",
-          image: "/dux/Sam-Dining-Chair/Sam Spisestol fra DUX Fra kr 13 790  Farge - Naturale Truffle.jpg",
-          color: "Truffle",
-        },
-      ],
-    },
-    {
-      id: "superspider-sheepskin",
-      name: "Superspider Sheepskin",
-      description: "Made to order - 8 weeks delivery. Classic design by DUX Design Team (1987). First-class materials with tubular steel frame and Pirelli strap support.",
-      price: 53815,
-      image: "/dux/Superspider sheepskin /Superspider sheepskin DUX NOK  53,815  Color -  Scandinavian Grey 22.jpg",
-      category: "Chairs",
-      variants: [
-        {
-          id: "scandinavian-grey-22",
-          name: "Scandinavian Grey 22 Sheepskin",
-          image: "/dux/Superspider sheepskin /Superspider sheepskin DUX NOK  53,815  Color -  Scandinavian Grey 22.jpg",
-          color: "Grey",
-        },
-        {
-          id: "black-01",
-          name: "Black 01 Sheepskin",
-          image: "/dux/Superspider sheepskin /Superspider sheepskin DUX NOK  53,815  Color -  Black 01.jpg",
-          color: "Black",
-        },
-        {
-          id: "off-white-02",
-          name: "Off-white 02 Sheepskin",
-          image: "/dux/Superspider sheepskin /Superspider sheepskin DUX NOK  53,815  Color -  Off-white 02.jpg",
-          color: "Off-white",
-        },
-        {
-          id: "cork-19",
-          name: "Cork 19 Sheepskin",
-          image: "/dux/Superspider sheepskin /Superspider fåreskinn DUX kr 53 815  Farge - Cork 19.jpg",
-          color: "Cork",
-        },
-        {
-          id: "drake-20",
-          name: "Drake 20 Sheepskin",
-          image: "/dux/Superspider sheepskin /Superspider sheepskin DUX NOK  53,815  Color -  Black 01.jpg",
-          color: "Drake",
-        },
-        {
-          id: "mohawi-21",
-          name: "Mohawi 21 Sheepskin",
-          image: "/dux/Superspider sheepskin /Superspider sheepskin DUX NOK  53,815  Color -  Off-white 02.jpg",
-          color: "Mohawi",
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        const fetchedProducts = await getDuxProducts();
+        setProducts(fetchedProducts);
+      } catch (err) {
+        setError("Failed to load products");
+        console.error("Error fetching Dux products:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-2xl font-light text-gray-600 mb-4">Loading DUX Collection...</div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center text-red-600">
+          <div className="text-xl font-medium mb-2">Error Loading Products</div>
+          <div className="text-gray-600">{error}</div>
+        </div>
+      </div>
+    );
+  }
 
   const filteredProducts = products.filter(
-    (product) => filterBy === "all" || product.category === filterBy
+    (product) => filterBy === "all" || product.subcategory === filterBy
   );
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortBy === "price") return a.price - b.price;
-    if (sortBy === "name") return a.name.localeCompare(b.name);
+    if (sortBy === "price") return (a.price ?? 0) - (b.price ?? 0);
+    if (sortBy === "name") return (a.name ?? "").localeCompare(b.name ?? "");
     return 0;
   });
 
@@ -348,12 +106,13 @@ export default function DuxPage() {
 
       {/* Hero Section */}
       <section className="relative h-[500px] overflow-hidden">
-        {/* Background Image */}
-        <Image
+        {/* Background Image - Using ProductionImage to avoid Git LFS issues */}
+        <ProductionImage
           src="/dux/Inter-dining-table/lifestyle/inter3.webp"
           alt="Dux Collection"
           fill
           className="object-cover"
+          sizes="100vw"
         />
 
         {/* Colorful Gradient Overlay */}
@@ -397,8 +156,8 @@ export default function DuxPage() {
                 className="px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500"
               >
                 <option value="all">All Categories</option>
-                <option value="Tables">Tables</option>
-                <option value="Chairs">Chairs</option>
+                <option value="tables">Tables</option>
+                <option value="chairs">Chairs</option>
               </select>
             </div>
             <div className="flex items-center space-x-4">
@@ -418,24 +177,31 @@ export default function DuxPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {currentProducts.map((product) => (
               <Link
-                key={product.id}
-                href={`/dux/${product.id}`}
+                key={product._id}
+                href={`/dux/${product.slug?.current}`}
                 className="group cursor-pointer"
               >
                 <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
                   <div className="relative aspect-square bg-gray-50 overflow-hidden">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-contain object-center group-hover:scale-105 transition-transform duration-300 p-4"
-                    />
+                    {product.image?.asset?.url ? (
+                      <ProductionImage
+                        src={product.image.asset.url}
+                        alt={product.name || "DUX product"}
+                        fill
+                        className="object-contain object-center group-hover:scale-105 transition-transform duration-300 p-4"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        No Image
+                      </div>
+                    )}
                     <div className="absolute top-3 right-3 bg-stone-100 px-2 py-1 rounded-full text-xs text-stone-600">
-                      {product.category}
+                      {product.subcategory || "DUX"}
                     </div>
                   </div>
 
-                  {product.variants.length > 1 && (
+                  {product.variants && product.variants.length > 1 && (
                     <div className="px-4 py-2 border-b border-gray-100">
                       <div className="flex space-x-1">
                         {product.variants.slice(0, 4).map((variant, index) => {
@@ -487,11 +253,11 @@ export default function DuxPage() {
 
                     <div className="flex items-center justify-between">
                       <span className="text-stone-900 font-medium">
-                        kr {product.price.toLocaleString()}
+                        kr {product.price?.toLocaleString() || "N/A"}
                       </span>
                       <span className="text-xs text-stone-500 uppercase tracking-wider">
-                        {product.variants.length} variant
-                        {product.variants.length !== 1 ? "s" : ""}
+                        {product.variants?.length || 0} variant
+                        {(product.variants?.length || 0) !== 1 ? "s" : ""}
                       </span>
                     </div>
                   </div>
@@ -613,11 +379,12 @@ export default function DuxPage() {
             </div>
           </div>
           <div className="relative h-96">
-            <Image
+            <ProductionImage
               src="/dux/Inter-dining-table/lifestyle/inter3.webp"
               alt="Dux Design Detail"
               fill
               className="object-cover rounded-lg"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
         </div>
