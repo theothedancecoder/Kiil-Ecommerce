@@ -97,17 +97,17 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              {selectedVariant?.image?.asset?.url ? (
+              {(selectedVariant?.image?.asset?.url || (selectedVariant as any)?.imagePath) ? (
                 <ProductionImage
-                  src={selectedVariant.image.asset.url}
-                  alt={`${product.name} - ${selectedVariant.name}`}
+                  src={selectedVariant?.image?.asset?.url || (selectedVariant as any)?.imagePath}
+                  alt={`${product.name} - ${selectedVariant?.name}`}
                   fill
                   className="object-contain object-center p-8"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-              ) : product.image?.asset?.url ? (
+              ) : (product.image?.asset?.url || (product as any).imagePath) ? (
                 <ProductionImage
-                  src={product.image.asset.url}
+                  src={product.image?.asset?.url || (product as any).imagePath}
                   alt={product.name ?? "DUX product"}
                   fill
                   className="object-contain object-center p-8"
@@ -133,9 +133,9 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
                         : "border-gray-200 hover:border-gray-400"
                     }`}
                   >
-                    {variant.image?.asset?.url ? (
+                    {(variant.image?.asset?.url || (variant as any).imagePath) ? (
                       <ProductionImage
-                        src={variant.image.asset.url}
+                        src={variant.image?.asset?.url || (variant as any).imagePath}
                         alt={`${variant.name} variant`}
                         fill
                         className="object-contain object-center p-2"
@@ -159,9 +159,9 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
               <div className="grid grid-cols-1 gap-4">
                 {product.lifestyleImages.map((image, index) => (
                   <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                    {image.asset?.url ? (
+                    {(image.asset?.url || (image as any).imagePath) ? (
                       <ProductionImage
-                        src={image.asset.url}
+                        src={image.asset?.url || (image as any).imagePath}
                         alt={`${product.name} lifestyle image ${index + 1}`}
                         fill
                         className="object-cover object-center"
@@ -303,9 +303,9 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
                     >
                       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                         <div className="relative aspect-square bg-gray-50">
-                          {related.image?.asset?.url ? (
+                          {(related.image?.asset?.url || (related as any).imagePath) ? (
                             <ProductionImage
-                              src={related.image.asset.url}
+                              src={related.image?.asset?.url || (related as any).imagePath}
                               alt={related.name || "Related product"}
                               fill
                               className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
