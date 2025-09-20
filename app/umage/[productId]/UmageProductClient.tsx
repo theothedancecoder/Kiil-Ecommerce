@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ProductVariant {
   name: string;
@@ -196,9 +197,17 @@ export default function UmageProductClient({ product, products }: UmageProductCl
               </div>
             )}
 
-            <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
-              Add to Cart - kr {selectedVariant.price.toLocaleString()}
-            </button>
+            <AddToCartWithQuantity 
+              product={{
+                _id: product.id,
+                name: product.name,
+                price: selectedVariant.price,
+                image: selectedVariant.image,
+                slug: { current: product.id }
+              } as any}
+              variant="large"
+              maxQuantity={10}
+            />
 
             {/* Collapsible Features */}
             {product.features && (

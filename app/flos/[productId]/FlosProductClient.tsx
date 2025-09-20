@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ProductVariant {
   name: string;
@@ -175,9 +176,21 @@ export default function FlosProductClient({ product }: FlosProductClientProps) {
               </div>
             )}
 
-            <button className="w-full bg-yellow-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-yellow-700 transition-colors">
-              Add to Cart - kr {selectedVariant.price.toLocaleString()}
-            </button>
+            <AddToCartWithQuantity 
+              product={{
+                ...product,
+                _id: product.id,
+                price: selectedVariant.price,
+                image: {
+                  _type: "image",
+                  asset: {
+                    _ref: selectedVariant.image,
+                    _type: "reference"
+                  }
+                }
+              } as any}
+              variant="large"
+            />
 
             {/* Collapsible Features */}
             {product.features && (

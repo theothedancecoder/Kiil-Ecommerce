@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { imageUrl } from "@/lib/ImageUrl";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ProductPageClientProps {
   product: any;
@@ -222,10 +223,16 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
               </div>
             )}
 
-            {/* Add to Cart Button */}
-            <button className="w-full bg-stone-900 text-white py-4 px-8 font-light text-lg uppercase tracking-[0.2em] hover:bg-stone-800 transition-all duration-300">
-              ADD TO CART - KR {currentPrice ? currentPrice.toLocaleString() : '0'}
-            </button>
+            {/* Add to Cart with Quantity */}
+            <AddToCartWithQuantity 
+              product={{
+                ...product,
+                _id: product._id,
+                price: currentPrice,
+                image: product.image
+              } as any}
+              variant="large"
+            />
 
             {/* Stock Status */}
             {product.stock !== undefined && product.stock !== null && (

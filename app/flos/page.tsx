@@ -7,6 +7,7 @@ import { Product } from "@/sanity.types";
 import { getFlosProducts, getFlosCategories } from "@/sanity/lib/products/getFlosProducts";
 import { imageUrl } from "@/lib/ImageUrl";
 import ProductionImage from "@/components/ProductionImage";
+import ProductGridItem from "@/components/ProductGridItem";
 
 export default function FlosPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -214,45 +215,11 @@ export default function FlosPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {currentProducts.map((product) => (
-                <Link
+                <ProductGridItem
                   key={product._id}
-                  href={`/products/${product.slug?.current || product._id}`}
-                  className="group"
-                >
-                  <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-                    <div className="relative aspect-square bg-gray-50">
-                      {product.image?.asset ? (
-                        <ProductionImage
-                          src={imageUrl(product.image).width(400).height(400).url()}
-                          alt={product.name || "Product"}
-                          fill
-                          className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-gray-400">No image</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">
-                        {product.name}
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-4">
-                        {typeof product.description === 'string' 
-                          ? product.description.slice(0, 100) + (product.description.length > 100 ? '...' : '')
-                          : product.description 
-                            ? 'View product for details'
-                            : 'No description available'
-                        }
-                      </p>
-                      <div className="text-lg font-light text-gray-900">
-                        {product.price ? `From kr ${product.price.toLocaleString()}` : 'Price on request'}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                  product={product}
+                  brandPath="flos"
+                />
               ))}
             </div>
           )}

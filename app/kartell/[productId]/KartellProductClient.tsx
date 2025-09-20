@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface KartellProduct {
   id: string;
@@ -27,7 +28,6 @@ interface KartellProductClientProps {
 
 export default function KartellProductClient({ product }: KartellProductClientProps) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
-  const [quantity, setQuantity] = useState(1);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   return (
@@ -165,30 +165,22 @@ export default function KartellProductClient({ product }: KartellProductClientPr
               </div>
             )}
 
-            {/* Quantity */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-stone-800">Quantity</h3>
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                >
-                  −
-                </button>
-                <span className="text-lg font-medium w-8 text-center">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-
-            {/* Add to Cart */}
-            <button className="w-full bg-stone-800 text-white py-4 px-8 text-lg font-medium uppercase tracking-wider hover:bg-stone-700 transition-colors">
-              Add to Cart
-            </button>
+            {/* Add to Cart with Quantity */}
+            <AddToCartWithQuantity 
+              product={{
+                ...product,
+                _id: product.id,
+                price: product.price,
+                image: {
+                  _type: "image",
+                  asset: {
+                    _ref: selectedVariant.image,
+                    _type: "reference"
+                  }
+                }
+              } as any}
+              variant="large"
+            />
 
             {/* Product Details */}
             {product.details && (

@@ -10,7 +10,10 @@ export interface BasketItem {
 interface BasketState {
   items: BasketItem[];
   addItem: (product: Product) => void;
+  addItemWithQuantity: (product: Product, quantity: number) => void;
   removeItem: (productId: string) => void;
+  updateItemQuantity: (productId: string, quantity: number) => void;
+  removeItemCompletely: (productId: string) => void;
   clearBasket: () => void;
   getTotalPrice: () => number;
   getItemCount: (productId: string) => number;
@@ -41,6 +44,25 @@ export const UseBasketStore = create<BasketState>()(
           }
         }),
 
+      addItemWithQuantity: (product, quantity) =>
+        set((state) => {
+          const existingItem = state.items.find(
+            (item) => item.product._id === product._id
+          );
+
+          if (existingItem) {
+            return {
+              items: state.items.map((item) =>
+                item.product._id === product._id
+                  ? { ...item, quantity: item.quantity + quantity }
+                  : item
+              ),
+            };
+          } else {
+            return { items: [...state.items, { product, quantity }] };
+          }
+        }),
+
       removeItem: (productId) =>
         set((state) => ({
           items: state.items.reduce((acc: BasketItem[], item) => {
@@ -54,6 +76,22 @@ export const UseBasketStore = create<BasketState>()(
             }
             return acc;
           }, []),
+        })),
+
+      updateItemQuantity: (productId, quantity) =>
+        set((state) => ({
+          items: quantity <= 0 
+            ? state.items.filter((item) => item.product._id !== productId)
+            : state.items.map((item) =>
+                item.product._id === productId
+                  ? { ...item, quantity }
+                  : item
+              ),
+        })),
+
+      removeItemCompletely: (productId) =>
+        set((state) => ({
+          items: state.items.filter((item) => item.product._id !== productId),
         })),
 
       clearBasket: () => set({ items: [] }),

@@ -168,9 +168,21 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
                   if (!isOutOfStock) {
                     const quantityInput = e.currentTarget.parentElement?.querySelector('input[type="number"]') as HTMLInputElement;
                     const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
-                    console.log('Add to cart:', productId, 'Quantity:', quantity);
-                    // Here you would integrate with your cart system
-                    alert(`Added ${quantity} x ${productName} to cart!`);
+                    
+                    // Create a product object compatible with the cart system
+                    const cartProduct = {
+                      _id: productId.toString(),
+                      name: productName,
+                      price: productPrice,
+                      image: imageSrc,
+                      slug: { current: productId.toString() }
+                    };
+                    
+                    // Import and use the cart store
+                    import('@/app/(store)/store').then(({ UseBasketStore }) => {
+                      const { addItemWithQuantity } = UseBasketStore.getState();
+                      addItemWithQuantity(cartProduct as any, quantity);
+                    });
                   }
                 }}
               >
