@@ -134,20 +134,15 @@ export default function UmagePage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative h-[600px] overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <ProductionImage
-            src={banner?.bannerImage 
-              ? imageUrl(banner.bannerImage).width(1400).height(600).url() 
-              : '/umage/A-Conversation-Piece/lifestyle/umage_lifestyle_a-conversation-piece_dining-chair_walnut_morning-meadows_1600x.webp'
-            }
-            alt={banner?.title || "UMAGE - Scandinavian Design Furniture"}
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        </div>
+      <section 
+        className="relative h-[600px] overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('${banner?.bannerImage 
+            ? imageUrl(banner.bannerImage).width(1400).height(600).url() 
+            : '/umage/A-Conversation-Piece/lifestyle/umage_lifestyle_a-conversation-piece_dining-chair_walnut_morning-meadows_1600x.webp'
+          }')`
+        }}
+      >
         
         {/* Sophisticated Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
