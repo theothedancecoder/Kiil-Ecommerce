@@ -330,14 +330,14 @@ export default async function UmageProductPage({ params }: UmageProductPageProps
   // Get enhanced data for this product
   const enhancedData = legacyProductsData[productId];
   
-  // Use enhanced variants if available, otherwise use Sanity variants
-  const variants = enhancedData?.variants || product.variants?.map((variant: any) => ({
+  // Prioritize Sanity variants over enhanced data for better production reliability
+  const variants = product.variants?.map((variant: any) => ({
     name: variant.name || variant.color || variant.material || 'Default',
-    image: variant.image?.asset?.url || '',
+    image: variant.image?.asset?.url || variant.image || '',
     material: variant.material || variant.color || '',
     price: variant.price || product.price || 0,
     size: variant.size || undefined,
-  })) || [];
+  })) || enhancedData?.variants || [];
 
   // Get related products - use enhanced data first, then mapping, then empty array
   const relatedProducts = enhancedData?.relatedProducts || 

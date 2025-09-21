@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
+import ProductionImage from "@/components/ProductionImage";
 
 interface ProductVariant {
   name: string;
@@ -83,12 +83,13 @@ export default function UmageProductClient({ product, products }: UmageProductCl
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
+              <ProductionImage
                 src={selectedVariant.image}
                 alt={`${product.name} - ${selectedVariant.name}`}
                 fill
                 className="object-contain object-center p-8"
                 sizes="(max-width: 768px) 100vw, 50vw"
+                objectFit="contain"
               />
             </div>
 
@@ -105,12 +106,13 @@ export default function UmageProductClient({ product, products }: UmageProductCl
                         : "border-gray-200 hover:border-gray-400"
                     }`}
                   >
-                    <Image
+                    <ProductionImage
                       src={variant.image}
                       alt={`${variant.name} variant`}
                       fill
                       className="object-contain object-center p-2"
                       sizes="(max-width: 768px) 25vw, 12.5vw"
+                      objectFit="contain"
                     />
                     <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
                       {variant.material || variant.name}
@@ -131,12 +133,13 @@ export default function UmageProductClient({ product, products }: UmageProductCl
                   
                   return (
                     <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                      <Image
+                      <ProductionImage
                         src={imageUrl}
                         alt={imageAlt}
                         fill
                         className="object-cover object-center"
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        objectFit="cover"
                       />
                       {typeof image !== 'string' && image.caption && (
                         <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
@@ -281,12 +284,13 @@ export default function UmageProductClient({ product, products }: UmageProductCl
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                           <div className="relative aspect-square bg-gray-50">
                             {relatedProduct && (
-                              <Image
+                              <ProductionImage
                                 src={relatedProduct.variants[0].image}
                                 alt={related.name}
                                 fill
                                 className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
                                 sizes="(max-width: 640px) 50vw, 25vw"
+                                objectFit="contain"
                               />
                             )}
                           </div>
