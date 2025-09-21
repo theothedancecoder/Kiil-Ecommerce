@@ -385,7 +385,7 @@ export default async function UmageProductPage({ params }: UmageProductPageProps
       { label: "Warranty", value: "2 years manufacturer warranty" },
       { label: "Origin", value: "Danish design" },
     ],
-    lifestyleImages: enhancedData?.lifestyleImages || product.lifestyleImages?.map((img: any) => img.asset?.url).filter(Boolean) || [],
+    lifestyleImages: product.lifestyleImages?.map((img: any) => img.asset?.url).filter(Boolean) || enhancedData?.lifestyleImages || [],
     relatedProducts,
   };
 
