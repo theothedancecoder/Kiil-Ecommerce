@@ -389,13 +389,21 @@ export default async function UmageProductPage({ params }: UmageProductPageProps
     relatedProducts,
   };
 
-  // Get other Umage products for the client
+  // Get other Umage products for the client - map both by slug and _id for related products matching
   const umageProducts = allProducts
     .filter((p: any) => p.brand === 'UMAGE')
     .map((p: any) => ({
-      id: p._id,
+      id: p.slug?.current || p._id, // Use slug as ID for matching with related products
+      _id: p._id,
       name: p.name,
       slug: p.slug?.current,
+      price: p.price || 0,
+      variants: p.variants?.map((variant: any) => ({
+        name: variant.name || variant.color || variant.material || 'Default',
+        image: variant.image?.asset?.url || variant.image || '',
+        material: variant.material || variant.color || '',
+        price: variant.price || p.price || 0,
+      })) || []
     }));
 
   return <UmageProductClient product={convertedProduct} products={umageProducts} />;
