@@ -1,4 +1,4 @@
-// Last updated: 2025-09-20T08:49:41.943Z - Force redeploy after Git LFS fix
+// Last updated: 2025-09-21T09:35:58.559Z - Force redeploy after Git LFS fix
 import Image from 'next/image';
 import Link from 'next/link';
 
