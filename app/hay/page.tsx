@@ -142,66 +142,8 @@ export default function HayPage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section 
-        className="relative h-[600px] overflow-hidden bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('${banner?.bannerImage 
-            ? imageUrl(banner.bannerImage).width(1400).height(600).url() 
-            : '/HAY/Don`t-leave me-DLM-side-table /lifestyle/10509796r_3.jpg'
-          }')`
-        }}
-      >
-        
-        {/* Sophisticated Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
-        
-        {/* Content */}
-        <div className="relative h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="max-w-2xl">
-              <div className="mb-6">
-                <span className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full mb-4">
-                  Danish Design
-                </span>
-                <h1 className="text-5xl md:text-7xl font-light text-white mb-6 leading-tight">
-                  {banner?.title || "HAY"}
-                </h1>
-                <p className="text-xl text-white/90 leading-relaxed mb-8">
-                  {banner?.subtitle || "Danish design excellence with a focus on functionality and aesthetics. Discover iconic furniture and accessories from HAY."}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <button 
-                    onClick={() => {
-                      const productsSection = document.querySelector('.products-grid');
-                      productsSection?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="inline-flex items-center justify-center px-8 py-3 bg-white text-gray-900 font-medium rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    Explore Collection
-                    <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  <button className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-gray-900 transition-colors">
-                    Learn More
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Subtle Design Elements */}
-        <div className="absolute top-20 right-20 w-2 h-2 bg-white/30 rounded-full animate-pulse"></div>
-        <div className="absolute top-40 right-32 w-1 h-1 bg-white/40 rounded-full animate-pulse delay-300"></div>
-        <div className="absolute bottom-32 right-24 w-1.5 h-1.5 bg-white/35 rounded-full animate-pulse delay-700"></div>
-        <div className="absolute bottom-20 right-40 w-1 h-1 bg-white/45 rounded-full animate-pulse delay-500"></div>
-      </section>
-
       {/* Products Section */}
-      <section id="products" className="py-20 bg-white">
+      <section id="products" className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
