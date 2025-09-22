@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import ProductionImage from "@/components/ProductionImage";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ProductVariant {
   name: string;
@@ -196,10 +197,30 @@ export default function HayProductClient({ product, products }: HayProductClient
               </div>
             )}
 
-            {/* Contact for Pricing */}
-            <button className="w-full bg-yellow-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-yellow-700 transition-colors">
-              Contact for Pricing & Availability
-            </button>
+            {/* Add to Cart */}
+            <AddToCartWithQuantity
+              product={{
+                _id: product.id,
+                name: product.name,
+                price: selectedVariant?.price || product.price,
+                image: selectedVariant?.image ? {
+                  _type: 'image',
+                  asset: {
+                    _ref: 'temp-ref',
+                    _type: 'reference'
+                  }
+                } : undefined,
+                slug: {
+                  _type: 'slug',
+                  current: product.slug || product.id
+                },
+                _type: 'product',
+                _createdAt: new Date().toISOString(),
+                _updatedAt: new Date().toISOString(),
+                _rev: 'temp'
+              } as any}
+              variant="large"
+            />
 
             {/* Features */}
             {product.features && product.features.length > 0 && (
