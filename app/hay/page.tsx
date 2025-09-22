@@ -297,7 +297,7 @@ export default function HayPage() {
             <div className="relative">
               <div className="relative h-96 overflow-hidden rounded-lg">
                 <ProductionImage
-                  src="/HAY/Don`t-leave-me XL–DLM-side-table/lifestyle/10509797r_2.jpg"
+                  src="/HAY/Don't-leave me-DLM-side-table /lifestyle/10509796r_3.jpg"
                   alt="HAY Craftsmanship"
                   fill
                   className="object-cover object-center"
