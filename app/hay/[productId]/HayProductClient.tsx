@@ -23,12 +23,13 @@ interface Product {
   designer?: string;
   features?: string[];
   specifications?: { label: string; value: string }[];
-  relatedProducts?: { id: string; name: string }[];
+  relatedProducts?: { id: string; name: string; slug?: string }[];
   lifestyleImages?: Array<{
     url: string;
     alt: string;
     caption?: string;
   }> | string[];
+  slug?: string;
 }
 
 interface HayProductClientProps {
@@ -270,33 +271,32 @@ export default function HayProductClient({ product, products }: HayProductClient
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {product.relatedProducts.map((related) => {
-                    const relatedProduct = products?.find(p => p?.id === related?.id);
+                    // Find related product by id first, then by slug as fallback
+                    const relatedProduct = products?.find(p => p?.id === related?.id) || 
+                                         products?.find(p => p?.slug === related?.slug);
                     return (
                       <Link
-                        key={related?.id || 'unknown'}
-                        href={`/hay/${related?.id || 'unknown'}`}
+                        key={related?.id || related?.slug || 'unknown'}
+                        href={`/hay/${related?.slug || related?.id || 'unknown'}`}
                         className="group"
                       >
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                           <div className="relative aspect-square bg-gray-50">
-                            {relatedProduct && relatedProduct.variants && Array.isArray(relatedProduct.variants) && relatedProduct.variants.length > 0 && (
-                              <ProductionImage
-                                src={relatedProduct.variants[0]?.image || '/placeholder-image.jpg'}
-                                alt={related?.name || 'Related Product'}
-                                fill
-                                className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-                              />
-                            )}
+                            <ProductionImage
+                              src={relatedProduct?.variants?.[0]?.image || '/placeholder-image.jpg'}
+                              alt={related?.name || 'Related Product'}
+                              fill
+                              className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                              sizes="(max-width: 640px) 50vw, 25vw"
+                            />
                           </div>
                           <div className="p-4">
                             <h3 className="text-lg font-light text-gray-900 mb-2">
                               {related?.name || 'HAY Product'}
                             </h3>
-                            {relatedProduct && (
-                              <p className="text-gray-900 font-medium">
-                                kr {(relatedProduct?.price || 0).toLocaleString()}
-                              </p>
-                            )}
+                            <p className="text-gray-900 font-medium">
+                              kr {(relatedProduct?.price || 0).toLocaleString()}
+                            </p>
                           </div>
                         </div>
                       </Link>

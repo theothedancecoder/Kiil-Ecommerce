@@ -121,14 +121,63 @@ export default async function HayProductPage({ params }: HayProductPageProps) {
         price: product?.price || 0,
       }];
 
-  // Get related products (other HAY products) with better error handling
-  const relatedProducts = allProducts
-    ?.filter((p: any) => p?.brand === 'HAY' && p?._id !== product?._id)
-    ?.slice(0, 4)
-    ?.map((p: any) => ({
-      id: p?.slug?.current || p?._id,
-      name: p?.name || 'Unnamed Product',
-    })) || [];
+  // Get related products from Sanity with full product data
+  const relatedProducts = product?.relatedProducts && Array.isArray(product.relatedProducts) && product.relatedProducts.length > 0
+    ? product.relatedProducts.map((related: any) => {
+        // Find the full product data from allProducts by ID or slug
+        const fullProduct = allProducts.find((p: any) => 
+          p._id === related._id || 
+          p.slug?.current === related.slug?.current ||
+          p._id === related.slug?.current
+        );
+        
+        console.log(`Looking for related product: ${related.name} (ID: ${related._id})`);
+        console.log(`Found in allProducts: ${fullProduct ? 'YES' : 'NO'}`);
+        
+        return {
+          id: related?.slug?.current || related?._id,
+          name: related?.name || 'Unnamed Product',
+          slug: related?.slug?.current,
+          price: fullProduct?.price || related?.price || 0,
+          variants: fullProduct?.variants && Array.isArray(fullProduct.variants) && fullProduct.variants.length > 0 
+            ? fullProduct.variants.map((variant: any) => ({
+                name: variant?.name || 'Standard',
+                image: variant?.image?.asset?.url || variant?.image || fullProduct?.image?.asset?.url || '/placeholder-image.jpg',
+                color: variant?.color,
+                material: variant?.material,
+                size: variant?.size,
+                price: variant?.price || fullProduct?.price || 0,
+              }))
+            : [{
+                name: 'Standard',
+                image: fullProduct?.image?.asset?.url || related?.image?.asset?.url || '/placeholder-image.jpg',
+                price: fullProduct?.price || related?.price || 0,
+              }],
+        };
+      })
+    : allProducts
+        ?.filter((p: any) => p?.brand === 'HAY' && p?._id !== product?._id)
+        ?.slice(0, 4)
+        ?.map((p: any) => ({
+          id: p?.slug?.current || p?._id,
+          name: p?.name || 'Unnamed Product',
+          slug: p?.slug?.current,
+          price: p?.price || 0,
+          variants: p?.variants && Array.isArray(p.variants) && p.variants.length > 0 
+            ? p.variants.map((variant: any) => ({
+                name: variant?.name || 'Standard',
+                image: variant?.image?.asset?.url || variant?.image || p?.image?.asset?.url || '/placeholder-image.jpg',
+                color: variant?.color,
+                material: variant?.material,
+                size: variant?.size,
+                price: variant?.price || p?.price || 0,
+              }))
+            : [{
+                name: 'Standard',
+                image: p?.image?.asset?.url || '/placeholder-image.jpg',
+                price: p?.price || 0,
+              }],
+        })) || [];
 
   // Safely get category with better error handling
   const getCategory = () => {
@@ -188,13 +237,28 @@ export default async function HayProductPage({ params }: HayProductPageProps) {
     relatedProducts,
   };
 
-  // Get other HAY products for the client with better error handling
+  // Get other HAY products for the client with complete information including variants and pricing
   const hayProducts = allProducts
     ?.filter((p: any) => p?.brand === 'HAY')
     ?.map((p: any) => ({
       id: p?.slug?.current || p?._id,
       name: p?.name || 'Unnamed Product',
       slug: p?.slug?.current,
+      price: p?.price || 0,
+      variants: p?.variants && Array.isArray(p.variants) && p.variants.length > 0 
+        ? p.variants.map((variant: any) => ({
+            name: variant?.name || 'Standard',
+            image: variant?.image?.asset?.url || variant?.image || p?.image?.asset?.url || '/placeholder-image.jpg',
+            color: variant?.color,
+            material: variant?.material,
+            size: variant?.size,
+            price: variant?.price || p?.price || 0,
+          }))
+        : [{
+            name: 'Standard',
+            image: p?.image?.asset?.url || '/placeholder-image.jpg',
+            price: p?.price || 0,
+          }],
     })) || [];
 
   return <HayProductClient product={convertedProduct} products={hayProducts} />;
