@@ -7,6 +7,7 @@ import { Product } from "@/sanity.types";
 import { getFredericiaProducts } from "@/sanity/lib/products/getFredericiaProducts";
 import { imageUrl } from "@/lib/ImageUrl";
 import ProductionImage from "@/components/ProductionImage";
+import Header from "@/components/Header";
 
 export default function FredericiaPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -42,6 +43,9 @@ export default function FredericiaPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
       {/* Back to Homepage */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

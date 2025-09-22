@@ -1,6 +1,7 @@
 // Last updated: 2025-09-21T09:35:58.559Z - Force redeploy after Git LFS fix
 import Image from 'next/image';
 import Link from 'next/link';
+import Header from '@/components/Header';
 
 export const dynamic = "force-static";
 export const revalidate = 1800; // 30 minutes
@@ -172,6 +173,9 @@ export default async function KartellPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
       {/* Back to Homepage */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

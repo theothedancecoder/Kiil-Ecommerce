@@ -8,6 +8,7 @@ import { getBrandBanner, BrandBanner } from "@/sanity/lib/getBrandBanner";
 import { imageUrl } from "@/lib/ImageUrl";
 import ProductionImage from "@/components/ProductionImage";
 import ProductGridItem from "@/components/ProductGridItem";
+import Header from "@/components/Header";
 
 // Enhanced pricing for specific HAY products
 const hayEnhancedPricing: { [key: string]: number } = {
@@ -113,6 +114,9 @@ export default function HayPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
       {/* Back Button */}
       <div className="bg-white border-b border-gray-200 py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

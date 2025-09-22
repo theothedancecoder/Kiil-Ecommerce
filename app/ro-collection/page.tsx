@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getRoCollectionProducts, RoCollectionProduct } from "@/sanity/lib/products/getRoCollectionProducts";
 import ProductionImage from "@/components/ProductionImage";
+import Header from "@/components/Header";
 
 // Static fallback data
 const staticProducts = [
@@ -194,6 +195,9 @@ export default function ROCollectionPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
       {/* Back to Homepage */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
