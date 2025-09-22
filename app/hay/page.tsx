@@ -279,31 +279,19 @@ export default function HayPage() {
       {/* Brand Story Section */}
       <section className="py-20 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-light mb-6">
-                Danish Design Excellence
-              </h2>
-              <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                HAY is renowned for its commitment to functional and aesthetic design, blending Scandinavian minimalism with contemporary style. Explore our curated collection of iconic furniture and accessories.
-              </p>
-              <Link
-                href="/tjenester"
-                className="inline-flex items-center px-8 py-3 bg-yellow-600 text-white font-medium hover:bg-yellow-700 transition-colors duration-300"
-              >
-                Discover Our Heritage
-              </Link>
-            </div>
-            <div className="relative">
-              <div className="relative h-96 overflow-hidden rounded-lg">
-                <ProductionImage
-                  src="/HAY/Don't-leave me-DLM-side-table /lifestyle/10509796r_3.jpg"
-                  alt="HAY Craftsmanship"
-                  fill
-                  className="object-cover object-center"
-                />
-              </div>
-            </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl lg:text-4xl font-light mb-6">
+              Danish Design Excellence
+            </h2>
+            <p className="text-lg text-gray-300 leading-relaxed mb-8">
+              HAY is renowned for its commitment to functional and aesthetic design, blending Scandinavian minimalism with contemporary style. Explore our curated collection of iconic furniture and accessories.
+            </p>
+            <Link
+              href="/tjenester"
+              className="inline-flex items-center px-8 py-3 bg-yellow-600 text-white font-medium hover:bg-yellow-700 transition-colors duration-300"
+            >
+              Discover Our Heritage
+            </Link>
           </div>
         </div>
       </section>
