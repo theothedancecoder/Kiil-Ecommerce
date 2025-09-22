@@ -1,41 +1,88 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getAllProducts, StaticProduct } from "../../lib/allProducts";
+import { Product } from "@/sanity.types";
+import { getHayProducts, getHayCategories } from "@/sanity/lib/products/getHayProducts";
+import { getBrandBanner, BrandBanner } from "@/sanity/lib/getBrandBanner";
+import { imageUrl } from "@/lib/ImageUrl";
+import ProductionImage from "@/components/ProductionImage";
+import ProductGridItem from "@/components/ProductGridItem";
 
-const hayProducts: StaticProduct[] = getAllProducts().filter(
-  (product) => product.brand === "HAY"
-);
-
-const categories = ["All", "Tables", "Seating", "Outdoor Furniture", "Accessories"];
+// Enhanced pricing for specific HAY products
+const hayEnhancedPricing: { [key: string]: number } = {
+  "dont-leave-me-xl-dlm-side-table": 2499,
+  "palissade-bench-l-120": 4999,
+  "palissade-cone-table-o-60": 3999,
+  "palissade-dining-chair": 1999,
+  "palissade-armchair": 2499,
+  "palissade-lounge-chair": 2999,
+  "palissade-low-table": 3499,
+  "neu-table-high": 5999,
+  "neu-table-low": 4999,
+  "palisade-bar-stool": 2299,
+  "dont-leave-me-dlm-side-table": 1999,
+  "kofi-coffee-table-60x60": 3299,
+  "palisade-chair": 1799,
+};
 
 export default function HayPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 12; // Match FLOS pagination
+  const [loading, setLoading] = useState(true);
+  const [banner, setBanner] = useState<BrandBanner | null>(null);
+  const productsPerPage = 15; // 5 rows × 3 columns
 
-  const filteredProducts = hayProducts.filter(
-    (product) =>
-      selectedCategory === "All" || product.category === selectedCategory
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [productsData, categoriesData, bannerData] = await Promise.all([
+          getHayProducts(),
+          getHayCategories(),
+          getBrandBanner('hay')
+        ]);
+        
+        setProducts(productsData);
+        setBanner(bannerData);
+        
+        // Extract category titles and add "All" option
+        const categoryTitles = categoriesData.map((cat: any) => cat.title);
+        setCategories(["All", ...categoryTitles]);
+      } catch (error) {
+        console.error("Error fetching HAY data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredProducts = products.filter(product => {
+    if (selectedCategory === "All") return true;
+    return product.categories?.some((cat: any) => cat.title === selectedCategory);
+  });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === "name") {
-      return a.name.localeCompare(b.name);
+      return (a.name || "").localeCompare(b.name || "");
     } else if (sortBy === "price") {
-      return a.price - b.price;
+      return (a.price || 0) - (b.price || 0);
     }
     return 0;
   });
 
+  // Pagination calculations
   const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
   const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
+  // Reset to page 1 when category changes
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setCurrentPage(1);
@@ -47,15 +94,22 @@ export default function HayPage() {
     }
   };
 
-  const goToPreviousPage = () => {
+  const goToPrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading HAY products...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -85,51 +139,62 @@ export default function HayPage() {
       </div>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/HAY/Don`t-leave me-DLM-side-table /lifestyle/10509796r_3.jpg"
-            alt="HAY Lifestyle"
-            fill
-            className="object-cover object-center opacity-30"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-black/90" />
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-yellow-400/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-orange-400/30 rounded-full blur-lg animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-red-400/25 rounded-full blur-md animate-pulse delay-2000"></div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="max-w-3xl">
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg shadow-lg border border-white/20">
-              <h1 className="text-4xl lg:text-6xl font-light text-white mb-6">
-                HAY
-              </h1>
-              <p className="text-xl text-gray-200 leading-relaxed mb-8">
-                Danish design excellence with a focus on functionality and aesthetics. Discover iconic furniture and accessories from HAY.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="#products"
-                  className="inline-flex items-center justify-center px-8 py-3 bg-yellow-600 text-white font-medium hover:bg-yellow-700 transition-colors duration-300"
-                >
-                  Explore Collection
-                </Link>
-                <Link
-                  href="/tjenester"
-                  className="inline-flex items-center justify-center px-8 py-3 border-2 border-yellow-600 text-yellow-400 font-medium hover:bg-yellow-600 hover:text-white transition-colors duration-300"
-                >
-                  Design Consultation
-                </Link>
+      <section 
+        className="relative h-[600px] overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('${banner?.bannerImage 
+            ? imageUrl(banner.bannerImage).width(1400).height(600).url() 
+            : '/HAY/Don`t-leave me-DLM-side-table /lifestyle/10509796r_3.jpg'
+          }')`
+        }}
+      >
+        
+        {/* Sophisticated Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
+        
+        {/* Content */}
+        <div className="relative h-full flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="max-w-2xl">
+              <div className="mb-6">
+                <span className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full mb-4">
+                  Danish Design
+                </span>
+                <h1 className="text-5xl md:text-7xl font-light text-white mb-6 leading-tight">
+                  {banner?.title || "HAY"}
+                </h1>
+                <p className="text-xl text-white/90 leading-relaxed mb-8">
+                  {banner?.subtitle || "Danish design excellence with a focus on functionality and aesthetics. Discover iconic furniture and accessories from HAY."}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button 
+                    onClick={() => {
+                      const productsSection = document.querySelector('.products-grid');
+                      productsSection?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="inline-flex items-center justify-center px-8 py-3 bg-white text-gray-900 font-medium rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    Explore Collection
+                    <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <button className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-gray-900 transition-colors">
+                    Learn More
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+        
+        {/* Subtle Design Elements */}
+        <div className="absolute top-20 right-20 w-2 h-2 bg-white/30 rounded-full animate-pulse"></div>
+        <div className="absolute top-40 right-32 w-1 h-1 bg-white/40 rounded-full animate-pulse delay-300"></div>
+        <div className="absolute bottom-32 right-24 w-1.5 h-1.5 bg-white/35 rounded-full animate-pulse delay-700"></div>
+        <div className="absolute bottom-20 right-40 w-1 h-1 bg-white/45 rounded-full animate-pulse delay-500"></div>
+      </section>
 
       {/* Products Section */}
       <section id="products" className="py-20 bg-white">
@@ -176,36 +241,14 @@ export default function HayPage() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {currentProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/hay/${product.id}`}
-                className="group"
-              >
-                <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-                  <div className="relative aspect-square bg-gray-50">
-                    <Image
-                      src={product.variants?.[0]?.image || product.image}
-                      alt={product.name}
-                      fill
-                      className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-4">
-                      {product.description}
-                    </p>
-                    <div className="text-lg font-light text-gray-900">
-                      From kr {product.price.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              </Link>
+              <ProductGridItem
+                key={product._id}
+                product={product}
+                brandPath="hay"
+                enhancedPricing={hayEnhancedPricing}
+              />
             ))}
           </div>
 
@@ -214,7 +257,7 @@ export default function HayPage() {
             <div className="mt-12 flex items-center justify-center space-x-4">
               {/* Previous Button */}
               <button
-                onClick={goToPreviousPage}
+                onClick={goToPrevPage}
                 disabled={currentPage === 1}
                 className={`flex items-center px-4 py-2 text-sm font-medium transition-colors ${
                   currentPage === 1
@@ -244,7 +287,7 @@ export default function HayPage() {
                   (page) => (
                     <button
                       key={page}
-                      onClick={() => goToPage(page)}
+                      onClick={() => setCurrentPage(page)}
                       className={`px-3 py-2 text-sm font-medium transition-colors ${
                         currentPage === page
                           ? "bg-yellow-600 text-white"
@@ -307,12 +350,11 @@ export default function HayPage() {
             </div>
             <div className="relative">
               <div className="relative h-96 overflow-hidden rounded-lg">
-                <Image
+                <ProductionImage
                   src="/HAY/Don`t-leave-me XL–DLM-side-table/lifestyle/10509797r_2.jpg"
                   alt="HAY Craftsmanship"
                   fill
                   className="object-cover object-center"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
             </div>

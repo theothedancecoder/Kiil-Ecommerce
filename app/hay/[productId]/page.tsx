@@ -1,146 +1,204 @@
-import { getAllProducts } from "../../../lib/allProducts";
+import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
+import { Product } from "@/sanity.types";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
+import HayProductClient from "./HayProductClient";
 
-export default async function HayProductPage({
-  params,
-}: {
-  params: Promise<{ productId: string }>;
-}) {
+export const dynamic = "force-dynamic";
+export const revalidate = 1800; // 30 minutes
+
+interface HayProductPageProps {
+  params: Promise<{
+    productId: string;
+  }>;
+}
+
+// Enhanced legacy products data with complete variants and lifestyle images - used to supplement Sanity data
+const legacyProductsData: Record<string, any> = {
+  "dont-leave-me-xl-dlm-side-table": {
+    variants: [
+      {
+        name: "Anthracite Grey",
+        image: "/HAY/Don`t-leave-me XL–DLM-side-table/variants/10509797_1.jpg",
+        color: "Anthracite Grey",
+        price: 2499,
+      },
+      {
+        name: "Warm Yellow",
+        image: "/HAY/Don`t-leave-me XL–DLM-side-table/variants/10509797_2.jpg",
+        color: "Warm Yellow",
+        price: 2499,
+      },
+      {
+        name: "Soft Pink",
+        image: "/HAY/Don`t-leave-me XL–DLM-side-table/variants/10509797_3.jpg",
+        color: "Soft Pink",
+        price: 2499,
+      },
+    ],
+    lifestyleImages: [
+      "/HAY/Don`t-leave-me XL–DLM-side-table/lifestyle/10509797r_1.jpg",
+      "/HAY/Don`t-leave-me XL–DLM-side-table/lifestyle/10509797r_2.jpg",
+    ],
+  },
+  "palissade-dining-chair": {
+    variants: [
+      {
+        name: "Anthracite",
+        image: "/HAY/Palissade-dining-chair/variants/palissade_dining_anthracite.jpg",
+        color: "Anthracite",
+        price: 1999,
+      },
+      {
+        name: "Olive",
+        image: "/HAY/Palissade-dining-chair/variants/palissade_dining_olive.jpg",
+        color: "Olive",
+        price: 1999,
+      },
+      {
+        name: "Sky Grey",
+        image: "/HAY/Palissade-dining-chair/variants/palissade_dining_sky_grey.jpg",
+        color: "Sky Grey",
+        price: 1999,
+      },
+      {
+        name: "Hot Galvanised",
+        image: "/HAY/Palissade-dining-chair/variants/palissade_dining_hot_galvanised.jpg",
+        color: "Hot Galvanised",
+        price: 1999,
+      },
+      {
+        name: "Cream White",
+        image: "/HAY/Palissade-dining-chair/variants/palissade_dining_cream_white.jpg",
+        color: "Cream White",
+        price: 1999,
+      },
+      {
+        name: "Quartz Grey",
+        image: "/HAY/Palissade-dining-chair/variants/palissade_dining_quartz_grey.jpg",
+        color: "Quartz Grey",
+        price: 1999,
+      },
+    ],
+    lifestyleImages: [
+      "/HAY/Palissade-dining-chair/lifestyle/palissade_dining_lifestyle_1.jpg",
+      "/HAY/Palissade-dining-chair/lifestyle/palissade_dining_lifestyle_2.jpg",
+    ],
+  },
+  // Add more HAY products as needed
+};
+
+export default async function HayProductPage({ params }: HayProductPageProps) {
   const { productId } = await params;
-  const allProducts = getAllProducts();
-  const hayProducts = allProducts.filter(product => product.brand === "HAY");
-  const product = hayProducts.find((p) => p.id === productId);
+  
+  // Get all products from Sanity
+  const allProducts = await getAllProducts();
+  
+  // Find the specific HAY product by slug
+  const product = allProducts.find((p: any) => 
+    p.brand === 'HAY' && p.slug?.current === productId
+  );
 
   if (!product) {
     notFound();
   }
 
-  return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <div className="bg-gray-50 py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <Link 
-              href="/hay" 
-              className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to HAY Collection
-            </Link>
-            
-            <nav className="flex items-center space-x-2 text-sm">
-              <Link href="/" className="text-stone-600 hover:text-stone-800">
-                Home
-              </Link>
-              <span className="text-stone-400">/</span>
-              <Link href="/hay" className="text-stone-600 hover:text-stone-800">
-                HAY
-              </Link>
-              <span className="text-stone-400">/</span>
-              <span className="text-stone-800 font-medium">{product.name}</span>
-            </nav>
-          </div>
-        </div>
-      </div>
+  // Get enhanced data for this product
+  const enhancedData = legacyProductsData[productId];
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Images */}
-          <div className="space-y-6">
-            {/* Main Image */}
-            <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src={product.variants?.[0]?.image || product.image}
-                alt={product.name}
-                fill
-                className="object-contain object-center p-4"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
+  // Create variants array - prioritize Sanity data, fallback to enhanced data
+  const variants = product.variants && product.variants.length > 0 
+    ? product.variants.map((variant: any) => ({
+        name: variant.name || 'Standard',
+        image: variant.image?.asset?.url || variant.image || enhancedData?.variants?.[0]?.image || product.image?.asset?.url,
+        color: variant.color,
+        material: variant.material,
+        size: variant.size,
+        price: variant.price || product.price || 0,
+      }))
+    : enhancedData?.variants || [{
+        name: 'Standard',
+        image: product.image?.asset?.url || '/placeholder-image.jpg',
+        price: product.price || 0,
+      }];
 
-            {/* Variant Thumbnails */}
-            {product.variants && product.variants.length > 1 && (
-              <div className="grid grid-cols-4 gap-3">
-                {product.variants.map((variant, index) => (
-                  <div
-                    key={variant.name}
-                    className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 border-gray-200"
-                  >
-                    <Image
-                      src={variant.image}
-                      alt={`${variant.name} variant`}
-                      fill
-                      className="object-contain object-center p-2"
-                      sizes="(max-width: 768px) 25vw, 12.5vw"
-                    />
-                    <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
-                      {variant.color || variant.name}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+  // Get related products (other HAY products)
+  const relatedProducts = allProducts
+    .filter((p: any) => p.brand === 'HAY' && p._id !== product._id)
+    .slice(0, 4)
+    .map((p: any) => ({
+      id: p.slug?.current || p._id,
+      name: p.name,
+    }));
 
-          {/* Product Information */}
-          <div className="space-y-8">
-            <div>
-              <div className="text-sm text-yellow-600 uppercase tracking-wider mb-2">
-                HAY Collection
-              </div>
-              <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
-                {product.name}
-              </h1>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
-              </p>
-            </div>
+  // Convert to the format expected by HayProductClient
+  const convertedProduct = {
+    id: product.slug?.current || product._id,
+    name: product.name,
+    description: typeof product.description === 'string' 
+      ? product.description 
+      : Array.isArray(product.description)
+        ? product.description
+            .filter((block: any) => block._type === 'block' && 'children' in block)
+            .map((block: any) => 
+              'children' in block && block.children
+                ?.filter((child: any) => child._type === 'span')
+                ?.map((child: any) => child.text)
+                ?.join(' ')
+            )
+            .join(' ')
+        : 'Detailed product description available upon request.',
+    price: product.price || 0,
+    category: product.categories?.[0]?.title || 'Furniture',
+    variants,
+    designer: 'HAY Design Team',
+    features: [
+      'Premium Danish design',
+      'High-quality materials',
+      'Contemporary aesthetic',
+      'Durable construction',
+      'Multiple finish options',
+      'Sustainable materials',
+      'Scandinavian craftsmanship',
+      'Timeless design',
+    ],
+    specifications: [
+      { label: "Designer", value: "HAY Design Team" },
+      { label: "Manufacturer", value: "HAY" },
+      { label: "Brand", value: product.brand || "HAY" },
+      { label: "Category", value: product.categories?.[0]?.title || "Furniture" },
+      { label: "Style", value: "Contemporary Danish" },
+      { label: "SKU", value: product._id },
+      { label: "Warranty", value: "2 years manufacturer warranty" },
+      { label: "Origin", value: "Danish design" },
+    ],
+    lifestyleImages: enhancedData?.lifestyleImages || product.lifestyleImages?.map((img: any) => img.asset?.url).filter(Boolean) || [],
+    relatedProducts,
+  };
 
-            <div className="text-2xl font-light text-gray-900">
-              From kr {product.price.toLocaleString()}
-            </div>
+  // Get other HAY products for the client
+  const hayProducts = allProducts
+    .filter((p: any) => p.brand === 'HAY')
+    .map((p: any) => ({
+      id: p.slug?.current || p._id,
+      name: p.name,
+      slug: p.slug?.current,
+    }));
 
-            {/* Variants Display */}
-            {product.variants && product.variants.length > 1 && (
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  Available Options
-                </h3>
-                <div className="grid grid-cols-1 gap-3">
-                  {product.variants.map((variant, index) => (
-                    <div
-                      key={variant.name}
-                      className="p-3 text-sm border rounded flex justify-between items-center"
-                    >
-                      <div className="font-medium">{variant.color || variant.name}</div>
-                      <div className="text-gray-600">kr {(variant.price || product.price).toLocaleString()}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+  return <HayProductClient product={convertedProduct} products={hayProducts} />;
+}
 
-            <button className="w-full bg-yellow-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-yellow-700 transition-colors">
-              Contact for Pricing & Availability
-            </button>
-
-            {/* Back to Collection */}
-            <div className="border-t border-gray-200 pt-8">
-              <Link
-                href="/hay"
-                className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
-              >
-                View All HAY Products
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+// Generate static params for all HAY products
+export async function generateStaticParams() {
+  try {
+    const products = await getAllProducts();
+    
+    return products
+      .filter((product: any) => product.brand === 'HAY' && product.slug?.current)
+      .map((product: any) => ({
+        productId: product.slug!.current,
+      }));
+  } catch (error) {
+    console.error('Error generating static params for HAY products:', error);
+    return [];
+  }
 }
