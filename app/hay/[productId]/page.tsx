@@ -106,49 +106,59 @@ export default async function HayProductPage({ params }: HayProductPageProps) {
   const enhancedData = legacyProductsData[productId];
 
   // Create variants array - prioritize Sanity data, fallback to enhanced data
-  const variants = product.variants && product.variants.length > 0 
+  const variants = product.variants && Array.isArray(product.variants) && product.variants.length > 0 
     ? product.variants.map((variant: any) => ({
-        name: variant.name || 'Standard',
-        image: variant.image?.asset?.url || variant.image || enhancedData?.variants?.[0]?.image || product.image?.asset?.url,
-        color: variant.color,
-        material: variant.material,
-        size: variant.size,
-        price: variant.price || product.price || 0,
+        name: variant?.name || 'Standard',
+        image: variant?.image?.asset?.url || variant?.image || enhancedData?.variants?.[0]?.image || product?.image?.asset?.url || '/placeholder-image.jpg',
+        color: variant?.color,
+        material: variant?.material,
+        size: variant?.size,
+        price: variant?.price || product?.price || 0,
       }))
     : enhancedData?.variants || [{
         name: 'Standard',
-        image: product.image?.asset?.url || '/placeholder-image.jpg',
-        price: product.price || 0,
+        image: product?.image?.asset?.url || '/placeholder-image.jpg',
+        price: product?.price || 0,
       }];
 
-  // Get related products (other HAY products)
+  // Get related products (other HAY products) with better error handling
   const relatedProducts = allProducts
-    .filter((p: any) => p.brand === 'HAY' && p._id !== product._id)
-    .slice(0, 4)
-    .map((p: any) => ({
-      id: p.slug?.current || p._id,
-      name: p.name,
-    }));
+    ?.filter((p: any) => p?.brand === 'HAY' && p?._id !== product?._id)
+    ?.slice(0, 4)
+    ?.map((p: any) => ({
+      id: p?.slug?.current || p?._id,
+      name: p?.name || 'Unnamed Product',
+    })) || [];
+
+  // Safely get category with better error handling
+  const getCategory = () => {
+    if (product?.categories && Array.isArray(product.categories) && product.categories.length > 0) {
+      return product.categories[0]?.title || 'Furniture';
+    }
+    return 'Furniture';
+  };
 
   // Convert to the format expected by HayProductClient
   const convertedProduct = {
-    id: product.slug?.current || product._id,
-    name: product.name,
-    description: typeof product.description === 'string' 
+    id: product?.slug?.current || product?._id || 'unknown',
+    name: product?.name || 'HAY Product',
+    description: typeof product?.description === 'string' 
       ? product.description 
-      : Array.isArray(product.description)
+      : Array.isArray(product?.description)
         ? product.description
-            .filter((block: any) => block._type === 'block' && 'children' in block)
-            .map((block: any) => 
-              'children' in block && block.children
-                ?.filter((child: any) => child._type === 'span')
-                ?.map((child: any) => child.text)
-                ?.join(' ')
+            ?.filter((block: any) => block?._type === 'block' && 'children' in block)
+            ?.map((block: any) => 
+              'children' in block && Array.isArray(block.children)
+                ? block.children
+                    ?.filter((child: any) => child?._type === 'span')
+                    ?.map((child: any) => child?.text)
+                    ?.join(' ')
+                : ''
             )
-            .join(' ')
+            ?.join(' ') || 'Detailed product description available upon request.'
         : 'Detailed product description available upon request.',
-    price: product.price || 0,
-    category: product.categories?.[0]?.title || 'Furniture',
+    price: product?.price || 0,
+    category: getCategory(),
     variants,
     designer: 'HAY Design Team',
     features: [
@@ -164,25 +174,28 @@ export default async function HayProductPage({ params }: HayProductPageProps) {
     specifications: [
       { label: "Designer", value: "HAY Design Team" },
       { label: "Manufacturer", value: "HAY" },
-      { label: "Brand", value: product.brand || "HAY" },
-      { label: "Category", value: product.categories?.[0]?.title || "Furniture" },
+      { label: "Brand", value: product?.brand || "HAY" },
+      { label: "Category", value: getCategory() },
       { label: "Style", value: "Contemporary Danish" },
-      { label: "SKU", value: product._id },
+      { label: "SKU", value: product?._id || 'N/A' },
       { label: "Warranty", value: "2 years manufacturer warranty" },
       { label: "Origin", value: "Danish design" },
     ],
-    lifestyleImages: enhancedData?.lifestyleImages || product.lifestyleImages?.map((img: any) => img.asset?.url).filter(Boolean) || [],
+    lifestyleImages: enhancedData?.lifestyleImages || 
+      (product?.lifestyleImages && Array.isArray(product.lifestyleImages) 
+        ? product.lifestyleImages.map((img: any) => img?.asset?.url).filter(Boolean) 
+        : []) || [],
     relatedProducts,
   };
 
-  // Get other HAY products for the client
+  // Get other HAY products for the client with better error handling
   const hayProducts = allProducts
-    .filter((p: any) => p.brand === 'HAY')
-    .map((p: any) => ({
-      id: p.slug?.current || p._id,
-      name: p.name,
-      slug: p.slug?.current,
-    }));
+    ?.filter((p: any) => p?.brand === 'HAY')
+    ?.map((p: any) => ({
+      id: p?.slug?.current || p?._id,
+      name: p?.name || 'Unnamed Product',
+      slug: p?.slug?.current,
+    })) || [];
 
   return <HayProductClient product={convertedProduct} products={hayProducts} />;
 }
