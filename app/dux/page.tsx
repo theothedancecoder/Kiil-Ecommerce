@@ -108,41 +108,8 @@ export default function DuxPage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative h-[500px] overflow-hidden">
-        {/* Background Image - Using ProductionImage to avoid Git LFS issues */}
-        <ProductionImage
-          src="/dux/Inter-dining-table/lifestyle/inter3.webp"
-          alt="Dux Collection"
-          fill
-          className="object-cover"
-          sizes="100vw"
-        />
-
-        {/* Colorful Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/10 to-pink-500/20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30" />
-
-        {/* Content */}
-        <div className="relative h-full flex items-center justify-center text-center">
-          <div className="max-w-4xl mx-auto px-4">
-            <div className="inline-block bg-black px-8 py-4 rounded-lg">
-              <h1 className="text-4xl md:text-6xl font-serif text-white">DUX</h1>
-            </div>
-          </div>
-        </div>
-
-        {/* Floating Color Dots */}
-        <div className="absolute top-20 left-10 w-4 h-4 bg-yellow-400 rounded-full opacity-80 animate-pulse"></div>
-        <div className="absolute top-32 right-16 w-6 h-6 bg-pink-400 rounded-full opacity-70 animate-pulse delay-300"></div>
-        <div className="absolute bottom-24 left-20 w-5 h-5 bg-blue-400 rounded-full opacity-75 animate-pulse delay-700"></div>
-        <div className="absolute bottom-40 right-12 w-3 h-3 bg-green-400 rounded-full opacity-80 animate-pulse delay-500"></div>
-        <div className="absolute top-40 left-1/3 w-4 h-4 bg-purple-400 rounded-full opacity-70 animate-pulse delay-1000"></div>
-        <div className="absolute bottom-32 right-1/3 w-5 h-5 bg-orange-400 rounded-full opacity-75 animate-pulse delay-200"></div>
-      </section>
-
       {/* Products Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-serif text-stone-800 mb-4">DUX Collection</h2>
@@ -348,48 +315,37 @@ export default function DuxPage() {
       </section>
 
       {/* About DUX Section */}
-      <section className="py-16 px-4 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-serif text-stone-800 mb-6">About DUX</h2>
-            <p className="text-stone-600 leading-relaxed mb-4">
-              DUX is a renowned Swedish furniture brand known for its elegant and functional designs. 
-              Since 1926, DUX has been creating furniture that combines exceptional craftsmanship with modern aesthetics to create timeless pieces.
-            </p>
-            <p className="text-stone-600 leading-relaxed mb-6">
-              Our collection features iconic designs from legendary designers like Bruno Mathsson, alongside contemporary pieces from the DUX Design Team. Each piece is made to order with meticulous attention to detail.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Made to order - Premium quality furniture</span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Iconic designs by Bruno Mathsson and DUX Design Team</span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Swedish craftsmanship since 1926</span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Premium materials: leather, linen, nanolaminate, solid wood</span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Delivery: 8-12 weeks (varies by product)</span>
-              </div>
+      <section className="py-16 px-4 max-w-4xl mx-auto text-center">
+        <div>
+          <h2 className="text-3xl font-serif text-stone-800 mb-6">About DUX</h2>
+          <p className="text-stone-600 leading-relaxed mb-4">
+            DUX is a renowned Swedish furniture brand known for its elegant and functional designs. 
+            Since 1926, DUX has been creating furniture that combines exceptional craftsmanship with modern aesthetics to create timeless pieces.
+          </p>
+          <p className="text-stone-600 leading-relaxed mb-8">
+            Our collection features iconic designs from legendary designers like Bruno Mathsson, alongside contemporary pieces from the DUX Design Team. Each piece is made to order with meticulous attention to detail.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <div className="flex items-start">
+              <span className="text-green-600 mr-3 mt-1">✓</span>
+              <span className="text-stone-600">Made to order - Premium quality furniture</span>
             </div>
-          </div>
-          <div className="relative h-96">
-            <ProductionImage
-              src="/dux/Inter-dining-table/lifestyle/inter3.webp"
-              alt="Dux Design Detail"
-              fill
-              className="object-cover rounded-lg"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
+            <div className="flex items-start">
+              <span className="text-green-600 mr-3 mt-1">✓</span>
+              <span className="text-stone-600">Iconic designs by Bruno Mathsson and DUX Design Team</span>
+            </div>
+            <div className="flex items-start">
+              <span className="text-green-600 mr-3 mt-1">✓</span>
+              <span className="text-stone-600">Swedish craftsmanship since 1926</span>
+            </div>
+            <div className="flex items-start">
+              <span className="text-green-600 mr-3 mt-1">✓</span>
+              <span className="text-stone-600">Premium materials: leather, linen, nanolaminate, solid wood</span>
+            </div>
+            <div className="flex items-start">
+              <span className="text-green-600 mr-3 mt-1">✓</span>
+              <span className="text-stone-600">Delivery: 8-12 weeks (varies by product)</span>
+            </div>
           </div>
         </div>
       </section>
