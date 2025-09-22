@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import ProductionImage from "@/components/ProductionImage";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
+import Header from "@/components/Header";
 
 interface ProductVariant {
   name: string;
@@ -50,6 +51,9 @@ export default function HayProductClient({ product, products }: HayProductClient
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
       {/* Back Button */}
       <div className="bg-white border-b border-gray-200 py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
