@@ -41,7 +41,10 @@ export default function HayProductClient({ product, products }: HayProductClient
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
-  const selectedVariant = product.variants[selectedVariantIndex];
+  // Safely get selected variant with fallback
+  const selectedVariant = product?.variants && Array.isArray(product.variants) && product.variants.length > 0 
+    ? product.variants[selectedVariantIndex] || product.variants[0]
+    : null;
 
   return (
     <div className="min-h-screen bg-white">
@@ -84,15 +87,15 @@ export default function HayProductClient({ product, products }: HayProductClient
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
               <ProductionImage
-                src={selectedVariant?.image || product.variants?.[0]?.image}
-                alt={`${product.name} - ${selectedVariant?.name || 'Main view'}`}
+                src={selectedVariant?.image || (product?.variants && Array.isArray(product.variants) && product.variants.length > 0 ? product.variants[0]?.image : '/placeholder-image.jpg')}
+                alt={`${product?.name || 'HAY Product'} - ${selectedVariant?.name || 'Main view'}`}
                 fill
                 className="object-contain object-center p-4"
               />
             </div>
 
             {/* Variant Thumbnails */}
-            {product.variants && product.variants.length > 1 && (
+            {product?.variants && Array.isArray(product.variants) && product.variants.length > 1 && (
               <div className="grid grid-cols-4 gap-3">
                 {product.variants.map((variant, index) => (
                   <button
@@ -267,19 +270,19 @@ export default function HayProductClient({ product, products }: HayProductClient
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {product.relatedProducts.map((related) => {
-                    const relatedProduct = products.find(p => p.id === related.id);
+                    const relatedProduct = products?.find(p => p?.id === related?.id);
                     return (
                       <Link
-                        key={related.id}
-                        href={`/hay/${related.id}`}
+                        key={related?.id || 'unknown'}
+                        href={`/hay/${related?.id || 'unknown'}`}
                         className="group"
                       >
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                           <div className="relative aspect-square bg-gray-50">
-                            {relatedProduct && (
+                            {relatedProduct && relatedProduct.variants && Array.isArray(relatedProduct.variants) && relatedProduct.variants.length > 0 && (
                               <ProductionImage
-                                src={relatedProduct.variants[0].image}
-                                alt={related.name}
+                                src={relatedProduct.variants[0]?.image || '/placeholder-image.jpg'}
+                                alt={related?.name || 'Related Product'}
                                 fill
                                 className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
                               />
@@ -287,11 +290,11 @@ export default function HayProductClient({ product, products }: HayProductClient
                           </div>
                           <div className="p-4">
                             <h3 className="text-lg font-light text-gray-900 mb-2">
-                              {related.name}
+                              {related?.name || 'HAY Product'}
                             </h3>
                             {relatedProduct && (
                               <p className="text-gray-900 font-medium">
-                                kr {relatedProduct.price.toLocaleString()}
+                                kr {(relatedProduct?.price || 0).toLocaleString()}
                               </p>
                             )}
                           </div>
