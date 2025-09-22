@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/components/Header";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ProductVariant {
   name: string;
@@ -92,7 +94,11 @@ export default function FredericiaProductClient({ product, products }: Frederici
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Product Images */}
         <div className="space-y-6">
@@ -200,9 +206,29 @@ export default function FredericiaProductClient({ product, products }: Frederici
             </div>
           )}
 
-          <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
-            Add to Cart - kr {selectedVariant.price.toLocaleString()}
-          </button>
+          <AddToCartWithQuantity 
+            product={{
+              _id: product.id,
+              name: product.name,
+              price: selectedVariant.price,
+              image: {
+                _type: "image",
+                asset: {
+                  _ref: "temp-ref",
+                  _type: "reference"
+                }
+              },
+              slug: {
+                _type: "slug",
+                current: product.id
+              },
+              _type: 'product',
+              _createdAt: new Date().toISOString(),
+              _updatedAt: new Date().toISOString(),
+              _rev: 'temp'
+            } as any}
+            variant="large"
+          />
 
           {/* Collapsible Features */}
           {product.features && (
@@ -311,6 +337,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

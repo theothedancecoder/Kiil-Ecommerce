@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
+import Header from "@/components/Header";
 
 interface ProductVariant {
   name: string;
@@ -39,6 +40,9 @@ export default function FlosProductClient({ product }: FlosProductClientProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
       {/* Navigation */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
