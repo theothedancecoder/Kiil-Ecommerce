@@ -6,6 +6,8 @@ import Link from "next/link";
 import { getRoCollectionProductBySlug, RoCollectionProduct } from "@/sanity/lib/products/getRoCollectionProducts";
 import { useRouter } from "next/navigation";
 import ProductionImage from "@/components/ProductionImage";
+import Header from "@/components/Header";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ROCollectionProductClientProps {
   params: {
@@ -60,6 +62,9 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
       {/* Back Button */}
       <div className="bg-white border-b border-gray-200 py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -230,9 +235,29 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
               </div>
             )}
 
-            <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
-              Add to Cart - kr {selectedVariant?.price?.toLocaleString() ?? product.price?.toLocaleString()}
-            </button>
+            <AddToCartWithQuantity 
+              product={{
+                _id: product._id || product.name || 'ro-product',
+                name: product.name || 'RO Collection Product',
+                price: selectedVariant?.price ?? product.price ?? 0,
+                image: {
+                  _type: "image",
+                  asset: {
+                    _ref: "temp-ref",
+                    _type: "reference"
+                  }
+                },
+                slug: {
+                  _type: "slug",
+                  current: product.slug?.current || product.name?.toLowerCase().replace(/\s+/g, '-') || 'ro-product'
+                },
+                _type: 'product',
+                _createdAt: new Date().toISOString(),
+                _updatedAt: new Date().toISOString(),
+                _rev: 'temp'
+              } as any}
+              variant="large"
+            />
 
             {/* Collapsible Features */}
             {product.features && (

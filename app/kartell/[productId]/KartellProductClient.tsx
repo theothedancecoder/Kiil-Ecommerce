@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
+import Header from "@/components/Header";
 
 interface KartellProduct {
   id: string;
@@ -32,6 +33,9 @@ export default function KartellProductClient({ product }: KartellProductClientPr
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
       {/* Breadcrumb */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -205,7 +209,7 @@ export default function KartellProductClient({ product }: KartellProductClientPr
                 </div>
                 {isDescriptionExpanded && (
                   <div className="space-y-3 text-sm text-stone-600">
-                    {Object.entries(product.details).map(([key, value]) => (
+                    {product.details && Object.entries(product.details).map(([key, value]) => (
                       <div key={key} className="flex justify-between">
                         <span className="font-medium">{key}:</span>
                         <span>{value}</span>
