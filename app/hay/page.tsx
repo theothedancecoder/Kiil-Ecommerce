@@ -4,9 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Product } from "@/sanity.types";
 import { getHayProducts, getHayCategories } from "@/sanity/lib/products/getHayProducts";
-import { getBrandBanner, BrandBanner } from "@/sanity/lib/getBrandBanner";
-import { imageUrl } from "@/lib/ImageUrl";
-import ProductionImage from "@/components/ProductionImage";
 import ProductGridItem from "@/components/ProductGridItem";
 import Header from "@/components/Header";
 
@@ -34,21 +31,18 @@ export default function HayPage() {
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [banner, setBanner] = useState<BrandBanner | null>(null);
   const productsPerPage = 15; // 5 rows × 3 columns
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [productsData, categoriesData, bannerData] = await Promise.all([
+        const [productsData, categoriesData] = await Promise.all([
           getHayProducts(),
-          getHayCategories(),
-          getBrandBanner('hay')
+          getHayCategories()
         ]);
         
         setProducts(productsData);
-        setBanner(bannerData);
         
         // Extract category titles and add "All" option
         const categoryTitles = categoriesData.map((cat: any) => cat.title);
@@ -139,6 +133,20 @@ export default function HayPage() {
             </svg>
             Back to Homepage
           </Link>
+        </div>
+      </div>
+
+      {/* Page Title */}
+      <div className="bg-white py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-4">
+              HAY
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Danish design excellence combining functional and aesthetic design with Scandinavian minimalism and contemporary style
+            </p>
+          </div>
         </div>
       </div>
 
