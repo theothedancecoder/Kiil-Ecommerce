@@ -20,16 +20,12 @@ export default function SeraxPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [productsData, categoriesData] = await Promise.all([
-          getSeraxProducts(),
-          getSeraxCategories()
-        ]);
+        const productsData = await getSeraxProducts();
         
         setProducts(productsData);
         
-        // Extract category titles and add "All" option
-        const categoryTitles = categoriesData.map((cat: any) => cat.title);
-        setCategories(["All", ...categoryTitles]);
+        // Use hardcoded categories like Flos does to avoid duplicates
+        setCategories(["All", "Accessories", "Lighting"]);
       } catch (error) {
         console.error("Error fetching Serax data:", error);
       } finally {
@@ -37,8 +33,6 @@ export default function SeraxPage() {
       }
     };
 
-    fetchData();
-  }, []);
 
   const filteredProducts = products.filter(product => {
     if (selectedCategory === "All") return true;

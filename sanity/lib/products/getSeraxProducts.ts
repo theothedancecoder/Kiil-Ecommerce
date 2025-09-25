@@ -144,16 +144,6 @@ const SERAX_PRODUCTS_QUERY = defineQuery(`
   }
 `);
 
-// Query to get Serax categories
-const SERAX_CATEGORIES_QUERY = defineQuery(`
-  *[_type == "category" && (title == "Serax" || title == "Accessories" || title == "Lighting")] | order(title asc) {
-    _id,
-    title,
-    slug,
-    description
-  }
-`);
-
 // Query for a single Serax product by slug
 const SERAX_PRODUCT_BY_SLUG_QUERY = defineQuery(`
   *[_type == "product" && slug.current == $slug && brand == "Serax"][0] {
@@ -241,12 +231,21 @@ export async function getSeraxProducts(): Promise<SeraxProduct[]> {
 }
 
 /**
- * Fetch Serax categories from Sanity
+ * Fetch Serax categories from Sanity - extract from products
  */
 export async function getSeraxCategories() {
   try {
-    const categories = await client.fetch(SERAX_CATEGORIES_QUERY);
-    return categories;
+    const products = await getSeraxProducts();
+    
+    // Extract all categories from all products and flatten
+    const allCategories = products.flatMap(product => product.categories || []);
+    
+    // Remove duplicates by title
+    const uniqueCategories = allCategories.filter((category, index, self) => 
+      index === self.findIndex(c => c.title === category.title)
+    );
+    
+    return uniqueCategories;
   } catch (error) {
     console.error('Error fetching Serax categories:', error);
     return [];
