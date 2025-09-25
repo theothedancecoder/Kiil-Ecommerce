@@ -117,55 +117,8 @@ export default function FlosPage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/FLOS/KTribe-1-floor-lamp/lifestyle/3dd8608d-8ea8-438d-85eb-2bad0d9fe781.webp"
-            alt="FLOS Lifestyle"
-            fill
-            className="object-cover object-center opacity-30"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-black/90" />
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-yellow-400/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-orange-400/30 rounded-full blur-lg animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-red-400/25 rounded-full blur-md animate-pulse delay-2000"></div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="max-w-3xl">
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg shadow-lg border border-white/20">
-              <h1 className="text-4xl lg:text-6xl font-light text-white mb-6">
-                FLOS
-              </h1>
-              <p className="text-xl text-gray-200 leading-relaxed mb-8">
-                Italian lighting excellence since 1962. Discover iconic designs that have shaped modern lighting, from Gino Sarfatti's timeless chandeliers to Philippe Starck's contemporary creations.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  href="#products" 
-                  className="inline-flex items-center justify-center px-8 py-3 bg-yellow-600 text-white font-medium hover:bg-yellow-700 transition-colors duration-300"
-                >
-                  Explore Collection
-                </Link>
-                <Link 
-                  href="/tjenester" 
-                  className="inline-flex items-center justify-center px-8 py-3 border-2 border-yellow-600 text-yellow-400 font-medium hover:bg-yellow-600 hover:text-white transition-colors duration-300"
-                >
-                  Lighting Consultation
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Products Section - Updated for variant fix */}
-      <section id="products" className="py-20 bg-white">
+      {/* Products Section */}
+      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
