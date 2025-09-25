@@ -1,93 +1,120 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-
-interface ProductVariant {
-  name: string;
-  image: string;
-  price: number;
-  color?: string;
-  material?: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  variants: ProductVariant[];
-  designer?: string;
-  features?: string[];
-  specifications?: { label: string; value: string }[];
-  lifestyleImages?: string[];
-}
+import { getSeraxProductBySlug, SeraxProduct } from "@/sanity/lib/products/getSeraxProducts";
+import { useRouter } from "next/navigation";
+import ProductionImage from "@/components/ProductionImage";
+import Header from "@/components/Header";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface SeraxProductClientProps {
-  product: Product;
+  params: {
+    productId: string;
+  };
 }
 
-export default function SeraxProductClient({ product }: SeraxProductClientProps) {
+export default function SeraxProductClient({ params }: SeraxProductClientProps) {
+  const slug = params.productId;
+  const [product, setProduct] = useState<SeraxProduct | null>(null);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const selectedVariant = product.variants[selectedVariantIndex];
+  useEffect(() => {
+    async function fetchProduct() {
+      setLoading(true);
+      setError(null);
+      try {
+        const fetchedProduct = await getSeraxProductBySlug(slug);
+        if (!fetchedProduct) {
+          setError("Product not found");
+          setProduct(null);
+        } else {
+          setProduct(fetchedProduct);
+        }
+      } catch (err) {
+        setError("Failed to load product");
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [slug]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading product...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600">{error}</div>;
+  }
+
+  if (!product) {
+    return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
+  }
+
+  const selectedVariant = product.variants?.[selectedVariantIndex];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <div className="bg-gray-50 py-4">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
+      {/* Back Button */}
+      <div className="bg-white border-b border-gray-200 py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <Link 
-              href="/serax" 
-              className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to Serax Collection
-            </Link>
-            
-            <nav className="flex items-center space-x-2 text-sm">
-              <Link href="/" className="text-stone-600 hover:text-stone-800">
-                Home
-              </Link>
-              <span className="text-stone-400">/</span>
-              <Link href="/serax" className="text-stone-600 hover:text-stone-800">
-                Serax
-              </Link>
-              <span className="text-stone-400">/</span>
-              <span className="text-stone-800 font-medium">{product.name}</span>
-            </nav>
-          </div>
+          <Link
+            href="/serax"
+            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Serax Collection
+          </Link>
         </div>
       </div>
 
+      {/* Product Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src={selectedVariant.image}
-                alt={`${product.name} - ${selectedVariant.name}`}
-                fill
-                className="object-contain object-center p-4"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+              {selectedVariant?.image?.asset?.url ? (
+                <ProductionImage
+                  src={selectedVariant.image.asset.url}
+                  alt={`${product.name} - ${selectedVariant.name || 'Main'}`}
+                  fill
+                  className="object-contain object-center p-4"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : product.image?.asset?.url ? (
+                <ProductionImage
+                  src={product.image.asset.url}
+                  alt={product.name || "Product image"}
+                  fill
+                  className="object-contain object-center p-4"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  No Image Available
+                </div>
+              )}
             </div>
 
             {/* Variant Thumbnails */}
-            {product.variants.length > 1 && (
+            {product.variants && product.variants.length > 1 && (
               <div className="grid grid-cols-4 gap-3">
                 {product.variants.map((variant, index) => (
                   <button
-                    key={variant.name}
+                    key={`variant-${index}`}
                     onClick={() => setSelectedVariantIndex(index)}
                     className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
                       selectedVariantIndex === index
@@ -95,15 +122,21 @@ export default function SeraxProductClient({ product }: SeraxProductClientProps)
                         : "border-gray-200 hover:border-gray-400"
                     }`}
                   >
-                    <Image
-                      src={variant.image}
-                      alt={`${variant.name} variant`}
-                      fill
-                      className="object-contain object-center p-2"
-                      sizes="(max-width: 768px) 25vw, 12.5vw"
-                    />
+                    {variant.image?.asset?.url ? (
+                      <ProductionImage
+                        src={variant.image.asset.url}
+                        alt={`${variant.name || variant.color} variant`}
+                        fill
+                        className="object-contain object-center p-2"
+                        sizes="(max-width: 768px) 25vw, 12.5vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400 text-xs">
+                        No Image
+                      </div>
+                    )}
                     <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
-                      {variant.color}
+                      {variant.color || variant.name}
                     </div>
                   </button>
                 ))}
@@ -114,14 +147,20 @@ export default function SeraxProductClient({ product }: SeraxProductClientProps)
             {product.lifestyleImages && product.lifestyleImages.length > 0 && (
               <div className="grid grid-cols-1 gap-4">
                 {product.lifestyleImages.map((image, index) => (
-                  <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                    <Image
-                      src={image}
-                      alt={`${product.name} lifestyle image ${index + 1}`}
-                      fill
-                      className="object-cover object-center"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                  <div key={`lifestyle-${index}`} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                    {image.asset?.url ? (
+                      <ProductionImage
+                        src={image.asset.url}
+                        alt={`${product.name} lifestyle image ${index + 1}`}
+                        fill
+                        className="object-cover object-center"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        No Lifestyle Image
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -148,18 +187,19 @@ export default function SeraxProductClient({ product }: SeraxProductClientProps)
             </div>
 
             <div className="text-2xl font-light text-gray-900">
-              kr {selectedVariant.price.toLocaleString()}
+              kr {(selectedVariant?.price || product.price || 0).toLocaleString()}
             </div>
 
-            {product.variants.length > 1 && (
+            {/* Variants */}
+            {product.variants && product.variants.length > 1 && (
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  Color: {selectedVariant.color}
+                  {selectedVariant?.color ? `Color: ${selectedVariant.color}` : 'Variants'}
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   {product.variants.map((variant, index) => (
                     <button
-                      key={variant.name}
+                      key={`variant-btn-${index}`}
                       onClick={() => setSelectedVariantIndex(index)}
                       className={`p-3 text-sm border rounded transition-all ${
                         selectedVariantIndex === index
@@ -167,20 +207,23 @@ export default function SeraxProductClient({ product }: SeraxProductClientProps)
                           : "border-gray-300 hover:border-gray-500"
                       }`}
                     >
-                      <div className="font-medium">{variant.color}</div>
-                      <div className="text-xs text-gray-500">kr {variant.price.toLocaleString()}</div>
+                      <div className="font-medium">{variant.color || variant.name}</div>
+                      {variant.price && (
+                        <div className="text-xs text-gray-500">kr {variant.price.toLocaleString()}</div>
+                      )}
                     </button>
                   ))}
                 </div>
               </div>
             )}
 
-            <button className="w-full bg-blue-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-blue-700 transition-colors">
-              Add to Cart - kr {selectedVariant.price.toLocaleString()}
-            </button>
+            {/* Add to Cart */}
+            <AddToCartWithQuantity
+              product={product as any}
+            />
 
             {/* Collapsible Features */}
-            {product.features && (
+            {product.features && product.features.length > 0 && (
               <div className="border-t border-gray-200 pt-8">
                 <button
                   onClick={() => setFeaturesExpanded(!featuresExpanded)}
@@ -196,7 +239,7 @@ export default function SeraxProductClient({ product }: SeraxProductClientProps)
                 {featuresExpanded && (
                   <ul className="mt-4 space-y-2 text-gray-600">
                     {product.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start">
+                      <li key={`feature-${idx}`} className="flex items-start">
                         <span className="mr-2">•</span>
                         <span>{feature}</span>
                       </li>
@@ -207,7 +250,7 @@ export default function SeraxProductClient({ product }: SeraxProductClientProps)
             )}
 
             {/* Collapsible Specifications */}
-            {product.specifications && (
+            {product.specifications && product.specifications.length > 0 && (
               <div className="border-t border-gray-200 pt-8">
                 <button
                   onClick={() => setSpecificationsExpanded(!specificationsExpanded)}
@@ -223,13 +266,59 @@ export default function SeraxProductClient({ product }: SeraxProductClientProps)
                 {specificationsExpanded && (
                   <div className="mt-4 space-y-3 text-gray-600">
                     {product.specifications.map((spec, idx) => (
-                      <div key={idx} className="flex justify-between border-b border-gray-100 pb-2">
+                      <div key={`spec-${idx}`} className="flex justify-between border-b border-gray-100 pb-2">
                         <span className="font-medium">{spec.label}</span>
                         <span className="text-right">{spec.value}</span>
                       </div>
                     ))}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Related Products */}
+            {product.relatedProducts && product.relatedProducts.length > 0 && (
+              <div className="border-t border-gray-200 pt-8">
+                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider mb-4">
+                  Related Products
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {product.relatedProducts.slice(0, 4).map((related) => (
+                    <Link
+                      key={related._id}
+                      href={`/serax/${related.slug?.current}`}
+                      className="group"
+                    >
+                      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                        <div className="relative aspect-square bg-gray-50">
+                          {related.image?.asset?.url ? (
+                            <ProductionImage
+                              src={related.image.asset.url}
+                              alt={related.name || "Related product"}
+                              fill
+                              className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                              sizes="(max-width: 640px) 50vw, 25vw"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full text-gray-400">
+                              No Image
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <h3 className="text-sm font-light text-gray-900 mb-2">
+                            {related.name}
+                          </h3>
+                          {related.price && (
+                            <p className="text-gray-900 font-medium text-sm">
+                              kr {related.price.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             )}
 
