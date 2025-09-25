@@ -4,7 +4,7 @@ import { Product } from '@/sanity.types';
 // Query for all Dux products
 export async function getDuxProducts(): Promise<DuxProduct[]> {
   const query = `
-    *[_type == "product" && "dux" in categories[]->slug.current] | order(name asc) {
+    *[_type == "product" && brand == "DUX"] | order(name asc) {
       _id,
       _type,
       _createdAt,
@@ -86,7 +86,7 @@ export async function getDuxProducts(): Promise<DuxProduct[]> {
 // Query for Dux tables
 export async function getDuxTables(): Promise<DuxProduct[]> {
   const query = `
-    *[_type == "product" && "dux" in categories[]->slug.current && subcategory == "tables"] | order(name asc) {
+    *[_type == "product" && brand == "DUX" && subcategory == "tables"] | order(name asc) {
       _id,
       _type,
       _createdAt,
@@ -168,7 +168,7 @@ export async function getDuxTables(): Promise<DuxProduct[]> {
 // Query for Dux chairs
 export async function getDuxChairs(): Promise<DuxProduct[]> {
   const query = `
-    *[_type == "product" && "dux" in categories[]->slug.current && subcategory == "chairs"] | order(name asc) {
+    *[_type == "product" && brand == "DUX" && subcategory == "chairs"] | order(name asc) {
       _id,
       _type,
       _createdAt,
@@ -329,7 +329,7 @@ export interface DuxProduct {
 // Query for a single Dux product by slug
 export async function getDuxProductBySlug(slug: string): Promise<DuxProduct | null> {
   const query = `
-    *[_type == "product" && slug.current == $slug && "dux" in categories[]->slug.current][0] {
+    *[_type == "product" && slug.current == $slug && brand == "DUX"][0] {
       _id,
       _type,
       _createdAt,

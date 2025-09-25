@@ -153,15 +153,6 @@ export default function HayPage() {
       {/* Products Section */}
       <section id="products" className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
-              Our Collection
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Explore our curated selection of HAY products, combining timeless design with modern functionality.
-            </p>
-          </div>
-
           {/* Filters */}
           <div className="bg-white border-b border-gray-200 mb-12">
             <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
