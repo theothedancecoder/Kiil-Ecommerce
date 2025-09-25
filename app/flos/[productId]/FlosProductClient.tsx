@@ -117,7 +117,7 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
               <div className="grid grid-cols-4 gap-3">
                 {product.variants.map((variant, index) => (
                   <button
-                    key={variant.name}
+                    key={`variant-${index}-${variant.name || variant.color}`}
                     onClick={() => setSelectedVariantIndex(index)}
                     className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
                       selectedVariantIndex === index
@@ -150,14 +150,16 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
             {product.lifestyleImages && product.lifestyleImages.length > 0 && (
               <div className="grid grid-cols-1 gap-4">
                 {product.lifestyleImages.map((image, index) => (
-                  <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                    <ProductionImage
-                      src={image.asset?.url}
-                      alt={`${product.name} lifestyle image ${index + 1}`}
-                      fill
-                      className="object-cover object-center"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                  <div key={`lifestyle-${index}`} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
+                    {image.asset?.url && (
+                      <ProductionImage
+                        src={image.asset.url}
+                        alt={`${product.name} lifestyle image ${index + 1}`}
+                        fill
+                        className="object-cover object-center"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    )}
                   </div>
                 ))}
               </div>
@@ -195,7 +197,7 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
                 <div className="grid grid-cols-2 gap-3">
                   {product.variants.map((variant, index) => (
                     <button
-                      key={variant.name}
+                      key={`variant-selector-${index}-${variant.name || variant.color}`}
                       onClick={() => setSelectedVariantIndex(index)}
                       className={`p-3 text-sm border rounded transition-all ${
                         selectedVariantIndex === index
@@ -238,7 +240,7 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
                 {featuresExpanded && (
                   <ul className="mt-4 space-y-2 text-gray-600">
                     {product.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start">
+                      <li key={`feature-${idx}`} className="flex items-start">
                         <span className="mr-2">•</span>
                         <span>{feature}</span>
                       </li>
@@ -265,7 +267,7 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
                 {specificationsExpanded && (
                   <div className="mt-4 space-y-3 text-gray-600">
                     {product.specifications.map((spec, idx) => (
-                      <div key={idx} className="flex justify-between border-b border-gray-100 pb-2">
+                      <div key={`spec-${idx}-${spec.label}`} className="flex justify-between border-b border-gray-100 pb-2">
                         <span className="font-medium">{spec.label}</span>
                         <span className="text-right">{spec.value}</span>
                       </div>
