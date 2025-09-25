@@ -1,6 +1,75 @@
 import { defineQuery } from "next-sanity";
 import { client } from '../client';
 
+// Define the FLOS product type
+export interface FlosProduct {
+  _id: string;
+  name?: string;
+  slug?: {
+    current?: string;
+  };
+  description?: string;
+  price?: number;
+  brand?: string;
+  image?: {
+    asset?: {
+      _id: string;
+      url: string;
+    };
+  };
+  lifestyleImages?: Array<{
+    asset?: {
+      _id: string;
+      url: string;
+    };
+  }>;
+  variants?: Array<{
+    name?: string;
+    price?: number;
+    material?: string;
+    color?: string;
+    size?: string;
+    image?: {
+      asset?: {
+        _id: string;
+        url: string;
+      };
+    };
+  }>;
+  stock?: number;
+  inStock?: boolean;
+  href?: string;
+  roomCategory?: string;
+  subcategory?: string;
+  categories?: Array<{
+    _id: string;
+    title?: string;
+    slug?: {
+      current?: string;
+    };
+  }>;
+  designer?: string;
+  features?: string[];
+  specifications?: Array<{
+    label: string;
+    value: string;
+  }>;
+  relatedProducts?: Array<{
+    _id: string;
+    name?: string;
+    slug?: {
+      current?: string;
+    };
+    price?: number;
+    image?: {
+      asset?: {
+        _id: string;
+        url: string;
+      };
+    };
+  }>;
+}
+
 // Get all FLOS products
 export const getFlosProducts = async () => {
   const FLOS_PRODUCTS_QUERY = defineQuery(`*[_type == "product" && brand == "FLOS"] {
