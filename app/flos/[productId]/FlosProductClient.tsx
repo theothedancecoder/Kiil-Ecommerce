@@ -176,7 +176,14 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {typeof product.description === 'string' 
+                  ? product.description 
+                  : Array.isArray(product.description) 
+                    ? product.description.map((block: any) => 
+                        block.children?.map((child: any) => child.text).join(' ')
+                      ).join(' ')
+                    : 'Product description not available'
+                }
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">

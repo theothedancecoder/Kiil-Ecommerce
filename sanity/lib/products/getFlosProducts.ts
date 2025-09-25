@@ -8,7 +8,16 @@ export interface FlosProduct {
   slug?: {
     current?: string;
   };
-  description?: string;
+  description?: string | Array<{
+    _key?: string;
+    _type?: string;
+    children?: Array<{
+      text?: string;
+      _key?: string;
+      _type?: string;
+    }>;
+    style?: string;
+  }>;
   price?: number;
   brand?: string;
   image?: {
