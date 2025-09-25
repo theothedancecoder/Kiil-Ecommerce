@@ -1,4 +1,25 @@
-"use client";
+#!/usr/bin/env node
+
+const { createClient } = require('@sanity/client');
+const fs = require('fs');
+require('dotenv').config({ path: '.env.local' });
+
+const client = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  token: process.env.SANITY_API_TOKEN,
+  useCdn: false,
+  apiVersion: '2024-01-01',
+});
+
+async function fixFlosPageToUseSanity() {
+  console.log('🔧 Fixing FLOS Page to Use Sanity Data...\n');
+
+  try {
+    // Step 1: Create a new Sanity-powered FlosProductClient
+    console.log('1. Creating Sanity-powered FlosProductClient...');
+    
+    const newFlosProductClient = `"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -100,7 +121,7 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
               {(selectedVariant?.image?.asset?.url || product.image?.asset?.url) ? (
                 <ProductionImage
                   src={selectedVariant?.image?.asset?.url || product.image?.asset?.url}
-                  alt={`${product.name}${selectedVariant ? ` - ${selectedVariant.name}` : ''}`}
+                  alt={\`\${product.name}\${selectedVariant ? \` - \${selectedVariant.name}\` : ''}\`}
                   fill
                   className="object-contain object-center p-4"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -119,16 +140,16 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
                   <button
                     key={variant.name}
                     onClick={() => setSelectedVariantIndex(index)}
-                    className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
+                    className={\`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all \${
                       selectedVariantIndex === index
                         ? "border-yellow-600"
                         : "border-gray-200 hover:border-gray-400"
-                    }`}
+                    }\`}
                   >
                     {variant.image?.asset?.url ? (
                       <ProductionImage
                         src={variant.image.asset.url}
-                        alt={`${variant.name} variant`}
+                        alt={\`\${variant.name} variant\`}
                         fill
                         className="object-contain object-center p-2"
                         sizes="(max-width: 768px) 25vw, 12.5vw"
@@ -153,7 +174,7 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
                   <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
                     <ProductionImage
                       src={image.asset?.url}
-                      alt={`${product.name} lifestyle image ${index + 1}`}
+                      alt={\`\${product.name} lifestyle image \${index + 1}\`}
                       fill
                       className="object-cover object-center"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -197,11 +218,11 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
                     <button
                       key={variant.name}
                       onClick={() => setSelectedVariantIndex(index)}
-                      className={`p-3 text-sm border rounded transition-all ${
+                      className={\`p-3 text-sm border rounded transition-all \${
                         selectedVariantIndex === index
                           ? "border-yellow-600 bg-yellow-50"
                           : "border-gray-300 hover:border-gray-500"
-                      }`}
+                      }\`}
                     >
                       <div className="font-medium">{variant.color || variant.name}</div>
                       <div className="text-xs text-gray-500">kr {variant.price?.toLocaleString()}</div>
@@ -285,7 +306,7 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
                   {product.relatedProducts.slice(0, 4).map((related) => (
                     <Link
                       key={related._id}
-                      href={`/flos/${related.slug?.current}`}
+                      href={\`/flos/\${related.slug?.current}\`}
                       className="group"
                     >
                       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
@@ -335,4 +356,47 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
       </div>
     </div>
   );
+}`;
+
+    // Write the new FlosProductClient
+    fs.writeFileSync('app/flos/[productId]/FlosProductClient.tsx', newFlosProductClient);
+    console.log('✅ Created new Sanity-powered FlosProductClient.tsx');
+
+    // Step 2: Update the page.tsx to use the simple approach like DUX
+    console.log('2. Updating page.tsx to use Sanity approach...');
+    
+    const newPageContent = `import { notFound } from "next/navigation";
+import FlosProductClient from "./FlosProductClient";
+
+export default async function FlosProductPage({
+  params,
+}: {
+  params: Promise<{ productId: string }>;
+}) {
+  const { productId } = await params;
+
+  // Basic validation - let FlosProductClient handle the actual product fetching and validation
+  if (!productId) {
+    notFound();
+  }
+
+  return <FlosProductClient params={{ productId }} />;
+}`;
+
+    fs.writeFileSync('app/flos/[productId]/page.tsx', newPageContent);
+    console.log('✅ Updated page.tsx to use Sanity approach');
+
+    console.log('\n🎉 FLOS Page Fix Complete!');
+    console.log('\n📋 Changes Made:');
+    console.log('   • Replaced hardcoded FlosProductClient with Sanity-powered version');
+    console.log('   • Updated page.tsx to use simple approach like DUX pages');
+    console.log('   • Now uses ProductionImage component for proper image handling');
+    console.log('   • Fetches data from Sanity instead of hardcoded arrays');
+    console.log('   • Supports all FLOS products with images, variants, and related products');
+
+  } catch (error) {
+    console.error('❌ Error fixing FLOS page:', error);
+  }
 }
+
+fixFlosPageToUseSanity();
