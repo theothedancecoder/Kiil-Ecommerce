@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getLouisPoulsenProducts, LouisPoulsenProduct } from "@/sanity/lib/products/getLouisPoulsenProducts";
+import { louisPoulsenProducts } from "@/lib/louisPoulsenProducts";
 import ProductionImage from "@/components/ProductionImage";
 import Header from "@/components/Header";
 
@@ -33,14 +34,98 @@ export default function LouisPoulsenPage() {
         
         const productsData = await getLouisPoulsenProducts();
         
-        setProducts(productsData);
+        // If no Sanity products, fall back to static products
+        if (productsData.length === 0) {
+          console.log("No Sanity products found, using static Louis Poulsen products");
+          // Convert static products to match Sanity interface
+          const staticProducts = louisPoulsenProducts.map(product => ({
+            ...product,
+            _type: "product",
+            _createdAt: new Date().toISOString(),
+            _updatedAt: new Date().toISOString(),
+            _rev: "1",
+            slug: {
+              _type: "slug" as const,
+              current: product.href.replace("/louis-poulsen/", "")
+            },
+            image: product.image ? {
+              asset: {
+                _id: product._id + "-image",
+                url: product.image
+              }
+            } : undefined,
+            categories: [{
+              _id: "lighting-category",
+              title: product.category,
+              slug: {
+                _type: "slug" as const,
+                current: product.category.toLowerCase()
+              }
+            }],
+            variants: product.variants?.map(variant => ({
+              _type: "variant",
+              name: variant.name,
+              price: variant.price,
+              material: variant.material,
+              color: variant.color,
+              image: variant.image ? {
+                asset: {
+                  _id: variant.name + "-image",
+                  url: variant.image
+                }
+              } : undefined
+            }))
+          }));
+          setProducts(staticProducts as LouisPoulsenProduct[]);
+        } else {
+          setProducts(productsData);
+        }
         
         // Use hardcoded categories like Serax does to avoid duplicates
         setCategories(["All", "Lighting"]);
       } catch (error) {
         console.error("Error fetching Louis Poulsen data:", error);
-        // Fallback to empty array if Sanity fails
-        setProducts([]);
+        // Fallback to static products if Sanity fails
+        console.log("Sanity error, using static Louis Poulsen products");
+        const staticProducts = louisPoulsenProducts.map(product => ({
+          ...product,
+          _type: "product",
+          _createdAt: new Date().toISOString(),
+          _updatedAt: new Date().toISOString(),
+          _rev: "1",
+          slug: {
+            _type: "slug" as const,
+            current: product.href.replace("/louis-poulsen/", "")
+          },
+          image: product.image ? {
+            asset: {
+              _id: product._id + "-image",
+              url: product.image
+            }
+          } : undefined,
+          categories: [{
+            _id: "lighting-category",
+            title: product.category,
+            slug: {
+              _type: "slug" as const,
+              current: product.category.toLowerCase()
+            }
+          }],
+          variants: product.variants?.map(variant => ({
+            _type: "variant",
+            name: variant.name,
+            price: variant.price,
+            material: variant.material,
+            color: variant.color,
+            image: variant.image ? {
+              asset: {
+                _id: variant.name + "-image",
+                url: variant.image
+              }
+            } : undefined
+          }))
+        }));
+        setProducts(staticProducts as LouisPoulsenProduct[]);
         setCategories(["All", "Lighting"]);
       } finally {
         setLoading(false);
