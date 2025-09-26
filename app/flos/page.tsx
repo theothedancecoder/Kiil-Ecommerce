@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/sanity.types";
-import { getFlosProducts, getFlosCategories } from "@/sanity/lib/products/getFlosProducts";
+import { getFlosProducts } from "@/sanity/lib/products/getFlosProducts";
 import { imageUrl } from "@/lib/ImageUrl";
 import ProductionImage from "@/components/ProductionImage";
 import ProductGridItem from "@/components/ProductGridItem";
@@ -23,16 +23,12 @@ export default function FlosPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [productsData, categoriesData] = await Promise.all([
-          getFlosProducts(),
-          getFlosCategories()
-        ]);
+        const productsData = await getFlosProducts();
         
         setProducts(productsData);
         
-        // Extract category titles and add "All" option
-        const categoryTitles = categoriesData.map((cat: any) => cat.title);
-        setCategories(["All", ...categoryTitles]);
+        // Use hardcoded categories like Serax does to avoid duplicates
+        setCategories(["All", "FLOS", "Lighting"]);
       } catch (error) {
         console.error("Error fetching FLOS data:", error);
       } finally {

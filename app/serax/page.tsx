@@ -258,44 +258,6 @@ export default function SeraxPage() {
           )}
         </div>
       </section>
-
-      {/* Brand Story Section */}
-      <section className="py-20 bg-blue-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-light mb-6">
-                Belgian Design Excellence Since 1986
-              </h2>
-              <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                Serax has been at the forefront of contemporary Belgian design for over three decades. 
-                We collaborate with talented designers and artisans to create home accessories and lighting that blend functionality with artistic expression.
-              </p>
-              <p className="text-lg text-gray-300 leading-relaxed mb-8">
-                From ceramic vases to sophisticated lighting fixtures, each Serax product represents 
-                the perfect balance of contemporary design, quality craftsmanship, and Belgian creativity.
-              </p>
-              <Link 
-                href="/tjenester" 
-                className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors duration-300"
-              >
-                Discover Our Heritage
-              </Link>
-            </div>
-            <div className="relative">
-              <div className="relative h-96 overflow-hidden rounded-lg">
-                <Image
-                  src="/Serax/Broquaine-vase-H38-cm/lifestyle/SeraxB7222021_2.webp"
-                  alt="Serax Craftsmanship"
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
