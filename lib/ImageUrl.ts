@@ -37,8 +37,28 @@ export function getImageUrl(source: SanityImageSource, fallback?: string): strin
         console.error('getImageUrl: Received serialized object string instead of actual object:', source);
         return fallback || '';
       }
+      
       // If it's a valid URL string, return it
-      return source;
+      // For static files, ensure they start with / for proper Next.js handling
+      if (source.startsWith('/')) {
+        // Debug logging for static files
+        if (process.env.NODE_ENV === 'development') {
+          console.log('getImageUrl: Processing static file path:', source);
+        }
+        return source;
+      }
+      
+      // Handle external URLs
+      if (source.startsWith('http://') || source.startsWith('https://')) {
+        return source;
+      }
+      
+      // If it doesn't start with /, assume it's a relative path and add /
+      const staticPath = source.startsWith('/') ? source : `/${source}`;
+      if (process.env.NODE_ENV === 'development') {
+        console.log('getImageUrl: Converting to static path:', staticPath);
+      }
+      return staticPath;
     }
     
     // Handle Sanity image objects with various structures
