@@ -74,6 +74,9 @@ export default function LouisPoulsenPage() {
         setCategories(["All", "Lighting"]);
       } catch (error) {
         console.error("Error fetching Louis Poulsen data:", error);
+        // Fallback to empty array if Sanity fails
+        setProducts([]);
+        setCategories(["All", "Lighting"]);
       } finally {
         setLoading(false);
       }
