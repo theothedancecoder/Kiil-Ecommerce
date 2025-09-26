@@ -33,6 +33,8 @@ export default function SeraxPage() {
       }
     };
 
+    fetchData();
+  }, []);
 
   const filteredProducts = products.filter(product => {
     if (selectedCategory === "All") return true;

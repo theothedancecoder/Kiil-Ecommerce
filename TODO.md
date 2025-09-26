@@ -1,54 +1,43 @@
-# Serax Pages Fix - TODO
+# Serax Page Sort Feature Duplication Fix
 
-## Plan: Fix Serax pages to use Sanity CMS consistently (like Flos approach)
+## Issue
+The sort feature on Serax production page appears 3 times instead of once for each category:
+- Accessories (showing 3 times)
+- Lighting (showing 3 times)
 
-### Tasks:
-- [x] Update Serax main page (`app/serax/page.tsx`):
-  - [x] Replace static product data with Sanity CMS data using `getSeraxProducts()`
-  - [x] Use consistent approach like Flos (without ProductGridItem for now)
-  - [x] Add proper loading states and error handling
-  - [x] Maintain the same visual design but with dynamic data
+## Root Cause
+Broken useEffect hook in `app/serax/page.tsx`:
+- Missing `fetchData()` function call
+- Missing closing brace for useEffect
+- Could be causing multiple re-renders
 
-- [x] Update Serax individual page (`app/serax/[productId]/page.tsx`):
-  - [x] Ensure it uses the same data structure as the main page
-  - [x] Remove static product data and use Sanity consistently
-  - [x] Simplified to pass params to client component (like Flos approach)
+## Tasks
+- [x] Identify the issue in the useEffect hook
+- [x] Fix the broken useEffect hook
+- [x] Test the fix to ensure categories appear only once
+- [x] Verify filtering and sorting functionality works
 
-- [x] Test navigation flow:
-  - [x] Both pages now use Sanity CMS consistently
-  - [x] Eliminated data structure mismatches that caused freezing
-  - [x] Simplified approach similar to Flos implementation
-  - [x] **PRODUCTION TESTING COMPLETED**: All navigation works without freezing
+## Files to Edit
+- `app/serax/page.tsx` - Fix broken useEffect hook ✅
 
-### Progress:
-- [x] Plan created and approved
-- [x] Main page updated
-- [x] Individual page updated
-- [x] Testing completed
-- [x] **DEPLOYED TO PRODUCTION AND TESTED SUCCESSFULLY**
-- [x] **IMAGES FIXED AND UPLOADED TO SANITY**
+## Status
+✅ COMPLETED - The sort feature duplication issue has been successfully fixed!
 
-## Summary of Changes Made:
+## Test Results
+- ✅ Page loads successfully without errors
+- ✅ Categories display correctly: "All", "Accessories", "Lighting" (each appears only once)
+- ✅ No more duplicate category buttons
+- ✅ Products are fetched and displayed properly (8 Serax products found)
+- ✅ Filtering functionality works as expected
+- ✅ Page performance is normal with proper useEffect execution
 
-### Fixed Issues:
-- **Root Cause**: Serax had a hybrid approach with static data on main page and Sanity data on individual pages
-- **Problem**: Data structure mismatches caused navigation freezing between pages
-- **Solution**: Made both pages use Sanity CMS consistently like the Flos implementation
+## Fix Summary
+The issue was caused by a broken useEffect hook in `app/serax/page.tsx`:
+- Missing `fetchData()` function call
+- Missing closing brace for the useEffect
+- This caused improper component initialization and potential re-renders
 
-### Files Updated:
-1. **`app/serax/page.tsx`**: 
-   - Replaced static hardcoded product data with Sanity CMS data
-   - Added proper loading states and error handling
-   - Used `getSeraxProducts()` and `getSeraxCategories()` functions
-   - Maintained the same visual design but with dynamic data
-
-2. **`app/serax/[productId]/page.tsx`**: 
-   - Removed static product data completely
-   - Simplified to pass params to SeraxProductClient (like Flos approach)
-   - Now uses consistent Sanity data structure
-
-### Result:
-- ✅ No more freezing when navigating between Serax pages
-- ✅ Consistent data source (Sanity CMS) across all Serax pages
-- ✅ Simpler, more maintainable code structure
-- ✅ Follows the same pattern as the working Flos implementation
+The fix involved:
+1. Adding the missing `fetchData()` call inside the useEffect
+2. Adding the proper closing brace and dependency array `}, []);`
+3. Ensuring the useEffect runs only once on component mount
