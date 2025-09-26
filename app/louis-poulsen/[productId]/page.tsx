@@ -3,110 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-interface ProductVariant {
-  name: string;
-  image: string;
-  color?: string;
-  price: number;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  variants: ProductVariant[];
-  designer?: string;
-  features?: string[];
-  specifications?: { label: string; value: string }[];
-  relatedProducts?: { id: string; name: string }[];
-}
-
-// Hardcoded product data for Louis Poulsen products
-const products: Product[] = [
-  {
-    id: "aj-floor-lamp",
-    name: "AJ Floor Lamp",
-    description:
-      "The AJ Floor Lamp is a classic design by Arne Jacobsen, featuring a distinctive asymmetrical shade that provides both direct and ambient lighting. This iconic piece combines functionality with timeless Danish design aesthetics.",
-    price: 13025,
-    designer: "Arne Jacobsen",
-    variants: [
-      {
-        name: "Black",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - Black.webp",
-        color: "Black",
-        price: 13025,
-      },
-      {
-        name: "White",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - White.webp",
-        color: "White",
-        price: 13025,
-      },
-      {
-        name: "Dusty Blue",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - Dusty Blue.webp",
-        color: "Dusty Blue",
-        price: 13025,
-      },
-      {
-        name: "Electric Orange",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - Electric Orange.webp",
-        color: "Electric Orange",
-        price: 13025,
-      },
-      {
-        name: "Soft Lemon",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - Soft lemon.webp",
-        color: "Soft Lemon",
-        price: 13025,
-      },
-      {
-        name: "Warm Grey",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - Warm Grey.webp",
-        color: "Warm Grey",
-        price: 13025,
-      },
-      {
-        name: "Warm Sand",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - Warm Sand.webp",
-        color: "Warm Sand",
-        price: 13025,
-      },
-      {
-        name: "Stainless Steel Polished",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 15 375  Farge - Stainless Steel Polished.webp",
-        color: "Stainless Steel",
-        price: 15375,
-      },
-    ],
-    features: [
-      "Adjustable shade for directional lighting",
-      "Weighted base for stability",
-      "Iconic Arne Jacobsen design",
-      "Multiple color options available",
-      "Perfect for reading and ambient lighting",
-      "Timeless Danish design",
-    ],
-    specifications: [
-      { label: "Height", value: "130 cm" },
-      { label: "Shade diameter", value: "21.5 cm" },
-      { label: "Base diameter", value: "29.5 cm" },
-      { label: "Weight", value: "4.5 kg" },
-      { label: "Material", value: "Painted steel" },
-      { label: "Light source", value: "E27 LED max 15W" },
-      { label: "Designer", value: "Arne Jacobsen" },
-      { label: "Year", value: "1957" },
-    ],
-    relatedProducts: [
-      { id: "aj-wall-lamp-with-cord", name: "AJ Wall Lamp with Cord" },
-      { id: "aj-wall-lamp-without-cord", name: "AJ Wall Lamp without Cord" },
-    ],
-  },
-  // Add other products similarly...
-];
+import { louisPoulsenProducts } from "@/lib/louisPoulsenProducts";
+import ProductionImage from "@/components/ProductionImage";
 
 export default async function LouisPoulsenProductPage({
   params,
@@ -115,19 +13,43 @@ export default async function LouisPoulsenProductPage({
 }) {
   const { productId } = await params;
   console.log("Received productId param:", productId);
-  const product = products.find((p) => p.id === productId);
-
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  
+  // Find the product from our centralized data
+  const product = louisPoulsenProducts.find((p) => p._id === productId);
 
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <h1 className="text-2xl font-semibold">Product not found</h1>
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold mb-4">Product not found</h1>
+          <p className="text-gray-600 mb-8">The product you're looking for doesn't exist.</p>
+          <Link 
+            href="/louis-poulsen"
+            className="inline-block bg-gray-900 text-white px-6 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
+          >
+            Back to Louis Poulsen
+          </Link>
+        </div>
       </div>
     );
   }
 
-  const selectedVariant = product.variants[selectedVariantIndex];
+  return <LouisPoulsenProductClient product={product} />;
+}
+
+function LouisPoulsenProductClient({ product }: { product: typeof louisPoulsenProducts[0] }) {
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const selectedVariant = product.variants?.[selectedVariantIndex] || {
+    name: "Default",
+    image: product.image,
+    color: "Default",
+    price: product.price,
+  };
+
+  // Get related products (other Louis Poulsen products)
+  const relatedProducts = louisPoulsenProducts
+    .filter(p => p._id !== product._id)
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-white">
@@ -154,7 +76,7 @@ export default async function LouisPoulsenProductPage({
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
+              <ProductionImage
                 src={selectedVariant.image}
                 alt={`${product.name} - ${selectedVariant.name}`}
                 fill
@@ -164,30 +86,32 @@ export default async function LouisPoulsenProductPage({
             </div>
 
             {/* Variant Thumbnails */}
-            <div className="grid grid-cols-4 gap-3">
-              {product.variants.map((variant, index) => (
-                <button
-                  key={variant.name}
-                  onClick={() => setSelectedVariantIndex(index)}
-                  className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
-                    selectedVariantIndex === index
-                      ? "border-gray-900"
-                      : "border-gray-200 hover:border-gray-400"
-                  }`}
-                >
-                  <Image
-                    src={variant.image}
-                    alt={`${variant.name} variant`}
-                    fill
-                    className="object-contain object-center p-2"
-                    sizes="(max-width: 768px) 25vw, 12.5vw"
-                  />
-                  <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
-                    {variant.name}
-                  </div>
-                </button>
-              ))}
-            </div>
+            {product.variants && product.variants.length > 1 && (
+              <div className="grid grid-cols-4 gap-3">
+                {product.variants.map((variant, index) => (
+                  <button
+                    key={variant.name}
+                    onClick={() => setSelectedVariantIndex(index)}
+                    className={`relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 transition-all ${
+                      selectedVariantIndex === index
+                        ? "border-gray-900"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    <ProductionImage
+                      src={variant.image}
+                      alt={`${variant.name} variant`}
+                      fill
+                      className="object-contain object-center p-2"
+                      sizes="(max-width: 768px) 25vw, 12.5vw"
+                    />
+                    <div className="absolute bottom-1 left-1 right-1 bg-white bg-opacity-90 text-xs text-center py-1 rounded">
+                      {variant.name}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Information */}
@@ -213,84 +137,96 @@ export default async function LouisPoulsenProductPage({
               kr {selectedVariant.price.toLocaleString()}
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                Finish: {selectedVariant.name}
-              </h3>
-              <div className="grid grid-cols-4 gap-3">
-                {product.variants.map((variant, index) => (
-                  <button
-                    key={variant.name}
-                    onClick={() => setSelectedVariantIndex(index)}
-                    className={`relative w-12 h-12 rounded-full border-2 transition-all ${
-                      selectedVariantIndex === index
-                        ? "border-gray-900 scale-110"
-                        : "border-gray-300 hover:border-gray-500"
-                    }`}
-                    style={{ backgroundColor: variant.color || "#D1D5DB" }}
-                    title={variant.name}
-                  >
-                    {selectedVariantIndex === index && (
-                      <div className="absolute inset-0 rounded-full border-2 border-white" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
-              Add to Cart - kr {selectedVariant.price.toLocaleString()}
-            </button>
-
-            {product.features && (
-              <div className="space-y-4 pt-8 border-t border-gray-200">
+            {/* Variant Selection */}
+            {product.variants && product.variants.length > 1 && (
+              <div className="space-y-4">
                 <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  Features
+                  Finish: {selectedVariant.name}
                 </h3>
-                <ul className="list-disc list-inside text-gray-600">
-                  {product.features.map((feature, idx) => (
-                    <li key={idx}>{feature}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {product.specifications && (
-              <div className="space-y-4 pt-8 border-t border-gray-200">
-                <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  Specifications
-                </h3>
-                <div className="grid grid-cols-2 gap-4 text-gray-600">
-                  {product.specifications.map((spec, idx) => (
-                    <div key={idx} className="flex justify-between">
-                      <span>{spec.label}</span>
-                      <span className="font-medium">{spec.value}</span>
-                    </div>
+                <div className="grid grid-cols-4 gap-3">
+                  {product.variants.map((variant, index) => (
+                    <button
+                      key={variant.name}
+                      onClick={() => setSelectedVariantIndex(index)}
+                      className={`relative w-12 h-12 rounded-full border-2 transition-all ${
+                        selectedVariantIndex === index
+                          ? "border-gray-900 scale-110"
+                          : "border-gray-300 hover:border-gray-500"
+                      }`}
+                      style={{ backgroundColor: variant.color || "#D1D5DB" }}
+                      title={variant.name}
+                    >
+                      {selectedVariantIndex === index && (
+                        <div className="absolute inset-0 rounded-full border-2 border-white" />
+                      )}
+                    </button>
                   ))}
                 </div>
               </div>
             )}
 
-            {product.relatedProducts && (
+            <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
+              Add to Cart - kr {selectedVariant.price.toLocaleString()}
+            </button>
+
+            {/* Features */}
+            <div className="space-y-4 pt-8 border-t border-gray-200">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                Features
+              </h3>
+              <ul className="list-disc list-inside text-gray-600 space-y-1">
+                <li>Iconic Danish design by {product.designer}</li>
+                <li>High-quality materials and craftsmanship</li>
+                <li>Timeless aesthetic that complements any interior</li>
+                <li>Professional lighting performance</li>
+                {product.variants && product.variants.length > 1 && (
+                  <li>Available in multiple finishes</li>
+                )}
+              </ul>
+            </div>
+
+            {/* Specifications */}
+            <div className="space-y-4 pt-8 border-t border-gray-200">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                Specifications
+              </h3>
+              <div className="grid grid-cols-1 gap-4 text-gray-600">
+                <div className="flex justify-between">
+                  <span>Brand</span>
+                  <span className="font-medium">Louis Poulsen</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Designer</span>
+                  <span className="font-medium">{product.designer}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Category</span>
+                  <span className="font-medium">{product.category}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Price</span>
+                  <span className="font-medium">kr {selectedVariant.price.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Related Products */}
+            {relatedProducts.length > 0 && (
               <div className="mt-20 pt-16 border-t border-gray-200">
-                <h2 className="text-2xl font-light text-gray-900 mb-4 text-center">
+                <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
                   Related Products
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                  {product.relatedProducts.map((related) => (
+                  {relatedProducts.map((related) => (
                     <Link
-                      key={related.id}
-                      href={`/louis-poulsen/${related.id}`}
+                      key={related._id}
+                      href={`/louis-poulsen/${related._id}`}
                       className="group"
                     >
                       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                         <div className="relative aspect-square bg-gray-50">
-                          <Image
-                            src={`/Louis-Poulsen/${related.id
-                              .replace(/-/g, " ")
-                              .replace(/\//g, " ")}/${
-                              related.name
-                            }.webp`}
+                          <ProductionImage
+                            src={related.image}
                             alt={related.name}
                             fill
                             className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
@@ -302,7 +238,7 @@ export default async function LouisPoulsenProductPage({
                             {related.name}
                           </h3>
                           <p className="text-gray-900 font-medium">
-                            kr {/* Price not available here */}
+                            kr {related.price.toLocaleString()}
                           </p>
                         </div>
                       </div>
