@@ -3,55 +3,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getLouisPoulsenProducts } from "@/sanity/lib/products/getLightingProducts";
+import { getLouisPoulsenProducts, LouisPoulsenProduct } from "@/sanity/lib/products/getLouisPoulsenProducts";
 import ProductionImage from "@/components/ProductionImage";
 import Header from "@/components/Header";
-
-interface LouisPoulsenProduct {
-  _id: string;
-  name?: string;
-  slug?: {
-    current?: string;
-  };
-  description?: string;
-  price?: number;
-  brand?: string;
-  image?: {
-    asset?: {
-      _id: string;
-      url: string;
-    };
-  };
-  lifestyleImages?: Array<{
-    asset?: {
-      _id: string;
-      url: string;
-    };
-  }>;
-  variants?: Array<{
-    name?: string;
-    price?: number;
-    material?: string;
-    color?: string;
-    size?: string;
-    image?: {
-      asset?: {
-        _id: string;
-        url: string;
-      };
-    };
-  }>;
-  stock?: number;
-  inStock?: boolean;
-  href?: string;
-  categories?: Array<{
-    _id: string;
-    title?: string;
-    slug?: {
-      current?: string;
-    };
-  }>;
-}
 
 export default function LouisPoulsenPage() {
   const [products, setProducts] = useState<LouisPoulsenProduct[]>([]);
@@ -316,6 +270,44 @@ export default function LouisPoulsenPage() {
               </button>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Brand Story Section */}
+      <section className="py-20 bg-stone-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl lg:text-4xl font-light mb-6">
+                Danish Design Excellence Since 1874
+              </h2>
+              <p className="text-lg text-gray-300 leading-relaxed mb-6">
+                Louis Poulsen has been at the forefront of Danish lighting design for over 150 years. 
+                We create lighting that shapes light and enhances spaces, combining functionality with timeless aesthetic appeal.
+              </p>
+              <p className="text-lg text-gray-300 leading-relaxed mb-8">
+                From iconic pendant lights to sophisticated floor lamps, each Louis Poulsen product represents 
+                the perfect balance of form, function, and Danish design heritage.
+              </p>
+              <Link 
+                href="/tjenester" 
+                className="inline-flex items-center px-8 py-3 bg-stone-600 text-white font-medium hover:bg-stone-700 transition-colors duration-300"
+              >
+                Discover Our Heritage
+              </Link>
+            </div>
+            <div className="relative">
+              <div className="relative h-96 overflow-hidden rounded-lg">
+                <Image
+                  src="/Louis Poulsen/PH-5-pendant/lifestyle/PH5_pendant_copper_lifestyle.webp"
+                  alt="Louis Poulsen Craftsmanship"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
