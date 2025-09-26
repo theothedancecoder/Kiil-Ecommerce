@@ -22,16 +22,6 @@ export default function LouisPoulsenPage() {
       try {
         setLoading(true);
         
-        // Check if Sanity is properly configured
-        const hasToken = process.env.NEXT_PUBLIC_SANITY_API_READ_TOKEN || process.env.SANITY_API_READ_TOKEN;
-        
-        if (!hasToken) {
-          console.warn("Sanity API token not found, using fallback data");
-          setProducts([]);
-          setCategories(["All", "Lighting"]);
-          return;
-        }
-        
         const productsData = await getLouisPoulsenProducts();
         
         // If no Sanity products, fall back to static products

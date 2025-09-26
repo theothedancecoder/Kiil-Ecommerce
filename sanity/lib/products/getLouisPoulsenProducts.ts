@@ -149,6 +149,12 @@ const LOUIS_POULSEN_PRODUCTS_QUERY = defineQuery(`
  */
 export async function getLouisPoulsenProducts(): Promise<LouisPoulsenProduct[]> {
   try {
+    // Check if required environment variables are available
+    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || !process.env.NEXT_PUBLIC_SANITY_DATASET) {
+      console.log('Sanity environment variables not configured, skipping Sanity fetch');
+      return [];
+    }
+    
     console.log('Fetching Louis Poulsen products from Sanity...');
     
     const products = await client.fetch(LOUIS_POULSEN_PRODUCTS_QUERY);
