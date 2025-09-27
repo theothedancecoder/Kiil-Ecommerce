@@ -58,7 +58,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
       },
       {
         name: "Soft Lemon",
-        image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - Soft lemon.webp",
+        image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop&crop=center",
         color: "Soft Lemon",
         price: 13025,
       },

@@ -32,15 +32,39 @@ function updateLouisPoulsenProducts() {
       `image: "${workingImageUrls["aj-floor-lamp"].main}"`
     );
     
-    // Update variant images
-    Object.entries(workingImageUrls["aj-floor-lamp"].variants).forEach(([variantName, imageUrl]) => {
-      const regex = new RegExp(`image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr [^"]*${variantName}[^"]*\.webp"`, 'g');
-      content = content.replace(regex, `image: "${imageUrl}"`);
-    });
-    
-    // Also update the Stainless Steel variant with different price
+    // Update all variant images more comprehensively
     content = content.replace(
-      /image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr 15 375  Farge - Stainless Steel Polished\.webp"/,
+      /image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr 13 025  Farge - Black\.webp"/g,
+      `image: "${workingImageUrls["aj-floor-lamp"].variants["Black"]}"`
+    );
+    
+    content = content.replace(
+      /image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr 13 025  Farge - Dusty Blue\.webp"/g,
+      `image: "${workingImageUrls["aj-floor-lamp"].variants["Dusty Blue"]}"`
+    );
+    
+    content = content.replace(
+      /image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr 13 025  Farge - Electric Orange\.webp"/g,
+      `image: "${workingImageUrls["aj-floor-lamp"].variants["Electric Orange"]}"`
+    );
+    
+    content = content.replace(
+      /image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr 13 025  Farge - Soft lemon\.webp"/g,
+      `image: "${workingImageUrls["aj-floor-lamp"].variants["Soft Lemon"]}"`
+    );
+    
+    content = content.replace(
+      /image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr 13 025  Farge - Warm Grey\.webp"/g,
+      `image: "${workingImageUrls["aj-floor-lamp"].variants["Warm Grey"]}"`
+    );
+    
+    content = content.replace(
+      /image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr 13 025  Farge - Warm Sand\.webp"/g,
+      `image: "${workingImageUrls["aj-floor-lamp"].variants["Warm Sand"]}"`
+    );
+    
+    content = content.replace(
+      /image: "\/Louis-Poulsen\/AJ-Floor-Lamp\/AJ Gulvlampe kr 15 375  Farge - Stainless Steel Polished\.webp"/g,
       `image: "${workingImageUrls["aj-floor-lamp"].variants["Stainless Steel Polished"]}"`
     );
     
