@@ -275,7 +275,7 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const selectedVariant = product.variants?.[selectedVariantIndex] || {
     name: "Default",
-    image: getImageUrl(product.image),
+    image: typeof product.image === 'string' ? product.image : product.image?.asset?.url || "",
     color: "Default",
     price: product.price || 0,
   };
@@ -311,7 +311,7 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
               <ProductionImage
-                src={getImageUrl(selectedVariant.image) || getImageUrl(product.image)}
+                src={selectedVariant.image || (typeof product.image === 'string' ? product.image : product.image?.asset?.url) || ""}
                 alt={`${product.name} - ${selectedVariant.name}`}
                 fill
                 className="object-contain object-center p-8"
@@ -333,7 +333,7 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
                     }`}
                   >
                     <ProductionImage
-                      src={getImageUrl(variant.image)}
+                      src={typeof variant.image === 'string' ? variant.image : variant.image?.asset?.url || ""}
                       alt={`${variant.name} variant`}
                       fill
                       className="object-contain object-center p-2"
