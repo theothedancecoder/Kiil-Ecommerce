@@ -33,85 +33,137 @@ export default function LouisPoulsenProductPage({
         console.log("Received productId param:", productId);
         
         // First try to get from Sanity by slug
-        let foundProduct = await getLouisPoulsenProductBySlug(productId);
+        let sanityProduct = await getLouisPoulsenProductBySlug(productId);
         
-        if (!foundProduct) {
+        if (!sanityProduct) {
           // If not found in Sanity, try to get all products and find by slug
           const allSanityProducts = await getLouisPoulsenProducts();
-          foundProduct = allSanityProducts.find(p => p.slug?.current === productId) || null;
+          sanityProduct = allSanityProducts.find(p => p.slug?.current === productId) || null;
         }
         
-        // If still not found in Sanity, fall back to static data
-        if (!foundProduct) {
-          console.log("Product not found in Sanity, checking static data...");
+        // Always check static data for complete product information
+        let foundProduct = null;
+        
+        // Try multiple matching strategies for static data
+        const staticProduct = louisPoulsenProducts.find((p) => {
+          // Match by exact ID
+          if (p._id === productId) return true;
           
-          // Try multiple matching strategies for static data
-          const staticProduct = louisPoulsenProducts.find((p) => {
-            // Match by exact ID
-            if (p._id === productId) return true;
-            
-            // Match by href path (remove /louis-poulsen/ prefix)
-            const hrefSlug = p.href.replace("/louis-poulsen/", "");
-            if (hrefSlug === productId) return true;
-            
-            // Match by name-based slug (convert name to slug format)
-            const nameSlug = p.name.toLowerCase()
-              .replace(/\s+/g, "-")
-              .replace(/[^a-z0-9-]/g, "");
-            if (nameSlug === productId) return true;
-            
-            return false;
-          });
+          // Match by href path (remove /louis-poulsen/ prefix)
+          const hrefSlug = p.href.replace("/louis-poulsen/", "");
+          if (hrefSlug === productId) return true;
           
-          if (staticProduct) {
-            // Convert static product to Sanity format
-            foundProduct = {
-              _id: staticProduct._id,
-              _type: "product",
-              _createdAt: new Date().toISOString(),
-              _updatedAt: new Date().toISOString(),
-              _rev: "1",
-              name: staticProduct.name,
-              description: staticProduct.description,
-              price: staticProduct.price,
-              brand: staticProduct.brand,
+          // Match by name-based slug (convert name to slug format)
+          const nameSlug = p.name.toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^a-z0-9-]/g, "");
+          if (nameSlug === productId) return true;
+          
+          return false;
+        });
+        
+        // Prefer static data if it has variants, otherwise use Sanity data
+        if (staticProduct && staticProduct.variants && staticProduct.variants.length > 0) {
+          console.log("Using static product data with variants:", staticProduct.variants.length);
+          // Convert static product to Sanity format
+          foundProduct = {
+            _id: staticProduct._id,
+            _type: "product",
+            _createdAt: new Date().toISOString(),
+            _updatedAt: new Date().toISOString(),
+            _rev: "1",
+            name: staticProduct.name,
+            description: staticProduct.description,
+            price: staticProduct.price,
+            brand: staticProduct.brand,
+            slug: {
+              _type: "slug" as const,
+              current: productId
+            },
+            image: staticProduct.image ? {
+              asset: {
+                _id: staticProduct._id + "-image",
+                url: staticProduct.image
+              }
+            } : undefined,
+            categories: [{
+              _id: "lighting-category",
+              title: staticProduct.category,
               slug: {
                 _type: "slug" as const,
-                current: productId
-              },
-              image: staticProduct.image ? {
+                current: staticProduct.category.toLowerCase()
+              }
+            }],
+            variants: staticProduct.variants?.map((variant: any) => ({
+              _type: "variant",
+              name: variant.name,
+              price: variant.price,
+              material: variant.material,
+              color: variant.color,
+              image: variant.image ? {
                 asset: {
-                  _id: staticProduct._id + "-image",
-                  url: staticProduct.image
+                  _id: variant.name + "-image",
+                  url: variant.image
                 }
-              } : undefined,
-              categories: [{
-                _id: "lighting-category",
-                title: staticProduct.category,
-                slug: {
-                  _type: "slug" as const,
-                  current: staticProduct.category.toLowerCase()
+              } : undefined
+            })),
+            designer: staticProduct.designer,
+            features: staticProduct.features,
+            specifications: staticProduct.specifications,
+            href: staticProduct.href
+          } as LouisPoulsenProduct;
+        } else if (sanityProduct) {
+          console.log("Using Sanity product data");
+          foundProduct = sanityProduct;
+        } else if (staticProduct) {
+          console.log("Using static product data without variants");
+          // Convert static product to Sanity format even without variants
+          foundProduct = {
+            _id: staticProduct._id,
+            _type: "product",
+            _createdAt: new Date().toISOString(),
+            _updatedAt: new Date().toISOString(),
+            _rev: "1",
+            name: staticProduct.name,
+            description: staticProduct.description,
+            price: staticProduct.price,
+            brand: staticProduct.brand,
+            slug: {
+              _type: "slug" as const,
+              current: productId
+            },
+            image: staticProduct.image ? {
+              asset: {
+                _id: staticProduct._id + "-image",
+                url: staticProduct.image
+              }
+            } : undefined,
+            categories: [{
+              _id: "lighting-category",
+              title: staticProduct.category,
+              slug: {
+                _type: "slug" as const,
+                current: staticProduct.category.toLowerCase()
+              }
+            }],
+            variants: staticProduct.variants?.map((variant: any) => ({
+              _type: "variant",
+              name: variant.name,
+              price: variant.price,
+              material: variant.material,
+              color: variant.color,
+              image: variant.image ? {
+                asset: {
+                  _id: variant.name + "-image",
+                  url: variant.image
                 }
-              }],
-              variants: staticProduct.variants?.map(variant => ({
-                _type: "variant",
-                name: variant.name,
-                price: variant.price,
-                material: variant.material,
-                color: variant.color,
-                image: variant.image ? {
-                  asset: {
-                    _id: variant.name + "-image",
-                    url: variant.image
-                  }
-                } : undefined
-              })),
-              designer: staticProduct.designer,
-              features: staticProduct.features,
-              specifications: staticProduct.specifications,
-              href: staticProduct.href
-            } as LouisPoulsenProduct;
-          }
+              } : undefined
+            })),
+            designer: staticProduct.designer,
+            features: staticProduct.features,
+            specifications: staticProduct.specifications,
+            href: staticProduct.href
+          } as LouisPoulsenProduct;
         }
         
         setProduct(foundProduct || null);
@@ -154,7 +206,7 @@ export default function LouisPoulsenProductPage({
                 current: staticProduct.category.toLowerCase()
               }
             }],
-            variants: staticProduct.variants?.map(variant => ({
+            variants: staticProduct.variants?.map((variant: any) => ({
               _type: "variant",
               name: variant.name,
               price: variant.price,
@@ -402,7 +454,7 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
                   {relatedProducts.map((related) => (
                     <Link
                       key={related._id}
-                      href={`/louis-poulsen/${related._id}`}
+                      href={`/louis-poulsen/${related.href.replace("/louis-poulsen/", "")}`}
                       className="group"
                     >
                       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">

@@ -91,7 +91,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  White.webp",
-    href: "/louis-poulsen/aj-wall-lamp-with-cord",
+    href: "/louis-poulsen/aj-wall",
     variants: [
       {
         name: "White",
@@ -152,7 +152,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/AJ-wall-lamp-with-cord/AJ wall lamp with cord NOK  8,995  Color -  White.webp",
-    href: "/louis-poulsen/aj-vegglampe-med-ledning",
+    href: "/louis-poulsen/aj-vegglampe",
     variants: [
       {
         name: "White",
@@ -213,7 +213,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/Panthella-160-Rechargeable-LED-Table-Lamp/Panthella 160 oppladbar LED Bordlampe kr 2 295  Farge - Opal white.webp",
-    href: "/louis-poulsen/panthella-160-rechargeable",
+    href: "/louis-poulsen/panthella-160",
     variants: [
       {
         name: "Opal White",
@@ -274,7 +274,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/Panthella-250-table-lamp/Panthella 250 bordlampe kr 5 660  Farge - White.webp",
-    href: "/louis-poulsen/panthella-250-table-lamp",
+    href: "/louis-poulsen/panthella-250",
     variants: [
       {
         name: "White",
@@ -329,7 +329,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/PH-5-Ceiling-lamp/PH 5 Taklampe kr 11 175  Farge - White Classic.webp",
-    href: "/louis-poulsen/ph-5-ceiling-lamp",
+    href: "/louis-poulsen/ph-5",
     variants: [
       {
         name: "White Classic",
@@ -378,7 +378,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/PH-3:2-Table-Lamp/PH 3:2 Table Lamp NOK  13,905  Color -  High-gloss chrome-plated.jpg",
-    href: "/louis-poulsen/ph-3-2-table-lamp",
+    href: "/louis-poulsen/ph-3-2-table",
     variants: [
       {
         name: "High-Gloss Chrome",
@@ -434,7 +434,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/PH-Artichoke-Copper/PH Artichoke Copper Ø600 NOK  141,300.jpg",
-    href: "/louis-poulsen/ph-artichoke-copper",
+    href: "/louis-poulsen/ph-artichoke",
     variants: [
       {
         name: "Copper Ø600",
@@ -453,7 +453,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/NJP-Floor-Lamp/NJP Gulvlampe kr 8 855  Farge - White.webp",
-    href: "/louis-poulsen/njp-floor-lamp",
+    href: "/louis-poulsen/njp-floor",
     variants: [
       {
         name: "White",
@@ -478,7 +478,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/NJP-Table-Lamp/NJP Bordlampe kr 6 840  Farge - White.webp",
-    href: "/louis-poulsen/njp-table-lamp",
+    href: "/louis-poulsen/njp-table",
     variants: [
       {
         name: "White",
