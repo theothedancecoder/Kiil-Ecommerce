@@ -30,7 +30,7 @@ export const louisPoulsenProducts: LouisPoulsenProduct[] = [
     category: "Lighting",
     brand: "Louis Poulsen",
     image: "/Louis-Poulsen/AJ-Floor-Lamp/AJ Gulvlampe kr 13 025  Farge - White.webp",
-    href: "/louis-poulsen/aj-floor-lamp",
+    href: "/louis-poulsen/aj-floor",
     variants: [
       {
         name: "White",
