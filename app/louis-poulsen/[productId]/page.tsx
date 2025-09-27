@@ -265,17 +265,10 @@ export default function LouisPoulsenProductPage({
 }
 
 function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }) {
-  // Helper function to safely extract image URL
-  const getImageUrl = (image: any): string => {
-    if (typeof image === 'string') return image;
-    if (image?.asset?.url) return image.asset.url;
-    return "";
-  };
-
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const selectedVariant = product.variants?.[selectedVariantIndex] || {
     name: "Default",
-    image: typeof product.image === 'string' ? product.image : product.image?.asset?.url || "",
+    image: product.image,
     color: "Default",
     price: product.price || 0,
   };
@@ -311,7 +304,7 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
               <ProductionImage
-                src={selectedVariant.image || (typeof product.image === 'string' ? product.image : product.image?.asset?.url) || ""}
+                src={selectedVariant.image || product.image}
                 alt={`${product.name} - ${selectedVariant.name}`}
                 fill
                 className="object-contain object-center p-8"
@@ -333,7 +326,7 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
                     }`}
                   >
                     <ProductionImage
-                      src={typeof variant.image === 'string' ? variant.image : variant.image?.asset?.url || ""}
+                      src={variant.image}
                       alt={`${variant.name} variant`}
                       fill
                       className="object-contain object-center p-2"
