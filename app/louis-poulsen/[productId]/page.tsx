@@ -31,18 +31,10 @@ export default function LouisPoulsenProductPage({
       try {
         setLoading(true);
         console.log("Received productId param:", productId);
+        console.log("🚨 TEMPORARILY USING ONLY STATIC DATA TO FIX IMAGE ISSUE");
         
-        // First try to get from Sanity by slug
-        let sanityProduct = await getLouisPoulsenProductBySlug(productId);
-        
-        if (!sanityProduct) {
-          // If not found in Sanity, try to get all products and find by slug
-          const allSanityProducts = await getLouisPoulsenProducts();
-          sanityProduct = allSanityProducts.find(p => p.slug?.current === productId) || null;
-        }
-        
-        // Always check static data for complete product information
-        let foundProduct = null;
+        // TEMPORARILY SKIP SANITY - USE ONLY STATIC DATA
+        // This is to fix the wrong images issue
         
         // Try multiple matching strategies for static data
         const staticProduct = louisPoulsenProducts.find((p) => {
@@ -62,62 +54,14 @@ export default function LouisPoulsenProductPage({
           return false;
         });
         
-        // Prefer static data if it has variants, otherwise use Sanity data
-        if (staticProduct && staticProduct.variants && staticProduct.variants.length > 0) {
-          console.log("Using static product data with variants:", staticProduct.variants.length);
+        let foundProduct = null;
+        
+        if (staticProduct) {
+          console.log("✅ Using static product data:", staticProduct.name);
+          console.log("📸 Main image:", staticProduct.image);
+          console.log("🎨 Variants:", staticProduct.variants.length);
+          
           // Convert static product to Sanity format
-          foundProduct = {
-            _id: staticProduct._id,
-            _type: "product",
-            _createdAt: new Date().toISOString(),
-            _updatedAt: new Date().toISOString(),
-            _rev: "1",
-            name: staticProduct.name,
-            description: staticProduct.description,
-            price: staticProduct.price,
-            brand: staticProduct.brand,
-            slug: {
-              _type: "slug" as const,
-              current: productId
-            },
-            image: staticProduct.image ? {
-              asset: {
-                _id: staticProduct._id + "-image",
-                url: staticProduct.image
-              }
-            } : undefined,
-            categories: [{
-              _id: "lighting-category",
-              title: staticProduct.category,
-              slug: {
-                _type: "slug" as const,
-                current: staticProduct.category.toLowerCase()
-              }
-            }],
-            variants: staticProduct.variants?.map((variant: any) => ({
-              _type: "variant",
-              name: variant.name,
-              price: variant.price,
-              material: variant.material,
-              color: variant.color,
-              image: variant.image ? {
-                asset: {
-                  _id: variant.name + "-image",
-                  url: variant.image
-                }
-              } : undefined
-            })),
-            designer: staticProduct.designer,
-            features: staticProduct.features,
-            specifications: staticProduct.specifications,
-            href: staticProduct.href
-          } as LouisPoulsenProduct;
-        } else if (sanityProduct) {
-          console.log("Using Sanity product data");
-          foundProduct = sanityProduct;
-        } else if (staticProduct) {
-          console.log("Using static product data without variants");
-          // Convert static product to Sanity format even without variants
           foundProduct = {
             _id: staticProduct._id,
             _type: "product",
