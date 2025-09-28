@@ -217,6 +217,17 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
     price: product.price || 0,
   };
 
+  // Helper function to extract image URL from either string or Sanity object
+  const getImageSrc = (imageSource: any): string => {
+    if (typeof imageSource === 'string') {
+      return imageSource;
+    }
+    if (imageSource && typeof imageSource === 'object' && imageSource.asset?.url) {
+      return imageSource.asset.url;
+    }
+    return '';
+  };
+
   // Get related products (other Louis Poulsen products)
   const relatedProducts = louisPoulsenProducts
     .filter(p => p._id !== product._id)
@@ -247,8 +258,8 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <ProductionImage
-                src={selectedVariant.image || product.image}
+              <Image
+                src={getImageSrc(selectedVariant.image) || getImageSrc(product.image) || ''}
                 alt={`${product.name} - ${selectedVariant.name}`}
                 fill
                 className="object-contain object-center p-8"
@@ -269,8 +280,8 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
                         : "border-gray-200 hover:border-gray-400"
                     }`}
                   >
-                    <ProductionImage
-                      src={variant.image}
+                    <Image
+                      src={getImageSrc(variant.image)}
                       alt={`${variant.name} variant`}
                       fill
                       className="object-contain object-center p-2"
@@ -396,7 +407,7 @@ function LouisPoulsenProductClient({ product }: { product: LouisPoulsenProduct }
                     >
                       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                         <div className="relative aspect-square bg-gray-50">
-                          <ProductionImage
+                          <Image
                             src={related.image}
                             alt={related.name}
                             fill
