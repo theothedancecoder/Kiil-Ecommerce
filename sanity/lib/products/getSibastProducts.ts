@@ -1,10 +1,8 @@
 import { defineQuery } from 'next-sanity';
 import { client } from '@/sanity/lib/client';
 
-import { Product } from '@/sanity.types';
-
-// Define the Sibast product interface extending the base Product type
-export interface SibastProduct extends Product {
+// Define the Sibast product interface
+export interface SibastProduct {
   _id: string;
   _type: "product";
   _createdAt: string;
