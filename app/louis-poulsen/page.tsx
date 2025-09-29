@@ -66,9 +66,20 @@ export default function LouisPoulsenPage() {
               } : undefined
             }))
           }));
-          setProducts(staticProducts as LouisPoulsenProduct[]);
+          
+          // Filter static products to only show working ones (with images)
+          const workingStaticProducts = staticProducts.filter(product => 
+            product.slug?.current && product.image?.asset?.url
+          );
+          console.log(`Filtered to ${workingStaticProducts.length} working static products out of ${staticProducts.length} total`);
+          setProducts(workingStaticProducts as LouisPoulsenProduct[]);
         } else {
-          setProducts(productsData);
+          // Filter to only show products with both slugs and images (working products)
+          const workingProducts = productsData.filter(product => 
+            product.slug?.current && product.image?.asset?.url
+          );
+          console.log(`Filtered to ${workingProducts.length} working products out of ${productsData.length} total`);
+          setProducts(workingProducts);
         }
         
         // Use hardcoded categories like Serax does to avoid duplicates
@@ -115,7 +126,13 @@ export default function LouisPoulsenPage() {
             } : undefined
           }))
         }));
-        setProducts(staticProducts as LouisPoulsenProduct[]);
+        
+        // Filter static products to only show working ones (with images)
+        const workingStaticProducts = staticProducts.filter(product => 
+          product.slug?.current && product.image?.asset?.url
+        );
+        console.log(`Filtered to ${workingStaticProducts.length} working static products out of ${staticProducts.length} total`);
+        setProducts(workingStaticProducts as LouisPoulsenProduct[]);
         setCategories(["All", "Lighting"]);
       } finally {
         setLoading(false);
