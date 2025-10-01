@@ -233,41 +233,6 @@ export default function SibastPage() {
         </div>
       </section>
 
-      {/* Brand Story Section */}
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-light mb-6">
-                Danish Craftsmanship Since 1953
-              </h2>
-              <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                Sibast Furniture represents the pinnacle of Danish design heritage. Founded in 1953, we have been creating furniture that embodies the essence of Scandinavian aesthetics - clean lines, functional beauty, and exceptional craftsmanship.
-              </p>
-              <p className="text-lg text-gray-300 leading-relaxed mb-8">
-                Our iconic pieces, including the timeless No.2.1 dining table and the elegant No.7 dining chairs, are crafted from the finest materials and built to last generations. Each piece tells a story of Danish design philosophy where form follows function, and beauty emerges from simplicity.
-              </p>
-              <Link 
-                href="/tjenester" 
-                className="inline-flex items-center px-8 py-3 bg-amber-600 text-white font-medium hover:bg-amber-700 transition-colors duration-300"
-              >
-                Discover Our Heritage
-              </Link>
-            </div>
-            <div className="relative">
-              <div className="relative h-96 overflow-hidden rounded-lg">
-                <Image
-                  src="/Sibast-Furniture/No.7-dining-chair/lifestyle/Sibast-No-7-Dining-Chair-Leather-Cognac-Aniline.webp"
-                  alt="Sibast Furniture Craftsmanship"
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
