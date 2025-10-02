@@ -513,6 +513,16 @@ const products: Product[] = [
   },
 ];
 
+// Generate static params for all RO Collection products
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    productId: product.id,
+  }));
+}
+
+// Allow dynamic params for new products
+export const dynamicParams = true;
+
 export default async function ROProductPage({
   params,
 }: {
