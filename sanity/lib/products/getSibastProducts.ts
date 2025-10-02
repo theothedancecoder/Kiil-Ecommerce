@@ -76,9 +76,9 @@ export interface SibastProduct {
   }>;
 }
 
-// Query to get all Sibast products
+// Query to get all Sibast products (check both "Sibast" and "Sibast Furniture")
 const SIBAST_PRODUCTS_QUERY = defineQuery(`
-  *[_type == "product" && brand == "Sibast Furniture"] | order(name asc) {
+  *[_type == "product" && (brand == "Sibast Furniture" || brand == "Sibast")] | order(name asc) {
     _id,
     _type,
     _createdAt,
@@ -175,7 +175,7 @@ export async function getSibastProductBySlug(slug: string): Promise<SibastProduc
   try {
     const product = await client.fetch(
       defineQuery(`
-        *[_type == "product" && slug.current == $slug && brand == "Sibast Furniture"][0] {
+        *[_type == "product" && slug.current == $slug && (brand == "Sibast Furniture" || brand == "Sibast")][0] {
           _id,
           _type,
           _createdAt,
