@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import ProductionImage from "@/components/ProductionImage";
 
 interface ProductVariant {
   name: string;
@@ -118,7 +118,7 @@ export default function SibastProductClient({ product, products }: SibastProduct
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
+              <ProductionImage
                 src={selectedVariant.image}
                 alt={`${product.name} - ${selectedVariant.name}`}
                 fill
@@ -140,7 +140,7 @@ export default function SibastProductClient({ product, products }: SibastProduct
                         : "border-gray-200 hover:border-gray-400"
                     }`}
                   >
-                    <Image
+                    <ProductionImage
                       src={variant.image}
                       alt={`${variant.name} variant`}
                       fill
@@ -165,7 +165,7 @@ export default function SibastProductClient({ product, products }: SibastProduct
               <div className="grid grid-cols-1 gap-4">
                 {product.lifestyleImages.map((image, index) => (
                   <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                    <Image
+                    <ProductionImage
                       src={image}
                       alt={`${product.name} lifestyle image ${index + 1}`}
                       fill
@@ -319,7 +319,7 @@ export default function SibastProductClient({ product, products }: SibastProduct
                     className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
                   >
                     <div className="relative aspect-square bg-gray-50 overflow-hidden">
-                      <Image
+                      <ProductionImage
                         src={thumbnailImage}
                         alt={relatedProduct.name}
                         fill
