@@ -17,12 +17,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.sanity.io",
-        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-        pathname: "/**",
       }
     ],
     formats: ['image/webp', 'image/avif'],
@@ -30,11 +28,9 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     dangerouslyAllowSVG: true,
-    // Enable optimization for Sanity images
+    // Disable optimization for Sanity images to prevent 400 errors
     unoptimized: false,
     loader: 'default',
-    // Legacy domains support for backward compatibility
-    domains: ['cdn.sanity.io'],
   },
 
   // Compiler optimizations
