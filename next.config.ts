@@ -11,26 +11,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@clerk/nextjs', '@sanity/icons', 'lucide-react'],
   },
 
-  // Image optimization - Optimized for Sanity CMS
+  // Image optimization - DISABLED to prevent 400 errors
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "cdn.sanity.io",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      }
-    ],
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    dangerouslyAllowSVG: true,
-    // Disable optimization for Sanity images to prevent 400 errors
-    unoptimized: false,
-    loader: 'default',
+    unoptimized: true,
   },
 
   // Compiler optimizations
@@ -46,7 +29,7 @@ const nextConfig: NextConfig = {
   // Static optimization
   trailingSlash: false,
   
-  // Headers for better caching and Sanity CDN
+  // Headers for better caching
   async headers() {
     return [
       {
@@ -68,16 +51,6 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/images/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      // Optimize caching for Sanity CDN images
-      {
-        source: '/_next/image(.*)',
         headers: [
           {
             key: 'Cache-Control',
