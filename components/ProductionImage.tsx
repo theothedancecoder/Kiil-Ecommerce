@@ -62,10 +62,46 @@ export default function ProductionImage({
     );
   }
 
-  // Check if this is a Sanity CDN URL - if so, use unoptimized to avoid 400 errors
+  // Check if this is a Sanity CDN URL - if so, use regular img tag to avoid 400 errors
   const isSanityCDN = imageUrl.includes('cdn.sanity.io');
   
-  // Use Next.js Image component for optimization
+  // For Sanity CDN images, use regular img tag (bypasses Next.js Image optimization completely)
+  if (isSanityCDN) {
+    if (fill) {
+      return (
+        <img
+          src={imageUrl}
+          alt={alt}
+          className={className}
+          onError={handleError}
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            objectFit,
+          }}
+        />
+      );
+    }
+    
+    return (
+      <img
+        src={imageUrl}
+        alt={alt}
+        width={width || 400}
+        height={height || 400}
+        className={className}
+        onError={handleError}
+        style={{ objectFit }}
+      />
+    );
+  }
+  
+  // For non-Sanity images, use Next.js Image component for optimization
   if (fill) {
     return (
       <Image
@@ -77,7 +113,6 @@ export default function ProductionImage({
         priority={priority}
         onError={handleError}
         style={{ objectFit }}
-        unoptimized={isSanityCDN}
       />
     );
   }
@@ -93,7 +128,6 @@ export default function ProductionImage({
       priority={priority}
       onError={handleError}
       style={{ objectFit }}
-      unoptimized={isSanityCDN}
     />
   );
 }
