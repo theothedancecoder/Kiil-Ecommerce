@@ -6,8 +6,8 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  // Disable CDN to ensure fresh data with variants
-  useCdn: false,
+  // Use CDN in production for better performance and image delivery
+  useCdn: process.env.NODE_ENV === 'production',
   // Add perspective for better data consistency
   perspective: 'published',
   stega: {
