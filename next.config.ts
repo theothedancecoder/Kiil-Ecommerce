@@ -31,7 +31,6 @@ const nextConfig: NextConfig = {
     // Disable optimization for Sanity images to prevent 400 errors
     unoptimized: false,
     loader: 'default',
-  },
 
   // Compiler optimizations
   compiler: {
