@@ -102,25 +102,32 @@ export default async function SibastProductPage({ params }: SibastProductPagePro
     return 'Furniture';
   };
 
+  // Safely extract description text
+  const getDescription = () => {
+    if (typeof product?.description === 'string') {
+      return product.description;
+    }
+    if (Array.isArray(product?.description) && product.description.length > 0) {
+      return product.description
+        .filter((block: any) => block?._type === 'block' && 'children' in block)
+        .map((block: any) => 
+          'children' in block && Array.isArray(block.children)
+            ? block.children
+                .filter((child: any) => child?._type === 'span')
+                .map((child: any) => child?.text)
+                .join(' ')
+            : ''
+        )
+        .join(' ') || 'Detailed product description available upon request.';
+    }
+    return 'Detailed product description available upon request.';
+  };
+
   // Convert to the format expected by SibastProductClient
   const convertedProduct = {
     id: product?.slug?.current || product?._id || 'unknown',
     name: product?.name || 'Sibast Product',
-    description: typeof product?.description === 'string' 
-      ? product.description 
-      : Array.isArray(product?.description) && product.description.length > 0
-        ? product.description
-            .filter((block: any) => block?._type === 'block' && 'children' in block)
-            .map((block: any) => 
-              'children' in block && Array.isArray(block.children)
-                ? block.children
-                    .filter((child: any) => child?._type === 'span')
-                    .map((child: any) => child?.text)
-                    .join(' ')
-                : ''
-            )
-            .join(' ') || 'Detailed product description available upon request.'
-        : 'Detailed product description available upon request.',
+    description: getDescription(),
     price: product?.price || 0,
     category: getCategory(),
     variants,
