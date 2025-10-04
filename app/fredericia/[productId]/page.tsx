@@ -1,11 +1,12 @@
-import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
+import { getFredericiaProducts, getFredericiaProduct } from "@/sanity/lib/products/getFredericiaProducts";
 import { Product } from "@/sanity.types";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import FredericiaProductClient from "./FredericiaProductClient";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0; // Force fresh data on every request
+// Use force-static with ISR to avoid freezing - pages are pre-generated at build time
+export const dynamic = "force-static";
+export const revalidate = 3600; // Revalidate every hour
 
 interface FredericiaProductPageProps {
   params: Promise<{
@@ -16,18 +17,15 @@ interface FredericiaProductPageProps {
 export default async function FredericiaProductPage({ params }: FredericiaProductPageProps) {
   const { productId } = await params;
   
-  // Get all products from Sanity
-  const allProducts = await getAllProducts();
-  
-  // Find the Fredericia product by matching the productId with the slug
-  const product = allProducts.find((p: any) => 
-    p.brand === 'Fredericia' && 
-    (p.slug?.current === productId || p._id === productId)
-  );
+  // Get the specific product directly from Sanity - much more efficient
+  const product = await getFredericiaProduct(productId);
 
   if (!product) {
     notFound();
   }
+
+  // Get all Fredericia products for related products
+  const allFredericiaProducts = await getFredericiaProducts();
 
   // Convert Sanity product to format expected by FredericiaProductClient
   const convertedProduct = {
@@ -81,8 +79,7 @@ export default async function FredericiaProductPage({ params }: FredericiaProduc
   };
 
   // Get other Fredericia products for the client
-  const fredericiaProducts = allProducts
-    .filter((p: any) => p.brand === 'Fredericia')
+  const fredericiaProducts = allFredericiaProducts
     .map((p: any) => ({
       id: p._id,
       name: p.name,
@@ -128,13 +125,13 @@ export default async function FredericiaProductPage({ params }: FredericiaProduc
   );
 }
 
-// Generate static params for all Fredericia products
+// Generate static params for all Fredericia products at build time
 export async function generateStaticParams() {
   try {
-    const products = await getAllProducts();
+    const fredericiaProducts = await getFredericiaProducts();
     
-    return products
-      .filter((product: any) => product.brand === 'Fredericia' && product.slug?.current)
+    return fredericiaProducts
+      .filter((product: any) => product.slug?.current)
       .map((product: any) => ({
         productId: product.slug!.current,
       }));
@@ -143,6 +140,9 @@ export async function generateStaticParams() {
     return [];
   }
 }
+
+// Allow dynamic params for new products not yet in the static build
+export const dynamicParams = true;
 
 // Legacy static products data - keeping for fallback but not used when Sanity is available
 const legacyProducts = [
