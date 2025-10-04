@@ -103,23 +103,30 @@ export default async function SibastProductPage({ params }: SibastProductPagePro
   };
 
   // Safely extract description text
-  const getDescription = () => {
-    if (typeof product?.description === 'string') {
-      return product.description;
+  const getDescription = (): string => {
+    const desc = product?.description;
+    
+    if (typeof desc === 'string') {
+      return desc;
     }
-    if (Array.isArray(product?.description) && product.description.length > 0) {
-      return product.description
-        .filter((block: any) => block?._type === 'block' && 'children' in block)
-        .map((block: any) => 
-          'children' in block && Array.isArray(block.children)
-            ? block.children
-                .filter((child: any) => child?._type === 'span')
-                .map((child: any) => child?.text)
-                .join(' ')
-            : ''
-        )
-        .join(' ') || 'Detailed product description available upon request.';
+    
+    if (Array.isArray(desc)) {
+      const descArray = desc as any[];
+      if (descArray.length > 0) {
+        return descArray
+          .filter((block: any) => block?._type === 'block' && 'children' in block)
+          .map((block: any) => 
+            'children' in block && Array.isArray(block.children)
+              ? block.children
+                  .filter((child: any) => child?._type === 'span')
+                  .map((child: any) => child?.text)
+                  .join(' ')
+              : ''
+          )
+          .join(' ') || 'Detailed product description available upon request.';
+      }
     }
+    
     return 'Detailed product description available upon request.';
   };
 
@@ -165,6 +172,8 @@ export default async function SibastProductPage({ params }: SibastProductPagePro
       name: p?.name || 'Unnamed Product',
       slug: p?.slug?.current,
       price: p?.price || 0,
+      description: 'Sibast Furniture product',
+      category: 'Furniture',
       variants: p?.variants && Array.isArray(p.variants) && p.variants.length > 0 
         ? p.variants.map((variant: any) => ({
             name: variant?.name || 'Standard',
