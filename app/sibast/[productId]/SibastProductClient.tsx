@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import ProductionImage from "@/components/ProductionImage";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ProductVariant {
   name: string;
@@ -225,9 +226,23 @@ export default function SibastProductClient({ product, products }: SibastProduct
               </div>
             )}
 
-            <button className="w-full bg-amber-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-amber-700 transition-colors">
-              Add to Cart - kr {(selectedVariant.price || product.price).toLocaleString()}
-            </button>
+            {/* Quantity Selector and Add to Cart */}
+            <AddToCartWithQuantity
+              product={{
+                _id: product.id,
+                name: product.name,
+                price: selectedVariant.price || product.price,
+                image: {
+                  asset: {
+                    _id: product.id,
+                    url: selectedVariant.image
+                  }
+                }
+              } as any}
+              variant="large"
+              showCurrentCount={true}
+              className="space-y-4"
+            />
 
             {/* Collapsible Features */}
             {product.features && (
