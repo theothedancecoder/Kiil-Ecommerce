@@ -1,61 +1,84 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Product } from "@/sanity.types";
+import { getSorenLundProducts } from "@/sanity/lib/products/getSorenLundProducts";
+import ProductGridItem from "@/components/ProductGridItem";
 import Header from "@/components/Header";
 
-interface SorenLundProduct {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  slug: string;
-}
-
 export default function SorenLundPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const productsPerPage = 12;
 
-  // Simple product data structure - no Sanity complexity
-  const sorenLundProducts: SorenLundProduct[] = [
-    {
-      id: 'sl330-sk-footstool',
-      name: 'SL330:SK Footstool',
-      slug: 'sl330-sk-footstool',
-      price: 17055,
-      image: '/Soren-Lund/SL330:SK-footstool/SL330:SK footstool NOK  17,055  Color -  Black.webp'
-    },
-    {
-      id: 'sl409-swivel-chair',
-      name: 'SL409 Swivel Chair',
-      slug: 'sl409-swivel-chair',
-      price: 29935,
-      image: '/Soren-Lund/SL409-swivel-chair/Soren Lund SL409 swivel chair NOK  29,935  SL409 swivel chair quantity 1 .webp'
-    },
-    {
-      id: 'sl330-1-adjustable-armchair',
-      name: 'SL330:1 Adjustable Armchair',
-      slug: 'sl330-1-adjustable-armchair',
-      price: 55160,
-      image: '/Soren-Lund/SLK-330/Soren Lund SL330:1 adjustable armchair NOK  55,160.webp'
-    }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const productsData = await getSorenLundProducts();
+        
+        setProducts(productsData as Product[]);
+        setCategories(["All", "Furniture"]);
+      } catch (error) {
+        console.error("Error fetching Soren Lund data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const categories = ["All", "Furniture"];
-  
-  const filteredProducts = sorenLundProducts;
+    fetchData();
+  }, []);
+
+  const filteredProducts = products.filter(product => {
+    if (selectedCategory === "All") return true;
+    return product.categories?.some((cat: any) => cat.title === selectedCategory);
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    return (a.name || "").localeCompare(b.name || "");
+  });
 
   // Pagination
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
   const startIndex = (currentPage - 1) * productsPerPage;
-  const currentProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Soren Lund products...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -110,7 +133,7 @@ export default function SorenLundPage() {
               
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-gray-500">
-                  {filteredProducts.length} products
+                  {sortedProducts.length} products
                 </span>
                 {totalPages > 1 && (
                   <span className="text-sm text-gray-500">
@@ -122,42 +145,30 @@ export default function SorenLundPage() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {currentProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/soren-lund/${product.slug}`}
-                className="group block bg-white hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden"
-              >
-                {/* Product Image */}
-                <div className="relative aspect-square bg-gray-50 overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-                
-                {/* Product Info */}
-                <div className="p-4">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2 group-hover:text-amber-600 transition-colors">
-                    {product.name}
-                  </h3>
-                  <p className="text-xl font-light text-gray-900">
-                    kr {product.price.toLocaleString()}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {currentProducts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No Soren Lund products found.</p>
+              <p className="text-gray-400 text-sm mt-2">
+                Products are being loaded from Sanity CMS.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {currentProducts.map((product) => (
+                <ProductGridItem
+                  key={product._id}
+                  product={product}
+                  brandPath="soren-lund"
+                />
+              ))}
+            </div>
+          )}
 
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="mt-12 flex items-center justify-center space-x-4">
               <button
-                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                onClick={goToPreviousPage}
                 disabled={currentPage === 1}
                 className={`flex items-center px-4 py-2 text-sm font-medium transition-colors ${
                   currentPage === 1
@@ -175,7 +186,7 @@ export default function SorenLundPage() {
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                   <button
                     key={page}
-                    onClick={() => setCurrentPage(page)}
+                    onClick={() => goToPage(page)}
                     className={`px-3 py-2 text-sm font-medium transition-colors ${
                       currentPage === page
                         ? "bg-amber-600 text-white"
@@ -188,7 +199,7 @@ export default function SorenLundPage() {
               </div>
 
               <button
-                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                onClick={goToNextPage}
                 disabled={currentPage === totalPages}
                 className={`flex items-center px-4 py-2 text-sm font-medium transition-colors ${
                   currentPage === totalPages
