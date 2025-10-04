@@ -1,72 +1,51 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Product } from "@/sanity.types";
-import ProductionImage from "@/components/ProductionImage";
-import ProductGridItem from "@/components/ProductGridItem";
 import Header from "@/components/Header";
+
+interface SorenLundProduct {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  slug: string;
+}
 
 export default function SorenLundPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
-  // Define all Soren Lund products - use any to avoid TypeScript strict type checking
-  const sorenLundProducts: any[] = [
+  // Simple product data structure - no Sanity complexity
+  const sorenLundProducts: SorenLundProduct[] = [
     {
-      _id: 'sl330-sk-footstool',
-      _type: 'product',
+      id: 'sl330-sk-footstool',
       name: 'SL330:SK Footstool',
-      slug: { current: 'sl330-sk-footstool', _type: 'slug' },
+      slug: 'sl330-sk-footstool',
       price: 17055,
-      brand: 'Soren Lund',
-      image: {
-        asset: {
-          _id: 'sl330-sk-footstool-img',
-          url: '/Soren-Lund/SL330:SK-footstool/SL330:SK footstool NOK  17,055  Color -  Black.webp'
-        }
-      },
-      categories: [{ _id: 'furniture', title: 'Furniture', slug: { current: 'furniture', _type: 'slug' } }]
+      image: '/Soren-Lund/SL330:SK-footstool/SL330:SK footstool NOK  17,055  Color -  Black.webp'
     },
     {
-      _id: 'sl409-swivel-chair',
-      _type: 'product',
+      id: 'sl409-swivel-chair',
       name: 'SL409 Swivel Chair',
-      slug: { current: 'sl409-swivel-chair', _type: 'slug' },
+      slug: 'sl409-swivel-chair',
       price: 29935,
-      brand: 'Soren Lund',
-      image: {
-        asset: {
-          _id: 'sl409-swivel-chair-img',
-          url: '/Soren-Lund/SL409-swivel-chair/Soren Lund SL409 swivel chair NOK  29,935  SL409 swivel chair quantity 1 .webp'
-        }
-      },
-      categories: [{ _id: 'furniture', title: 'Furniture', slug: { current: 'furniture', _type: 'slug' } }]
+      image: '/Soren-Lund/SL409-swivel-chair/Soren Lund SL409 swivel chair NOK  29,935  SL409 swivel chair quantity 1 .webp'
     },
     {
-      _id: 'sl330-1-adjustable-armchair',
-      _type: 'product',
+      id: 'sl330-1-adjustable-armchair',
       name: 'SL330:1 Adjustable Armchair',
-      slug: { current: 'sl330-1-adjustable-armchair', _type: 'slug' },
+      slug: 'sl330-1-adjustable-armchair',
       price: 55160,
-      brand: 'Soren Lund',
-      image: {
-        asset: {
-          _id: 'sl330-1-adjustable-armchair-img',
-          url: '/Soren-Lund/SLK-330/Soren Lund SL330:1 adjustable armchair NOK  55,160.webp'
-        }
-      },
-      categories: [{ _id: 'furniture', title: 'Furniture', slug: { current: 'furniture', _type: 'slug' } }]
+      image: '/Soren-Lund/SLK-330/Soren Lund SL330:1 adjustable armchair NOK  55,160.webp'
     }
   ];
 
   const categories = ["All", "Furniture"];
   
-  const filteredProducts = sorenLundProducts.filter(product => {
-    if (selectedCategory === "All") return true;
-    return product.categories?.some((cat: any) => cat.title === selectedCategory);
-  });
+  const filteredProducts = sorenLundProducts;
 
   // Pagination
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
@@ -145,11 +124,32 @@ export default function SorenLundPage() {
           {/* Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {currentProducts.map((product) => (
-              <ProductGridItem
-                key={product._id}
-                product={product}
-                brandPath="soren-lund"
-              />
+              <Link
+                key={product.id}
+                href={`/soren-lund/${product.slug}`}
+                className="group block bg-white hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden"
+              >
+                {/* Product Image */}
+                <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
+                
+                {/* Product Info */}
+                <div className="p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2 group-hover:text-amber-600 transition-colors">
+                    {product.name}
+                  </h3>
+                  <p className="text-xl font-light text-gray-900">
+                    kr {product.price.toLocaleString()}
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
 
