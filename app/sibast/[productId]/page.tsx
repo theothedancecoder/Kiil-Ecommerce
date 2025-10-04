@@ -1,9 +1,10 @@
-import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
+import { getSibastProducts, getSibastProductBySlug } from "@/sanity/lib/products/getSibastProducts";
 import { notFound } from "next/navigation";
 import SibastProductClient from "./SibastProductClient";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 1800; // 30 minutes
+// Use force-static with ISR to avoid freezing - pages are pre-generated at build time
+export const dynamic = "force-static";
+export const revalidate = 3600; // Revalidate every hour
 
 interface SibastProductPageProps {
   params: Promise<{
@@ -14,17 +15,15 @@ interface SibastProductPageProps {
 export default async function SibastProductPage({ params }: SibastProductPageProps) {
   const { productId } = await params;
   
-  // Get all products from Sanity
-  const allProducts = await getAllProducts();
-  
-  // Find the specific Sibast product by slug
-  const product = allProducts.find((p: any) => 
-    (p.brand === 'Sibast' || p.brand === 'Sibast Furniture') && p.slug?.current === productId
-  );
+  // Get the specific product directly - much more efficient than fetching all products
+  const product = await getSibastProductBySlug(productId);
 
   if (!product) {
     notFound();
   }
+
+  // Get all Sibast products for related products
+  const allSibastProducts = await getSibastProducts();
 
   // Create variants array from Sanity data
   const variants = product.variants && Array.isArray(product.variants) && product.variants.length > 0 
@@ -42,10 +41,10 @@ export default async function SibastProductPage({ params }: SibastProductPagePro
         price: product?.price || 0,
       }];
 
-  // Get related products from Sanity
+  // Get related products from Sanity - use relatedProducts if available, otherwise show other Sibast products
   const relatedProducts = product?.relatedProducts && Array.isArray(product.relatedProducts) && product.relatedProducts.length > 0
     ? product.relatedProducts.map((related: any) => {
-        const fullProduct = allProducts.find((p: any) => 
+        const fullProduct = allSibastProducts.find((p: any) => 
           p._id === related._id || 
           p.slug?.current === related.slug?.current
         );
@@ -71,8 +70,8 @@ export default async function SibastProductPage({ params }: SibastProductPagePro
               }],
         };
       })
-    : allProducts
-        ?.filter((p: any) => (p?.brand === 'Sibast' || p?.brand === 'Sibast Furniture') && p?._id !== product?._id)
+    : allSibastProducts
+        ?.filter((p: any) => p?._id !== product?._id)
         ?.slice(0, 4)
         ?.map((p: any) => ({
           id: p?.slug?.current || p?._id,
@@ -153,8 +152,7 @@ export default async function SibastProductPage({ params }: SibastProductPagePro
   };
 
   // Get other Sibast products for the client
-  const sibastProducts = allProducts
-    ?.filter((p: any) => (p?.brand === 'Sibast' || p?.brand === 'Sibast Furniture'))
+  const sibastProducts = allSibastProducts
     ?.map((p: any) => ({
       id: p?.slug?.current || p?._id,
       name: p?.name || 'Unnamed Product',
@@ -179,22 +177,21 @@ export default async function SibastProductPage({ params }: SibastProductPagePro
   return <SibastProductClient product={convertedProduct} products={sibastProducts} />;
 }
 
-// Generate static params for all Sibast products
+// Generate static params for all Sibast products at build time
 export async function generateStaticParams() {
   try {
-    const allProducts = await getAllProducts();
-    const sibastProducts = allProducts.filter((p: any) => 
-      p.brand === 'Sibast' || p.brand === 'Sibast Furniture'
-    );
+    const sibastProducts = await getSibastProducts();
     
-    return sibastProducts.map((product: any) => ({
-      productId: product.slug?.current || product._id,
-    }));
+    return sibastProducts
+      .filter((product: any) => product.slug?.current)
+      .map((product: any) => ({
+        productId: product.slug!.current,
+      }));
   } catch (error) {
     console.error('Error generating static params for Sibast:', error);
     return [];
   }
 }
 
-// Allow dynamic params for new products
+// Allow dynamic params for new products not yet in the static build
 export const dynamicParams = true;
