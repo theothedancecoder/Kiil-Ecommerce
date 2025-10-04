@@ -2,8 +2,8 @@ import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
 import { notFound } from "next/navigation";
 import SibastProductClient from "./SibastProductClient";
 
-// Static generation with revalidation
-export const revalidate = 3600; // Revalidate every hour
+export const dynamic = "force-dynamic";
+export const revalidate = 1800; // 30 minutes
 
 interface SibastProductPageProps {
   params: Promise<{
