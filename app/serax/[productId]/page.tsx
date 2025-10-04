@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import SeraxProductClient from "./SeraxProductClient";
 
+// Static generation with revalidation
+export const revalidate = 3600; // Revalidate every hour
+
 interface SeraxProductPageProps {
   params: Promise<{ productId: string }>;
 }
