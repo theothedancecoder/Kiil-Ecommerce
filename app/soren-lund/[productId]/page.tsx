@@ -1,196 +1,157 @@
+import { getSorenLundProducts, getSorenLundProductBySlug } from "@/sanity/lib/products/getSorenLundProducts";
 import { notFound } from "next/navigation";
 import SorenLundProductClient from "./SorenLundProductClient";
-
-interface ProductVariant {
-  name: string;
-  image: string;
-  price: number;
-  color?: string;
-  material?: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  variants: ProductVariant[];
-  designer?: string;
-  features?: string[];
-  specifications?: { label: string; value: string }[];
-  lifestyleImages?: string[];
-}
-
-const products: Product[] = [
-  {
-    id: "sl330-sk-footstool",
-    name: "SL330:SK Footstool",
-    description: "Elegant footstool with premium leather upholstery and solid wood construction. The SL330:SK combines comfort with sophisticated Scandinavian design, perfect for complementing lounge chairs and creating relaxing seating arrangements in modern interiors.",
-    price: 17055,
-    category: "Seating",
-    variants: [
-      {
-        name: "Cognac",
-        image: "/Soren-Lund/SL330:SK-footstool/SL330:SK footstool NOK  17,055  Color -  Cognac.jpg",
-        color: "Cognac",
-        material: "Premium leather",
-        price: 17055,
-      },
-      {
-        name: "Black",
-        image: "/Soren-Lund/SL330:SK-footstool/SL330:SK footstool NOK  17,055  Color -  Black.webp",
-        color: "Black",
-        material: "Premium leather",
-        price: 17055,
-      },
-    ],
-    designer: "Soren Lund Design Studio",
-    features: [
-      "Premium leather upholstery in cognac and black",
-      "Solid wood construction for durability",
-      "Sophisticated Scandinavian design aesthetic",
-      "Perfect complement to lounge chairs",
-      "Comfortable height for relaxation",
-      "Exceptional craftsmanship and attention to detail",
-      "Sustainable materials and production methods",
-      "Versatile design suitable for various interiors",
-      "Professional leather treatment for longevity",
-      "Handcrafted by skilled Nordic artisans",
-    ],
-    specifications: [
-      { label: "Designer", value: "Soren Lund Design Studio" },
-      { label: "Manufacturer", value: "Soren Lund" },
-      { label: "Material", value: "Premium leather with solid wood frame" },
-      { label: "Color Options", value: "Cognac, Black" },
-      { label: "Style", value: "Scandinavian Contemporary" },
-      { label: "Dimensions", value: "H 42cm, W 60cm, D 45cm" },
-      { label: "Weight", value: "12kg" },
-      { label: "Care", value: "Clean with leather conditioner, avoid direct sunlight" },
-      { label: "Warranty", value: "5 years manufacturer warranty" },
-      { label: "Certification", value: "Sustainable leather sourcing" },
-      { label: "Origin", value: "Made in Norway" },
-    ],
-    lifestyleImages: ["/Soren-Lund/SL330:SK-footstool/lifestyle/SL-330-genova-teak-768x512.jpg"],
-  },
-  {
-    id: "sl409-swivel-chair",
-    name: "SL409 Swivel Chair",
-    description: "Contemporary swivel chair with ergonomic design and premium materials. The SL409 offers exceptional comfort and mobility, making it perfect for modern offices and home workspaces with its sophisticated Scandinavian aesthetic and professional functionality.",
-    price: 29935,
-    category: "Seating",
-    variants: [
-      {
-        name: "Standard",
-        image: "/Soren-Lund/SL409-swivel-chair/Soren Lund SL409 swivel chair NOK  29,935  SL409 swivel chair quantity 1 .webp",
-        material: "Premium upholstery",
-        price: 29935,
-      },
-    ],
-    designer: "Soren Lund Design Studio",
-    features: [
-      "Ergonomic design for optimal comfort during long work sessions",
-      "360-degree swivel functionality for easy movement",
-      "Premium upholstery with exceptional durability",
-      "Adjustable height mechanism for personalized comfort",
-      "Sophisticated Scandinavian design aesthetic",
-      "Perfect for modern offices and home workspaces",
-      "High-quality materials and construction",
-      "Smooth-rolling casters for easy mobility",
-      "Professional appearance suitable for any environment",
-      "Handcrafted with attention to detail",
-    ],
-    specifications: [
-      { label: "Designer", value: "Soren Lund Design Studio" },
-      { label: "Manufacturer", value: "Soren Lund" },
-      { label: "Material", value: "Premium upholstery with metal base" },
-      { label: "Style", value: "Scandinavian Contemporary" },
-      { label: "Dimensions", value: "H 85-95cm, W 65cm, D 65cm" },
-      { label: "Seat Height", value: "45-55cm (adjustable)" },
-      { label: "Weight Capacity", value: "120kg" },
-      { label: "Features", value: "360° swivel, height adjustment, rolling casters" },
-      { label: "Care", value: "Clean with appropriate upholstery cleaner" },
-      { label: "Warranty", value: "5 years manufacturer warranty" },
-      { label: "Origin", value: "Made in Norway" },
-    ],
-    lifestyleImages: [],
-  },
-  {
-    id: "sl330-1-adjustable-armchair",
-    name: "SL330:1 Adjustable Armchair",
-    description: "Luxurious adjustable armchair with premium craftsmanship and sophisticated design. The SL330:1 represents the pinnacle of Scandinavian furniture design, offering exceptional comfort and adjustability for the ultimate relaxation experience in contemporary interiors.",
-    price: 55160,
-    category: "Seating",
-    variants: [
-      {
-        name: "Standard",
-        image: "/Soren-Lund/SLK-330/Soren Lund SL330:1 adjustable armchair NOK  55,160.webp",
-        material: "Premium upholstery",
-        price: 55160,
-      },
-      {
-        name: "Alternative",
-        image: "/Soren-Lund/SLK-330/SL330:1 adjustable armchair NOK  55,160.jpg",
-        material: "Premium upholstery",
-        price: 55160,
-      },
-    ],
-    designer: "Soren Lund Design Studio",
-    features: [
-      "Luxurious adjustable armchair with multiple positions",
-      "Premium craftsmanship representing pinnacle of design",
-      "Exceptional comfort for ultimate relaxation experience",
-      "Sophisticated Scandinavian design aesthetic",
-      "High-quality materials and construction throughout",
-      "Perfect for living rooms and reading areas",
-      "Adjustable mechanisms for personalized comfort",
-      "Durable construction for long-lasting use",
-      "Professional upholstery with premium materials",
-      "Handcrafted by master Nordic artisans",
-    ],
-    specifications: [
-      { label: "Designer", value: "Soren Lund Design Studio" },
-      { label: "Manufacturer", value: "Soren Lund" },
-      { label: "Material", value: "Premium upholstery with solid wood frame" },
-      { label: "Style", value: "Scandinavian Contemporary" },
-      { label: "Dimensions", value: "H 95cm, W 85cm, D 90cm" },
-      { label: "Seat Height", value: "45cm" },
-      { label: "Weight", value: "45kg" },
-      { label: "Features", value: "Multiple adjustment positions, premium comfort" },
-      { label: "Care", value: "Professional cleaning recommended" },
-      { label: "Warranty", value: "10 years manufacturer warranty" },
-      { label: "Certification", value: "Premium quality certification" },
-      { label: "Origin", value: "Made in Norway" },
-    ],
-    lifestyleImages: ["/Soren-Lund/SLK-330/lifestyle/a1d63a72-3402-4c94-85f0-6065fd782cd3.webp"],
-  },
-];
-
-// Generate static params for all Soren Lund products
-export async function generateStaticParams() {
-  return products.map((product) => ({
-    productId: product.id,
-  }));
-}
 
 // Use force-static with ISR to avoid freezing - pages are pre-generated at build time
 export const dynamic = "force-static";
 export const revalidate = 3600; // Revalidate every hour
 
-// Allow dynamic params for new products
-export const dynamicParams = true;
+interface SorenLundProductPageProps {
+  params: Promise<{
+    productId: string;
+  }>;
+}
 
-export default async function SorenLundProductPage({
-  params,
-}: {
-  params: Promise<{ productId: string }>;
-}) {
+export default async function SorenLundProductPage({ params }: SorenLundProductPageProps) {
   const { productId } = await params;
-  const product = products.find((p) => p.id === productId);
+  
+  // Get the specific product directly from Sanity - much more efficient
+  const product = await getSorenLundProductBySlug(productId);
 
   if (!product) {
     notFound();
   }
 
-  return <SorenLundProductClient product={product} />;
+  // Get all Soren Lund products for related products
+  const allSorenLundProducts = await getSorenLundProducts();
+
+  // Create variants array from Sanity data
+  const variants = product.variants && Array.isArray(product.variants) && product.variants.length > 0 
+    ? product.variants.map((variant: any) => ({
+        name: variant?.name || 'Standard',
+        image: variant?.image?.asset?.url || product?.image?.asset?.url || '/placeholder-image.jpg',
+        color: variant?.color,
+        material: variant?.material,
+        size: variant?.size,
+        price: variant?.price || product?.price || 0,
+      }))
+    : [{
+        name: 'Standard',
+        image: product?.image?.asset?.url || '/placeholder-image.jpg',
+        price: product?.price || 0,
+      }];
+
+  // Get related products from Sanity
+  const relatedProducts = product?.relatedProducts && Array.isArray(product.relatedProducts) && product.relatedProducts.length > 0
+    ? product.relatedProducts.map((related: any) => {
+        const fullProduct = allSorenLundProducts.find((p: any) => 
+          p._id === related._id || 
+          p.slug?.current === related.slug?.current
+        );
+        
+        return {
+          id: related?.slug?.current || related?._id,
+          name: related?.name || 'Unnamed Product',
+          slug: related?.slug?.current,
+          price: fullProduct?.price || related?.price || 0,
+          variants: fullProduct?.variants && Array.isArray(fullProduct.variants) && fullProduct.variants.length > 0 
+            ? fullProduct.variants.map((variant: any) => ({
+                name: variant?.name || 'Standard',
+                image: variant?.image?.asset?.url || fullProduct?.image?.asset?.url || '/placeholder-image.jpg',
+                color: variant?.color,
+                material: variant?.material,
+                size: variant?.size,
+                price: variant?.price || fullProduct?.price || 0,
+              }))
+            : [{
+                name: 'Standard',
+                image: fullProduct?.image?.asset?.url || related?.image?.asset?.url || '/placeholder-image.jpg',
+                price: fullProduct?.price || related?.price || 0,
+              }],
+        };
+      })
+    : allSorenLundProducts
+        ?.filter((p: any) => p?._id !== product?._id)
+        ?.slice(0, 4)
+        ?.map((p: any) => ({
+          id: p?.slug?.current || p?._id,
+          name: p?.name || 'Unnamed Product',
+          slug: p?.slug?.current,
+          price: p?.price || 0,
+          variants: p?.variants && Array.isArray(p.variants) && p.variants.length > 0 
+            ? p.variants.map((variant: any) => ({
+                name: variant?.name || 'Standard',
+                image: variant?.image?.asset?.url || p?.image?.asset?.url || '/placeholder-image.jpg',
+                color: variant?.color,
+                material: variant?.material,
+                size: variant?.size,
+                price: variant?.price || p?.price || 0,
+              }))
+            : [{
+                name: 'Standard',
+                image: p?.image?.asset?.url || '/placeholder-image.jpg',
+                price: p?.price || 0,
+              }],
+        })) || [];
+
+  function getCategory() {
+    const name = product?.name?.toLowerCase() || '';
+    if (name.includes('chair') || name.includes('stool')) return 'Seating';
+    if (name.includes('table')) return 'Tables';
+    if (name.includes('sofa')) return 'Sofas';
+    return 'Furniture';
+  }
+
+  const convertedProduct = {
+    id: product?.slug?.current || product?._id,
+    name: product?.name || 'Unnamed Product',
+    description: product?.description || 'Premium Scandinavian furniture piece.',
+    price: product?.price || 0,
+    category: getCategory(),
+    variants,
+    designer: product?.designer || 'Soren Lund Design Studio',
+    features: product?.features || [
+      'Premium Scandinavian design',
+      'High-quality materials',
+      'Exceptional craftsmanship',
+      'Sustainable materials',
+      'Scandinavian craftsmanship',
+      'Exceptional attention to detail',
+    ],
+    specifications: product?.specifications || [
+      { label: "Designer", value: product?.designer || "Soren Lund Design Studio" },
+      { label: "Manufacturer", value: "Soren Lund" },
+      { label: "Brand", value: product?.brand || "Soren Lund" },
+      { label: "Category", value: getCategory() },
+      { label: "Style", value: "Scandinavian Contemporary" },
+      { label: "SKU", value: product?._id || 'N/A' },
+      { label: "Warranty", value: "5 years manufacturer warranty" },
+      { label: "Origin", value: "Made in Norway" },
+    ],
+    lifestyleImages: product?.lifestyleImages && Array.isArray(product.lifestyleImages) 
+      ? product.lifestyleImages.map((img: any) => img?.asset?.url).filter(Boolean) 
+      : [],
+    relatedProducts,
+  };
+
+  return <SorenLundProductClient product={convertedProduct} />;
 }
+
+// Generate static params for all Soren Lund products at build time
+export async function generateStaticParams() {
+  try {
+    const sorenLundProducts = await getSorenLundProducts();
+    
+    return sorenLundProducts
+      .filter((product: any) => product.slug?.current)
+      .map((product: any) => ({
+        productId: product.slug!.current,
+      }));
+  } catch (error) {
+    console.error('Error generating static params for Soren Lund:', error);
+    return [];
+  }
+}
+
+// Allow dynamic params for new products not yet in the static build
+export const dynamicParams = true;
