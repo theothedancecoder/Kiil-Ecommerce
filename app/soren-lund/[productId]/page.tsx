@@ -166,6 +166,19 @@ const products: Product[] = [
   },
 ];
 
+// Generate static params for all Soren Lund products
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    productId: product.id,
+  }));
+}
+
+// Allow dynamic params for new products
+export const dynamicParams = true;
+
+// Static generation with revalidation
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function SorenLundProductPage({
   params,
 }: {
