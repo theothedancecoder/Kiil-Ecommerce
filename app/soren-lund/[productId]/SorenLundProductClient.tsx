@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import ProductionImage from "@/components/ProductionImage";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ProductVariant {
   name: string;
@@ -73,7 +74,7 @@ export default function SorenLundProductClient({ product }: SorenLundProductClie
           <div className="space-y-6">
             {/* Main Image */}
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
+              <ProductionImage
                 src={selectedVariant.image}
                 alt={`${product.name} - ${selectedVariant.name}`}
                 fill
@@ -95,7 +96,7 @@ export default function SorenLundProductClient({ product }: SorenLundProductClie
                         : "border-gray-200 hover:border-gray-400"
                     }`}
                   >
-                    <Image
+                    <ProductionImage
                       src={variant.image}
                       alt={`${variant.name} variant`}
                       fill
@@ -115,7 +116,7 @@ export default function SorenLundProductClient({ product }: SorenLundProductClie
               <div className="grid grid-cols-1 gap-4">
                 {product.lifestyleImages.map((image, index) => (
                   <div key={index} className="relative aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden">
-                    <Image
+                    <ProductionImage
                       src={image}
                       alt={`${product.name} lifestyle image ${index + 1}`}
                       fill
@@ -175,9 +176,23 @@ export default function SorenLundProductClient({ product }: SorenLundProductClie
               </div>
             )}
 
-            <button className="w-full bg-amber-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-amber-700 transition-colors">
-              Add to Cart - kr {selectedVariant.price.toLocaleString()}
-            </button>
+            {/* Quantity Selector and Add to Cart */}
+            <AddToCartWithQuantity
+              product={{
+                _id: product.id,
+                name: product.name,
+                price: selectedVariant.price,
+                image: {
+                  asset: {
+                    _id: product.id,
+                    url: selectedVariant.image
+                  }
+                }
+              } as any}
+              variant="large"
+              showCurrentCount={true}
+              className="space-y-4"
+            />
 
             {/* Collapsible Features */}
             {product.features && (

@@ -173,11 +173,12 @@ export async function generateStaticParams() {
   }));
 }
 
+// Use force-static with ISR to avoid freezing - pages are pre-generated at build time
+export const dynamic = "force-static";
+export const revalidate = 3600; // Revalidate every hour
+
 // Allow dynamic params for new products
 export const dynamicParams = true;
-
-// Static generation with revalidation
-export const revalidate = 3600; // Revalidate every hour
 
 export default async function SorenLundProductPage({
   params,
