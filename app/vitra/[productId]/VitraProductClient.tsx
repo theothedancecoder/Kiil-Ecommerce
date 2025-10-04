@@ -121,9 +121,13 @@ export default function VitraProductClient({ product, products }: VitraProductCl
                 _id: product.id,
                 name: `${product.name} - ${selectedVariant.name}`,
                 price: selectedVariant.price,
-                currency: "NOK",
-                image: selectedVariant.image,
-              }}
+                image: {
+                  asset: {
+                    _id: product.id,
+                    url: selectedVariant.image
+                  }
+                }
+              } as any}
             />
 
             {/* Features */}
