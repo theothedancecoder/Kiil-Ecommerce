@@ -40,19 +40,6 @@ export default function VitraProductClient({ product, products }: VitraProductCl
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb Navigation */}
-      <div className="bg-gray-50 py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="text-sm text-stone-600">
-            <Link href="/" className="hover:text-stone-800">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/vitra" className="hover:text-stone-800">Vitra</Link>
-            <span className="mx-2">/</span>
-            <span className="text-stone-800">{product.name}</span>
-          </nav>
-        </div>
-      </div>
-
       {/* Product Details */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -179,9 +166,9 @@ export default function VitraProductClient({ product, products }: VitraProductCl
         </div>
 
         {/* Related Products */}
-        {product.relatedProducts && product.relatedProducts.length > 0 ? (
+        {product.relatedProducts && product.relatedProducts.length > 0 && (
           <div className="mt-20">
-            <h2 className="text-2xl font-serif text-stone-800 mb-8 text-center">More Vitra Classics</h2>
+            <h2 className="text-2xl font-serif text-stone-800 mb-8">You May Also Like</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {product.relatedProducts.map((related) => (
                 <Link
@@ -212,28 +199,6 @@ export default function VitraProductClient({ product, products }: VitraProductCl
                   </div>
                 </Link>
               ))}
-            </div>
-            
-            {/* View All Products Link */}
-            <div className="text-center mt-12">
-              <Link
-                href="/vitra"
-                className="inline-block bg-stone-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-stone-700 transition-colors uppercase tracking-wider"
-              >
-                View All Vitra Products
-              </Link>
-            </div>
-          </div>
-        ) : (
-          <div className="mt-20">
-            <h2 className="text-2xl font-serif text-stone-800 mb-8 text-center">More Vitra Classics</h2>
-            <div className="text-center">
-              <Link
-                href="/vitra"
-                className="inline-block bg-stone-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-stone-700 transition-colors uppercase tracking-wider"
-              >
-                View All Vitra Products
-              </Link>
             </div>
           </div>
         )}
