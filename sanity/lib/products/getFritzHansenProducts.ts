@@ -10,7 +10,7 @@ export const getFritzHansenProducts = async () => {
     price,
     salePrice,
     brand,
-    images[] {
+    image {
       asset->{
         _id,
         url
@@ -56,7 +56,7 @@ export const getFritzHansenProductsByCategory = async (category: string) => {
     price,
     salePrice,
     brand,
-    images[] {
+    image {
       asset->{
         _id,
         url
@@ -102,7 +102,7 @@ export const getFritzHansenProductBySlug = async (slug: string) => {
     price,
     salePrice,
     brand,
-    images[] {
+    image {
       asset->{
         _id,
         url
