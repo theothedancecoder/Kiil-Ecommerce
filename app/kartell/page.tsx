@@ -201,36 +201,15 @@ export default async function KartellPage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative h-96 bg-gray-900 overflow-hidden">
-        <Image
-          src="/kartell-furniture/PLASTIC LIFESTYLE/Kartell_Cassinella19592.jpg"
-          alt="Kartell Furniture Collection"
-          fill
-          className="object-cover opacity-70"
-        />
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="relative h-full flex items-center justify-center text-white">
-          <div className="text-center">
-            <h1 className="text-5xl font-serif font-bold mb-4">
-              Kartell Collection
-            </h1>
-            <p className="text-xl max-w-2xl mx-auto">
-              Italian Innovation in Plastic Design
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Products Section - Ballard Designs Style */}
-      <section id="products-section" className="py-20 bg-white">
+      {/* Products Section */}
+      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-serif text-stone-800 mb-4">
-              Kartell Collection
-            </h2>
-            <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-              Discover our complete selection of Kartell furniture and lighting. {kartellProducts.length} products available.
+          <div className="mb-12">
+            <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-2">
+              Kartell
+            </h1>
+            <p className="text-lg text-gray-600">
+              Italian innovation in plastic design
             </p>
           </div>
           
@@ -296,7 +275,7 @@ export default async function KartellPage() {
             ))}
           </div>
           
-          {/* Filter/Sort Options - Ballard Style */}
+          {/* Filter/Sort Options */}
           <div className="mt-16 pt-8 border-t border-stone-200">
             <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
               <p className="text-sm text-stone-600">
@@ -316,82 +295,6 @@ export default async function KartellPage() {
         </div>
       </section>
 
-      {/* About Kartell Section */}
-      <section className="py-16 px-4 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-serif text-stone-800 mb-6">
-              About Kartell
-            </h2>
-            <p className="text-stone-600 leading-relaxed mb-4">
-              Kartell is known for its industrial production of the finest quality design objects, with remarkable technological content, Made in Italy. From the choice of innovative and certified materials, to the use of advanced technologies, Kartell is able to guarantee users of its products a collection in which technology, quality, resistance and durability are part of its DNA.
-            </p>
-            <p className="text-stone-600 leading-relaxed mb-6">
-              The high level of stability and repeatability of the processes allows the minimisation of inefficiencies and waste, favouring productions with low polluting residues that are always fully recyclable.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">
-                  Innovative plastic manufacturing techniques
-                </span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">
-                  Collaborations with top international designers
-                </span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">
-                  Sustainable and recyclable materials
-                </span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">
-                  Iconic designs recognized worldwide
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="relative h-96">
-            <Image
-              src="/kartell-furniture/PLASTIC LIFESTYLE/OUTDOOR-LIBERTY_181.jpg"
-              alt="Kartell Furniture Detail"
-              fill
-              className="object-cover rounded-lg"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="py-16 bg-stone-800 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-3xl font-serif mb-6">
-            Discover Kartell Innovation
-          </h2>
-          <p className="text-lg mb-8">
-            Experience the perfect blend of Italian design and cutting-edge technology
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/interior"
-              className="bg-white text-black px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors font-semibold"
-            >
-              Browse All Products
-            </Link>
-            <Link 
-              href="/tjenester"
-              className="border border-white text-white px-8 py-3 rounded-lg hover:bg-white hover:text-black transition-colors font-semibold"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
