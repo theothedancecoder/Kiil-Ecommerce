@@ -1,8 +1,8 @@
 import { defineQuery } from 'next-sanity';
-import { sanityFetch } from '@/sanity/lib/live';
+import { client } from '@/sanity/lib/client';
 
 export const getFritzHansenProducts = async () => {
-  const FRITZ_HANSEN_PRODUCTS_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current)] {
+  const FRITZ_HANSEN_PRODUCTS_QUERY = `*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current)] {
     _id,
     name,
     slug,
@@ -36,13 +36,10 @@ export const getFritzHansenProducts = async () => {
     },
     inStock,
     stock
-  } | order(name asc)`);
+  } | order(name asc)`;
 
   try {
-    const { data: products } = await sanityFetch({
-      query: FRITZ_HANSEN_PRODUCTS_QUERY,
-    });
-
+    const products = await client.fetch(FRITZ_HANSEN_PRODUCTS_QUERY);
     return products || [];
   } catch (error) {
     console.error('Error fetching Fritz Hansen products:', error);
@@ -51,7 +48,7 @@ export const getFritzHansenProducts = async () => {
 };
 
 export const getFritzHansenProductsByCategory = async (category: string) => {
-  const FRITZ_HANSEN_CATEGORY_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current) && $category in categories[]->title] {
+  const FRITZ_HANSEN_CATEGORY_QUERY = `*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current) && $category in categories[]->title] {
     _id,
     name,
     slug,
@@ -85,14 +82,10 @@ export const getFritzHansenProductsByCategory = async (category: string) => {
     },
     inStock,
     stock
-  } | order(name asc)`);
+  } | order(name asc)`;
 
   try {
-    const { data: products } = await sanityFetch({
-      query: FRITZ_HANSEN_CATEGORY_QUERY,
-      params: { category }
-    });
-
+    const products = await client.fetch(FRITZ_HANSEN_CATEGORY_QUERY, { category });
     return products || [];
   } catch (error) {
     console.error('Error fetching Fritz Hansen products by category:', error);
@@ -100,8 +93,8 @@ export const getFritzHansenProductsByCategory = async (category: string) => {
   }
 };
 
-export const getFritzHansenProduct = async (slug: string) => {
-  const FRITZ_HANSEN_PRODUCT_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current) && slug.current == $slug][0] {
+export const getFritzHansenProductBySlug = async (slug: string) => {
+  const FRITZ_HANSEN_PRODUCT_QUERY = `*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current) && slug.current == $slug][0] {
     _id,
     name,
     slug,
@@ -135,14 +128,10 @@ export const getFritzHansenProduct = async (slug: string) => {
     },
     inStock,
     stock
-  }`);
+  }`;
 
   try {
-    const { data: product } = await sanityFetch({
-      query: FRITZ_HANSEN_PRODUCT_QUERY,
-      params: { slug }
-    });
-
+    const product = await client.fetch(FRITZ_HANSEN_PRODUCT_QUERY, { slug });
     return product || null;
   } catch (error) {
     console.error('Error fetching Fritz Hansen product:', error);
@@ -151,18 +140,16 @@ export const getFritzHansenProduct = async (slug: string) => {
 };
 
 export const getFritzHansenCategories = async () => {
-  const FRITZ_HANSEN_CATEGORIES_QUERY = defineQuery(`*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current)] {
+  const FRITZ_HANSEN_CATEGORIES_QUERY = `*[_type == "product" && brand == "Fritz Hansen" && defined(slug.current)] {
     categories[]->{
       _id,
       title,
       slug
     }
-  }`);
+  }`;
 
   try {
-    const { data: products } = await sanityFetch({
-      query: FRITZ_HANSEN_CATEGORIES_QUERY,
-    });
+    const products = await client.fetch(FRITZ_HANSEN_CATEGORIES_QUERY);
 
     // Extract unique categories
     const categories = new Set<string>();
