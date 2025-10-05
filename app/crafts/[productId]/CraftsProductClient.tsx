@@ -184,12 +184,15 @@ export default function CraftsProductClient({ product, products }: CraftsProduct
             <AddToCartWithQuantity
               product={{
                 _id: product.id,
+                _type: 'product',
+                _createdAt: '',
+                _updatedAt: '',
+                _rev: '',
                 name: product.name,
                 price: currentPrice,
-                image: { asset: { url: selectedVariant?.image || '' } },
-                slug: { current: product.id },
-              }}
-              selectedVariant={selectedVariant?.name}
+                image: { asset: { _ref: '', _type: 'reference' } } as any,
+                slug: { current: product.id, _type: 'slug' },
+              } as any}
             />
 
             {/* Artisan Crafted Notice */}
