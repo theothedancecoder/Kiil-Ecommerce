@@ -1,175 +1,15 @@
-// Last updated: 2025-09-21T09:35:58.559Z - Force redeploy after Git LFS fix
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
+import { getKartellProducts } from '@/sanity/lib/products/getKartellProducts';
+import ProductionImage from '@/components/ProductionImage';
 
 export const dynamic = "force-static";
-export const revalidate = 1800; // 30 minutes
-
-interface KartellProduct {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  variants: {
-    name: string;
-    image: string;
-    color: string;
-  }[];
-  lifestyleImages?: string[];
-}
+export const revalidate = 3600; // 1 hour
 
 export default async function KartellPage() {
-  // Define all Kartell products based on the public folder structure
-  const kartellProducts: KartellProduct[] = [
-    {
-      id: 'componibili-classic-2',
-      name: 'Componibili Classic 2',
-      description: 'Modular storage system with 2 compartments. Iconic cylindrical design perfect for any space.',
-      price: 2890,
-      image: '/Kartell -Componibili classic 2/Red.webp',
-      variants: [
-        { name: 'White', image: '/Kartell -Componibili classic 2/white.webp', color: 'White' },
-        { name: 'Black', image: '/Kartell -Componibili classic 2/black.webp', color: 'Black' },
-        { name: 'Red', image: '/Kartell -Componibili classic 2/Red.webp', color: 'Red' },
-        { name: 'Blue', image: '/Kartell -Componibili classic 2/blue.webp', color: 'Blue' },
-        { name: 'Green', image: '/Kartell -Componibili classic 2/green.webp', color: 'Green' },
-        { name: 'Orange', image: '/Kartell -Componibili classic 2/Orange.webp', color: 'Orange' },
-        { name: 'Silver', image: '/Kartell -Componibili classic 2/Silver.webp', color: 'Silver' },
-        { name: 'Burgundy', image: '/Kartell -Componibili classic 2/burgundy.webp', color: 'Burgundy' },
-        { name: 'Mauve', image: '/Kartell -Componibili classic 2/Mauve.webp', color: 'Mauve' },
-        { name: 'Sky Blue', image: '/Kartell -Componibili classic 2/Sky Blue.webp', color: 'Sky Blue' },
-        { name: 'Taupe', image: '/Kartell -Componibili classic 2/Taupe.webp', color: 'Taupe' },
-        { name: 'Violet', image: '/Kartell -Componibili classic 2/Violet.webp', color: 'Violet' }
-      ]
-    },
-    {
-      id: 'componibili-classic-3',
-      name: 'Componibili Classic 3',
-      description: 'Modular storage system with 3 compartments. Larger version of the iconic cylindrical design.',
-      price: 3490,
-      image: '/kartell-Componibili classic 3/blue.webp',
-      variants: [
-        { name: 'White', image: '/kartell-Componibili classic 3/white.webp', color: 'White' },
-        { name: 'Black', image: '/kartell-Componibili classic 3/black.avif', color: 'Black' },
-        { name: 'Red', image: '/kartell-Componibili classic 3/red.webp', color: 'Red' },
-        { name: 'Blue', image: '/kartell-Componibili classic 3/blue.webp', color: 'Blue' },
-        { name: 'Green', image: '/kartell-Componibili classic 3/green.webp', color: 'Green' },
-        { name: 'Orange', image: '/kartell-Componibili classic 3/orange.webp', color: 'Orange' },
-        { name: 'Silver', image: '/kartell-Componibili classic 3/silver.webp', color: 'Silver' },
-        { name: 'Burgundy', image: '/kartell-Componibili classic 3/Burgundy.webp', color: 'Burgundy' },
-        { name: 'Mauve', image: '/kartell-Componibili classic 3/mauve.webp', color: 'Mauve' },
-        { name: 'Sky Blue', image: '/kartell-Componibili classic 3/sky blue.webp', color: 'Sky Blue' },
-        { name: 'Taupe', image: '/kartell-Componibili classic 3/Taupe.webp', color: 'Taupe' },
-        { name: 'Violet', image: '/kartell-Componibili classic 3/Violet.webp', color: 'Violet' }
-      ]
-    },
-    {
-      id: 'kabuki-hanging',
-      name: 'Kabuki Hanging Lamp',
-      description: 'Elegant pendant light with distinctive pleated shade design inspired by Japanese Kabuki theater.',
-      price: 7100,
-      image: '/ Kartell -Kabuki Hanging /Kabuki Hanging kr 7 100.00  Farge - Green.webp',
-      variants: [
-        { name: 'White', image: '/ Kartell -Kabuki Hanging /Kabuki Hanging kr 7 100.00  Farge - White.webp', color: 'White' },
-        { name: 'Black', image: '/ Kartell -Kabuki Hanging /Kabuki Hanging kr 7 100.00  Farge - Black.webp', color: 'Black' },
-        { name: 'Crystal', image: '/ Kartell -Kabuki Hanging /Kabuki Hanging kr 7 100.00  Farge - Crystal.webp', color: 'Crystal' },
-        { name: 'Green', image: '/ Kartell -Kabuki Hanging /Kabuki Hanging kr 7 100.00  Farge - Green.webp', color: 'Green' },
-        { name: 'Light Blue', image: '/ Kartell -Kabuki Hanging /Kabuki Hanging kr 7 100.00  Farge - Light blue.webp', color: 'Light Blue' }
-      ]
-    },
-    {
-      id: 'big-battery',
-      name: 'Big Battery Lamp',
-      description: 'Portable LED table lamp with rechargeable battery. Perfect for indoor and outdoor use.',
-      price: 2890,
-      image: '/ Kartell Kartell -Big Battery /light blue.webp',
-      variants: [
-        { name: 'White', image: '/ Kartell Kartell -Big Battery /white.webp', color: 'White' },
-        { name: 'Light Blue', image: '/ Kartell Kartell -Big Battery /light blue.webp', color: 'Light Blue' },
-        { name: 'Plum', image: '/ Kartell Kartell -Big Battery /plum.webp', color: 'Plum' },
-        { name: 'Coke', image: '/ Kartell Kartell -Big Battery /coke.webp', color: 'Coke' }
-      ]
-    },
-    {
-      id: 'pumo-lamp',
-      name: 'Pumo Lamp',
-      description: 'Table lamp inspired by traditional Apulian ceramic decorations with modern LED technology.',
-      price: 3490,
-      image: '/Kartell Pumo lamp/AMBER.webp',
-      variants: [
-        { name: 'White', image: '/Kartell Pumo lamp/WHITE.webp', color: 'White' },
-        { name: 'Black', image: '/Kartell Pumo lamp/BLACK.webp', color: 'Black' },
-        { name: 'Blue', image: '/Kartell Pumo lamp/BLUE.webp', color: 'Blue' },
-        { name: 'Amber', image: '/Kartell Pumo lamp/AMBER.webp', color: 'Amber' }
-      ],
-      lifestyleImages: [
-        '/Kartell Pumo lamp/lifestyle/20250205Pumo-lamp.jpg',
-        '/Kartell Pumo lamp/lifestyle/PUMO-LAMPADA_760.jpg'
-      ]
-    },
-    {
-      id: 'kabuki-floor-lamp',
-      name: 'Kabuki Floor Lamp',
-      description: 'Floor version of the iconic Kabuki lamp with pleated shade and adjustable height.',
-      price: 8900,
-      image: '/kartell-kabui floor indoor lamp/crystal.webp',
-      variants: [
-        { name: 'White', image: '/kartell-kabui floor indoor lamp/white.webp', color: 'White' },
-        { name: 'Black', image: '/kartell-kabui floor indoor lamp/black.webp', color: 'Black' },
-        { name: 'Crystal', image: '/kartell-kabui floor indoor lamp/crystal.webp', color: 'Crystal' },
-        { name: 'Blue', image: '/kartell-kabui floor indoor lamp/blue.webp', color: 'Blue' },
-        { name: 'Green', image: '/kartell-kabui floor indoor lamp/green.webp', color: 'Green' }
-      ],
-      lifestyleImages: [
-        '/kartell-kabui floor indoor lamp/lifestyle/219117-3.jpg',
-        '/kartell-kabui floor indoor lamp/lifestyle/Kartell_2315857.jpg'
-      ]
-    },
-    {
-      id: 'hhh-stool',
-      name: 'H.H.H Stool',
-      description: 'Stackable stool with ergonomic design. Perfect for modern interiors and versatile seating.',
-      price: 1890,
-      image: '/Kartell H.H.H /Orange.webp',
-      variants: [
-        { name: 'White', image: '/Kartell H.H.H /White.webp', color: 'White' },
-        { name: 'Black', image: '/Kartell H.H.H /Black.webp', color: 'Black' },
-        { name: 'Blue', image: '/Kartell H.H.H /Blue.webp', color: 'Blue' },
-        { name: 'Green', image: '/Kartell H.H.H /Green.webp', color: 'Green' },
-        { name: 'Orange', image: '/Kartell H.H.H /Orange.webp', color: 'Orange' },
-        { name: 'Bordeaux', image: '/Kartell H.H.H /Bordeaux.webp', color: 'Bordeaux' },
-        { name: 'Mustard', image: '/Kartell H.H.H /Mustard.webp', color: 'Mustard' }
-      ]
-    },
-    {
-      id: 'liberty-2-seater',
-      name: 'Liberty 2 Seater Outdoor',
-      description: 'Outdoor sofa with weather-resistant materials. Modern design for contemporary outdoor spaces.',
-      price: 12900,
-      image: '/kartell-furniture/PLASTICS OUTDOOR LIBERTY 2 SEATER/sage.webp',
-      variants: [
-        { name: 'Beige', image: '/kartell-furniture/PLASTICS OUTDOOR LIBERTY 2 SEATER/beige.webp', color: 'Beige' },
-        { name: 'Russet', image: '/kartell-furniture/PLASTICS OUTDOOR LIBERTY 2 SEATER/russet.webp', color: 'Russet' },
-        { name: 'Sage', image: '/kartell-furniture/PLASTICS OUTDOOR LIBERTY 2 SEATER/sage.webp', color: 'Sage' },
-        { name: 'Yellow', image: '/kartell-furniture/PLASTICS OUTDOOR LIBERTY 2 SEATER/yellow.webp', color: 'Yellow' }
-      ]
-    },
-    {
-      id: 'liberty-3-seater',
-      name: 'Liberty 3 Seater Outdoor',
-      description: 'Larger outdoor sofa for spacious terraces and gardens. Weather-resistant and stylish.',
-      price: 16900,
-      image: '/kartell-furniture/Plastics outdoor liberty 3 seater/russet.webp',
-      variants: [
-        { name: 'Beige', image: '/kartell-furniture/Plastics outdoor liberty 3 seater/beige.webp', color: 'Beige' },
-        { name: 'Russet', image: '/kartell-furniture/Plastics outdoor liberty 3 seater/russet.webp', color: 'Russet' },
-        { name: 'Sage', image: '/kartell-furniture/Plastics outdoor liberty 3 seater/Sage.webp', color: 'Sage' },
-        { name: 'Yellow', image: '/kartell-furniture/Plastics outdoor liberty 3 seater/yellow.webp', color: 'Yellow' }
-      ]
-    }
-  ];
+  // Fetch Kartell products from Sanity
+  const kartellProducts = await getKartellProducts();
 
   return (
     <div className="min-h-screen bg-white">
@@ -215,65 +55,92 @@ export default async function KartellPage() {
           
           {/* Clean Grid Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {kartellProducts.map((product: KartellProduct) => (
-              <Link 
-                key={product.id} 
-                href={`/kartell/${product.id}`}
-                className="group block"
-              >
-                <div className="bg-white hover:shadow-lg transition-shadow duration-300">
-                  {/* Product Image */}
-                  <div className="relative aspect-square bg-stone-50 overflow-hidden mb-4">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                      unoptimized
-                    />
-                  </div>
-                  
-                  {/* Product Info */}
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-serif text-stone-800 group-hover:text-stone-600 transition-colors leading-tight text-center">
-                      {product.name}
-                    </h3>
-                    
-                    <div className="flex items-center justify-between">
-                      <p className="text-lg font-light text-stone-800">
-                        kr {product.price.toLocaleString()}
-                      </p>
-                      <p className="text-sm text-stone-500">
-                        {product.variants.length} colors
-                      </p>
+            {kartellProducts.map((product) => {
+              const imageUrl = product.image?.asset?.url || '/placeholder-image.jpg';
+              const variantCount = product.variants?.length || 0;
+              
+              return (
+                <Link 
+                  key={product._id} 
+                  href={`/kartell/${product.slug?.current}`}
+                  className="group block"
+                >
+                  <div className="bg-white hover:shadow-lg transition-shadow duration-300">
+                    {/* Product Image */}
+                    <div className="relative aspect-square bg-stone-50 overflow-hidden mb-4">
+                      <ProductionImage
+                        src={imageUrl}
+                        alt={product.name || 'Kartell Product'}
+                        fill
+                        className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
                     
-                    {/* Color Swatches Preview */}
-                    <div className="flex space-x-1 pt-2">
-                      {product.variants.slice(0, 4).map((variant, index) => (
-                        <div 
-                          key={index}
-                          className="w-3 h-3 rounded-full border border-stone-200"
-                          style={{
-                            backgroundColor: variant.color.toLowerCase() === 'white' ? '#ffffff' :
-                                           variant.color.toLowerCase() === 'black' ? '#000000' :
-                                           variant.color.toLowerCase() === 'red' ? '#dc2626' :
-                                           variant.color.toLowerCase() === 'blue' ? '#2563eb' :
-                                           variant.color.toLowerCase() === 'green' ? '#16a34a' :
-                                           variant.color.toLowerCase() === 'orange' ? '#ea580c' :
-                                           variant.color.toLowerCase() === 'crystal' ? '#f3f4f6' :
-                                           '#9ca3af'
-                          }}
-                        />
-                      ))}
-                      {product.variants.length > 4 && (
-                        <span className="text-xs text-stone-400 ml-1">+{product.variants.length - 4}</span>
+                    {/* Product Info */}
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-serif text-stone-800 group-hover:text-stone-600 transition-colors leading-tight text-center">
+                        {product.name}
+                      </h3>
+                      
+                      <div className="flex items-center justify-between">
+                        <p className="text-lg font-light text-stone-800">
+                          kr {product.price?.toLocaleString()}
+                        </p>
+                        {variantCount > 0 && (
+                          <p className="text-sm text-stone-500">
+                            {variantCount} {variantCount === 1 ? 'color' : 'colors'}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {/* Color Swatches Preview */}
+                      {product.variants && product.variants.length > 0 && (
+                        <div className="flex space-x-1 pt-2">
+                          {product.variants.slice(0, 4).map((variant, index) => {
+                            const color = variant.color?.toLowerCase() || '';
+                            const bgColor = 
+                              color === 'white' ? '#ffffff' :
+                              color === 'black' ? '#000000' :
+                              color === 'red' ? '#dc2626' :
+                              color === 'blue' || color === 'sky blue' || color === 'light blue' ? '#2563eb' :
+                              color === 'green' ? '#16a34a' :
+                              color === 'orange' ? '#ea580c' :
+                              color === 'crystal' ? '#f3f4f6' :
+                              color === 'silver' ? '#d1d5db' :
+                              color === 'burgundy' ? '#7f1d1d' :
+                              color === 'mauve' ? '#c084fc' :
+                              color === 'taupe' ? '#a8a29e' :
+                              color === 'violet' ? '#8b5cf6' :
+                              color === 'amber' ? '#f59e0b' :
+                              color === 'plum' ? '#86198f' :
+                              color === 'coke' ? '#292524' :
+                              color === 'beige' ? '#d6d3d1' :
+                              color === 'russet' ? '#92400e' :
+                              color === 'sage' ? '#84cc16' :
+                              color === 'yellow' ? '#eab308' :
+                              color === 'bordeaux' ? '#7f1d1d' :
+                              color === 'mustard' ? '#ca8a04' :
+                              '#9ca3af';
+                            
+                            return (
+                              <div 
+                                key={variant._key || index}
+                                className="w-3 h-3 rounded-full border border-stone-200"
+                                style={{ backgroundColor: bgColor }}
+                                title={variant.name}
+                              />
+                            );
+                          })}
+                          {variantCount > 4 && (
+                            <span className="text-xs text-stone-400 ml-1">+{variantCount - 4}</span>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
           
           {/* Filter/Sort Options */}
@@ -295,7 +162,6 @@ export default async function KartellPage() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }
