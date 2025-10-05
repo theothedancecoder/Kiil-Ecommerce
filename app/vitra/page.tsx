@@ -36,26 +36,6 @@ export default async function VitraPage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative h-[600px] overflow-hidden">
-        {/* Background Image - using first product's lifestyle image if available */}
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-900 to-stone-700" />
-        
-        {/* Content */}
-        <div className="relative h-full flex items-center justify-center text-center">
-          <div className="max-w-4xl mx-auto px-4">
-            <div className="inline-block bg-white/95 backdrop-blur-sm px-12 py-6 rounded-lg shadow-lg">
-              <h1 className="text-4xl md:text-6xl font-serif text-stone-800 mb-2">
-                Vitra
-              </h1>
-              <p className="text-stone-600 text-lg">
-                Iconic Design Since 1950
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Products Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -167,24 +147,6 @@ export default async function VitraPage() {
         </div>
       </section>
 
-      {/* Call to Action Section */}
-      <section className="py-16 bg-stone-800 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-3xl font-serif mb-6">
-            Discover Iconic Design
-          </h2>
-          <p className="text-xl text-stone-300 mb-8 leading-relaxed">
-            Explore Vitra's collection of timeless furniture and accessories that have shaped 
-            modern design for generations.
-          </p>
-          <Link 
-            href="/book-consultation"
-            className="inline-block bg-white text-stone-800 px-8 py-3 rounded-lg font-medium hover:bg-stone-100 transition-colors"
-          >
-            Book a Design Consultation
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }

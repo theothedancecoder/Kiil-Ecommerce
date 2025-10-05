@@ -40,6 +40,19 @@ export default function VitraProductClient({ product, products }: VitraProductCl
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Breadcrumb Navigation */}
+      <div className="bg-gray-50 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="text-sm text-stone-600">
+            <Link href="/" className="hover:text-stone-800">Home</Link>
+            <span className="mx-2">/</span>
+            <Link href="/vitra" className="hover:text-stone-800">Vitra</Link>
+            <span className="mx-2">/</span>
+            <span className="text-stone-800">{product.name}</span>
+          </nav>
+        </div>
+      </div>
+
       {/* Product Details */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
