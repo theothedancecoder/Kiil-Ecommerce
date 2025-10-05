@@ -53,66 +53,15 @@ export default function CraftsPage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/Crafts/Fenomen-Wide-Ceiling-Lamp%20/%20Crafts%20Fenomen%20Wide%20Ceiling%20Lamp%20from%20Konsthantverk%20NOK%20%209,701.jpg"
-            alt="Crafts Lighting Collection"
-            fill
-            className="object-cover object-center opacity-20"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-amber-900/60 via-yellow-800/40 to-orange-900/60" />
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-amber-400/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-yellow-400/30 rounded-full blur-lg animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-orange-400/25 rounded-full blur-md animate-pulse delay-2000"></div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="max-w-3xl">
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg shadow-lg border border-white/20">
-              <h1 className="text-4xl lg:text-6xl font-light text-white mb-6">
-                Crafts
-              </h1>
-              <p className="text-xl text-gray-200 leading-relaxed mb-8">
-                Discover exceptional lighting craftsmanship from Konsthantverk and other artisanal creators. 
-                Our Crafts collection celebrates the intersection of traditional techniques and contemporary design, 
-                featuring handcrafted pieces that bring warmth and character to any space.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  href="#products" 
-                  className="inline-flex items-center justify-center px-8 py-3 bg-amber-600 text-white font-medium hover:bg-amber-700 transition-colors duration-300"
-                >
-                  Explore Collection
-                </Link>
-                <Link 
-                  href="/tjenester" 
-                  className="inline-flex items-center justify-center px-8 py-3 border-2 border-amber-600 text-amber-400 font-medium hover:bg-amber-600 hover:text-white transition-colors duration-300"
-                >
-                  Design Consultation
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Products Section */}
-      <section id="products" className="py-20 bg-white">
+      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
-              Our Collection
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Each piece in our Crafts collection represents the finest in artisanal design and manufacturing. 
-              From the elegant Fenomen Wide Ceiling Lamp by Konsthantverk to other carefully curated lighting solutions, 
-              every item tells a story of skilled craftsmanship and timeless beauty.
+          <div className="mb-12">
+            <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-2">
+              Crafts
+            </h1>
+            <p className="text-lg text-gray-600">
+              Handcrafted lighting from Konsthantverk and artisanal creators
             </p>
           </div>
 
