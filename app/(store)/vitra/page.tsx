@@ -106,47 +106,6 @@ export default async function VitraPage() {
         </div>
       </section>
 
-      {/* About Vitra Section */}
-      <section className="py-16 px-4 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-serif text-stone-800 mb-6">
-              About Vitra
-            </h2>
-            <p className="text-stone-600 leading-relaxed mb-4">
-              Vitra is a Swiss company dedicated to improving the quality of homes, offices and public spaces 
-              through the power of design. For over 70 years, Vitra has been creating furniture and accessories 
-              that combine innovative design with exceptional quality.
-            </p>
-            <p className="text-stone-600 leading-relaxed mb-6">
-              Working with renowned designers like Charles and Ray Eames, George Nelson, and Verner Panton, 
-              Vitra has created some of the most iconic pieces in modern design history.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Iconic design heritage</span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Swiss quality craftsmanship</span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Sustainable production</span>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-600 mr-3 mt-1">✓</span>
-                <span className="text-stone-600">Timeless design philosophy</span>
-              </div>
-            </div>
-          </div>
-          <div className="relative h-96 bg-gray-100 rounded-lg flex items-center justify-center">
-            <p className="text-stone-400">Vitra Design</p>
-          </div>
-        </div>
-      </section>
-
     </div>
   );
 }
