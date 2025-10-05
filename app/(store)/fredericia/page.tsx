@@ -50,7 +50,7 @@ export default async function FredericiaPage() {
 
           {/* Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <Link 
                 key={product._id} 
                 href={`/fredericia/${product.slug?.current}`}
@@ -69,7 +69,7 @@ export default async function FredericiaPage() {
                   {product.variants && product.variants.length > 1 && (
                     <div className="px-4 py-2 border-b border-gray-100">
                       <div className="flex space-x-1">
-                        {product.variants.slice(0, 4).map((variant, index) => (
+                        {product.variants.slice(0, 4).map((variant: any, index: number) => (
                           <div
                             key={index}
                             className="w-4 h-4 rounded-full border border-gray-200 bg-gray-300"
