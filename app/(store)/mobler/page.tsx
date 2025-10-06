@@ -50,7 +50,7 @@ const isFurnitureProduct = (product: any): boolean => {
   
   const productName = (product.name || '').toLowerCase();
   const hasFurnitureCategory = product.categories?.some((cat: any) => 
-    furnitureCategories.includes(cat.title)
+    cat && cat.title && furnitureCategories.includes(cat.title)
   );
   
   const hasFurnitureKeyword = 
@@ -106,7 +106,9 @@ export default function MoblerPage() {
       case 'sofa':
         return furnitureProducts.filter((product: any) => {
           const name = (product.name || '').toLowerCase();
-          const hasCategory = product.categories?.some((cat: any) => cat.title === 'Sofa' || cat.title === 'Seating');
+          const hasCategory = product.categories?.some((cat: any) => 
+            cat && cat.title && (cat.title === 'Sofa' || cat.title === 'Seating')
+          );
           return hasCategory || name.includes('sofa') || 
             (name.includes('lounge') && !name.includes('table') && !name.includes('chair')) ||
             name.includes('chaise') || (name.includes('seater') && !name.includes('chair'));
@@ -115,7 +117,7 @@ export default function MoblerPage() {
         return furnitureProducts.filter((product: any) => {
           const name = (product.name || '').toLowerCase();
           const hasCategory = product.categories?.some((cat: any) => 
-            cat.title === 'Seating' || cat.title === 'Chair'
+            cat && cat.title && (cat.title === 'Seating' || cat.title === 'Chair')
           );
           return hasCategory || name.includes('chair') || name.includes('stool');
         });
@@ -123,26 +125,26 @@ export default function MoblerPage() {
         return furnitureProducts.filter((product: any) => {
           const name = (product.name || '').toLowerCase();
           const hasCategory = product.categories?.some((cat: any) => 
-            cat.title === 'Tables' || cat.title === 'Desks'
+            cat && cat.title && (cat.title === 'Tables' || cat.title === 'Desks')
           );
           return hasCategory || name.includes('table') || name.includes('desk');
         });
       case 'benches':
         return furnitureProducts.filter((product: any) => {
           const name = (product.name || '').toLowerCase();
-          const hasCategory = product.categories?.some((cat: any) => cat.title === 'Benches');
+          const hasCategory = product.categories?.some((cat: any) => cat && cat.title && cat.title === 'Benches');
           return hasCategory || (name.includes('bench') || name.includes('ottoman'));
         });
       case 'footstools':
         return furnitureProducts.filter((product: any) => {
           const name = (product.name || '').toLowerCase();
-          const hasCategory = product.categories?.some((cat: any) => cat.title === 'Footstools');
+          const hasCategory = product.categories?.some((cat: any) => cat && cat.title && cat.title === 'Footstools');
           return hasCategory || name.includes('footstool');
         });
       case 'storage':
         return furnitureProducts.filter((product: any) => {
           const name = (product.name || '').toLowerCase();
-          const hasCategory = product.categories?.some((cat: any) => cat.title === 'Storage');
+          const hasCategory = product.categories?.some((cat: any) => cat && cat.title && cat.title === 'Storage');
           return hasCategory || name.includes('storage') || name.includes('cabinet') || name.includes('shelf');
         });
       default:
@@ -171,7 +173,9 @@ export default function MoblerPage() {
         name: 'Sofa', 
         count: furnitureProducts.filter((p: any) => {
           const name = (p.name || '').toLowerCase();
-          const hasCategory = p.categories?.some((cat: any) => cat.title === 'Sofa' || cat.title === 'Seating');
+          const hasCategory = p.categories?.some((cat: any) => 
+            cat && cat.title && (cat.title === 'Sofa' || cat.title === 'Seating')
+          );
           return hasCategory || name.includes('sofa') || 
             (name.includes('lounge') && !name.includes('table') && !name.includes('chair')) ||
             name.includes('chaise') || (name.includes('seater') && !name.includes('chair'));
@@ -183,7 +187,7 @@ export default function MoblerPage() {
         count: furnitureProducts.filter((p: any) => {
           const name = (p.name || '').toLowerCase();
           const hasCategory = p.categories?.some((cat: any) => 
-            cat.title === 'Seating' || cat.title === 'Chair'
+            cat && cat.title && (cat.title === 'Seating' || cat.title === 'Chair')
           );
           return hasCategory || name.includes('chair') || name.includes('stool');
         }).length 
@@ -194,7 +198,7 @@ export default function MoblerPage() {
         count: furnitureProducts.filter((p: any) => {
           const name = (p.name || '').toLowerCase();
           const hasCategory = p.categories?.some((cat: any) => 
-            cat.title === 'Tables' || cat.title === 'Desks'
+            cat && cat.title && (cat.title === 'Tables' || cat.title === 'Desks')
           );
           return hasCategory || name.includes('table') || name.includes('desk');
         }).length 
@@ -204,7 +208,7 @@ export default function MoblerPage() {
         name: 'Benker', 
         count: furnitureProducts.filter((p: any) => {
           const name = (p.name || '').toLowerCase();
-          const hasCategory = p.categories?.some((cat: any) => cat.title === 'Benches');
+          const hasCategory = p.categories?.some((cat: any) => cat && cat.title && cat.title === 'Benches');
           return hasCategory || (name.includes('bench') || name.includes('ottoman'));
         }).length 
       },
@@ -213,7 +217,7 @@ export default function MoblerPage() {
         name: 'Fotskamler', 
         count: furnitureProducts.filter((p: any) => {
           const name = (p.name || '').toLowerCase();
-          const hasCategory = p.categories?.some((cat: any) => cat.title === 'Footstools');
+          const hasCategory = p.categories?.some((cat: any) => cat && cat.title && cat.title === 'Footstools');
           return hasCategory || name.includes('footstool');
         }).length 
       },
@@ -222,7 +226,7 @@ export default function MoblerPage() {
         name: 'Oppbevaring', 
         count: furnitureProducts.filter((p: any) => {
           const name = (p.name || '').toLowerCase();
-          const hasCategory = p.categories?.some((cat: any) => cat.title === 'Storage');
+          const hasCategory = p.categories?.some((cat: any) => cat && cat.title && cat.title === 'Storage');
           return hasCategory || name.includes('storage') || name.includes('cabinet') || name.includes('shelf');
         }).length
       }
