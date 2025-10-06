@@ -1,70 +1,9 @@
 import { notFound } from "next/navigation";
+import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
 import AudoCopenhagenProductClient from "./AudoCopenhagenProductClient";
 
-interface ProductVariant {
-  name: string;
-  image: string;
-  price?: number;
-  color?: string;
-  material?: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  variants: ProductVariant[];
-  designer?: string;
-  features?: string[];
-  specifications?: { label: string; value: string }[];
-  lifestyleImages?: string[];
-}
-
-const products: Product[] = [
-  {
-    id: "interconnect-candlestick",
-    name: "Interconnect Candlestick",
-    description: "The Interconnect Candlestick embodies Audo Copenhagen's philosophy of functional design with sculptural beauty. This elegant modular candlestick system allows you to create unique configurations, making it both a practical lighting solution and an artistic statement piece. Crafted with meticulous attention to detail, each piece can stand alone or be combined with others to create stunning arrangements that reflect your personal style.",
-    price: 5795,
-    category: "Accessories",
-    variants: [
-      { name: 'Brass', image: '/Audo-Copenhagen/Audo Copenhagen Interconnect candlestick NOK  5,795  Color -  Brass/Audo Copenhagen Interconnect candlestick NOK  5,795  Color -  Brass.webp', color: 'Brass', price: 5795 },
-      { name: 'Black', image: '/Audo-Copenhagen/Audo Copenhagen Interconnect candlestick NOK  5,795  Color -  Brass/Interconnect candlestick NOK  5,795  Color -  Black.webp', color: 'Black', price: 5795 },
-    ],
-    designer: "Audo Copenhagen Design Team",
-    features: [
-      "Modular design allows for unique configurations",
-      "Available in premium brass and black finishes",
-      "Sculptural beauty meets functional design",
-      "Perfect as standalone piece or in groups",
-      "High-quality materials and craftsmanship",
-      "Suitable for various candle sizes",
-      "Easy to clean and maintain",
-      "Timeless Scandinavian aesthetic",
-      "Creates ambient lighting atmosphere",
-      "Ideal for dining tables and mantels",
-    ],
-    specifications: [
-      { label: "Designer", value: "Audo Copenhagen Design Team" },
-      { label: "Manufacturer", value: "Audo Copenhagen" },
-      { label: "Material", value: "Metal with premium finish" },
-      { label: "Dimensions", value: "H 15cm, Ø 8cm" },
-      { label: "Weight", value: "0.8 kg" },
-      { label: "Finish Options", value: "Brass, Black" },
-      { label: "Candle Compatibility", value: "Standard dinner candles" },
-      { label: "Style", value: "Contemporary Scandinavian" },
-      { label: "Care", value: "Clean with soft cloth" },
-      { label: "Assembly", value: "No assembly required" },
-      { label: "Warranty", value: "2 years manufacturer warranty" },
-      { label: "Origin", value: "Designed in Denmark" },
-    ],
-    lifestyleImages: [
-      "/Audo-Copenhagen/Audo Copenhagen Interconnect candlestick NOK  5,795  Color -  Brass/lifestyle/10696988r_2.webp"
-    ],
-  },
-];
+export const dynamic = "force-static";
+export const revalidate = 3600; // 1 hour
 
 export default async function AudoCopenhagenProductPage({
   params,
@@ -72,11 +11,76 @@ export default async function AudoCopenhagenProductPage({
   params: Promise<{ productId: string }>;
 }) {
   const { productId } = await params;
-  const product = products.find((p) => p.id === productId);
+  
+  // Get all products from Sanity
+  const allProducts = await getAllProducts();
+  
+  // Filter for Audo Copenhagen products
+  const audoProducts = allProducts.filter((p: any) => 
+    p.brand === "Audo Copenhagen" || p.brand === "AUDO COPENHAGEN" || p.brand === "Audo"
+  );
+  
+  // Find the specific product by slug
+  const product = audoProducts.find((p: any) => p.slug?.current === productId);
 
   if (!product) {
     notFound();
   }
 
-  return <AudoCopenhagenProductClient product={product} />;
+  // Transform Sanity product data to match the client component's expected format
+  const transformedProduct = {
+    id: product.slug?.current || product._id,
+    name: product.name || '',
+    description: product.description || '',
+    price: product.price || 0,
+    category: product.categories?.[0]?.title || 'Accessories',
+    variants: product.variants?.map((v: any) => ({
+      name: v.name || v.color || 'Standard',
+      image: v.image?.asset?.url || product.image?.asset?.url || '',
+      color: v.color || v.name || '',
+      material: v.material || '',
+      price: v.price || product.price || 0,
+    })) || [{
+      name: 'Standard',
+      image: product.image?.asset?.url || '',
+      color: 'Standard',
+      price: product.price || 0,
+    }],
+    designer: product.designer || "Audo Copenhagen Design Team",
+    features: product.features || [
+      "Premium Scandinavian design",
+      "High-quality materials and craftsmanship",
+      "Functional and aesthetic design",
+      "Timeless appeal",
+    ],
+    specifications: [
+      { label: "Designer", value: product.designer || "Audo Copenhagen Design Team" },
+      { label: "Manufacturer", value: "Audo Copenhagen" },
+      { label: "Material", value: product.material || "Premium materials" },
+      { label: "Dimensions", value: product.dimensions || "See product details" },
+      { label: "Style", value: "Contemporary Scandinavian" },
+      { label: "Origin", value: "Designed in Denmark" },
+      ...(product.specifications || []),
+    ],
+    lifestyleImages: product.lifestyleImages?.map((img: any) => img.asset?.url).filter(Boolean) || [],
+  };
+
+  return <AudoCopenhagenProductClient product={transformedProduct} />;
+}
+
+// Generate static params for all Audo Copenhagen products
+export async function generateStaticParams() {
+  try {
+    const allProducts = await getAllProducts();
+    const audoProducts = allProducts.filter((p: any) => 
+      p.brand === "Audo Copenhagen" || p.brand === "AUDO COPENHAGEN" || p.brand === "Audo"
+    );
+    
+    return audoProducts.map((product: any) => ({
+      productId: product.slug?.current || product._id,
+    }));
+  } catch (error) {
+    console.error("Error generating static params for Audo Copenhagen:", error);
+    return [];
+  }
 }
