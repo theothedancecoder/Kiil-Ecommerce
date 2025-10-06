@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/components/Header";
+import { useRouter } from "next/navigation";
 
 interface ProductVariant {
   name: string;
@@ -30,14 +32,28 @@ interface AudoCopenhagenProductClientProps {
 }
 
 export default function AudoCopenhagenProductClient({ product }: AudoCopenhagenProductClientProps) {
+  const router = useRouter();
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
   const selectedVariant = product.variants[selectedVariantIndex];
 
+  const handleAddToCart = () => {
+    // Add to cart logic here
+    console.log(`Adding ${quantity} of ${product.name} (${selectedVariant.name}) to cart`);
+    // You can integrate with your cart system here
+  };
+
+  const incrementQuantity = () => setQuantity(prev => prev + 1);
+  const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
+
   return (
     <div className="min-h-screen bg-white">
+      {/* Header with Cart Navigation */}
+      <Header />
+      
       {/* Navigation */}
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,8 +191,39 @@ export default function AudoCopenhagenProductClient({ product }: AudoCopenhagenP
               </div>
             )}
 
-            <button className="w-full bg-slate-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-slate-700 transition-colors">
-              Add to Cart - kr {(selectedVariant.price || product.price).toLocaleString()}
+            {/* Quantity Selector */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                Quantity
+              </h3>
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={decrementQuantity}
+                  className="w-10 h-10 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50 transition-colors"
+                  aria-label="Decrease quantity"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                  </svg>
+                </button>
+                <span className="text-lg font-medium w-12 text-center">{quantity}</span>
+                <button
+                  onClick={incrementQuantity}
+                  className="w-10 h-10 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50 transition-colors"
+                  aria-label="Increase quantity"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <button 
+              onClick={handleAddToCart}
+              className="w-full bg-slate-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-slate-700 transition-colors"
+            >
+              Add to Cart - kr {((selectedVariant.price || product.price) * quantity).toLocaleString()}
             </button>
 
             {/* Collapsible Features */}
