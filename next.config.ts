@@ -46,6 +46,22 @@ const nextConfig: NextConfig = {
   // Static optimization
   trailingSlash: false,
   
+  // Redirects for old/duplicate product URLs
+  async redirects() {
+    return [
+      {
+        source: '/kartell/liberty-2-seater-outdoor',
+        destination: '/kartell/liberty-2-seater',
+        permanent: true,
+      },
+      {
+        source: '/kartell/liberty-3-seater-outdoor',
+        destination: '/kartell/liberty-3-seater',
+        permanent: true,
+      },
+    ];
+  },
+  
   // Headers for better caching and Sanity CDN
   async headers() {
     return [
