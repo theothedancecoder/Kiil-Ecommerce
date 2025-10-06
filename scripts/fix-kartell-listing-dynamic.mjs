@@ -1,4 +1,6 @@
-import Image from 'next/image';
+import fs from 'fs';
+
+const content = `import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import { getKartellProducts } from '@/sanity/lib/products/getKartellProducts';
@@ -62,7 +64,7 @@ export default async function KartellPage() {
               return (
                 <Link 
                   key={product._id} 
-                  href={`/kartell/${product.slug?.current}`}
+                  href={\`/kartell/\${product.slug?.current}\`}
                   className="group block"
                 >
                   <div className="bg-white hover:shadow-lg transition-shadow duration-300">
@@ -165,3 +167,7 @@ export default async function KartellPage() {
     </div>
   );
 }
+`;
+
+fs.writeFileSync('app/kartell/page.tsx', content);
+console.log('✅ Updated Kartell listing page to use force-dynamic');
