@@ -1,4 +1,6 @@
-import { getKartellProducts, getKartellProductBySlug } from "@/sanity/lib/products/getKartellProducts";
+import fs from 'fs';
+
+const content = `import { getKartellProducts, getKartellProductBySlug } from "@/sanity/lib/products/getKartellProducts";
 import { notFound } from "next/navigation";
 import KartellProductClient from "./KartellProductClient";
 
@@ -118,3 +120,7 @@ export async function generateStaticParams() {
 }
 
 export const dynamicParams = true;
+`;
+
+fs.writeFileSync('app/kartell/[productId]/page.tsx', content);
+console.log('✅ Fixed TypeScript error in Kartell product page');
