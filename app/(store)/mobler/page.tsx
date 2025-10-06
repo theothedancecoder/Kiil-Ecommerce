@@ -1,56 +1,100 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { allProducts, StaticProduct } from "@/lib/allProducts";
+import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { Product } from "@/sanity.types";
 
 type FilterCategory = "all" | "sofa" | "chairs" | "tables" | "benches" | "footstools" | "storage";
+
+// Helper function to determine brand path from brand name
+const getBrandPath = (brand: string): string => {
+  const brandMap: { [key: string]: string } = {
+    'HAY': 'hay',
+    'Fritz Hansen': 'fritz-hansen',
+    'Kartell': 'kartell',
+    'Montana': 'montana',
+    'Vitra': 'vitra',
+    'DUX': 'dux',
+    'Eilersen': 'eilersen',
+    'EILERSEN': 'eilersen',
+    'Soren Lund': 'soren-lund',
+    'Søren Lund': 'soren-lund',
+    '&Tradition': 'tradition',
+    'Audo Copenhagen': 'audo-copenhagen',
+    'AUDO COPENHAGEN': 'audo-copenhagen',
+    'Audo': 'audo-copenhagen',
+    'RO Collection': 'ro-collection',
+    'Jonas Ihreborn': 'jonas-ihreborn',
+    'Fredericia': 'fredericia',
+    'Sibast': 'sibast',
+    'Sibast Furniture': 'sibast',
+    'Serax': 'serax',
+    'Flos': 'flos',
+    'Louis Poulsen': 'louis-poulsen',
+    'UMAGE': 'umage',
+    'Crafts': 'crafts',
+  };
+  
+  return brandMap[brand] || 'products';
+};
+
+// Helper function to check if product is furniture
+const isFurnitureProduct = (product: any): boolean => {
+  const furnitureCategories = [
+    'Seating', 'Chair', 'Sofa', 'Tables', 'Furniture', 
+    'Storage', 'Desks', 'Footstools', 'Benches'
+  ];
+  
+  const productName = (product.name || '').toLowerCase();
+  const hasFurnitureCategory = product.categories?.some((cat: any) => 
+    furnitureCategories.includes(cat.title)
+  );
+  
+  const hasFurnitureKeyword = 
+    productName.includes('sofa') ||
+    productName.includes('chair') ||
+    productName.includes('table') ||
+    productName.includes('bench') ||
+    productName.includes('stool') ||
+    productName.includes('footstool') ||
+    productName.includes('desk') ||
+    productName.includes('storage') ||
+    productName.includes('cabinet') ||
+    productName.includes('shelf');
+  
+  return hasFurnitureCategory || hasFurnitureKeyword;
+};
 
 export default function MoblerPage() {
   const [selectedCategory, setSelectedCategory] = useState<FilterCategory>("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [allProductsData, setAllProductsData] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const productsPerPage = 12; // 4 rows × 3 columns = 12 products per page
   
-  const allProductsData = allProducts;
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const products = await getAllProducts();
+        setAllProductsData(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProducts();
+  }, []);
 
   // Filter products based on category only
   const filteredProducts = useMemo(() => {
-    const furnitureProducts = allProductsData.filter((product: StaticProduct) => {
-      // Include EILERSEN brand products explicitly
-      if (product.brand === 'EILERSEN') {
-        return true;
-      }
-
-      // Include RO Collection products explicitly
-      if (product.brand === 'RO Collection') {
-        return true;
-      }
-
-      // Exclude Sibast Furniture products to avoid duplication
-      if (product.brand === 'Sibast Furniture') {
-        return false;
-      }
-
-      return (
-        product.category === 'Seating' || 
-        product.category === 'Chair' ||
-        product.category === 'Sofa' ||
-        product.category === 'Tables' ||
-        product.category === 'Furniture' ||
-        product.category === 'Storage' ||
-        product.category === 'Desks' ||
-        product.category === 'Footstools' ||
-        product.category === 'Benches' ||
-        product.name.toLowerCase().includes('sofa') ||
-        product.name.toLowerCase().includes('chair') ||
-        product.name.toLowerCase().includes('table') ||
-        product.name.toLowerCase().includes('bench') ||
-        product.name.toLowerCase().includes('stool') ||
-        product.name.toLowerCase().includes('footstool') ||
-        product.name.toLowerCase().includes('puff')
-      );
+    const furnitureProducts = allProductsData.filter((product: any) => {
+      return isFurnitureProduct(product);
     });
 
 
@@ -60,59 +104,47 @@ export default function MoblerPage() {
 
     switch (selectedCategory) {
       case 'sofa':
-        return furnitureProducts.filter((product: StaticProduct) => 
-          product.category === 'Sofa' ||
-          product.name.toLowerCase().includes('sofa') ||
-          (product.name.toLowerCase().includes('lounge') && 
-           !product.name.toLowerCase().includes('table') && 
-           !product.name.toLowerCase().includes('chair') &&
-           !product.name.toLowerCase().includes('stool') &&
-           !product.name.toLowerCase().includes('bench')) ||
-          product.name.toLowerCase().includes('chaise') ||
-          (product.name.toLowerCase().includes('seater') && !product.name.toLowerCase().includes('chair'))
-        );
+        return furnitureProducts.filter((product: any) => {
+          const name = (product.name || '').toLowerCase();
+          const hasCategory = product.categories?.some((cat: any) => cat.title === 'Sofa' || cat.title === 'Seating');
+          return hasCategory || name.includes('sofa') || 
+            (name.includes('lounge') && !name.includes('table') && !name.includes('chair')) ||
+            name.includes('chaise') || (name.includes('seater') && !name.includes('chair'));
+        });
       case 'chairs':
-        return furnitureProducts.filter((product: StaticProduct) => 
-          (product.category === 'Seating' || product.category === 'Chair') && 
-          (product.name.toLowerCase().includes('chair') ||
-           product.name.toLowerCase().includes('stool') ||
-           product.name.toLowerCase().includes('bench') ||
-           product.id === 'umage-lounge-around-shuffle-puff' ||
-           product.id === 'dux-jetson-classic-soft-88' ||
-           product.id === 'dux-superspider-sheepskin' ||
-           product.id === 'soren-lund-sl409-swivel-chair' ||
-           product.id === 'soren-lund-sl330-1-adjustable-armchair')
-        );
+        return furnitureProducts.filter((product: any) => {
+          const name = (product.name || '').toLowerCase();
+          const hasCategory = product.categories?.some((cat: any) => 
+            cat.title === 'Seating' || cat.title === 'Chair'
+          );
+          return hasCategory || name.includes('chair') || name.includes('stool');
+        });
       case 'tables':
-        return furnitureProducts.filter((product: StaticProduct) => 
-          product.category === 'Tables' ||
-          product.category === 'Desks' ||
-          product.name.toLowerCase().includes('table') ||
-          product.name.toLowerCase().includes('desk')
-        );
+        return furnitureProducts.filter((product: any) => {
+          const name = (product.name || '').toLowerCase();
+          const hasCategory = product.categories?.some((cat: any) => 
+            cat.title === 'Tables' || cat.title === 'Desks'
+          );
+          return hasCategory || name.includes('table') || name.includes('desk');
+        });
       case 'benches':
-        return furnitureProducts.filter((product: StaticProduct) => 
-          product.category === 'Benches' ||
-          (product.name.toLowerCase().includes('bench') ||
-           product.name.toLowerCase().includes('ottoman') ||
-           product.name.toLowerCase().includes('puff')) &&
-          product.id !== 'umage-lounge-around-shuffle-puff'
-        );
+        return furnitureProducts.filter((product: any) => {
+          const name = (product.name || '').toLowerCase();
+          const hasCategory = product.categories?.some((cat: any) => cat.title === 'Benches');
+          return hasCategory || (name.includes('bench') || name.includes('ottoman'));
+        });
       case 'footstools':
-        return furnitureProducts.filter((product: StaticProduct) => 
-          product.category === 'Footstools' ||
-          product.name.toLowerCase().includes('footstool') ||
-          (product.name.toLowerCase().includes('puff') && 
-           product.id !== 'umage-lounge-around-shuffle-puff')
-        );
+        return furnitureProducts.filter((product: any) => {
+          const name = (product.name || '').toLowerCase();
+          const hasCategory = product.categories?.some((cat: any) => cat.title === 'Footstools');
+          return hasCategory || name.includes('footstool');
+        });
       case 'storage':
-        return furnitureProducts.filter((product: StaticProduct) => 
-          product.category === 'Storage' ||
-          product.name.toLowerCase().includes('storage') ||
-          product.name.toLowerCase().includes('componibili') ||
-          product.name.toLowerCase().includes('shelf') ||
-          product.name.toLowerCase().includes('cabinet')
-        );
+        return furnitureProducts.filter((product: any) => {
+          const name = (product.name || '').toLowerCase();
+          const hasCategory = product.categories?.some((cat: any) => cat.title === 'Storage');
+          return hasCategory || name.includes('storage') || name.includes('cabinet') || name.includes('shelf');
+        });
       default:
         return furnitureProducts;
     }
@@ -125,171 +157,77 @@ export default function MoblerPage() {
   const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
   // Category counts
-    const categories = [
+  const categories = useMemo(() => {
+    const furnitureProducts = allProductsData.filter((p: any) => isFurnitureProduct(p));
+    
+    return [
       { 
         id: 'all' as FilterCategory, 
         name: 'Alle møbler', 
-        count: allProductsData.filter((p: StaticProduct) => {
-          // Include EILERSEN brand products explicitly
-          if (p.brand === 'EILERSEN') {
-            return true;
-          }
-          // Include RO Collection products explicitly
-          if (p.brand === 'RO Collection') {
-            return true;
-          }
-          return (
-            p.category === 'Seating' || 
-            p.category === 'Chair' ||
-            p.category === 'Sofa' ||
-            p.category === 'Tables' ||
-            p.category === 'Furniture' ||
-            p.category === 'Storage' ||
-            p.category === 'Desks' ||
-            p.category === 'Footstools' ||
-            p.category === 'Benches' ||
-            p.name.toLowerCase().includes('sofa') ||
-            p.name.toLowerCase().includes('chair') ||
-            p.name.toLowerCase().includes('table') ||
-            p.name.toLowerCase().includes('bench') ||
-            p.name.toLowerCase().includes('stool') ||
-            p.name.toLowerCase().includes('footstool') ||
-            p.name.toLowerCase().includes('puff')
-          );
-        }).length 
+        count: furnitureProducts.length 
       },
       { 
         id: 'sofa' as FilterCategory, 
         name: 'Sofa', 
-        count: allProductsData.filter((p: StaticProduct) => {
-          // Include EILERSEN brand products explicitly
-          if (p.brand === 'EILERSEN') {
-            return true;
-          }
-          // Include RO Collection products explicitly
-          if (p.brand === 'RO Collection') {
-            return true;
-          }
-          return (
-            p.category === 'Sofa' ||
-            p.name.toLowerCase().includes('sofa') || 
-            (p.name.toLowerCase().includes('lounge') && 
-             !p.name.toLowerCase().includes('table') && 
-             !p.name.toLowerCase().includes('chair') &&
-             !p.name.toLowerCase().includes('stool') &&
-             !p.name.toLowerCase().includes('bench')) ||
-            p.name.toLowerCase().includes('chaise') ||
-            (p.name.toLowerCase().includes('seater') && !p.name.toLowerCase().includes('chair'))
-          );
+        count: furnitureProducts.filter((p: any) => {
+          const name = (p.name || '').toLowerCase();
+          const hasCategory = p.categories?.some((cat: any) => cat.title === 'Sofa' || cat.title === 'Seating');
+          return hasCategory || name.includes('sofa') || 
+            (name.includes('lounge') && !name.includes('table') && !name.includes('chair')) ||
+            name.includes('chaise') || (name.includes('seater') && !name.includes('chair'));
         }).length 
       },
       { 
         id: 'chairs' as FilterCategory, 
         name: 'Stoler', 
-        count: allProductsData.filter((p: StaticProduct) => {
-          // Include EILERSEN brand products explicitly
-          if (p.brand === 'EILERSEN') {
-            return true;
-          }
-          // Include RO Collection products explicitly
-          if (p.brand === 'RO Collection') {
-            return true;
-          }
-          return (
-            (p.category === 'Seating' || p.category === 'Chair' || p.category === 'Sofa') && 
-            (p.name.toLowerCase().includes('chair') || 
-             p.name.toLowerCase().includes('stool') ||
-             p.id === 'umage-lounge-around-shuffle-puff' ||
-             p.id === 'dux-jetson-classic-soft-88' ||
-             p.id === 'dux-superspider-sheepskin' ||
-             p.id === 'soren-lund-sl409-swivel-chair' ||
-             p.id === 'soren-lund-sl330-1-adjustable-armchair')
+        count: furnitureProducts.filter((p: any) => {
+          const name = (p.name || '').toLowerCase();
+          const hasCategory = p.categories?.some((cat: any) => 
+            cat.title === 'Seating' || cat.title === 'Chair'
           );
+          return hasCategory || name.includes('chair') || name.includes('stool');
         }).length 
       },
       { 
         id: 'tables' as FilterCategory, 
         name: 'Bord', 
-        count: allProductsData.filter((p: StaticProduct) => {
-          // Include EILERSEN brand products explicitly
-          if (p.brand === 'EILERSEN') {
-            return true;
-          }
-          // Include RO Collection products explicitly
-          if (p.brand === 'RO Collection') {
-            return true;
-          }
-          return (
-            p.category === 'Tables' ||
-            p.category === 'Desks' ||
-            p.name.toLowerCase().includes('table') ||
-            p.name.toLowerCase().includes('desk')
+        count: furnitureProducts.filter((p: any) => {
+          const name = (p.name || '').toLowerCase();
+          const hasCategory = p.categories?.some((cat: any) => 
+            cat.title === 'Tables' || cat.title === 'Desks'
           );
+          return hasCategory || name.includes('table') || name.includes('desk');
         }).length 
       },
       { 
         id: 'benches' as FilterCategory, 
         name: 'Benker', 
-        count: allProductsData.filter((p: StaticProduct) => {
-          // Include EILERSEN brand products explicitly
-          if (p.brand === 'EILERSEN') {
-            return true;
-          }
-          // Include RO Collection products explicitly
-          if (p.brand === 'RO Collection') {
-            return true;
-          }
-          return (
-            p.category === 'Benches' ||
-            (p.name.toLowerCase().includes('bench') ||
-             p.name.toLowerCase().includes('ottoman') ||
-             p.name.toLowerCase().includes('puff')) &&
-            p.id !== 'umage-lounge-around-shuffle-puff'
-          );
+        count: furnitureProducts.filter((p: any) => {
+          const name = (p.name || '').toLowerCase();
+          const hasCategory = p.categories?.some((cat: any) => cat.title === 'Benches');
+          return hasCategory || (name.includes('bench') || name.includes('ottoman'));
         }).length 
       },
       { 
         id: 'footstools' as FilterCategory, 
         name: 'Fotskamler', 
-        count: allProductsData.filter((p: StaticProduct) => {
-          // Include EILERSEN brand products explicitly
-          if (p.brand === 'EILERSEN') {
-            return true;
-          }
-          // Include RO Collection products explicitly
-          if (p.brand === 'RO Collection') {
-            return true;
-          }
-          return (
-            p.category === 'Footstools' ||
-            p.name.toLowerCase().includes('footstool') ||
-            (p.name.toLowerCase().includes('puff') && 
-             p.id !== 'umage-lounge-around-shuffle-puff')
-          );
+        count: furnitureProducts.filter((p: any) => {
+          const name = (p.name || '').toLowerCase();
+          const hasCategory = p.categories?.some((cat: any) => cat.title === 'Footstools');
+          return hasCategory || name.includes('footstool');
         }).length 
       },
       { 
         id: 'storage' as FilterCategory, 
         name: 'Oppbevaring', 
-        count: allProductsData.filter((p: StaticProduct) => {
-          // Include EILERSEN brand products explicitly
-          if (p.brand === 'EILERSEN') {
-            return true;
-          }
-          // Include RO Collection products explicitly
-          if (p.brand === 'RO Collection') {
-            return true;
-          }
-          return (
-            p.category === 'Storage' ||
-            p.name.toLowerCase().includes('storage') ||
-            p.name.toLowerCase().includes('componibili') ||
-            p.name.toLowerCase().includes('shelf') ||
-            p.name.toLowerCase().includes('cabinet')
-          );
+        count: furnitureProducts.filter((p: any) => {
+          const name = (p.name || '').toLowerCase();
+          const hasCategory = p.categories?.some((cat: any) => cat.title === 'Storage');
+          return hasCategory || name.includes('storage') || name.includes('cabinet') || name.includes('shelf');
         }).length
       }
     ];
+  }, [allProductsData]);
 
   // Reset to page 1 when category changes
   const handleCategoryChange = (category: FilterCategory) => {
@@ -313,6 +251,17 @@ export default function MoblerPage() {
   const goToPage = (page: number) => {
     setCurrentPage(page);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Laster møbler...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -425,44 +374,54 @@ export default function MoblerPage() {
 
           {/* Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {currentProducts.map((product: StaticProduct) => (
-              <Link
-                key={product.id}
-                href={product.href}
-                className="group"
-              >
-                <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-                  <div className="relative aspect-square bg-gray-50">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <p className="text-sm text-gray-500 mb-1">{product.brand}</p>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                      {product.description}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="text-lg font-light text-gray-900">
-                        {formatCurrency(product.price)}
-                      </div>
-                      {product.variants && product.variants.length > 1 && (
-                        <span className="text-xs text-gray-500">
-                          {product.variants.length} varianter
-                        </span>
+            {currentProducts.map((product: any) => {
+              const brandPath = getBrandPath(product.brand || '');
+              const productSlug = product.slug?.current || product._id;
+              const productHref = `/${brandPath}/${productSlug}`;
+              const productImage = product.image?.asset?.url || '';
+              const variantCount = product.variants?.length || 0;
+              
+              return (
+                <Link
+                  key={product._id}
+                  href={productHref}
+                  className="group"
+                >
+                  <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+                    <div className="relative aspect-square bg-gray-50">
+                      {productImage && (
+                        <Image
+                          src={productImage}
+                          alt={product.name || 'Product'}
+                          fill
+                          className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
                       )}
                     </div>
+                    <div className="p-6">
+                      <p className="text-sm text-gray-500 mb-1">{product.brand || ''}</p>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        {product.name || ''}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        {product.description || ''}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="text-lg font-light text-gray-900">
+                          {formatCurrency(product.price || 0)}
+                        </div>
+                        {variantCount > 1 && (
+                          <span className="text-xs text-gray-500">
+                            {variantCount} varianter
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
 
           {/* No products message */}
