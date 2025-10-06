@@ -1,0 +1,264 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Product } from "@/sanity.types";
+import { getJuulProducts, getJuulCategories } from "@/sanity/lib/products/getJuulProducts";
+import ProductGridItem from "@/components/ProductGridItem";
+import Header from "@/components/Header";
+
+export default function JuulPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortBy, setSortBy] = useState("name");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const productsPerPage = 15; // 5 rows × 3 columns
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [productsData, categoriesData] = await Promise.all([
+          getJuulProducts(),
+          getJuulCategories()
+        ]);
+        
+        setProducts(productsData);
+        
+        // Extract category titles and add "All" option
+        const categoryTitles = categoriesData.map((cat: any) => cat.title);
+        setCategories(["All", ...categoryTitles]);
+      } catch (error) {
+        console.error("Error fetching Juul data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredProducts = products.filter(product => {
+    if (selectedCategory === "All") return true;
+    return product.categories?.some((cat: any) => cat.title === selectedCategory);
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === "name") {
+      return (a.name || "").localeCompare(b.name || "");
+    } else if (sortBy === "price") {
+      return (a.price || 0) - (b.price || 0);
+    }
+    return 0;
+  });
+
+  // Pagination calculations
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = sortedProducts.slice(startIndex, endIndex);
+
+  // Reset to page 1 when category changes
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Juul products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Header with Navigation and Cart */}
+      <Header />
+      
+      {/* Back to Homepage */}
+      <div className="bg-gray-50 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link 
+            href="/"
+            className="inline-flex items-center text-stone-600 hover:text-stone-800 transition-colors"
+          >
+            <svg 
+              className="w-5 h-5 mr-2" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+              />
+            </svg>
+            Back to Homepage
+          </Link>
+        </div>
+      </div>
+
+      {/* Page Title */}
+      <div className="bg-white py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-4">
+              Juul
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Premium Danish furniture combining exceptional comfort with timeless Scandinavian design and superior craftsmanship
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+            <div className="flex space-x-1 flex-wrap">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={`px-4 py-2 text-sm font-medium transition-all ${
+                    selectedCategory === category
+                      ? "bg-gray-900 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-500">
+                {sortedProducts.length} products
+              </span>
+              {totalPages > 1 && (
+                <span className="text-sm text-gray-500">
+                  Page {currentPage} of {totalPages}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Products Grid */}
+      <div className="products-grid max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {currentProducts.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No Juul products found.</p>
+            <p className="text-gray-400 text-sm mt-2">
+              Make sure Juul products are added to Sanity CMS and USE_SANITY_PRODUCTS=true is set.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {currentProducts.map((product) => (
+              <ProductGridItem
+                key={product._id}
+                product={product}
+                brandPath="juul"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Pagination Navigation */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center space-x-4 mt-12">
+            <button
+              onClick={goToPrevPage}
+              disabled={currentPage === 1}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+                currentPage === 1
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "bg-gray-900 text-white hover:bg-gray-800"
+              }`}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              <span>Previous</span>
+            </button>
+
+            <div className="flex items-center space-x-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`w-10 h-10 rounded-lg transition-all ${
+                    currentPage === page
+                      ? "bg-gray-900 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+                currentPage === totalPages
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "bg-gray-900 text-white hover:bg-gray-800"
+              }`}
+            >
+              <span>Next</span>
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

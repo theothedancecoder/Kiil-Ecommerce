@@ -438,6 +438,17 @@ export default async function Home() {
               </div>
             </Link>
 
+            <Link href="/juul" className="group text-center">
+              <div className="bg-stone-50 p-12 hover:shadow-lg hover:bg-white transition-all duration-300 min-h-[120px]">
+                <div className="flex flex-col items-center justify-center h-full">
+                  <h3 className="text-xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors">
+                    Juul
+                  </h3>
+                  <p className="text-sm text-stone-500 mt-2">Danish Comfort</p>
+                </div>
+              </div>
+            </Link>
+
             <Link href="/products" className="group text-center">
               <div className="bg-stone-800 p-12 hover:bg-stone-700 transition-all duration-300 min-h-[120px]">
                 <div className="flex flex-col items-center justify-center h-full">

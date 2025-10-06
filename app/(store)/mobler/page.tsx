@@ -54,6 +54,7 @@ const getBrandPath = (brand: string): string => {
     'Louis Poulsen': 'louis-poulsen',
     'UMAGE': 'umage',
     'Crafts': 'crafts',
+    'Juul': 'juul',
   };
   
   return brandMap[brand] || 'products';
