@@ -9,6 +9,24 @@ import { Product } from "@/sanity.types";
 
 type FilterCategory = "all" | "sofa" | "chairs" | "tables" | "benches" | "footstools" | "storage";
 
+// Helper function to safely get description text
+const getDescriptionText = (description: any): string => {
+  if (!description) return '';
+  if (typeof description === 'string') return description;
+  if (Array.isArray(description)) {
+    return description
+      .filter((block: any) => block._type === 'block' && block.children)
+      .map((block: any) => 
+        block.children
+          .filter((child: any) => child._type === 'span' && child.text)
+          .map((child: any) => child.text)
+          .join('')
+      )
+      .join(' ');
+  }
+  return '';
+};
+
 // Helper function to determine brand path from brand name
 const getBrandPath = (brand: string): string => {
   const brandMap: { [key: string]: string } = {
@@ -409,7 +427,7 @@ export default function MoblerPage() {
                         {product.name || ''}
                       </h3>
                       <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                        {product.description || ''}
+                        {getDescriptionText(product.description)}
                       </p>
                       <div className="flex items-center justify-between">
                         <div className="text-lg font-light text-gray-900">
