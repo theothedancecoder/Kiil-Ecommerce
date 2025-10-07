@@ -42,7 +42,14 @@ export default function JuulProductClient({ product, products }: JuulProductClie
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
-  const selectedVariant = product.variants[selectedVariantIndex];
+  // Ensure we have at least one variant
+  const hasVariants = product.variants && product.variants.length > 0;
+  const selectedVariant = hasVariants ? product.variants[selectedVariantIndex] : {
+    name: 'Default',
+    image: '',
+    price: product.price,
+    material: ''
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -98,7 +105,7 @@ export default function JuulProductClient({ product, products }: JuulProductClie
             </div>
 
             {/* Variant Thumbnails */}
-            {product.variants.length > 1 && (
+            {hasVariants && product.variants.length > 1 && (
               <div className="grid grid-cols-4 gap-3">
                 {product.variants.map((variant, index) => (
                   <button
@@ -180,7 +187,7 @@ export default function JuulProductClient({ product, products }: JuulProductClie
               kr {selectedVariant.price.toLocaleString()}
             </div>
 
-            {product.variants.length > 1 && (
+            {hasVariants && product.variants.length > 1 && (
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
                   Material: {selectedVariant.material || selectedVariant.name}
