@@ -8,17 +8,17 @@ export const revalidate = 1800; // 30 minutes
 
 interface JuulProductPageProps {
   params: Promise<{
-    productId: string;
+    productId: string[];
   }>;
 }
 
 export default async function JuulProductPage({ params }: JuulProductPageProps) {
   const { productId } = await params;
   
-  // Handle nested paths (e.g., "interior/living-room/sofa/juul-903")
-  // Extract the actual product slug from the end of the path
-  const actualProductId = productId.includes('/') 
-    ? productId.split('/').pop() || productId
+  // Handle catch-all route: productId is an array of path segments
+  // Extract the actual product slug from the last segment
+  const actualProductId = Array.isArray(productId) 
+    ? productId[productId.length - 1]
     : productId;
   
   // Get all products from Sanity
@@ -123,7 +123,7 @@ export async function generateStaticParams() {
     return products
       .filter((product: any) => product.brand === 'Juul' && product.slug?.current)
       .map((product: any) => ({
-        productId: product.slug!.current,
+        productId: [product.slug!.current], // Return as array for catch-all route
       }));
   } catch (error) {
     console.error('Error generating static params for Juul products:', error);
