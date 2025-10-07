@@ -12,11 +12,12 @@ interface LouisPoulsenProductClientProps {
   params: {
     productId: string;
   };
+  initialProduct?: LouisPoulsenProduct;
 }
 
-export default function LouisPoulsenProductClient({ params }: LouisPoulsenProductClientProps) {
+export default function LouisPoulsenProductClient({ params, initialProduct }: LouisPoulsenProductClientProps) {
   const slug = params.productId;
-  const [product, setProduct] = useState<LouisPoulsenProduct | null>(null);
+  const [product, setProduct] = useState<LouisPoulsenProduct | null>(initialProduct || null);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -24,6 +25,13 @@ export default function LouisPoulsenProductClient({ params }: LouisPoulsenProduc
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // If we have initialProduct, use it and skip fetching
+    if (initialProduct) {
+      setProduct(initialProduct);
+      setLoading(false);
+      return;
+    }
+    
     async function fetchProduct() {
       setLoading(true);
       setError(null);
@@ -43,7 +51,7 @@ export default function LouisPoulsenProductClient({ params }: LouisPoulsenProduc
       }
     }
     fetchProduct();
-  }, [slug]);
+  }, [slug, initialProduct]);
 
   if (loading) {
     return (
