@@ -28,14 +28,21 @@ export default async function JuulProductPage({ params }: JuulProductPageProps) 
     notFound();
   }
 
-  // Prioritize Sanity variants
-  const variants = product.variants?.map((variant: any) => ({
-    name: variant.name || variant.color || variant.material || 'Default',
-    image: variant.image?.asset?.url || variant.image || '',
-    material: variant.material || variant.color || '',
-    price: variant.price || product.price || 0,
-    size: variant.size || undefined,
-  })) || [];
+  // Prioritize Sanity variants, but ensure at least one variant exists
+  const variants = product.variants && product.variants.length > 0
+    ? product.variants.map((variant: any) => ({
+        name: variant.name || variant.color || variant.material || 'Default',
+        image: variant.image?.asset?.url || variant.image || '',
+        material: variant.material || variant.color || '',
+        price: variant.price || product.price || 0,
+        size: variant.size || undefined,
+      }))
+    : [{
+        name: 'Default',
+        image: product.image?.asset?.url || product.image || '',
+        material: 'Standard',
+        price: product.price || 0,
+      }];
 
   // Convert Sanity product to format expected by JuulProductClient
   const convertedProduct = {
