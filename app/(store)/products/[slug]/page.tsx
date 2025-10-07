@@ -4,8 +4,9 @@ import dynamicImport from 'next/dynamic';
 
 const ProductPageClient = dynamicImport(() => import('./ProductPageClient'));
 
-export const dynamic = "force-dynamic";
-export const revalidate = 1800; // 30 minutes
+export const dynamic = "force-static";
+export const revalidate = 60; // 1 minute - faster updates for new products
+export const dynamicParams = true; // Allow new products not in static build
 
 interface ProductPageProps {
   params: Promise<{
