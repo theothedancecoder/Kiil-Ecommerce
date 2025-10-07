@@ -21,14 +21,26 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
   useEffect(() => {
     if (product.variants && product.variants.length > 0) {
       setSelectedVariant(product.variants[0]);
-      if (product.variants[0].image) {
-        setCurrentImage(imageUrl(product.variants[0].image).url());
-      } else if (product.image) {
-        setCurrentImage(imageUrl(product.image).url());
+      if (product.variants[0].image?.asset) {
+        try {
+          setCurrentImage(imageUrl(product.variants[0].image).url());
+        } catch (e) {
+          console.error('Error loading variant image:', e);
+        }
+      } else if (product.image?.asset) {
+        try {
+          setCurrentImage(imageUrl(product.image).url());
+        } catch (e) {
+          console.error('Error loading product image:', e);
+        }
       }
       setCurrentPrice(product.variants[0].price || product.price || 0);
-    } else if (product.image) {
-      setCurrentImage(imageUrl(product.image).url());
+    } else if (product.image?.asset) {
+      try {
+        setCurrentImage(imageUrl(product.image).url());
+      } catch (e) {
+        console.error('Error loading product image:', e);
+      }
     }
   }, [product]);
 
@@ -36,10 +48,18 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
     setSelectedVariant(variant);
     
     // Update image if variant has one
-    if (variant.image) {
-      setCurrentImage(imageUrl(variant.image).url());
-    } else if (product.image) {
-      setCurrentImage(imageUrl(product.image).url());
+    if (variant.image?.asset) {
+      try {
+        setCurrentImage(imageUrl(variant.image).url());
+      } catch (e) {
+        console.error('Error loading variant image:', e);
+      }
+    } else if (product.image?.asset) {
+      try {
+        setCurrentImage(imageUrl(product.image).url());
+      } catch (e) {
+        console.error('Error loading product image:', e);
+      }
     }
     
     // Update price if variant has different price
@@ -93,7 +113,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-              ) : product.image ? (
+              ) : product.image?.asset ? (
                 <Image
                   src={imageUrl(product.image).url()}
                   alt={product.name || 'Product'}
@@ -122,7 +142,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                         : 'border-gray-200 hover:border-gray-400'
                     }`}
                   >
-                    {variant.image ? (
+                    {variant.image?.asset ? (
                       <Image
                         src={imageUrl(variant.image).url()}
                         alt={variant.name || `Variant ${index + 1}`}
@@ -253,7 +273,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
         <div className="grid lg:grid-cols-2 gap-16">
           {/* Left Column - Lifestyle Image */}
           <div className="relative aspect-square bg-gray-100">
-            {product.lifestyleImages && product.lifestyleImages.length > 0 ? (
+            {product.lifestyleImages && product.lifestyleImages.length > 0 && product.lifestyleImages[0]?.asset ? (
               <Image
                 src={imageUrl(product.lifestyleImages[0]).url()}
                 alt={`${product.name} lifestyle`}
@@ -429,7 +449,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                             : 'border-stone-200 hover:border-stone-400'
                         }`}
                       >
-                        {variant.image ? (
+                        {variant.image?.asset ? (
                           <Image
                             src={imageUrl(variant.image).url()}
                             alt={variant.name || `Variant ${index + 1}`}
@@ -470,12 +490,18 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
               {product.lifestyleImages.slice(0, 3).map((image: any, index: number) => (
                 <div key={index} className="relative aspect-square bg-stone-100 overflow-hidden">
-                  <Image
-                    src={imageUrl(image).url()}
-                    alt={image.alt || `${product.name} lifestyle ${index + 1}`}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-700 ease-out"
-                  />
+                  {image?.asset ? (
+                    <Image
+                      src={imageUrl(image).url()}
+                      alt={image.alt || `${product.name} lifestyle ${index + 1}`}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-gray-400">No image</span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -483,12 +509,18 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-0">
                 {product.lifestyleImages.slice(3, 5).map((image: any, index: number) => (
                   <div key={index + 3} className="relative aspect-[4/3] bg-stone-100 overflow-hidden">
-                    <Image
-                      src={imageUrl(image).url()}
-                      alt={image.alt || `${product.name} lifestyle ${index + 4}`}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-700 ease-out"
-                    />
+                    {image?.asset ? (
+                      <Image
+                        src={imageUrl(image).url()}
+                        alt={image.alt || `${product.name} lifestyle ${index + 4}`}
+                        fill
+                        className="object-cover hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-gray-400">No image</span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
