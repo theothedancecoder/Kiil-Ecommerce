@@ -1,6 +1,6 @@
 import LouisPoulsenProductClient from "./LouisPoulsenProductClient";
 
-// Static generation with revalidation
+// Static generation with revalidation - Updated for Louis Poulsen products
 export const revalidate = 60; // Revalidate every minute for fresh data
 
 // Generate static params for all Louis Poulsen products
