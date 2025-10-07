@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import LouisPoulsenProductClient from "./LouisPoulsenProductClient";
 
 // Use force-static with ISR to avoid freezing - pages are pre-generated at build time
+// Updated: Added Yuh Table images and variants - rebuild required
 export const dynamic = "force-static";
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 60; // Revalidate every minute for faster updates
 
 interface LouisPoulsenProductPageProps {
   params: Promise<{
