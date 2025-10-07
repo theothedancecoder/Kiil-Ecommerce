@@ -15,13 +15,19 @@ interface JuulProductPageProps {
 export default async function JuulProductPage({ params }: JuulProductPageProps) {
   const { productId } = await params;
   
+  // Handle nested paths (e.g., "interior/living-room/sofa/juul-903")
+  // Extract the actual product slug from the end of the path
+  const actualProductId = productId.includes('/') 
+    ? productId.split('/').pop() || productId
+    : productId;
+  
   // Get all products from Sanity
   const allProducts = await getAllProducts();
   
   // Find the Juul product by matching the productId with the slug
   const product = allProducts.find((p: any) => 
     p.brand === 'Juul' && 
-    (p.slug?.current === productId || p._id === productId)
+    (p.slug?.current === actualProductId || p._id === actualProductId)
   );
 
   if (!product) {
