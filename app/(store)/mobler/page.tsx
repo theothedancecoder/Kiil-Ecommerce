@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getAllProducts } from "@/sanity/lib/products/getAllProductsSimple";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { Product } from "@/sanity.types";
+import { imageUrl } from "@/lib/ImageUrl";
 
 type FilterCategory = "all" | "sofa" | "chairs" | "tables" | "benches" | "footstools" | "storage";
 
@@ -401,7 +402,7 @@ export default function MoblerPage() {
               const brandPath = getBrandPath(product.brand || '');
               const productSlug = product.slug?.current || product._id;
               const productHref = `/${brandPath}/${productSlug}`;
-              const productImage = product.image?.asset?.url || '';
+              const productImage = product.image?.asset ? imageUrl(product.image).width(600).height(600).url() : '';
               const variantCount = product.variants?.length || 0;
               
               return (
