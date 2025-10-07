@@ -13,6 +13,7 @@ export const getJuulProducts = async () => {
     },
     description,
     price,
+    salePrice,
     brand,
     categories[]->{
       _id,
@@ -69,6 +70,7 @@ export const getJuulProductsByCategory = async (category?: string) => {
     },
     description,
     price,
+    salePrice,
     brand,
     categories[]->{
       _id,
@@ -119,6 +121,7 @@ export const getJuulProduct = async (slug: string) => {
     },
     description,
     price,
+    salePrice,
     brand,
     categories[]->{
       _id,

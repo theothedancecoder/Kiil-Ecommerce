@@ -19,6 +19,7 @@ interface Product {
   name: string;
   description: string;
   price: number;
+  salePrice?: number;
   category: string;
   variants: ProductVariant[];
   designer?: string;
@@ -183,8 +184,21 @@ export default function JuulProductClient({ product, products }: JuulProductClie
               )}
             </div>
 
-            <div className="text-2xl font-light text-gray-900">
-              kr {selectedVariant.price.toLocaleString()}
+            <div>
+              {product.salePrice && product.salePrice < product.price ? (
+                <div className="space-y-2">
+                  <div className="text-lg text-gray-500 line-through">
+                    Fra kr {product.price.toLocaleString()} Opprinnelig pris var: kr {product.price.toLocaleString()}.
+                  </div>
+                  <div className="text-3xl font-medium text-red-600">
+                    kr {product.salePrice.toLocaleString()}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-2xl font-light text-gray-900">
+                  kr {selectedVariant.price.toLocaleString()}
+                </div>
+              )}
             </div>
 
             {hasVariants && product.variants.length > 1 && (

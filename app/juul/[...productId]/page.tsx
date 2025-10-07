@@ -68,6 +68,7 @@ export default async function JuulProductPage({ params }: JuulProductPageProps) 
             .join(' ')
         : 'Premium Danish furniture combining exceptional comfort with timeless Scandinavian design.',
     price: product.price || 0,
+    salePrice: (product as any).salePrice || undefined,
     category: product.categories?.[0]?.title || 'Furniture',
     variants,
     designer: 'Juul Design Team',

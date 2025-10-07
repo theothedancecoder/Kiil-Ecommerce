@@ -127,8 +127,21 @@ export default function ProductGridItem({
                 : 'No description available'
             }
           </p>
-          <div className="text-lg font-light text-gray-900 mb-4">
-            {displayPrice ? `kr ${displayPrice.toLocaleString()}` : 'Price on request'}
+          <div className="mb-4">
+            {(product as any).salePrice && (product as any).salePrice < (product.price || 0) ? (
+              <div className="space-y-1">
+                <div className="text-sm text-gray-500 line-through">
+                  Fra kr {(product.price || 0).toLocaleString()} Opprinnelig pris var: kr {(product.price || 0).toLocaleString()}.
+                </div>
+                <div className="text-lg font-medium text-red-600">
+                  kr {(product as any).salePrice.toLocaleString()}
+                </div>
+              </div>
+            ) : (
+              <div className="text-lg font-light text-gray-900">
+                {displayPrice ? `kr ${displayPrice.toLocaleString()}` : 'Price on request'}
+              </div>
+            )}
           </div>
           
           {/* Add to Cart Section */}
