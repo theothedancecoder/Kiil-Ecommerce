@@ -1,5 +1,14 @@
 import { notFound } from "next/navigation";
 import TraditionProductClient from "./TraditionProductClient";
+import { getTraditionProductBySlug, getTraditionProducts } from "@/sanity/lib/products/getTraditionProducts";
+import imageUrlBuilder from '@sanity/image-url';
+import { client } from '@/sanity/lib/client';
+
+const builder = imageUrlBuilder(client);
+
+function urlFor(source: any) {
+  return builder.image(source);
+}
 
 interface ProductVariant {
   name: string;
@@ -22,7 +31,8 @@ interface Product {
   lifestyleImages?: string[];
 }
 
-const products: Product[] = [
+// Fallback static products (only used if Sanity fails)
+const staticProducts: Product[] = [
   {
     id: "flowerpot-vp9-battery",
     name: "Flower Pot VP9 Battery Lamp",
@@ -484,11 +494,58 @@ export default async function TraditionProductPage({
   params: Promise<{ productId: string }>;
 }) {
   const { productId } = await params;
-  const product = products.find((p) => p.id === productId);
+  
+  // Try to fetch from Sanity first
+  const sanityProduct = await getTraditionProductBySlug(productId);
+  const allSanityProducts = await getTraditionProducts();
+  
+  if (sanityProduct && allSanityProducts.length > 0) {
+    // Convert Sanity product to expected format
+    const product: Product = {
+      id: sanityProduct.slug?.current || productId,
+      name: sanityProduct.name || '',
+      description: sanityProduct.description || '',
+      price: sanityProduct.price || 0,
+      category: sanityProduct.categories?.[0]?.title || 'Product',
+      designer: sanityProduct.designer,
+      features: sanityProduct.features,
+      specifications: sanityProduct.specifications,
+      variants: sanityProduct.variants?.map(v => ({
+        name: v.name || '',
+        image: v.image?.asset?.url || '',
+        price: v.price,
+        color: v.color,
+        material: v.material,
+      })) || [],
+      lifestyleImages: sanityProduct.lifestyleImages?.map(img => img.asset?.url || '') || [],
+    };
+
+    const products: Product[] = allSanityProducts.map(p => ({
+      id: p.slug?.current || '',
+      name: p.name || '',
+      description: p.description || '',
+      price: p.price || 0,
+      category: p.categories?.[0]?.title || 'Product',
+      designer: p.designer,
+      variants: p.variants?.map(v => ({
+        name: v.name || '',
+        image: v.image?.asset?.url || '',
+        price: v.price,
+        color: v.color,
+        material: v.material,
+      })) || [],
+      lifestyleImages: p.lifestyleImages?.map(img => img.asset?.url || '') || [],
+    }));
+
+    return <TraditionProductClient product={product} products={products} />;
+  }
+  
+  // Fallback to static data
+  const product = staticProducts.find((p) => p.id === productId);
 
   if (!product) {
     notFound();
   }
 
-  return <TraditionProductClient product={product} products={products} />;
+  return <TraditionProductClient product={product} products={staticProducts} />;
 }

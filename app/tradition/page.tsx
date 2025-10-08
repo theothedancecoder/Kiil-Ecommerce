@@ -1,21 +1,126 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getProductsByBrand } from "@/lib/allProducts";
+import { getTraditionProducts } from "@/sanity/lib/products/getTraditionProducts";
+
+interface ProductVariant {
+  name?: string;
+  image?: {
+    asset?: {
+      url: string;
+    };
+  };
+  color?: string;
+  material?: string;
+  price?: number;
+}
+
+interface TraditionProduct {
+  _id: string;
+  name?: string;
+  slug?: {
+    current?: string;
+  };
+  description?: string;
+  price?: number;
+  image?: {
+    asset?: {
+      url: string;
+    };
+  };
+  variants?: ProductVariant[];
+  categories?: Array<{
+    title?: string;
+  }>;
+}
 
 export default function TraditionPage() {
-  const traditionProducts = getProductsByBrand("&Tradition");
+  const [products, setProducts] = useState<TraditionProduct[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const data = await getTraditionProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error loading products:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProducts();
+  }, []);
 
   // Get unique categories for filtering
-  const categories = ["all", ...Array.from(new Set(traditionProducts.map(product => product.category)))];
+  const categories = ["all", ...Array.from(new Set(products.map(product => product.categories?.[0]?.title).filter(Boolean)))];
 
   // Filter products by category
   const filteredProducts = selectedCategory === "all" 
-    ? traditionProducts 
-    : traditionProducts.filter(product => product.category === selectedCategory);
+    ? products 
+    : products.filter(product => product.categories?.[0]?.title === selectedCategory);
+
+  // Function to get the most colorful variant for thumbnail
+  const getColorfulThumbnail = (product: TraditionProduct) => {
+    if (!product.variants || product.variants.length === 0) {
+      return product.image?.asset?.url || '';
+    }
+    
+    // Priority order for colorful variants (most vibrant first)
+    const colorPriority = [
+      'Vermilion Red', 'Signal Green', 'Cobalt Blue', 'Mustard', 
+      'Tangy Pink', 'Electric Orange', 'Dark Plum', 'Stone Blue', 
+      'Swim Blue', 'Grey Beige', 'Brass-Plated', 'Chrome-Plated',
+      'Matt Black', 'Matt White'
+    ];
+    
+    // Find the most colorful variant based on priority
+    for (const color of colorPriority) {
+      const variant = product.variants.find((v: ProductVariant) => 
+        v.color === color || v.name === color
+      );
+      if (variant?.image?.asset?.url) {
+        return variant.image.asset.url;
+      }
+    }
+    
+    // If no priority color found, return the first variant or default image
+    return product.variants[0]?.image?.asset?.url || product.image?.asset?.url || '';
+  };
+
+  // Color mapping for visual swatches
+  const getSwatchColor = (colorName: string) => {
+    const colorMap: { [key: string]: string } = {
+      'Vermilion Red': 'bg-red-500',
+      'Signal Green': 'bg-green-500',
+      'Cobalt Blue': 'bg-blue-600',
+      'Mustard': 'bg-yellow-500',
+      'Tangy Pink': 'bg-pink-400',
+      'Dark Plum': 'bg-purple-800',
+      'Stone Blue': 'bg-slate-400',
+      'Swim Blue': 'bg-cyan-400',
+      'Grey Beige': 'bg-stone-300',
+      'Matt Black': 'bg-gray-900',
+      'Matt White': 'bg-white border-2 border-gray-300',
+      'Brass-Plated': 'bg-yellow-600',
+      'Chrome-Plated': 'bg-gray-400',
+    };
+    return colorMap[colorName] || 'bg-gray-300';
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading &Tradition products...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -93,140 +198,89 @@ export default function TraditionPage() {
             </p>
           </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-2 text-sm font-medium uppercase tracking-wider transition-colors ${
-                selectedCategory === category
-                  ? "bg-gray-900 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {category === "all" ? "All Products" : category}
-            </button>
-          ))}
-        </div>
-
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product) => {
-            // Function to get the most colorful variant for thumbnail
-            const getColorfulThumbnail = (product: any) => {
-              if (!product.variants || product.variants.length === 0) {
-                return product.image;
-              }
-              
-              // Priority order for colorful variants (most vibrant first)
-              const colorPriority = [
-                'Vermilion Red', 'Signal Green', 'Cobalt Blue', 'Mustard', 
-                'Tangy Pink', 'Electric Orange', 'Dark Plum', 'Stone Blue', 
-                'Swim Blue', 'Grey Beige', 'Brass-Plated', 'Chrome-Plated',
-                'Matt Black', 'Matt White'
-              ];
-              
-              // Find the most colorful variant based on priority
-              for (const color of colorPriority) {
-                const variant = product.variants.find((v: any) => 
-                  v.color === color || v.name === color
-                );
-                if (variant) {
-                  return variant.image;
-                }
-              }
-              
-              // If no priority color found, return the first variant or default image
-              return product.variants[0]?.image || product.image;
-            };
-
-            const thumbnailImage = getColorfulThumbnail(product);
-
-            return (
-              <Link
-                key={product.id}
-                href={product.href}
-                className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+          {/* Category Filter */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category || 'all')}
+                className={`px-6 py-2 text-sm font-medium uppercase tracking-wider transition-colors ${
+                  selectedCategory === category
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
               >
-                <div className="relative aspect-square bg-gray-50 overflow-hidden">
-                  <Image
-                    src={thumbnailImage}
-                    alt={product.name}
-                    fill
-                    className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
-                    {product.category}
-                  </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2 group-hover:text-gray-700">
-                    {product.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                    {product.description}
-                  </p>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-lg font-light text-gray-900">
-                      kr {product.price.toLocaleString()}
-                      {product.variants && product.variants.length > 1 && (
-                        <span className="text-sm text-gray-500 ml-1">+</span>
-                      )}
-                    </span>
-                    {product.variants && product.variants.length > 1 && (
-                      <span className="text-xs text-gray-500">
-                        {product.variants.length} variants
-                      </span>
-                    )}
-                  </div>
-                  
-                  {/* Color Swatches */}
-                  {product.variants && product.variants.length > 1 && (
-                    <div className="flex items-center space-x-1">
-                      {product.variants.slice(0, 6).map((variant: any, index: number) => {
-                        // Color mapping for visual swatches
-                        const getSwatchColor = (colorName: string) => {
-                          const colorMap: { [key: string]: string } = {
-                            'Vermilion Red': 'bg-red-500',
-                            'Signal Green': 'bg-green-500',
-                            'Cobalt Blue': 'bg-blue-600',
-                            'Mustard': 'bg-yellow-500',
-                            'Tangy Pink': 'bg-pink-400',
-                            'Dark Plum': 'bg-purple-800',
-                            'Stone Blue': 'bg-slate-400',
-                            'Swim Blue': 'bg-cyan-400',
-                            'Grey Beige': 'bg-stone-300',
-                            'Matt Black': 'bg-gray-900',
-                            'Matt White': 'bg-white border-2 border-gray-300',
-                            'Brass-Plated': 'bg-yellow-600',
-                            'Chrome-Plated': 'bg-gray-400',
-                          };
-                          return colorMap[colorName] || 'bg-gray-300';
-                        };
+                {category === "all" ? "All Products" : category}
+              </button>
+            ))}
+          </div>
 
-                        return (
-                          <div
-                            key={index}
-                            className={`w-3 h-3 rounded-full ${getSwatchColor(variant.color || variant.name)} shadow-sm`}
-                            title={variant.color || variant.name}
-                          />
-                        );
-                      })}
-                      {product.variants.length > 6 && (
-                        <span className="text-xs text-gray-400 ml-1">
-                          +{product.variants.length - 6}
+          {/* Products Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map((product) => {
+              const thumbnailImage = getColorfulThumbnail(product);
+
+              return (
+                <Link
+                  key={product._id}
+                  href={`/tradition/${product.slug?.current}`}
+                  className="group block bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300"
+                >
+                  <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                    <Image
+                      src={thumbnailImage}
+                      alt={product.name || ''}
+                      fill
+                      className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                      {product.categories?.[0]?.title || 'Product'}
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2 group-hover:text-gray-700">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      {product.description}
+                    </p>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-lg font-light text-gray-900">
+                        kr {product.price?.toLocaleString()}
+                        {product.variants && product.variants.length > 1 && (
+                          <span className="text-sm text-gray-500 ml-1">+</span>
+                        )}
+                      </span>
+                      {product.variants && product.variants.length > 1 && (
+                        <span className="text-xs text-gray-500">
+                          {product.variants.length} variants
                         </span>
                       )}
                     </div>
-                  )}
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-
+                    
+                    {/* Color Swatches */}
+                    {product.variants && product.variants.length > 1 && (
+                      <div className="flex items-center space-x-1">
+                        {product.variants.slice(0, 6).map((variant: ProductVariant, index: number) => (
+                          <div
+                            key={index}
+                            className={`w-3 h-3 rounded-full ${getSwatchColor(variant.color || variant.name || '')} shadow-sm`}
+                            title={variant.color || variant.name}
+                          />
+                        ))}
+                        {product.variants.length > 6 && (
+                          <span className="text-xs text-gray-400 ml-1">
+                            +{product.variants.length - 6}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
 
