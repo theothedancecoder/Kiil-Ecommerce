@@ -1,19 +1,9 @@
 import InteriorBanner from "@/components/InteriorBanner";
 import InteriorSubBanner from "@/components/InteriorSubBanner";
 import InteriorSidebar from "@/components/InteriorSidebar";
-import ProductGrid from "@/components/ProductGrid";
 import ProductGridWithPagination from "@/components/ProductGridWithPagination";
 import InteriorFurnitureGrid from "@/components/InteriorFurnitureGrid";
-import { getProductByCategory } from "@/sanity/lib/products/getProductByCategory";
-import { cushionsData } from "@/lib/cushionsData";
-import { wallArtData } from "@/lib/wallArtData";
-import { throwsData } from "@/lib/throwsData";
-import { decorData } from "@/lib/decorData";
-import { mirrorsData } from "@/lib/mirrorsData";
-import { getRoCollectionTables, getRoCollectionChairs } from "@/sanity/lib/products/getRoCollectionProducts";
-import { getLivingRoomFurniture } from "@/sanity/lib/products/getLivingRoomFurniture";
-import { flosProducts } from "@/lib/flosProducts";
-import { louisPoulsenProducts } from "@/lib/louisPoulsenProducts";
+import { getProductsByCategoryEnhanced } from "@/sanity/lib/products/getProductsByCategoryEnhanced";
 
 export default async function CategoryPage({ params }: { params: Promise<{ category: string[] }> }) {
   const resolvedParams = await params;
@@ -24,41 +14,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   console.log('Category array:', resolvedParams.category);
   console.log('Category slug:', categorySlug);
   
-  // For cushions, throws, wall-art, decor, mirrors, and RO Collection dining items, use local data instead of Sanity
-  let products;
-  if (categorySlug === 'cushions') {
-    console.log('Using cushions data');
-    products = cushionsData;
-  } else if (categorySlug === 'throws') {
-    console.log('Using throws data');
-    products = throwsData;
-  } else if (categorySlug === 'wall-art') {
-    console.log('Using wall-art data');
-    products = wallArtData;
-  } else if (categorySlug === 'decor') {
-    console.log('Using decor data');
-    products = decorData;
-  } else if (categorySlug === 'mirrors') {
-    console.log('Using mirrors data');
-    products = mirrorsData;
-  } else if (categorySlug === 'tables' && resolvedParams.category.includes('dining-kitchen')) {
-    console.log('Using RO Collection tables data from Sanity');
-    products = await getRoCollectionTables();
-  } else if (categorySlug === 'chairs' && resolvedParams.category.includes('dining-kitchen')) {
-    console.log('Using RO Collection chairs data from Sanity');
-    products = await getRoCollectionChairs();
-  } else if (categorySlug === 'furniture' && resolvedParams.category.includes('living-room')) {
-    console.log('Using living room furniture data from combined sources');
-    products = await getLivingRoomFurniture();
-  } else if (categorySlug === 'lighting') {
-    console.log('Using static FLOS and Louis Poulsen lighting products');
-    products = [...flosProducts, ...louisPoulsenProducts];
-  } else {
-    console.log('Using Sanity data for category:', categorySlug);
-    // For other categories, use designers-guild category since that's where cushion products are stored
-    const actualCategorySlug = categorySlug === 'cushions' ? 'designers-guild' : categorySlug;
-    products = await getProductByCategory(actualCategorySlug);
-  }
+  // Fetch products from Sanity using enhanced function
+  const products = await getProductsByCategoryEnhanced(categorySlug, resolvedParams.category);
+  
+  console.log(`Found ${products.length} products for category: ${categorySlug}`);
   
   // Get category title from the last segment of the path
   const categoryTitle = categorySlug
@@ -77,7 +36,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const isDiningTables = categorySlug === 'tables' && resolvedParams.category.includes('dining-kitchen');
   const isDiningChairs = categorySlug === 'chairs' && resolvedParams.category.includes('dining-kitchen');
   const isLivingRoomFurniture = categorySlug === 'furniture' && resolvedParams.category.includes('living-room');
-  const isStaticLighting = categorySlug === 'lighting';
 
   return (
     <main className="min-h-screen bg-background">
@@ -113,14 +71,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         />
       ) : isDiningTables ? (
         <InteriorSubBanner 
-          title="RO Collection Dining Tables"
-          subtitle="Discover our exquisite collection of dining tables from RO Collection. Crafted with premium materials and timeless Scandinavian design, perfect for creating memorable dining experiences."
+          title="Dining Tables Collection"
+          subtitle="Discover our exquisite collection of dining tables. Crafted with premium materials and timeless Scandinavian design, perfect for creating memorable dining experiences."
           imagePath="/Ro-Collection/Salon dining table Ø-120/lifestyle/Gal_6.webp"
         />
       ) : isDiningChairs ? (
         <InteriorSubBanner 
-          title="RO Collection Dining Chairs"
-          subtitle="Elevate your dining space with our sophisticated collection of dining chairs from RO Collection. Premium leather upholstery meets solid wood craftsmanship for exceptional comfort and style."
+          title="Dining Chairs Collection"
+          subtitle="Elevate your dining space with our sophisticated collection of dining chairs. Premium upholstery meets solid wood craftsmanship for exceptional comfort and style."
           imagePath="/Ro-Collection/Salon dining chair/lifestyle/Gal_2_724663c2-5a86-4611-8289-baf4b34e6c5e.webp"
         />
       ) : isLivingRoomFurniture ? (
@@ -153,11 +111,20 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             <div className="max-w-8xl mx-auto">
               {(categorySlug === 'all-interior-furniture' || categorySlug === 'all') ? (
                 <InteriorFurnitureGrid />
-              ) : (
+              ) : products.length > 0 ? (
                 <ProductGridWithPagination 
                   products={products as any} 
-                  showPrice={isLivingRoomFurniture || isDiningTables || isDiningChairs || isCushions || isThrows || isDecor || isMirrors || isStaticLighting}
+                  showPrice={true}
                 />
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-lg text-stone-600 mb-4">
+                    No products found in this category
+                  </p>
+                  <p className="text-sm text-stone-500">
+                    Products may be out of stock or the category is being updated.
+                  </p>
+                </div>
               )}
             </div>
           </div>
