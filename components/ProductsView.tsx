@@ -72,11 +72,17 @@ function ProductsView({ products, categories }: ProductsViewProps) {
 
   const filteredProducts = useMemo(() => {
     try {
-      let filtered = selectedCategory === "all" 
-        ? products 
-        : products.filter(product => {
-            return product.categories?.some(cat => cat._ref === selectedCategory);
-          });
+      // First filter out out-of-stock products
+      let filtered = products.filter(product => {
+        return product.inStock === true || (product.stock && product.stock > 0);
+      });
+
+      // Then apply category filter
+      if (selectedCategory !== "all") {
+        filtered = filtered.filter(product => {
+          return product.categories?.some(cat => cat._ref === selectedCategory);
+        });
+      }
 
       // Apply sorting
       return [...filtered].sort((a, b) => {
