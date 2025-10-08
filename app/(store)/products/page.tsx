@@ -4,7 +4,7 @@ import { Product } from "@/sanity.types";
 import ProductsView from "@/components/ProductsView";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 1800; // 30 minutes
+export const revalidate = 0; // Always fetch fresh data
 
 export default async function AllProductsPage() {
   try {
