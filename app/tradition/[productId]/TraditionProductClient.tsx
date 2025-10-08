@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ProductVariant {
   name: string;
@@ -224,9 +225,19 @@ export default function TraditionProductClient({ product, products }: TraditionP
               </div>
             )}
 
-            <button className="w-full bg-gray-900 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors">
-              Add to Cart - kr {(selectedVariant.price || product.price).toLocaleString()}
-            </button>
+            <AddToCartWithQuantity 
+              product={{
+                _id: product.id,
+                _type: 'product' as const,
+                name: `${product.name}${selectedVariant?.name ? ` - ${selectedVariant.name}` : ''}`,
+                price: selectedVariant?.price || product.price,
+                image: selectedVariant?.image,
+                brand: '&Tradition',
+                slug: { current: product.id }
+              } as any}
+              variant="large"
+              maxQuantity={10}
+            />
 
             {/* Collapsible Features */}
             {product.features && (
