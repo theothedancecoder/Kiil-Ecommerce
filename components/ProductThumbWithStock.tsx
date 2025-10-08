@@ -27,16 +27,17 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
   }, [product]);
 
   // Handle both Sanity and static products
-  const isStaticProduct = 'staticProduct' in product || 'href' in product;
+  const isStaticProduct = 'staticProduct' in product || ('href' in product && (product as any).href) || ('link' in product && (product as any).link);
   const productId = '_id' in product ? product._id : (product as StaticProduct).id;
   const productName = product.name || '';
   const productPrice = product.price || 0;
   const productBrand = isStaticProduct ? (product as any).staticBrand : (product as any).brand || 'Brand';
   const productHref = isStaticProduct 
-    ? (product as any).staticHref || (product as StaticProduct).href || '#'
+    ? (product as any).staticHref || (product as StaticProduct).href || (product as any).link || '#'
     : (product as any).brand === 'RO Collection' 
       ? `/interior/dining-kitchen/${(product as any).categories?.[0]?.slug?.current === 'dining-chairs' ? 'chairs' : 'tables'}/${(product as any).slug?.current}`
-      : `/product/${(product as any).slug?.current || 'unknown'}`;
+      : `/products/${(product as any).slug?.current || 'unknown'}`;
+  
   
   // Get image URL - handle both static products and Sanity products
   let imageSrc = '';
@@ -58,46 +59,49 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
   const isOutOfStock = stockStatus && !stockStatus.inStock;
 
   return (
-    <Link 
-      href={productHref} 
-      className="group relative block w-full"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-100">
-        {/* Badges container */}
-        <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
-          {isNew && (
-            <span className="bg-black text-white text-xs font-medium px-3 py-1 rounded-full">
-              NEW
-            </span>
+    <div className="group relative block w-full">
+      <Link href={productHref} className="block">
+        <div 
+          className="relative aspect-[4/5] w-full overflow-hidden bg-gray-100"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Badges container */}
+          <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+            {isNew && (
+              <span className="bg-black text-white text-xs font-medium px-3 py-1 rounded-full">
+                NEW
+              </span>
+            )}
+          </div>
+
+          {/* Product Image */}
+          {(product.image || imageSrc) ? (
+            <ProductionImage
+              src={product.image || imageSrc}
+              alt={productName || 'Product image'}
+              fill
+              className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              priority={false}
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+              <span className="text-gray-400 text-sm">
+                {imageSrc ? 'Invalid image' : 'No image'}
+              </span>
+            </div>
           )}
         </div>
-
-        {/* Product Image */}
-        {(product.image || imageSrc) ? (
-          <ProductionImage
-            src={product.image || imageSrc}
-            alt={productName || 'Product image'}
-            fill
-            className="object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            priority={false}
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-400 text-sm">
-              {imageSrc ? 'Invalid image' : 'No image'}
-            </span>
-          </div>
-        )}
-      </div>
+      </Link>
 
       {/* Product Info */}
       <div className="p-4">
-        <h3 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 group-hover:text-gray-700 transition-colors">
-          {productName}
-        </h3>
+        <Link href={productHref}>
+          <h3 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 group-hover:text-gray-700 transition-colors cursor-pointer">
+            {productName}
+          </h3>
+        </Link>
         
         {/* Brand */}
         <p className="text-xs text-gray-500 mb-2">
@@ -118,7 +122,7 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
                 <button 
                   className="px-2 py-1 text-sm hover:bg-gray-100 transition-colors"
                   onClick={(e) => {
-                    e.preventDefault();
+                    e.stopPropagation();
                     const input = e.currentTarget.nextElementSibling as HTMLInputElement;
                     if (input && parseInt(input.value) > 1) {
                       input.value = (parseInt(input.value) - 1).toString();
@@ -133,12 +137,12 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
                   max={stockStatus?.quantity || 99}
                   defaultValue="1"
                   className="w-12 text-center text-sm border-0 focus:ring-0 focus:outline-none"
-                  onClick={(e) => e.preventDefault()}
+                  onClick={(e) => e.stopPropagation()}
                 />
                 <button 
                   className="px-2 py-1 text-sm hover:bg-gray-100 transition-colors"
                   onClick={(e) => {
-                    e.preventDefault();
+                    e.stopPropagation();
                     const input = e.currentTarget.previousElementSibling as HTMLInputElement;
                     const maxQty = stockStatus?.quantity || 99;
                     if (input && parseInt(input.value) < maxQty) {
@@ -159,7 +163,7 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
                 }`}
                 disabled={isOutOfStock}
                 onClick={(e) => {
-                  e.preventDefault();
+                  e.stopPropagation();
                   if (!isOutOfStock) {
                     const quantityInput = e.currentTarget.parentElement?.querySelector('input[type="number"]') as HTMLInputElement;
                     const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
@@ -187,7 +191,7 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
           </div>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
 

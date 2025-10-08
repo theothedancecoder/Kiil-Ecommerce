@@ -6,6 +6,7 @@ import { PackageIcon, TrolleyIcon, UserIcon } from '@sanity/icons'
 import UseBasketStore from '@/app/(store)/store'
 import { Loader } from 'lucide-react'
 import dynamic from 'next/dynamic'
+import { useLanguage } from '@/lib/languageContext'
 
 // Lazy load language toggle
 const LanguageToggle = dynamic(() => import('./LanguageToggle'), {
@@ -15,6 +16,7 @@ const LanguageToggle = dynamic(() => import('./LanguageToggle'), {
 
 function ClientHeader() {
   const { user } = useUser();
+  const { t } = useLanguage();
   const itemCount = UseBasketStore((state) =>
     state.items.reduce((total, item) => total + item.quantity, 0)
   );
@@ -35,7 +37,7 @@ function ClientHeader() {
             {itemCount}
           </span>
         )}
-        <span className='hidden sm:inline text-sm font-medium tracking-wide'>CART</span>
+        <span className='hidden sm:inline text-sm font-medium tracking-wide'>{t('common.cart').toUpperCase()}</span>
       </Link>
 
       <Link
@@ -45,7 +47,7 @@ function ClientHeader() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4.5l9 5.25v9a2.25 2.25 0 01-2.25 2.25h-13.5A2.25 2.25 0 013 18.75v-9z" />
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 22.5v-6h6v6" />
         </svg>
-        <span className='hidden sm:inline text-sm font-medium tracking-wide'>STORES</span>
+        <span className='hidden sm:inline text-sm font-medium tracking-wide'>{t('common.stores').toUpperCase()}</span>
       </Link>
 
       <ClerkLoaded>
@@ -54,7 +56,7 @@ function ClientHeader() {
             href="/orders"
             className='flex items-center space-x-2 text-stone-700 hover:text-stone-900 transition-colors duration-300'>
             <PackageIcon className='w-5 h-5'/>
-            <span className='hidden sm:inline text-sm font-medium tracking-wide'>ORDERS</span>
+            <span className='hidden sm:inline text-sm font-medium tracking-wide'>{t('common.orders').toUpperCase()}</span>
           </Link>
         )}
       </ClerkLoaded>
@@ -64,7 +66,7 @@ function ClientHeader() {
           <div className='flex items-center space-x-3'>
             <UserButton/>
             <div className='hidden lg:block'>
-              <p className='text-stone-500 text-xs uppercase tracking-wider'>Welcome</p>
+              <p className='text-stone-500 text-xs uppercase tracking-wider'>{t('common.welcome')}</p>
               <p className='font-medium text-stone-800'>{user.fullName}</p>
             </div>
           </div>
@@ -72,7 +74,7 @@ function ClientHeader() {
           <SignInButton mode='modal'>
             <button className='flex items-center space-x-2 text-stone-700 hover:text-stone-900 transition-colors duration-300'>
               <UserIcon className='w-5 h-5'/>
-              <span className='hidden sm:inline text-sm font-medium tracking-wide'>SIGN IN</span>
+              <span className='hidden sm:inline text-sm font-medium tracking-wide'>{t('common.signIn').toUpperCase()}</span>
             </button>
           </SignInButton>
         )}

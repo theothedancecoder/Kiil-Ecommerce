@@ -1,11 +1,16 @@
+'use client';
+
 import Link from 'next/link'
 import Image from 'next/image'
 import Form from 'next/form'
 import { TrolleyIcon } from '@sanity/icons'
 import ClientHeader from './ClientHeader'
+import { useLanguage } from '@/lib/languageContext'
 
-// Server component for static parts
+// Client component to support translations
 function OptimizedHeader() {
+  const { t } = useLanguage();
+  
   return (
     <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-200">
       <header className='flex flex-wrap justify-between items-center px-4 py-6 max-w-7xl mx-auto'>
@@ -30,7 +35,7 @@ function OptimizedHeader() {
               <input 
                 type='text'
                 name='query'
-                placeholder="What can we help you find?"
+                placeholder={t('common.search')}
                 className='w-full px-4 py-3 pr-12 border border-stone-300 bg-white text-stone-800 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-400 focus:border-transparent text-sm'
                 style={{ borderRadius: '0' }}
               />
@@ -56,28 +61,28 @@ function OptimizedHeader() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-wrap gap-3 justify-center">
             <Link href="/products" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              ALL PRODUCTS
+              {t('nav.allProducts').toUpperCase()}
             </Link>
             <Link href="/nyheter" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              NEWS
+              {t('nav.news').toUpperCase()}
             </Link>
             <Link href="/salg" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              SALE
+              {t('nav.sale').toUpperCase()}
             </Link>
             <Link href="/mobler" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              FURNITURE
+              {t('nav.furniture').toUpperCase()}
             </Link>
             <Link href="/tjenester" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              SERVICES
+              {t('nav.services').toUpperCase()}
             </Link>
             <Link href="/merker" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              BRANDS
+              {t('nav.brands').toUpperCase()}
             </Link>
             <Link href="/selskap" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              COMPANY
+              {t('nav.company').toUpperCase()}
             </Link>
             <Link href="/kontakt" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              CONTACT
+              {t('nav.contact').toUpperCase()}
             </Link>
           </div>
         </div>

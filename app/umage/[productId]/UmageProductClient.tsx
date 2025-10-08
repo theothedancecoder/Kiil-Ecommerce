@@ -5,6 +5,7 @@ import Link from "next/link";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 import ProductionImage from "@/components/ProductionImage";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/languageContext";
 
 interface ProductVariant {
   name: string;
@@ -38,6 +39,7 @@ interface UmageProductClientProps {
 }
 
 export default function UmageProductClient({ product, products }: UmageProductClientProps) {
+  const { t } = useLanguage();
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -59,7 +61,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Back to Umage Collection
+            {t('product.back.umage')}
           </Link>
         </div>
       </div>
@@ -69,7 +71,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center space-x-2 text-sm">
             <Link href="/" className="text-stone-600 hover:text-stone-800">
-              Home
+              {t('product.breadcrumb.home')}
             </Link>
             <span className="text-stone-400">/</span>
             <Link href="/umage" className="text-stone-600 hover:text-stone-800">
@@ -161,7 +163,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
           <div className="space-y-8">
             <div>
               <div className="text-sm text-gray-500 uppercase tracking-wider mb-2">
-                Umage Collection
+                {t('product.collection.umage')}
               </div>
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 {product.name}
@@ -171,7 +173,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">
-                  Designed by {product.designer}
+                  {t('product.designedBy')} {product.designer}
                 </div>
               )}
             </div>
@@ -183,7 +185,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
             {product.variants.length > 1 && (
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  Material: {selectedVariant.material || selectedVariant.name}
+                  {t('product.material')} {selectedVariant.material || selectedVariant.name}
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   {product.variants.map((variant, index) => (
@@ -224,7 +226,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
                   className="flex justify-between items-center w-full text-left"
                 >
                   <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                    Features
+                    {t('product.features')}
                   </h3>
                   <span className="text-gray-500">
                     {featuresExpanded ? "−" : "+"}
@@ -251,7 +253,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
                   className="flex justify-between items-center w-full text-left"
                 >
                   <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                    Specifications
+                    {t('product.specifications')}
                   </h3>
                   <span className="text-gray-500">
                     {specificationsExpanded ? "−" : "+"}
@@ -274,7 +276,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
             {product.relatedProducts && (
               <div className="border-t border-gray-200 pt-16">
                 <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
-                  Related Products
+                  {t('product.relatedProducts')}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {product.relatedProducts.map((related) => {
@@ -318,7 +320,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
                     href="/umage"
                     className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
                   >
-                    View All Umage Products
+                    {t('product.viewAll.umage')}
                   </Link>
                 </div>
               </div>
