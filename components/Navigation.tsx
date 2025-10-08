@@ -6,8 +6,6 @@ const navigationItems = [
   { key: 'nav.allProducts', href: '/products' },
   { key: 'nav.news', href: '/nyheter' },
   { key: 'nav.sale', href: '/salg' },
-  { key: 'nav.interior', href: '/interior' },
-  { key: 'nav.outdoor', href: '/utendors' },
   { key: 'nav.furniture', href: '/mobler' },
   { key: 'nav.services', href: '/tjenester' },
   { key: 'nav.brands', href: '/merker' },
