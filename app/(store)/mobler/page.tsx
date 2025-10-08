@@ -304,55 +304,8 @@ export default function MoblerPage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/HAY/Kofi-coffee-table-60×60/Kofi coffee table 60×60, H-36 NOK  6,099  Variants -  Clear glass Clear glass Grooved glass Color -  Black lacquered oak.jpg"
-            alt="Møbler Lifestyle"
-            fill
-            className="object-cover object-center opacity-20"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-amber-50/90 via-orange-50/70 to-red-50/90" />
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-amber-400/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-orange-400/30 rounded-full blur-lg animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-red-400/25 rounded-full blur-md animate-pulse delay-2000"></div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="max-w-3xl">
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg shadow-lg border border-white/20">
-              <h1 className="text-4xl lg:text-6xl font-light text-gray-900 mb-6">
-                Møbler
-              </h1>
-              <p className="text-xl text-gray-700 leading-relaxed mb-8">
-                Utforsk vår komplette møbelkolleksjon. Fra klassiske design til moderne innovasjoner - møbler som skaper atmosfære og komfort i ditt hjem.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  href="#products" 
-                  className="inline-flex items-center justify-center px-8 py-3 bg-amber-600 text-white font-medium hover:bg-amber-700 transition-colors duration-300"
-                >
-                  Utforsk kolleksjonen
-                </Link>
-                <Link 
-                  href="/tjenester" 
-                  className="inline-flex items-center justify-center px-8 py-3 border-2 border-amber-600 text-amber-700 font-medium hover:bg-amber-600 hover:text-white transition-colors duration-300"
-                >
-                  Møbelrådgivning
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Products Section */}
-      <section id="products" className="py-20 bg-white">
+      <section id="products" className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
@@ -513,44 +466,6 @@ export default function MoblerPage() {
         </div>
       </section>
 
-      {/* Brand Story Section */}
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-light mb-6">
-                Kvalitetsmøbler fra verdens beste designere
-              </h2>
-              <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                Vi samarbeider med de mest anerkjente møbelprodusentene og designerne i verden. 
-                Fra skandinavisk minimalisme til italiensk eleganse - hver piece i vår kolleksjon 
-                representerer det beste innen design og håndverk.
-              </p>
-              <p className="text-lg text-gray-300 leading-relaxed mb-8">
-                Våre møbler kommer fra merker som HAY, Fritz Hansen, Vitra, UMAGE og mange flere. 
-                Hver produsent er valgt for sin dedikasjon til kvalitet, bærekraft og tidløst design.
-              </p>
-              <Link 
-                href="/tjenester" 
-                className="inline-flex items-center px-8 py-3 bg-amber-600 text-white font-medium hover:bg-amber-700 transition-colors duration-300"
-              >
-                Møt våre eksperter
-              </Link>
-            </div>
-            <div className="relative">
-              <div className="relative h-96 overflow-hidden rounded-lg">
-                <Image
-                  src="/Fritz Hansen/Series-7™-3107-chair/Series 7™ 3107 chair front upholstered with chrome legs NOK  10,999  Color -  Oak veneer:Hallingdal 65 Light Grey 103.png"
-                  alt="Møbler Håndverk"
-                  fill
-                  className="object-contain object-center"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
