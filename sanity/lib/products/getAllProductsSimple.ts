@@ -7,7 +7,7 @@ export const getAllProducts = async () => {
     SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET
   });
 
-  const ALL_PRODUCTS_QUERY = `*[_type == "product"] {
+  const ALL_PRODUCTS_QUERY = `*[_type == "product" && (inStock == true || stock > 0)] {
     _id,
     name,
     slug,
@@ -117,7 +117,7 @@ export const getAllProducts = async () => {
 // Get products by brand
 export const getProductsByBrand = async (brand: string) => {
 
-  const PRODUCTS_BY_BRAND_QUERY = `*[_type == "product" && brand == $brand] {
+  const PRODUCTS_BY_BRAND_QUERY = `*[_type == "product" && brand == $brand && (inStock == true || stock > 0)] {
     _id,
     name,
     slug,

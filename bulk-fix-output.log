@@ -1,0 +1,246 @@
+[dotenv@17.2.1] injecting env (16) from .env.local -- tip: ⚙️  enable debug logging with { debug: true }
+🚀 Bulk fixing all products with missing images...
+
+============================================================
+
+Found 57 products without images
+
+
+📦 Ablo Blommaert - Vogue January 1927 B615
+   Slug: vogue-january-1927-b615
+   ⏭️  No images found in file system, skipping
+
+📦 Ablo Blommaert - Vogue July 1926 B609
+   Slug: vogue-july-1926-b609
+   ⏭️  No images found in file system, skipping
+
+📦 Ablo Blommaert - Vogue June 1922 B616
+   Slug: vogue-june-1922-b616
+   ⏭️  No images found in file system, skipping
+
+📦 Ablo Blommaert - Vogue June 1930 B608
+   Slug: vogue-june-1930-b608
+   ⏭️  No images found in file system, skipping
+
+📦 Ablo Blommaert - Vogue May 1927 B607
+   Slug: vogue-may-1927-b607
+   ⏭️  No images found in file system, skipping
+
+📦 Ablo Blommaert - Vogue May 1929 B614
+   Slug: vogue-may-1929-b614
+   ⏭️  No images found in file system, skipping
+
+📦 Ablo Blommaert - Vogue October 1925 B613
+   Slug: vogue-october-1925-b613
+   ⏭️  No images found in file system, skipping
+
+📦 Ablo Blommaert - Vogue September 1926 B610
+   Slug: vogue-september-1926-b610
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Bainbridge Natural Blanket
+   Slug: bainbridge-natural-blanket
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Bengal Bird Marais Cushion
+   Slug: bengal-bird-marais-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Clarendon Natural Throw
+   Slug: clarendon-natural-throw
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Katan Fuchsia Blanket
+   Slug: katan-fuchsia-blanket
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Lansdowne Cobalt Throw
+   Slug: lansdowne-cobalt-throw
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Marano Zinnia Throw
+   Slug: marano-zinnia-throw
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Mikome Indigo Mohair Throw
+   Slug: mikome-indigo-mohair-throw-1
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Mikome Indigo Mohair Throw (Alternative)
+   Slug: mikome-indigo-mohair-throw-2
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Parrot And Palm Parchment Cushion
+   Slug: parrot-and-palm-parchment-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Perzina Grass Cushion
+   Slug: perzina-grass-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Polwarth Chalk Cushion
+   Slug: polwarth-chalk-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Raku Patchwork Emerald Velvet Cushion
+   Slug: raku-patchwork-emerald-velvet-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Rose De Damas Embroidered Cranberry Cushion
+   Slug: rose-de-damas-embroidered-cranberry-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Sakiori Ocher Boucle Cushion
+   Slug: sakiori-ocher-boucle-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Sanzai Persimmon Velvet Cushion
+   Slug: sanzai-persimmon-velvet-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Shanghai Garden Ecru Linen Cushion
+   Slug: shanghai-garden-ecru-linen-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Suffolk Garden Birch Cushion
+   Slug: suffolk-garden-birch-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Surrearles'isme Mosaique Cushion
+   Slug: surrearlesisme-mosaique-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Tokusa Sepia Embroidered Cushion
+   Slug: tokusa-sepia-embroidered-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Vallarta Flamingo Pillow
+   Slug: vallarta-flamingo-pillow
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Varese Cerulean & Sky Velvet Throw Pillow
+   Slug: varese-cerulean-sky-velvet-throw-pillow
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Varese Lime Velvet Cushion
+   Slug: varese-lime-velvet-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Designers Guild - Velluto Emerald Velvet Cushion
+   Slug: velluto-emerald-velvet-cushion
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - EDG Fragrance Sticks Black Forest
+   Slug: edg-fragrance-sticks-black-forest
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Striped Light Glass Blue
+   Slug: striped-light-glass-blue
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Turquoise Deco Vase
+   Slug: turquoise-deco-vase
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Vase 3D Rotondo White Small
+   Slug: vase-3d-rotondo-white
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Vase Design Cilindro Multicolor 25cm
+   Slug: vase-design-cilindro-multicolor-25
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Vase Design Cilindro Multicolor 40cm
+   Slug: vase-design-cilindro-multicolor-40
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Vase Foglie Matt Glass Green
+   Slug: vase-foglie-matt-glass-green
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Vase Foglie Matt Glass Orange
+   Slug: vase-foglie-matt-glass-orange
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Vase with Nuts High
+   Slug: vase-with-nuts-high
+   ⏭️  No images found in file system, skipping
+
+📦 Enzo de Gasperi - Vase with Nuts Low
+   Slug: vase-with-nuts-low
+   ⏭️  No images found in file system, skipping
+
+📦 Fritz Hansen - Regatta Lounge Bench
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Fritz Hansen - Regatta Lounge Stool
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Fritz Hansen - Regatta Lounge Table Ø60
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Hannes Wettstein - Delphi Sofa
+   Slug: delphi-sofa
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Capri Parasol Base
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Catania Parasol Ø270
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Pelagus Armchair
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Pelagus Chair
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Pelagus Dining Table
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Pelagus Insert Plate
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Pelagus Lounge Chair
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Pelagus Seat Cushion
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Plank Bench
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Steamer Deck Chair Cushion
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Vendia Café Table
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+📦 Skagerak by Fritz Hansen - Vendia Folding Chair
+   Slug: NO SLUG
+   ⏭️  No images found in file system, skipping
+
+============================================================
+
+📊 Summary:
+   ✅ Fixed: 0 products
+   ⏭️  Skipped: 57 products (no images found)
+   ❌ Failed: 0 products
+
+✅ Bulk fix complete!
+
+✅ Script completed successfully!
