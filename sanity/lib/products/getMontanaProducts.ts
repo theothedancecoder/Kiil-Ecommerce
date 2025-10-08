@@ -4,6 +4,9 @@ import { client } from '@/sanity/lib/client';
 export interface MontanaProduct {
   _id: string;
   _type: string;
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
   name?: string;
   slug?: {
     _type: "slug";

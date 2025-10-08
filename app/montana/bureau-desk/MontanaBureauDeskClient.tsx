@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { MontanaProduct } from '@/sanity/lib/products/getMontanaProducts';
 import imageUrlBuilder from '@sanity/image-url';
 import { client } from '@/sanity/lib/client';
+import AddToCartWithQuantity from '@/components/AddToCartWithQuantity';
 
 const builder = imageUrlBuilder(client);
 
@@ -177,9 +178,16 @@ export default function MontanaBureauDeskClient({ product }: Props) {
               </div>
             )}
 
-            <button className="w-full bg-blue-600 text-white py-4 px-8 text-sm font-medium uppercase tracking-wider hover:bg-blue-700 transition-colors">
-              Add to Cart - kr {(selectedVariant?.price || product.price || 0).toLocaleString()}
-            </button>
+            <AddToCartWithQuantity 
+              product={{
+                ...product,
+                _type: 'product' as const,
+                price: selectedVariant?.price || product.price,
+                name: `${product.name}${selectedVariant?.name ? ` - ${selectedVariant.name}` : ''}`
+              } as any}
+              variant="large"
+              maxQuantity={10}
+            />
 
             {/* Made to Order Notice */}
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
