@@ -72,12 +72,9 @@ function ProductsView({ products, categories }: ProductsViewProps) {
 
   const filteredProducts = useMemo(() => {
     try {
-      // First filter out out-of-stock products
-      let filtered = products.filter(product => {
-        return product.inStock === true || (product.stock && product.stock > 0);
-      });
-
-      // Then apply category filter
+      // Apply category filter (stock filtering is now done server-side in getAllProducts)
+      let filtered = products;
+      
       if (selectedCategory !== "all") {
         filtered = filtered.filter(product => {
           return product.categories?.some(cat => cat._ref === selectedCategory);
