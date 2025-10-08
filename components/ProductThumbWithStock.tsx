@@ -72,11 +72,6 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
               NEW
             </span>
           )}
-          {isOutOfStock && (
-            <span className="bg-red-600 text-white text-xs font-medium px-3 py-1 rounded-full">
-              OUT OF STOCK
-            </span>
-          )}
         </div>
 
         {/* Product Image */}
