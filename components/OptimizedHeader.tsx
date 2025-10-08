@@ -64,12 +64,6 @@ function OptimizedHeader() {
             <Link href="/salg" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
               SALE
             </Link>
-            <Link href="/interior" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              INTERIOR
-            </Link>
-            <Link href="/utendors" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
-              OUTDOOR
-            </Link>
             <Link href="/mobler" className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400" style={{ borderRadius: '2px', letterSpacing: '0.025em' }}>
               FURNITURE
             </Link>
