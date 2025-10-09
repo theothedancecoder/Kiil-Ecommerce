@@ -130,7 +130,29 @@ export default async function SibastProductPage({ params }: SibastProductPagePro
     return 'Detailed product description available upon request.';
   };
 
-  // Convert to the format expected by SibastProductClient
+  
+  // Helper function to convert description (handles both string and block content)
+  const convertDescription = (desc: any): string => {
+    if (typeof desc === 'string') {
+      return desc;
+    }
+    if (Array.isArray(desc)) {
+      return desc
+        .filter((block: any) => block?._type === 'block' && 'children' in block)
+        .map((block: any) => 
+          'children' in block && Array.isArray(block.children)
+            ? block.children
+                .filter((child: any) => child?._type === 'span')
+                .map((child: any) => child?.text)
+                .join(' ')
+            : ''
+        )
+        .join(' ');
+    }
+    return '';
+  };
+
+// Convert to the format expected by SibastProductClient
   const convertedProduct = {
     id: product?.slug?.current || product?._id || 'unknown',
     name: product?.name || 'Sibast Product',

@@ -19,6 +19,7 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   category: string;
   variants: ProductVariant[];
@@ -39,7 +40,7 @@ interface UmageProductClientProps {
 }
 
 export default function UmageProductClient({ product, products }: UmageProductClientProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -169,7 +170,7 @@ export default function UmageProductClient({ product, products }: UmageProductCl
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {language === 'no' && product.descriptionNo ? product.descriptionNo : product.description}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">

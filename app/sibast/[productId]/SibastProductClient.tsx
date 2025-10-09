@@ -17,6 +17,7 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   category: string;
   variants: ProductVariant[];
@@ -32,7 +33,14 @@ interface SibastProductClientProps {
 }
 
 export default function SibastProductClient({ product, products }: SibastProductClientProps) {
+  const { t, language } = useLanguage();
+
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
@@ -95,13 +103,11 @@ export default function SibastProductClient({ product, products }: SibastProduct
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Sibast Collection
+              {t('product.back.sibast')}
             </Link>
             
             <nav className="flex items-center space-x-2 text-sm">
-              <Link href="/" className="text-stone-600 hover:text-stone-800">
-                Home
-              </Link>
+              <Link href="/" className="text-stone-600 hover:text-stone-800">{t('product.breadcrumb.home')}</Link>
               <span className="text-stone-400">/</span>
               <Link href="/sibast" className="text-stone-600 hover:text-stone-800">
                 Sibast Furniture
@@ -189,7 +195,7 @@ export default function SibastProductClient({ product, products }: SibastProduct
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">
@@ -304,7 +310,7 @@ export default function SibastProductClient({ product, products }: SibastProduct
                 href="/sibast"
                 className="inline-block bg-gray-100 text-gray-900 px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-200 transition-colors"
               >
-                View All Sibast Products
+                {t('product.viewAll.sibast')}
               </Link>
             </div>
           </div>
@@ -392,7 +398,7 @@ export default function SibastProductClient({ product, products }: SibastProduct
               href="/sibast"
               className="inline-block bg-amber-600 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-amber-700 transition-colors"
             >
-              View All Sibast Products
+              {t('product.viewAll.sibast')}
             </Link>
           </div>
         </div>

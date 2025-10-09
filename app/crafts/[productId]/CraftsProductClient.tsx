@@ -9,6 +9,7 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   category: string;
   variants: Array<{
@@ -59,7 +60,14 @@ interface CraftsProductClientProps {
 }
 
 export default function CraftsProductClient({ product, products }: CraftsProductClientProps) {
+  const { t, language } = useLanguage();
+
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [quantity, setQuantity] = useState(1);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -80,13 +88,11 @@ export default function CraftsProductClient({ product, products }: CraftsProduct
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Crafts Collection
+              {t('product.back.crafts')}
             </Link>
             
             <nav className="flex items-center space-x-2 text-sm">
-              <Link href="/" className="text-stone-600 hover:text-stone-800">
-                Home
-              </Link>
+              <Link href="/" className="text-stone-600 hover:text-stone-800">{t('product.breadcrumb.home')}</Link>
               <span className="text-stone-400">/</span>
               <Link href="/crafts" className="text-stone-600 hover:text-stone-800">
                 Crafts
@@ -136,13 +142,13 @@ export default function CraftsProductClient({ product, products }: CraftsProduct
           <div className="space-y-8">
             <div>
               <div className="text-sm text-amber-600 uppercase tracking-wider mb-2">
-                CRAFTS COLLECTION
+                {t('product.collection.crafts')}
               </div>
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
               <div className="mt-4 text-sm text-gray-500">
                 Handcrafted by {product.designer}

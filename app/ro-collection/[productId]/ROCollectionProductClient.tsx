@@ -7,6 +7,7 @@ import { getRoCollectionProductBySlug, RoCollectionProduct } from "@/sanity/lib/
 import { useRouter } from "next/navigation";
 import ProductionImage from "@/components/ProductionImage";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/languageContext";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface ROCollectionProductClientProps {
@@ -16,8 +17,15 @@ interface ROCollectionProductClientProps {
 }
 
 export default function ROCollectionProductClient({ params }: ROCollectionProductClientProps) {
+  const { t, language } = useLanguage();
+
   const slug = params.productId;
   const [product, setProduct] = useState<RoCollectionProduct | null>(null);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -75,7 +83,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Back to RO Collection
+            {t('product.back.roCollection')}
           </Link>
         </div>
       </div>
@@ -84,9 +92,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center space-x-2 text-sm">
-            <Link href="/" className="text-stone-600 hover:text-stone-800">
-              Home
-            </Link>
+            <Link href="/" className="text-stone-600 hover:text-stone-800">{t('product.breadcrumb.home')}</Link>
             <span className="text-stone-400">/</span>
             <Link href="/ro-collection" className="text-stone-600 hover:text-stone-800">
               RO Collection
@@ -194,7 +200,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">
@@ -363,7 +369,7 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
                     href="/ro-collection"
                     className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
                   >
-                    View All RO Collection Products
+                    {t('product.viewAll.roCollection')}
                   </Link>
                 </div>
               </div>

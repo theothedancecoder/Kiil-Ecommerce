@@ -17,6 +17,7 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   category: string;
   variants: ProductVariant[];
@@ -31,7 +32,14 @@ interface SorenLundProductClientProps {
 }
 
 export default function SorenLundProductClient({ product }: SorenLundProductClientProps) {
+  const { t, language } = useLanguage();
+
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
@@ -54,9 +62,7 @@ export default function SorenLundProductClient({ product }: SorenLundProductClie
             </Link>
             
             <nav className="flex items-center space-x-2 text-sm">
-              <Link href="/" className="text-stone-600 hover:text-stone-800">
-                Home
-              </Link>
+              <Link href="/" className="text-stone-600 hover:text-stone-800">{t('product.breadcrumb.home')}</Link>
               <span className="text-stone-400">/</span>
               <Link href="/soren-lund" className="text-stone-600 hover:text-stone-800">
                 Soren Lund
@@ -139,7 +145,7 @@ export default function SorenLundProductClient({ product }: SorenLundProductClie
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">

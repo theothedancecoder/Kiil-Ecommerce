@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/languageContext";
 
 interface KartellProduct {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   image: string;
   variants: {
@@ -28,7 +30,14 @@ interface KartellProductClientProps {
 }
 
 export default function KartellProductClient({ product }: KartellProductClientProps) {
+  const { t, language } = useLanguage();
+
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   return (
@@ -42,9 +51,7 @@ export default function KartellProductClient({ product }: KartellProductClientPr
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <Link href="/" className="text-gray-500 hover:text-gray-700">
-                  Home
-                </Link>
+                <Link href="/" className="text-gray-500 hover:text-gray-700">{t('product.breadcrumb.home')}</Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
@@ -141,7 +148,7 @@ export default function KartellProductClient({ product }: KartellProductClientPr
             {/* Description */}
             <div className="prose prose-stone max-w-none">
               <p className="text-stone-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
             </div>
 
@@ -234,7 +241,7 @@ export default function KartellProductClient({ product }: KartellProductClientPr
               href="/kartell"
               className="inline-block bg-stone-800 text-white px-8 py-3 font-medium hover:bg-stone-700 transition-colors"
             >
-              View All Kartell Products
+              {t('product.viewAll.kartell')}
             </Link>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/languageContext";
 import { useRouter } from "next/navigation";
 
 interface ProductVariant {
@@ -18,6 +19,7 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   category: string;
   variants: ProductVariant[];
@@ -32,8 +34,15 @@ interface AudoCopenhagenProductClientProps {
 }
 
 export default function AudoCopenhagenProductClient({ product }: AudoCopenhagenProductClientProps) {
+  const { t, language } = useLanguage();
+
   const router = useRouter();
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [quantity, setQuantity] = useState(1);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -65,13 +74,11 @@ export default function AudoCopenhagenProductClient({ product }: AudoCopenhagenP
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Audo Copenhagen Collection
+              {t('product.back.audoCopenhagen')}
             </Link>
             
             <nav className="flex items-center space-x-2 text-sm">
-              <Link href="/" className="text-stone-600 hover:text-stone-800">
-                Home
-              </Link>
+              <Link href="/" className="text-stone-600 hover:text-stone-800">{t('product.breadcrumb.home')}</Link>
               <span className="text-stone-400">/</span>
               <Link href="/audo-copenhagen" className="text-stone-600 hover:text-stone-800">
                 Audo Copenhagen
@@ -148,13 +155,13 @@ export default function AudoCopenhagenProductClient({ product }: AudoCopenhagenP
           <div className="space-y-8">
             <div>
               <div className="text-sm text-slate-600 uppercase tracking-wider mb-2">
-                Audo Copenhagen Collection
+                {t('product.collection.audoCopenhagen')}
               </div>
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">
@@ -286,7 +293,7 @@ export default function AudoCopenhagenProductClient({ product }: AudoCopenhagenP
                 href="/audo-copenhagen"
                 className="inline-block bg-gray-100 text-gray-900 px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-200 transition-colors"
               >
-                View All Audo Copenhagen Products
+                {t('product.viewAll.audoCopenhagen')}
               </Link>
             </div>
           </div>

@@ -27,6 +27,7 @@ export const getAllProducts = async () => {
       alt
     },
     description,
+    descriptionNo,
     price,
     brand,
     categories[]->{
@@ -137,6 +138,7 @@ export const getProductsByBrand = async (brand: string) => {
       alt
     },
     description,
+    descriptionNo,
     price,
     brand,
     categories[]->{

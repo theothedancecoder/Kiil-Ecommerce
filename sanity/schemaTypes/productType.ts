@@ -34,10 +34,17 @@ export const productType = defineType({
         }),
         defineField({
             name: 'description',
-            title: 'Description',
+            title: 'Description (English)',
             type: 'text',
             rows: 4,
             validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'descriptionNo',
+            title: 'Description (Norwegian)',
+            type: 'text',
+            rows: 4,
+            description: 'Norwegian translation of the product description',
         }),
         defineField({
             name: 'price',

@@ -6,6 +6,7 @@ import { getSeraxProductBySlug, SeraxProduct } from "@/sanity/lib/products/getSe
 import { useRouter } from "next/navigation";
 import ProductionImage from "@/components/ProductionImage";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/languageContext";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface SeraxProductClientProps {
@@ -15,8 +16,15 @@ interface SeraxProductClientProps {
 }
 
 export default function SeraxProductClient({ params }: SeraxProductClientProps) {
+  const { t, language } = useLanguage();
+
   const slug = params.productId;
   const [product, setProduct] = useState<SeraxProduct | null>(null);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -74,7 +82,7 @@ export default function SeraxProductClient({ params }: SeraxProductClientProps) 
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Back to Serax Collection
+            {t('product.back.serax')}
           </Link>
         </div>
       </div>
@@ -171,13 +179,13 @@ export default function SeraxProductClient({ params }: SeraxProductClientProps) 
           <div className="space-y-8">
             <div>
               <div className="text-sm text-blue-600 uppercase tracking-wider mb-2">
-                Serax Collection
+                {t('product.collection.serax')}
               </div>
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">
@@ -328,7 +336,7 @@ export default function SeraxProductClient({ params }: SeraxProductClientProps) 
                 href="/serax"
                 className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
               >
-                View All Serax Products
+                {t('product.viewAll.serax')}
               </Link>
             </div>
           </div>

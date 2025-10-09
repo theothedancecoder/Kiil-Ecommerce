@@ -6,6 +6,7 @@ import { Product } from "@/sanity.types";
 import { getUmageProducts, getUmageCategories } from "@/sanity/lib/products/getUmageProducts";
 import ProductGridItem from "@/components/ProductGridItem";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/languageContext";
 
 // Enhanced pricing for specific Umage products
 const umageEnhancedPricing: { [key: string]: number } = {
@@ -20,9 +21,10 @@ const umageEnhancedPricing: { [key: string]: number } = {
 };
 
 export default function UmagePage() {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>(["All"]);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [categories, setCategories] = useState<string[]>([t('brand.all')]);
+  const [selectedCategory, setSelectedCategory] = useState(t('brand.all'));
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -41,7 +43,7 @@ export default function UmagePage() {
         
         // Extract category titles and add "All" option
         const categoryTitles = categoriesData.map((cat: any) => cat.title);
-        setCategories(["All", ...categoryTitles]);
+        setCategories([t('brand.all'), ...categoryTitles]);
       } catch (error) {
         console.error("Error fetching UMAGE data:", error);
       } finally {
@@ -53,7 +55,7 @@ export default function UmagePage() {
   }, []);
 
   const filteredProducts = products.filter(product => {
-    if (selectedCategory === "All") return true;
+    if (selectedCategory === t('brand.all')) return true;
     return product.categories?.some((cat: any) => cat.title === selectedCategory);
   });
 
@@ -95,7 +97,7 @@ export default function UmagePage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading UMAGE products...</p>
+          <p className="text-gray-600">{t('brand.loading')}</p>
         </div>
       </div>
     );
@@ -126,7 +128,7 @@ export default function UmagePage() {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18" 
               />
             </svg>
-            Back to Homepage
+            {t('brand.backToHomepage')}
           </Link>
         </div>
       </div>
@@ -136,10 +138,10 @@ export default function UmagePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-4">
-              UMAGE
+              {t('brand.umage.title')}
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Furniture design that brings people together through timeless Scandinavian craftsmanship and contemporary aesthetics
+              {t('brand.umage.description')}
             </p>
           </div>
         </div>
@@ -171,7 +173,7 @@ export default function UmagePage() {
               </span>
               {totalPages > 1 && (
                 <span className="text-sm text-gray-500">
-                  Page {currentPage} of {totalPages}
+                  {t('brand.page')} {currentPage} {t('brand.of')} {totalPages}
                 </span>
               )}
             </div>
@@ -183,9 +185,9 @@ export default function UmagePage() {
       <div className="products-grid max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {currentProducts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No UMAGE products found.</p>
+            <p className="text-gray-500 text-lg">{t('brand.noProducts')}</p>
             <p className="text-gray-400 text-sm mt-2">
-              Make sure UMAGE products are added to Sanity CMS and USE_SANITY_PRODUCTS=true is set.
+              {t('brand.noProductsHint')}
             </p>
           </div>
         ) : (
@@ -226,7 +228,7 @@ export default function UmagePage() {
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
-              <span>Previous</span>
+              <span>{t('brand.previous')}</span>
             </button>
 
             <div className="flex items-center space-x-2">
@@ -254,7 +256,7 @@ export default function UmagePage() {
                   : "bg-gray-900 text-white hover:bg-gray-800"
               }`}
             >
-              <span>Next</span>
+              <span>{t('brand.next')}</span>
               <svg
                 className="w-5 h-5"
                 fill="none"

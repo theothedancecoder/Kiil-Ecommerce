@@ -6,6 +6,7 @@ import { getDuxProductBySlug, DuxProduct } from "@/sanity/lib/products/getDuxPro
 import { useRouter } from "next/navigation";
 import ProductionImage from "@/components/ProductionImage";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/languageContext";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 
 interface DuxProductClientProps {
@@ -15,8 +16,15 @@ interface DuxProductClientProps {
 }
 
 export default function DuxProductClient({ params }: DuxProductClientProps) {
+  const { t, language } = useLanguage();
+
   const slug = params.productId;
   const [product, setProduct] = useState<DuxProduct | null>(null);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -83,9 +91,7 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center space-x-2 text-sm">
-            <Link href="/" className="text-stone-600 hover:text-stone-800">
-              Home
-            </Link>
+            <Link href="/" className="text-stone-600 hover:text-stone-800">{t('product.breadcrumb.home')}</Link>
             <span className="text-stone-400">/</span>
             <Link href="/dux" className="text-stone-600 hover:text-stone-800">
               DUX
@@ -187,13 +193,13 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
           <div className="space-y-8">
             <div>
               <div className="text-sm text-gray-500 uppercase tracking-wider mb-2">
-                DUX Collection
+                {t('product.collection.dux')}
               </div>
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">
@@ -361,7 +367,7 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
                     href="/dux"
                     className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
                   >
-                    View All DUX Products
+                    {t('product.viewAll.dux')}
                   </Link>
                 </div>
               </div>

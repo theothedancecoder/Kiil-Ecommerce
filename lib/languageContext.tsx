@@ -326,6 +326,19 @@ const translations = {
     'product.viewAll.louisPoulsen': 'View All Louis Poulsen Products',
     'product.viewAll.tradition': 'View All Tradition Products',
     'product.viewAll.crafts': 'View All Crafts Products',
+    
+    // Brand Listing Pages
+    'brand.umage.title': 'UMAGE',
+    'brand.umage.description': 'Furniture design that brings people together through timeless Scandinavian craftsmanship and contemporary aesthetics',
+    'brand.backToHomepage': 'Back to Homepage',
+    'brand.loading': 'Loading products...',
+    'brand.noProducts': 'No products found.',
+    'brand.noProductsHint': 'Make sure products are added to Sanity CMS and USE_SANITY_PRODUCTS=true is set.',
+    'brand.all': 'All',
+    'brand.page': 'Page',
+    'brand.of': 'of',
+    'brand.previous': 'Previous',
+    'brand.next': 'Next',
   },
   no: {
     // Navigation
@@ -642,6 +655,19 @@ const translations = {
     'product.viewAll.louisPoulsen': 'Se Alle Louis Poulsen Produkter',
     'product.viewAll.tradition': 'Se Alle Tradition Produkter',
     'product.viewAll.crafts': 'Se Alle Crafts Produkter',
+    
+    // Brand Listing Pages
+    'brand.umage.title': 'UMAGE',
+    'brand.umage.description': 'Møbeldesign som bringer mennesker sammen gjennom tidløst skandinavisk håndverk og moderne estetikk',
+    'brand.backToHomepage': 'Tilbake til Forsiden',
+    'brand.loading': 'Laster produkter...',
+    'brand.noProducts': 'Ingen produkter funnet.',
+    'brand.noProductsHint': 'Sørg for at produkter er lagt til i Sanity CMS og USE_SANITY_PRODUCTS=true er satt.',
+    'brand.all': 'Alle',
+    'brand.page': 'Side',
+    'brand.of': 'av',
+    'brand.previous': 'Forrige',
+    'brand.next': 'Neste',
   }
 };
 

@@ -50,23 +50,33 @@ export default async function JuulProductPage({ params }: JuulProductPageProps) 
         price: product.price || 0,
       }];
 
+  // Helper function to convert description (handles both string and block content)
+  const convertDescription = (desc: any): string => {
+    if (typeof desc === 'string') {
+      return desc;
+    }
+    if (Array.isArray(desc)) {
+      return desc
+        .filter((block: any) => block?._type === 'block' && 'children' in block)
+        .map((block: any) => 
+          'children' in block && Array.isArray(block.children)
+            ? block.children
+                .filter((child: any) => child?._type === 'span')
+                .map((child: any) => child?.text)
+                .join(' ')
+            : ''
+        )
+        .join(' ');
+    }
+    return '';
+  };
+
   // Convert Sanity product to format expected by JuulProductClient
   const convertedProduct = {
     id: product._id,
     name: product.name,
-    description: typeof product.description === 'string' 
-      ? product.description 
-      : Array.isArray(product.description)
-        ? product.description
-            .filter((block: any) => block._type === 'block' && 'children' in block)
-            .map((block: any) => 
-              'children' in block && block.children
-                ?.filter((child: any) => child._type === 'span')
-                ?.map((child: any) => child.text)
-                ?.join(' ')
-            )
-            .join(' ')
-        : 'Premium Danish furniture combining exceptional comfort with timeless Scandinavian design.',
+    description: convertDescription(product.description) || 'Premium Danish furniture combining exceptional comfort with timeless Scandinavian design.',
+    descriptionNo: convertDescription((product as any).descriptionNo) || convertDescription(product.description) || 'Premium dansk møbler som kombinerer eksepsjonell komfort med tidløst skandinavisk design.',
     price: product.price || 0,
     salePrice: (product as any).salePrice || undefined,
     category: product.categories?.[0]?.title || 'Furniture',

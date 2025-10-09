@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
+import { useLanguage } from "@/lib/languageContext";
 
 interface ProductVariant {
   name: string;
@@ -18,6 +19,7 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   category: string;
   variants: ProductVariant[];
@@ -34,11 +36,17 @@ interface FredericiaProductClientProps {
 }
 
 export default function FredericiaProductClient({ product, products }: FredericiaProductClientProps) {
+  const { t, language } = useLanguage();
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
   const selectedVariant = product.variants[selectedVariantIndex] || product.variants[0];
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
 
   // Fallback function for missing images
   const getImageUrl = (imageUrl: string, fallbackName?: string): string => {
@@ -163,17 +171,17 @@ export default function FredericiaProductClient({ product, products }: Frederici
         <div className="space-y-8">
           <div>
             <div className="text-sm text-gray-500 uppercase tracking-wider mb-2">
-              Fredericia Collection
+              {t('product.collection.fredericia')}
             </div>
             <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
               {product.name}
             </h1>
             <p className="text-lg text-gray-600 leading-relaxed">
-              {product.description}
+              {displayDescription}
             </p>
             {product.designer && (
               <div className="mt-4 text-sm text-gray-500">
-                Designed by {product.designer}
+                {t('product.designedBy')} {product.designer}
               </div>
             )}
           </div>
@@ -185,7 +193,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
           {product.variants.length > 1 && (
             <div className="space-y-4">
               <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                Material: {selectedVariant.material || selectedVariant.name}
+                {t('product.material')} {selectedVariant.material || selectedVariant.name}
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 {product.variants.map((variant, index) => (
@@ -238,7 +246,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
                 className="flex justify-between items-center w-full text-left"
               >
                 <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  Features
+                  {t('product.features')}
                 </h3>
                 <span className="text-gray-500">
                   {featuresExpanded ? "−" : "+"}
@@ -265,7 +273,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
                 className="flex justify-between items-center w-full text-left"
               >
                 <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
-                  Specifications
+                  {t('product.specifications')}
                 </h3>
                 <span className="text-gray-500">
                   {specificationsExpanded ? "−" : "+"}
@@ -288,7 +296,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
           {product.relatedProducts && (
             <div className="border-t border-gray-200 pt-16">
               <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
-                Related Products
+                {t('product.relatedProducts')}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {product.relatedProducts.map((related) => {
@@ -331,7 +339,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
                   href="/fredericia"
                   className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
                 >
-                  View All Fredericia Products
+                  {t('product.viewAll.fredericia')}
                 </Link>
               </div>
             </div>

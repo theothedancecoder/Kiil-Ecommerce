@@ -5,6 +5,7 @@ import Link from "next/link";
 import ProductionImage from "@/components/ProductionImage";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/languageContext";
 
 interface ProductVariant {
   name: string;
@@ -19,6 +20,7 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   category: string;
   variants: ProductVariant[];
@@ -40,6 +42,7 @@ interface HayProductClientProps {
 }
 
 export default function HayProductClient({ product, products }: HayProductClientProps) {
+  const { t, language } = useLanguage();
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -48,6 +51,11 @@ export default function HayProductClient({ product, products }: HayProductClient
   const selectedVariant = product?.variants && Array.isArray(product.variants) && product.variants.length > 0 
     ? product.variants[selectedVariantIndex] || product.variants[0]
     : null;
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
 
   return (
     <div className="min-h-screen bg-white">
@@ -64,7 +72,7 @@ export default function HayProductClient({ product, products }: HayProductClient
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Back to HAY Collection
+            {t('product.back.hay')}
           </Link>
         </div>
       </div>
@@ -74,7 +82,7 @@ export default function HayProductClient({ product, products }: HayProductClient
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center space-x-2 text-sm">
             <Link href="/" className="text-stone-600 hover:text-stone-800">
-              Home
+              {t('product.breadcrumb.home')}
             </Link>
             <span className="text-stone-400">/</span>
             <Link href="/hay" className="text-stone-600 hover:text-stone-800">
@@ -156,13 +164,13 @@ export default function HayProductClient({ product, products }: HayProductClient
           <div className="space-y-8">
             <div>
               <div className="text-sm text-yellow-600 uppercase tracking-wider mb-2">
-                HAY Collection
+                {t('product.collection.hay')}
               </div>
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
             </div>
 
@@ -233,7 +241,7 @@ export default function HayProductClient({ product, products }: HayProductClient
                   onClick={() => setFeaturesExpanded(!featuresExpanded)}
                   className="flex items-center justify-between w-full text-left"
                 >
-                  <h3 className="text-lg font-medium text-gray-900">Features</h3>
+                  <h3 className="text-lg font-medium text-gray-900">{t('product.features')}</h3>
                   <svg
                     className={`w-5 h-5 transition-transform ${featuresExpanded ? 'rotate-180' : ''}`}
                     fill="none"
@@ -265,7 +273,7 @@ export default function HayProductClient({ product, products }: HayProductClient
                   onClick={() => setSpecificationsExpanded(!specificationsExpanded)}
                   className="flex items-center justify-between w-full text-left"
                 >
-                  <h3 className="text-lg font-medium text-gray-900">Specifications</h3>
+                  <h3 className="text-lg font-medium text-gray-900">{t('product.specifications')}</h3>
                   <svg
                     className={`w-5 h-5 transition-transform ${specificationsExpanded ? 'rotate-180' : ''}`}
                     fill="none"
@@ -292,7 +300,7 @@ export default function HayProductClient({ product, products }: HayProductClient
             {product.relatedProducts && product.relatedProducts.length > 0 && (
               <div className="border-t border-gray-200 pt-16">
                 <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
-                  Related Products
+                  {t('product.relatedProducts')}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {product.relatedProducts.map((related) => {
@@ -333,7 +341,7 @@ export default function HayProductClient({ product, products }: HayProductClient
                     href="/hay"
                     className="inline-block bg-gray-900 text-white px-8 py-3 text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors"
                   >
-                    View All HAY Products
+                    {t('product.viewAll.hay')}
                   </Link>
                 </div>
               </div>

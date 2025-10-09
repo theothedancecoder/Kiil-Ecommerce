@@ -344,23 +344,31 @@ export default async function UmageProductPage({ params }: UmageProductPageProps
                           relatedProductsMap[productId] || 
                           [];
 
+  // Helper function to convert description (handles both string and block content)
+  const convertDescription = (desc: any): string => {
+    if (typeof desc === 'string') {
+      return desc;
+    }
+    if (Array.isArray(desc)) {
+      return desc
+        .filter((block: any) => block._type === 'block' && 'children' in block)
+        .map((block: any) => 
+          'children' in block && block.children
+            ?.filter((child: any) => child._type === 'span')
+            ?.map((child: any) => child.text)
+            ?.join(' ')
+        )
+        .join(' ');
+    }
+    return '';
+  };
+
   // Convert Sanity product to format expected by UmageProductClient
   const convertedProduct = {
     id: product._id,
     name: product.name,
-    description: typeof product.description === 'string' 
-      ? product.description 
-      : Array.isArray(product.description)
-        ? product.description
-            .filter((block: any) => block._type === 'block' && 'children' in block)
-            .map((block: any) => 
-              'children' in block && block.children
-                ?.filter((child: any) => child._type === 'span')
-                ?.map((child: any) => child.text)
-                ?.join(' ')
-            )
-            .join(' ')
-        : 'Detailed product description available upon request.',
+    description: convertDescription(product.description) || 'Detailed product description available upon request.',
+    descriptionNo: convertDescription((product as any).descriptionNo) || convertDescription(product.description) || 'Detaljert produktbeskrivelse tilgjengelig på forespørsel.',
     price: product.price || 0,
     category: product.categories?.[0]?.title || 'Furniture',
     variants,

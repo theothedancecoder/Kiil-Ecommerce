@@ -17,6 +17,7 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  descriptionNo?: string;
   price: number;
   category: string;
   variants: ProductVariant[];
@@ -32,7 +33,14 @@ interface TraditionProductClientProps {
 }
 
 export default function TraditionProductClient({ product, products }: TraditionProductClientProps) {
+  const { t, language } = useLanguage();
+
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+
+  // Get description based on language
+  const displayDescription = language === 'no' && product.descriptionNo 
+    ? product.descriptionNo 
+    : product.description;
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 
@@ -99,13 +107,11 @@ export default function TraditionProductClient({ product, products }: TraditionP
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to &Tradition Collection
+              Back to &{t('product.collection.tradition')}
             </Link>
             
             <nav className="flex items-center space-x-2 text-sm">
-              <Link href="/" className="text-stone-600 hover:text-stone-800">
-                Home
-              </Link>
+              <Link href="/" className="text-stone-600 hover:text-stone-800">{t('product.breadcrumb.home')}</Link>
               <span className="text-stone-400">/</span>
               <Link href="/tradition" className="text-stone-600 hover:text-stone-800">
                 &Tradition
@@ -182,13 +188,13 @@ export default function TraditionProductClient({ product, products }: TraditionP
           <div className="space-y-8">
             <div>
               <div className="text-sm text-gray-600 uppercase tracking-wider mb-2">
-                &Tradition Collection
+                &{t('product.collection.tradition')}
               </div>
               <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {product.description}
+                {displayDescription}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">
