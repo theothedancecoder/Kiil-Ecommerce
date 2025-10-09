@@ -53,9 +53,7 @@ export default function HayProductClient({ product, products }: HayProductClient
     : null;
 
   // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
+  const displayDescription = product?.description || product.description;
 
   return (
     <div className="min-h-screen bg-white">

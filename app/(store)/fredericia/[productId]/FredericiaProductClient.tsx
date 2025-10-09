@@ -44,9 +44,7 @@ export default function FredericiaProductClient({ product, products }: Frederici
   const selectedVariant = product.variants[selectedVariantIndex] || product.variants[0];
 
   // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
+  const displayDescription = product?.description || product.description;
 
   // Fallback function for missing images
   const getImageUrl = (imageUrl: string, fallbackName?: string): string => {

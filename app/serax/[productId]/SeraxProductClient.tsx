@@ -20,11 +20,6 @@ export default function SeraxProductClient({ params }: SeraxProductClientProps) 
 
   const slug = params.productId;
   const [product, setProduct] = useState<SeraxProduct | null>(null);
-
-  // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -64,6 +59,10 @@ export default function SeraxProductClient({ params }: SeraxProductClientProps) 
   if (!product) {
     return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
   }
+
+  
+  // Get description based on language (descriptionNo not in SeraxProduct type)
+  const displayDescription = product.description;
 
   const selectedVariant = product.variants?.[selectedVariantIndex];
 

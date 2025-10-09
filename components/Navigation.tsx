@@ -18,16 +18,20 @@ function Navigation() {
 
   return (
     <nav className="bg-gray-50 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex flex-wrap gap-3 justify-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+        <div className="flex flex-wrap gap-2 md:gap-3 justify-center">
           {navigationItems.map((item) => (
             <Link
               key={item.key}
               href={item.href}
-              className="px-4 py-2 text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+              className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 touch-manipulation"
               style={{
                 borderRadius: '2px',
-                letterSpacing: '0.025em'
+                letterSpacing: '0.025em',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
               {t(item.key).toUpperCase()}

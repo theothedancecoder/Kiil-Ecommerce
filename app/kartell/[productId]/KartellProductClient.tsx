@@ -35,9 +35,7 @@ export default function KartellProductClient({ product }: KartellProductClientPr
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
 
   // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
+  const displayDescription = product?.description || product.description;
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   return (

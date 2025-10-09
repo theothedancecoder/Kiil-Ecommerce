@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import AddToCartWithQuantity from "@/components/AddToCartWithQuantity";
+import { useLanguage } from "@/lib/languageContext";
 
 interface ProductVariant {
   name: string;
@@ -38,9 +39,7 @@ export default function TraditionProductClient({ product, products }: TraditionP
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
 
   // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
+  const displayDescription = product?.description || product.description;
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
 

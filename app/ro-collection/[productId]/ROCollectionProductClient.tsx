@@ -21,11 +21,6 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
 
   const slug = params.productId;
   const [product, setProduct] = useState<RoCollectionProduct | null>(null);
-
-  // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -65,6 +60,10 @@ export default function ROCollectionProductClient({ params }: ROCollectionProduc
   if (!product) {
     return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
   }
+
+  
+  // Get description based on language (descriptionNo not in RoCollectionProduct type)
+  const displayDescription = product.description;
 
   const selectedVariant = product.variants?.[selectedVariantIndex];
 

@@ -20,11 +20,6 @@ export default function FlosProductClient({ params }: FlosProductClientProps) {
 
   const slug = params.productId;
   const [product, setProduct] = useState<FlosProduct | null>(null);
-
-  // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);

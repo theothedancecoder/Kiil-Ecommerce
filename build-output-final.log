@@ -1,0 +1,296 @@
+
+> kiil-ecommerce@0.1.0 build
+> next build
+
+   ▲ Next.js 15.3.3
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (158kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully in 2.1min
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/702) ...
+   Generating static pages (175/702) 
+   Generating static pages (350/702) 
+   Generating static pages (526/702) 
+ ✓ Generating static pages (702/702)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                                      Size  First Load JS  Revalidate  Expire
+┌ ○ /                                                                         4.13 kB         185 kB         30m      1y
+├ ƒ /_not-found                                                                 990 B         103 kB
+├ ƒ /ablo-blommaert/[productId]                                               3.17 kB         172 kB
+├ ƒ /admin/stock                                                              3.17 kB         121 kB
+├ ƒ /api/appointments                                                           175 B         102 kB
+├ ƒ /api/vipps/webhook                                                          349 B         161 kB
+├ ƒ /audo-copenhagen                                                          3.86 kB         228 kB
+├ ● /audo-copenhagen/[productId]                                               2.2 kB         247 kB          1h      1y
+├   └ /audo-copenhagen/interconnect-candlestick                                                               1h      1y
+├ ○ /audo-copenhagen/interconnect-candlestick                                 2.86 kB         114 kB          1h      1y
+├ ƒ /basket                                                                   6.45 kB         184 kB
+├ ƒ /book-consultation                                                          173 B         105 kB
+├ ƒ /categories/[slug]                                                          163 B         217 kB
+├ ƒ /crafts                                                                   3.59 kB         155 kB
+├ ● /crafts/[productId]                                                       5.01 kB         183 kB          1h      1y
+├   └ /crafts/fenomen-wide-ceiling-lamp                                                                       1h      1y
+├ ƒ /draft-mode/disable                                                         175 B         102 kB
+├ ƒ /draft-mode/enable                                                          349 B         161 kB
+├ ƒ /dux                                                                      3.93 kB         228 kB
+├ ƒ /dux/[productId]                                                          4.38 kB         229 kB
+├ ƒ /eilersen                                                                  3.1 kB         114 kB
+├ ƒ /eilersen/[productId]                                                     2.08 kB         113 kB
+├ ƒ /flos                                                                     4.25 kB         229 kB
+├ ● /flos/[productId]                                                         4.31 kB         249 kB
+├   ├ /flos/2097-18-chandelier
+├   ├ /flos/2097-30-chandelier
+├   ├ /flos/2097-50-chandelier
+├   └ [+33 more paths]
+├ ○ /fredericia                                                                 361 B         169 kB          1h      1y
+├ ● /fredericia/[productId]                                                   3.36 kB         248 kB          1h      1y
+├   ├ /fredericia/bm71-library-table                                                                          1h      1y
+├   ├ /fredericia/delphi-elements-sofa                                                                        1h      1y
+├   ├ /fredericia/delphi-sofa-2-seater                                                                        1h      1y
+├   └ [+12 more paths]
+├ ƒ /fritz-hansen                                                             1.87 kB         174 kB
+├ ● /fritz-hansen/[productId]                                                 3.14 kB         175 kB          1h      1y
+├   ├ /fritz-hansen/drachmann-chair-fritz-hansen                                                              1h      1y
+├   ├ /fritz-hansen/drachmann-chair                                                                           1h      1y
+├   ├ /fritz-hansen/drachmann-dining-table-fritz-hansen                                                       1h      1y
+├   └ [+32 more paths]
+├ ○ /fritz-hansen/drachmann-chair                                             3.29 kB         114 kB          1h      1y
+├ ƒ /fritz-hansen/drachmann-seat-cushion                                      3.31 kB         114 kB
+├ ○ /fritz-hansen/fionia-stool                                                3.09 kB         114 kB          1h      1y
+├ ƒ /fritz-hansen/georg-console-table                                         3.12 kB         114 kB
+├ ○ /fritz-hansen/hven-bar-stool                                              3.27 kB         114 kB          1h      1y
+├ ƒ /fritz-hansen/hven-barstool-seat-cushion                                  3.17 kB         114 kB
+├ ƒ /fritz-hansen/little-friend                                               2.81 kB         114 kB
+├ ○ /fritz-hansen/norr-magazine-holder                                        2.95 kB         114 kB          1h      1y
+├ ○ /fritz-hansen/norr-wall-shelf                                             3.17 kB         114 kB          1h      1y
+├ ƒ /fritz-hansen/orient-p2-pendant                                           3.23 kB         114 kB
+├ ƒ /fritz-hansen/regatta-bench                                                  3 kB         114 kB
+├ ○ /fritz-hansen/series-7-3107-chair                                         3.47 kB         114 kB          1h      1y
+├ ○ /fritz-hansen/skagerak-cutter-bench                                       3.33 kB         114 kB          1h      1y
+├ ƒ /fritz-hansen/skagerak-cutter-box                                         3.17 kB         114 kB
+├ ○ /fritz-hansen/skagerak-cutter-box-low                                     3.19 kB         114 kB          1h      1y
+├ ○ /fritz-hansen/skagerak-cutter-wardrobe                                    3.31 kB         114 kB          1h      1y
+├ ƒ /fritz-hansen/swan-chair-leather                                          3.45 kB         114 kB
+├ ƒ /fritz-hansen/swan-chair-textile                                          3.62 kB         114 kB
+├ ƒ /hay                                                                      3.99 kB         228 kB
+├ ● /hay/[productId]                                                          3.88 kB         249 kB
+├   ├ /hay/dont-leave-me-dlm-side-table
+├   ├ /hay/dont-leave-me-xl-dlm-side-table
+├   ├ /hay/kofi-coffee-table-6060
+├   └ [+11 more paths]
+├ ƒ /innendors                                                                  175 B         102 kB
+├ ƒ /interior                                                                 4.58 kB         227 kB
+├ ƒ /interior/[...category]                                                   4.44 kB         230 kB
+├ ƒ /interior/bathroom/cabinets                                               3.91 kB         123 kB
+├ ƒ /interior/bathroom/cabinets/naver                                         2.56 kB         110 kB
+├ ƒ /interior/bathroom/mirrors                                                1.68 kB         206 kB
+├ ● /interior/bathroom/mirrors/[productId]                                    3.49 kB         114 kB
+├   ├ /interior/bathroom/mirrors/montana-around-mirror
+├   ├ /interior/bathroom/mirrors/montana-like-mirror
+├   ├ /interior/bathroom/mirrors/montana-look-mirror
+├   └ /interior/bathroom/mirrors/montana-shelfie-mirror
+├ ƒ /interior/bathroom/mirrors/all-saints                                     2.17 kB         110 kB
+├ ƒ /interior/bathroom/mirrors/all-saints-with-lights                         2.27 kB         110 kB
+├ ƒ /interior/bathroom/mirrors/francois-ghost-mat                             2.17 kB         110 kB
+├ ƒ /interior/bathroom/mirrors/montana-around                                 2.99 kB         110 kB
+├ ƒ /interior/bathroom/mirrors/montana-like                                    2.9 kB         110 kB
+├ ƒ /interior/bathroom/mirrors/montana-look                                   2.88 kB         110 kB
+├ ƒ /interior/bathroom/mirrors/montana-selfie                                 3.05 kB         111 kB
+├ ƒ /interior/dining-kitchen/chairs                                           1.68 kB         206 kB
+├ ● /interior/dining-kitchen/chairs/[productId]                                4.4 kB         115 kB
+├   └ /interior/dining-kitchen/chairs/salon-dining-chair
+├ ƒ /interior/dining-kitchen/tables                                           1.68 kB         206 kB
+├ ● /interior/dining-kitchen/tables/[productId]                               4.69 kB         174 kB
+├   └ /interior/dining-kitchen/tables/salon-dining-table-extension-round-120
+├ ● /interior/home-accessories/cushions/[productId]                           2.82 kB         114 kB
+├   ├ /interior/home-accessories/cushions/bengal-bird-marais-cushion
+├   ├ /interior/home-accessories/cushions/parrot-and-palm-parchment-cushion
+├   ├ /interior/home-accessories/cushions/perzina-grass-cushion
+├   └ [+14 more paths]
+├ ● /interior/home-accessories/decor/[productId]                              2.82 kB         114 kB
+├   ├ /interior/home-accessories/decor/trame-vase-brown-small
+├   ├ /interior/home-accessories/decor/trame-vase-brown-large
+├   ├ /interior/home-accessories/decor/turquoise-deco-vase
+├   └ [+9 more paths]
+├ ● /interior/home-accessories/throws/[productId]                             2.83 kB         114 kB
+├   ├ /interior/home-accessories/throws/bainbridge-natural-blanket
+├   ├ /interior/home-accessories/throws/clarendon-natural-throw
+├   ├ /interior/home-accessories/throws/katan-fuchsia-blanket
+├   └ [+4 more paths]
+├ ● /interior/home-accessories/wall-art/[productId]                           4.32 kB         115 kB
+├   ├ /interior/home-accessories/wall-art/vogue-january-1927-b615
+├   ├ /interior/home-accessories/wall-art/vogue-july-1926-b609
+├   ├ /interior/home-accessories/wall-art/vogue-june-1922-b616
+├   └ [+5 more paths]
+├ ƒ /interior/living-room/chairs                                              3.06 kB         125 kB
+├ ƒ /interior/living-room/chairs/artwood                                      2.02 kB         109 kB
+├ ƒ /interior/living-room/chairs/classicon                                    1.92 kB         109 kB
+├ ƒ /interior/living-room/chairs/dux                                          1.93 kB         109 kB
+├ ƒ /interior/living-room/chairs/fionia                                       1.91 kB         109 kB
+├ ƒ /interior/living-room/chairs/fritz-hansen/3130                               2 kB         109 kB
+├ ƒ /interior/living-room/chairs/fritz-hansen/grand-prix-3130-upholstery      2.09 kB         110 kB
+├ ƒ /interior/living-room/chairs/fritz-hansen/grand-prix-4130                 2.08 kB         110 kB
+├ ƒ /interior/living-room/chairs/fritz-hansen/grand-prix-4130-upholstery       2.1 kB         110 kB
+├ ƒ /interior/living-room/chairs/moooi                                        1.87 kB         109 kB
+├ ƒ /interior/living-room/chairs/tradition                                    2.12 kB         110 kB
+├ ƒ /interior/living-room/chairs/traditions                                   2.61 kB         110 kB
+├ ƒ /interior/living-room/lighting                                            1.81 kB         227 kB
+├ ƒ /interior/living-room/lighting/flos                                       4.19 kB         124 kB
+├ ƒ /interior/living-room/lighting/flos/2097-18                               2.02 kB         109 kB
+├ ƒ /interior/living-room/lighting/flos/2097-18-lysekrone                     4.19 kB         124 kB
+├ ƒ /interior/living-room/lighting/flos/2097-30                               2.01 kB         109 kB
+├ ƒ /interior/living-room/lighting/flos/2097-50                               2.05 kB         110 kB
+├ ƒ /interior/living-room/sofa                                                2.23 kB         124 kB
+├ ƒ /interior/living-room/sofa/fredericia-delphi                                 2 kB         109 kB
+├ ƒ /interior/living-room/sofa/fredericia-ej220                               2.08 kB         110 kB
+├ ƒ /interior/living-room/sofa/fredericia-elements                            2.39 kB         110 kB
+├ ƒ /interior/living-room/sofa/juul-903                                       2.21 kB         110 kB
+├ ƒ /interior/living-room/sofa/palissade-lounge                                2.1 kB         110 kB
+├ ƒ /interior/organisation                                                     1.9 kB         124 kB
+├ ƒ /interior/organisation/storage                                            3.92 kB         123 kB
+├ ƒ /interior/organisation/storage/kartell                                    4.06 kB         123 kB
+├ ƒ /interior/organisation/storage/kartell/componibili-2                      2.76 kB         110 kB
+├ ƒ /interior/organisation/storage/kartell/componibili-3                      2.76 kB         110 kB
+├ ƒ /jonas-ihreborn                                                           3.44 kB         130 kB
+├ ƒ /jonas-ihreborn/seventy-armchair                                          2.63 kB         129 kB
+├ ƒ /juul                                                                     3.74 kB         228 kB
+├ ● /juul/[...productId]                                                      3.68 kB         249 kB
+├   ├ /juul/juul-301
+├   └ /juul/juul-903
+├ ƒ /kartell                                                                    939 B         246 kB
+├ ● /kartell/[productId]                                                      2.72 kB         248 kB          1h      1y
+├   ├ /kartell/big-battery                                                                                    1h      1y
+├   ├ /kartell/componibili-classic-2                                                                          1h      1y
+├   ├ /kartell/componibili-classic-3                                                                          1h      1y
+├   └ [+6 more paths]
+├ ƒ /kontakt                                                                    933 B         112 kB
+├ ƒ /louis-poulsen                                                             5.4 kB         230 kB
+├ ● /louis-poulsen/[productId]                                                4.61 kB         250 kB          1m      1y
+├   ├ /louis-poulsen/aj-floor-lamp                                                                            1m      1y
+├   ├ /louis-poulsen/aj-table                                                                                 1m      1y
+├   ├ /louis-poulsen/aj-wall                                                                                  1m      1y
+├   └ [+36 more paths]
+├ ƒ /merker                                                                     175 B         102 kB
+├ ƒ /mobler                                                                   3.83 kB         184 kB
+├ ƒ /montana                                                                  3.45 kB         114 kB
+├ ƒ /montana/around-mirror                                                    3.64 kB         114 kB
+├ ƒ /montana/bureau-desk                                                      5.86 kB         178 kB
+├ ƒ /montana/carry-chest-of-drawers                                           3.67 kB         115 kB
+├ ƒ /montana/compile-module                                                   4.36 kB         115 kB
+├ ƒ /montana/dash-nightstand                                                  3.62 kB         114 kB
+├ ƒ /montana/dream-bedside-table                                              4.96 kB         116 kB
+├ ƒ /montana/drift-nightstand                                                 4.29 kB         115 kB
+├ ƒ /montana/like-mirror                                                      4.28 kB         115 kB
+├ ƒ /montana/line-bench                                                       3.69 kB         115 kB
+├ ƒ /montana/look-mirror                                                      4.15 kB         115 kB
+├ ƒ /montana/loom-bookshelf                                                   3.74 kB         115 kB
+├ ƒ /montana/makeup-dressing-table                                            4.55 kB         115 kB
+├ ƒ /montana/mb126-legs                                                        3.6 kB         114 kB
+├ ƒ /montana/monterey-desk                                                     3.4 kB         114 kB
+├ ƒ /montana/octave-v-tv-bench                                                4.01 kB         115 kB
+├ ƒ /montana/octave-viii-tv-bench                                             4.22 kB         115 kB
+├ ƒ /montana/pair-sideboard                                                   3.96 kB         115 kB
+├ ƒ /montana/panton-wire-extended-18                                          3.22 kB         114 kB
+├ ƒ /montana/panton-wire-extended-35                                          3.65 kB         114 kB
+├ ƒ /montana/panton-wire-single-18                                            3.23 kB         114 kB
+├ ƒ /montana/panton-wire-single-35                                            3.24 kB         114 kB
+├ ƒ /montana/perfume-cabinet                                                  3.46 kB         114 kB
+├ ƒ /montana/read-bookshelf                                                   3.75 kB         115 kB
+├ ƒ /montana/save-sideboard                                                   4.09 kB         115 kB
+├ ƒ /montana/shelfie-mirror                                                    4.2 kB         115 kB
+├ ƒ /montana/show-module                                                      4.24 kB         115 kB
+├ ƒ /montana/unlock-key-cabinet                                                3.4 kB         114 kB
+├ ƒ /not-found                                                                  176 B         106 kB
+├ ƒ /nyheter                                                                    175 B         102 kB
+├ ƒ /orders                                                                     658 B         166 kB
+├ ○ /product/[slug]                                                           2.53 kB         168 kB
+├ ƒ /products                                                                   163 B         217 kB
+├ ● /products/[slug]                                                          7.12 kB         179 kB          1m      1y
+├   ├ /products/2097-18-chandelier                                                                            1m      1y
+├   ├ /products/2097-30-chandelier                                                                            1m      1y
+├   ├ /products/2097-50-chandelier                                                                            1m      1y
+├   └ [+302 more paths]
+├ ƒ /ro-collection                                                            3.68 kB         228 kB
+├ ● /ro-collection/[productId]                                                4.35 kB         229 kB
+├   ├ /ro-collection/salon-dining-chair
+├   ├ /ro-collection/salon-dining-table-round-120
+├   ├ /ro-collection/salon-dining-table-round-120-extension
+├   └ [+4 more paths]
+├ ƒ /salg                                                                     2.41 kB         154 kB
+├ ● /salg/[productId]                                                         2.31 kB         113 kB
+├   ├ /salg/kevi-2063-lounge-chair
+├   ├ /salg/helios-firebowl
+├   ├ /salg/juul-301-sofa-tobacco
+├   └ [+11 more paths]
+├ ƒ /search                                                                     188 B         111 kB
+├ ƒ /selskap                                                                    175 B         102 kB
+├ ƒ /serax                                                                     2.9 kB         227 kB
+├ ● /serax/[productId]                                                        4.08 kB         249 kB
+├   ├ /serax/broquaine-vase-h38
+├   ├ /serax/broquaine-vase-s-h28
+├   ├ /serax/catherine-table-lamp-47
+├   └ [+5 more paths]
+├ ƒ /sibast                                                                   3.75 kB         228 kB
+├ ● /sibast/[productId]                                                       6.34 kB         187 kB          1h      1y
+├   ├ /sibast/no-2-1-dining-table                                                                             1h      1y
+├   ├ /sibast/no-7-dining-chair                                                                               1h      1y
+├   └ /sibast/no-7-dining-chair-full-upholstery                                                               1h      1y
+├ ○ /sibast/no-2-1-dining-table                                               3.28 kB         114 kB          1h      1y
+├ ○ /sibast/no-7-dining-chair                                                 3.27 kB         114 kB          1h      1y
+├ ○ /sibast/no-7-dining-chair-full-upholstery                                 3.25 kB         114 kB          1h      1y
+├ ƒ /soren-lund                                                               3.67 kB         228 kB
+├ ● /soren-lund/[productId]                                                    5.5 kB         165 kB          1h      1y
+├   ├ /soren-lund/sl330-sk-footstool                                                                          1h      1y
+├   ├ /soren-lund/sl409-swivel-chair                                                                          1h      1y
+├   └ /soren-lund/sl330-1-adjustable-armchair                                                                 1h      1y
+├ ƒ /stores                                                                     745 B         103 kB
+├ ○ /studio/[[...tool]]                                                       1.37 MB         1.6 MB
+├ ƒ /success                                                                  12.1 kB         118 kB
+├ ƒ /test-product-thumb                                                       1.77 kB         158 kB
+├ ƒ /tjenester                                                                1.99 kB         116 kB
+├ ƒ /tjenester/in-home-consultation                                           1.92 kB         115 kB
+├ ƒ /tjenester/in-store-consultation                                          1.93 kB         115 kB
+├ ƒ /tjenester/online-consultation                                            2.17 kB         115 kB
+├ ƒ /tjenester/phone-consultation                                             2.31 kB         116 kB
+├ ƒ /tradition                                                                4.01 kB         153 kB
+├ ƒ /tradition/[productId]                                                    5.48 kB         183 kB
+├ ƒ /umage                                                                    3.78 kB         228 kB
+├ ● /umage/[productId]                                                        3.55 kB         249 kB
+├   ├ /umage/a-conversation-piece-dining-chair
+├   ├ /umage/asteria-spotlight
+├   ├ /umage/audacious-desk
+├   └ [+22 more paths]
+├ ƒ /utendors                                                                   225 B         205 kB
+├ ƒ /utendors/[...category]                                                     379 B         226 kB
+├ ƒ /utendors/product/[productId]                                             12.4 kB         123 kB
+├ ○ /vitra                                                                      361 B         169 kB          1h      1y
+├ ● /vitra/[productId]                                                        5.38 kB         177 kB          1h      1y
+├   ├ /vitra/ball-clock                                                                                       1h      1y
+├   ├ /vitra/eames-re-plastic-chair-dsr                                                                       1h      1y
+├   ├ /vitra/hang-it-all                                                                                      1h      1y
+├   └ [+3 more paths]
+├ ○ /vitra/ball-clock                                                         3.37 kB         114 kB          1h      1y
+├ ○ /vitra/eames-re-plastic-chair-dsr                                         3.65 kB         114 kB          1h      1y
+├ ○ /vitra/hang-it-all                                                        3.58 kB         114 kB          1h      1y
+├ ○ /vitra/noguchi-coffee-table                                               3.34 kB         114 kB          1h      1y
+├ ○ /vitra/panton-chair                                                       3.77 kB         115 kB          1h      1y
+├ ○ /vitra/sunburst-clock                                                     3.31 kB         114 kB          1h      1y
+└ ƒ /webhook                                                                    349 B         161 kB
++ First Load JS shared by all                                                  102 kB
+  ├ chunks/1684-99d1a37b1f15ebef.js                                           46.1 kB
+  ├ chunks/4bd1b696-fd4ccf160591b728.js                                       53.2 kB
+  └ other shared chunks (total)                                               2.85 kB
+
+
+ƒ Middleware                                                                  78.5 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

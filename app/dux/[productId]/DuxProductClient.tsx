@@ -20,11 +20,6 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
 
   const slug = params.productId;
   const [product, setProduct] = useState<DuxProduct | null>(null);
-
-  // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
@@ -199,7 +194,7 @@ export default function DuxProductClient({ params }: DuxProductClientProps) {
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                {displayDescription}
+                {product.description}
               </p>
               {product.designer && (
                 <div className="mt-4 text-sm text-gray-500">

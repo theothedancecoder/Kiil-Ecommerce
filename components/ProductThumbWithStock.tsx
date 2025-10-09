@@ -8,6 +8,7 @@ import { debugImageUrl, isValidImagePath, fixImagePathForProduction, validateSan
 import ProductionImage from "@/components/ProductionImage";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/languageContext";
 
 interface ProductThumbWithStockProps {
   product: Product | StaticProduct;
@@ -19,6 +20,7 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
   const [stockStatus, setStockStatus] = useState<any>(null);
   const [isHovered, setIsHovered] = useState(false);
   const stockManager = StockManager.getInstance();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const productId = '_id' in product ? product._id : (product as StaticProduct).id;
@@ -55,8 +57,6 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
       imageSrc = fixImagePathForProduction(imageSrc);
     }
   }
-
-  const isOutOfStock = stockStatus && !stockStatus.inStock;
 
   return (
     <div className="group relative block w-full">
@@ -156,36 +156,29 @@ function ProductThumbWithStock({ product, showPrice = false, isNew = false }: Pr
               
               {/* Add to Cart Button */}
               <button 
-                className={`flex-1 px-3 py-1 text-xs font-medium rounded transition-colors ${
-                  isOutOfStock 
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-gray-900 text-white hover:bg-gray-800'
-                }`}
-                disabled={isOutOfStock}
+                className="flex-1 px-3 py-1 text-xs font-medium rounded transition-colors bg-gray-900 text-white hover:bg-gray-800"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (!isOutOfStock) {
-                    const quantityInput = e.currentTarget.parentElement?.querySelector('input[type="number"]') as HTMLInputElement;
-                    const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
-                    
-                    // Create a product object compatible with the cart system
-                    const cartProduct = {
-                      _id: productId.toString(),
-                      name: productName,
-                      price: productPrice,
-                      image: imageSrc,
-                      slug: { current: productId.toString() }
-                    };
-                    
-                    // Import and use the cart store
-                    import('@/app/(store)/store').then(({ UseBasketStore }) => {
-                      const { addItemWithQuantity } = UseBasketStore.getState();
-                      addItemWithQuantity(cartProduct as any, quantity);
-                    });
-                  }
+                  const quantityInput = e.currentTarget.parentElement?.querySelector('input[type="number"]') as HTMLInputElement;
+                  const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+                  
+                  // Create a product object compatible with the cart system
+                  const cartProduct = {
+                    _id: productId.toString(),
+                    name: productName,
+                    price: productPrice,
+                    image: imageSrc,
+                    slug: { current: productId.toString() }
+                  };
+                  
+                  // Import and use the cart store
+                  import('@/app/(store)/store').then(({ UseBasketStore }) => {
+                    const { addItemWithQuantity } = UseBasketStore.getState();
+                    addItemWithQuantity(cartProduct as any, quantity);
+                  });
                 }}
               >
-                {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+                {t('common.addToCart')}
               </button>
             </div>
           </div>

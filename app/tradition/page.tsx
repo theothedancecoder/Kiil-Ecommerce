@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getTraditionProducts } from "@/sanity/lib/products/getTraditionProducts";
+import { useLanguage } from "@/lib/languageContext";
 
 interface ProductVariant {
   name?: string;
@@ -40,6 +41,7 @@ export default function TraditionPage() {
   const [products, setProducts] = useState<TraditionProduct[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     async function loadProducts() {
@@ -210,7 +212,7 @@ export default function TraditionPage() {
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
-                {category === "all" ? "All Products" : category}
+                {category === "all" ? t('common.allProducts') : category}
               </button>
             ))}
           </div>

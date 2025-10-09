@@ -55,6 +55,8 @@ const translations = {
     'common.next': 'Next',
     'common.variants': 'variants',
     'common.noProductsFound': 'No products found in this category.',
+    'common.allProducts': 'All Products',
+    'common.addToCart': 'Add to Cart',
     
     // Mobler (Furniture) Page
     'mobler.title': 'Our Collection',
@@ -384,6 +386,8 @@ const translations = {
     'common.next': 'Neste',
     'common.variants': 'varianter',
     'common.noProductsFound': 'Ingen produkter funnet i denne kategorien.',
+    'common.allProducts': 'Alle Produkter',
+    'common.addToCart': 'Legg til i handlekurv',
     
     // Mobler (Furniture) Page
     'mobler.title': 'Vår kolleksjon',

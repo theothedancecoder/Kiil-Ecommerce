@@ -1,10 +1,12 @@
 
 //will keep it as a server component
 
-import { searchProductsAndBrands, getBrandSuggestions } from '@/lib/allProducts';
+import { searchProducts, getBrandSuggestions } from '@/sanity/lib/products/searchProducts';
 import Link from 'next/link';
 import Image from 'next/image';
-import React from 'react'
+import React from 'react';
+import { getImageUrl } from '@/lib/ImageUrl';
+import ProductionImage from '@/components/ProductionImage';
 
 async function SearchPage({
     searchParams,
@@ -14,8 +16,8 @@ async function SearchPage({
     }>
 }) {
     const {query} = await searchParams
-    const products = searchProductsAndBrands(query || '')
-    const brandSuggestions = getBrandSuggestions(query || '')
+    const products = await searchProducts(query || '')
+    const brandSuggestions = await getBrandSuggestions(query || '')
 
     if(!products.length){
         return (
@@ -90,44 +92,55 @@ async function SearchPage({
 
                 <div className='bg-white rounded-lg shadow-sm border border-stone-200 p-6'>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {products.map((product) => (
-                            <Link key={product.id} href={product.href} className="group">
-                                <div className="bg-white rounded-lg overflow-hidden transition-all duration-300 ease-out hover:shadow-lg">
-                                    {/* Image Container */}
-                                    <div className="relative aspect-square bg-gray-50 overflow-hidden">
-                                        <Image
-                                            className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                                            src={product.image}
-                                            alt={product.name}
-                                            fill
-                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                                        />
-                                    </div>
-                                    
-                                    {/* Product Info */}
-                                    <div className="p-4">
-                                        <h3 className="text-lg font-light text-gray-900 mb-1 hover:text-gray-600 transition-colors">
-                                            {product.name}
-                                        </h3>
-                                        
-                                        {/* Brand Badge */}
-                                        <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
-                                            {product.brand}
+                        {products.map((product: any) => {
+                            const productHref = `/products/${product.slug?.current || 'unknown'}`;
+                            const imageSrc = product.image ? getImageUrl(product.image, '') : '';
+                            
+                            return (
+                                <Link key={product._id} href={productHref} className="group">
+                                    <div className="bg-white rounded-lg overflow-hidden transition-all duration-300 ease-out hover:shadow-lg">
+                                        {/* Image Container */}
+                                        <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                                            {imageSrc ? (
+                                                <ProductionImage
+                                                    src={imageSrc}
+                                                    alt={product.name || 'Product'}
+                                                    fill
+                                                    className="object-contain object-center p-4 transition-transform duration-300 group-hover:scale-105"
+                                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    <span className="text-gray-400">No image</span>
+                                                </div>
+                                            )}
                                         </div>
                                         
-                                        {/* Product Description */}
-                                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                                            {product.description.slice(0, 100)}...
-                                        </p>
+                                        {/* Product Info */}
+                                        <div className="p-4">
+                                            <h3 className="text-lg font-light text-gray-900 mb-1 hover:text-gray-600 transition-colors">
+                                                {product.name}
+                                            </h3>
+                                            
+                                            {/* Brand Badge */}
+                                            <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                                                {product.brand}
+                                            </div>
+                                            
+                                            {/* Product Description */}
+                                            <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                                                {product.description || product.descriptionNo || 'No description available'}
+                                            </p>
 
-                                        {/* Price */}
-                                        <div className="text-lg font-light text-gray-900 mb-3">
-                                            {product.price.toLocaleString('no-NO')} kr
+                                            {/* Price */}
+                                            <div className="text-lg font-light text-gray-900 mb-3">
+                                                kr {product.price?.toLocaleString('no-NO') || '0'}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Link>
-                        ))}
+                                </Link>
+                            );
+                        })}
                     </div>
                 </div>
 

@@ -40,9 +40,7 @@ export default function AudoCopenhagenProductClient({ product }: AudoCopenhagenP
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
 
   // Get description based on language
-  const displayDescription = language === 'no' && product.descriptionNo 
-    ? product.descriptionNo 
-    : product.description;
+  const displayDescription = product?.description || product.description;
   const [quantity, setQuantity] = useState(1);
   const [featuresExpanded, setFeaturesExpanded] = useState(false);
   const [specificationsExpanded, setSpecificationsExpanded] = useState(false);
