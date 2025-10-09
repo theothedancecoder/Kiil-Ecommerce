@@ -55,7 +55,7 @@ function Header() {
 
                     {/* Desktop Search Bar */}
                     <Form action='/search'
-                        className='hidden lg:flex flex-1 mx-8 max-w-md'>
+                        className='hidden md:flex flex-1 mx-8 max-w-md'>
                         <div className="relative w-full">
                             <input 
                                 type='text'
@@ -77,7 +77,7 @@ function Header() {
                     </Form>
 
                     {/* Desktop Actions */}
-                    <div className='hidden lg:flex items-center space-x-6'>
+                    <div className='hidden md:flex items-center space-x-6'>
                         <LanguageToggle />
                         
                         <Link
@@ -139,7 +139,7 @@ function Header() {
                     </div>
 
                     {/* Mobile Actions */}
-                    <div className='flex lg:hidden items-center space-x-3'>
+                    <div className='flex md:hidden items-center space-x-3'>
                         {/* Mobile Search Toggle */}
                         <button
                             onClick={() => setShowMobileSearch(!showMobileSearch)}
@@ -169,7 +169,7 @@ function Header() {
 
                 {/* Mobile Search Bar (Collapsible) */}
                 {showMobileSearch && (
-                    <div className='lg:hidden mt-3 animate-in slide-in-from-top duration-200'>
+                    <div className='md:hidden mt-3 animate-in slide-in-from-top duration-200'>
                         <Form action='/search'>
                             <div className="relative">
                                 <input 
@@ -196,7 +196,7 @@ function Header() {
             </header>
             
             {/* Desktop Navigation */}
-            <div className='hidden lg:block'>
+            <div className='hidden md:block'>
                 <Navigation />
             </div>
         </div>

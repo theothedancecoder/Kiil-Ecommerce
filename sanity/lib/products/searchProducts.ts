@@ -121,16 +121,14 @@ export const searchProducts = async (searchQuery: string) => {
       name match $searchPattern ||
       brand match $searchPattern ||
       categories[]->title match $searchPattern ||
-      description match $searchPattern ||
-      descriptionNo match $searchPattern
+      pt::text(description) match $searchPattern ||
+      pt::text(descriptionNo) match $searchPattern
     )] {
       _id,
       name,
       slug,
       price,
       brand,
-      description,
-      descriptionNo,
       image,
       categories[]-> {
         title,

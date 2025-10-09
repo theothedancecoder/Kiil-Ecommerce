@@ -127,10 +127,12 @@ async function SearchPage({
                                                 {product.brand}
                                             </div>
                                             
-                                            {/* Product Description */}
-                                            <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                                                {product.description || product.descriptionNo || 'No description available'}
-                                            </p>
+                                            {/* Categories */}
+                                            {product.categories && product.categories.length > 0 && (
+                                                <p className="text-sm text-gray-600 mb-3">
+                                                    {product.categories.map((cat: any) => cat.title).join(', ')}
+                                                </p>
+                                            )}
 
                                             {/* Price */}
                                             <div className="text-lg font-light text-gray-900 mb-3">
